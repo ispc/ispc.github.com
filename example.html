@@ -39,21 +39,20 @@
           <li><a href="http://github.com/ispc/ispc/archives/master/">Downloads</a></li>
           <li id="selected"><a href="example.html">Example</a></li>
           <li><a href="ispc.html">User's Guide</a></li>
-          <li><a href="doxygen/index.html">Doxygen</a></li>
-          <li><a href="http://github.com/ispc/ispc/wiki/">Wiki</a></li>
-          <li><a href="http://github.com/ispc/ispc/issues/">Bugs</a></li>
         </ul>
       </div>
     </div>
     <div id="content-wrap">
       <div id="sidebar">
           <div class="widgetspace">
-            <h1>Links</h1>
+            <h1>Resources</h1>
             <ul class="menu">
-              <li><a href="http://intel.com">Intel, Inc.</a><a href="http://partners.ipower.com/z/57/CD5822/"></a></li>
               <li><a href="http://github.com/ispc/ispc/">Intel SPMD Program
-              Compiler page on github</a></li>
-              <li><a href="http://llvm.org">The LLVM Project</a></li>
+                  Compiler (<tt>ispc</tt>) page on github</a></li>
+              <li><a href="http://github.com/ispc/ispc/wiki/">Wiki</a></li>
+              <li><a href="http://github.com/ispc/ispc/issues/">Bug tracking</a></li>
+              <li><a href="doxygen/index.html">Doxygen documentation of
+              <tt>ispc</tt> source code</a></li>
             </ul>
         </div>
       </div>
@@ -62,18 +61,27 @@
 <p>Here is a walkthrough of a simple example of using <tt>ispc</tt> to
   compute an image of the Mandelbrot set.  The full source code for this
   example is in the <tt>examples/mandelbrot</tt> directory of
-  the <tt>ispc</tt> distribution.
+  the <tt>ispc</tt> distribution; below is a lightly modified version of
+  that example.  (For example, we have elided some of the details related
+  to benchmarking and writing the final output image that are in the
+  actual <tt>mandelbrot.cpp</tt> file there.)
 </p>
 <p>First we have some code in the main program
-  file, <tt>mandelbrot.cpp</tt>, which is implemented in C++.  (We have
-  elided some of the details related to benchmarking that are in the
-  actual <tt>mandelbrot.cpp</tt> file here.)
+  file, <tt>mandelbrot.cpp</tt>, which is implemented in C++.  We mostly
+  have a regular C++ source file that sets a number of variables that drive
+  the overall computation and allocates memory to store the result of the
+  Mandelbrot set computation.  The call to <tt>mandelbrot_ispc</tt> is a
+  regular subroutine call, though in this case it's calling out to code
+  that was written in <tt>ispc</tt> rather than in C/C++.  Because
+  the <tt>ispc</tt> compiler generates regular object files using standard
+  C/C++ calling conventions, this kind of close interoperation between the
+  two languages is straightforward.
 </p>
 <p><code>
 int main() {<br />
 &nbsp;&nbsp;&nbsp;&nbsp;unsigned int width = 768, height = 512;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;float x0 = -2, x1 = 1;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;float y0 = -1, y1 = 1;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;float x0 = -2., x1 = 1.;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;float y0 = -1., y1 = 1.;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;int maxIterations = 256;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;int *buf = new int[width*height];<br />
 <br />
@@ -83,24 +91,103 @@ int main() {<br />
 }<br />
 </code></p>
 
+<p>
+Here is the start of the definition of the <tt>mandelbrot_ispc()</tt>
+function that the <tt>ispc</tt> compiler compiles.  (This function is
+defined in the <tt>mandelbrot.ispc</tt> file.)  There are a four main
+things to notice here.
+</p>
+<ol>
+<li>The <tt>export</tt> qualifier indicates that this function should be
+  made available to be called by C/C++ code, not just from
+  other <tt>ispc</tt> functions.
+<li>This function directly takes parameters passed by the C/C++ code as
+  regular function parameters.  No API calls or a runtime library are
+  necessary to set parameter values to pass to this function.</li>
+<li>The parameters are all tagged with the <tt>uniform</tt>
+  qualifier. This qualifier indicates that a variable has the same
+  value for all of the concurrently-executing program instances; it is
+  discussed in more detail in the <a href="ispc.html">ispc User's
+  Manual</a>.  Any values passed from the application to the <tt>ispc</tt>
+  program must be <tt>uniform</tt>.</li>
+<li>The pointer to the output buffer is passed as a reference to an array.
+  Like the other function parameters, this buffer is passed from the
+  application to the <tt>ispc</tt> code without any copying or
+  reformatting, as would be required with a driver model based
+  implementation.</li>
+</ol>
 
 <p><code>
 export void mandelbrot_ispc(uniform float x0, uniform float y0, <br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniform float x1, uniform float y1,<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniform int width, uniform int height, <br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniform int maxIterations,<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reference uniform int output[])<br />
-{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reference uniform int output[]) {<br />
+</code></p>
+
+
+<p>
+Most of the implementation of this function is the same as a regular serial
+C/C++ implementation would be.  The first significant difference is in the
+second nested <tt>for</tt> loop.  In the <tt>for</tt> loop
+over <tt>width</tt>, we can see that the step from one iteration to the
+next is <tt>programCount</tt>, rather than one, as might be expected in a
+serial implementation.  <tt>programCount</tt> is a special built-in
+variable in the <tt>ispc</tt> language that gives the number of program
+instances running concurrently.  (For example, on a 4-wide SSE CPU, it
+generally has the value 4).  Here we can see the SPMD nature of
+the <tt>ispc</tt> language; we are actually computing the Mandelbrot set
+iteration count for <tt>programCount</tt> pixels in parallel, rather than
+one at a time.  Here, we have written the example to spans
+of <tt>programCount</tt> of them at a time in the <tt>x</tt> dimension.
+(Alternatively, we could do one at a time in <tt>x</tt>
+and <tt>programCount</tt> at a time in <tt>y</tt>, a mixture of some in
+the <tt>x</tt> direction and some in <tt>y</tt>, etc.
+</p>
+
+<p><code>
 &nbsp;&nbsp;&nbsp;&nbsp;float dx = (x1 - x0) / width;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;float dy = (y1 - y0) / height;<br />
 <br />
-&nbsp;&nbsp;&nbsp;&nbsp;// Traverse the sample space in equally spaced steps with width *
-height samples<br />
 &nbsp;&nbsp;&nbsp;&nbsp;for (uniform int j = 0; j < height; j++) {<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (uniform int i = 0; i < width; i += programCount) {<br />
+</code></p>
+
+<p>
+Inside these loops, we first find the floating-point <tt>x</tt> and <tt>y</tt>
+values that correspond to the pixels at which to compute the Mandelbrot
+iteration counts.  Here we see the other main difference from a regular
+serial implementation.  The initializer for <tt>y</tt> is as one would
+expect, but the initializer for the <tt>x</tt> variable uses another
+special built-in variable, <tt>programIndex</tt>.  This variable is used to
+index across the running program instances; it has the value zero for the
+first program instance, one for the second one, etc.  (It is analogous to
+the OpenCL <tt>get_global_id()</tt> function or CUDA's <tt>threadIdx</tt>
+variable.)
+</p>
+
+<p>
+More generally, this is where the program does the mapping between the
+multiple program instances running in parallel and the data over which
+computation is being performed (here, the pixels of an image).  See the
+other examples in the <tt>ispc</tt> distribution for other examples of
+doing this mapping for other computations.
+</p>  
+
+<p><code>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float x = x0 + (programIndex + i) * dx;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float y = y0 + j * dy;<br />
-<br />
+</code></p>
+
+<p>
+Once it has figured out the coordinates at which to compute the number of
+iterations, the program finds the appropriate index into the output array
+for them and calls a subroutine to do the actual computation.  Note also
+that each running program instance computes its own index into the output
+array, incorporating the <tt>programIndex</tt> value into that computation.
+</p>
+
+<p><code>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int index = j * width + i + programIndex;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output[index] = mandel(x, y, maxIterations);<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
@@ -108,7 +195,16 @@ height samples<br />
 }<br />
 </code></p>
 
-
+<p>
+Here is the implementation of the <tt>mandel()</tt> routine.  It takes real
+and imaginary coordinates and a maximum iteration count and applies the
+iterative computation that defines the Mandelbrot set.  Although this
+appears to be a serial function, only computing one result for one pair of
+input coordinates, recall that <tt>ispc</tt>'s execution model is SPMD; the
+program compiles down to run in parallel across the elements of the SIMD
+unit, for example computing four results from four input coordinates in
+parallel on a 4-wide SSE unit.
+</p>
 <p><code>
 static inline int mandel(float c_re, float c_im, int count) {<br />
 &nbsp;&nbsp;&nbsp;&nbsp;float z_re = c_re, z_im = c_im;<br />
@@ -121,7 +217,6 @@ static inline int mandel(float c_re, float c_im, int count) {<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z_re = c_re + new_re;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z_im = c_im + new_im;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;}<br />
-<br />
 &nbsp;&nbsp;&nbsp;&nbsp;return i;<br />
 }<br />
 </code></p>
@@ -131,8 +226,17 @@ static inline int mandel(float c_re, float c_im, int count) {<br />
   directory that is in your <tt>PATH</tt>, and run <tt>make</tt> on Mac OS
   X or Linux, or build the with the <tt>mandelbrot.vcxproj</tt> build file
   with MSVC 2010.  Note that the <tt>ispc</tt> compiler generates regular
-  object files that you can just link with object files compiled with
-  C/C++ compilers.</p>
+  object files that you can just link with object files compiled with C/C++
+  compilers.  (Here is the <a href="mandelbrot.txt">assembly language
+  output</a> from compiling the <tt>mandelbrot.ispc</tt> source file with
+  the <tt>--emit-asm</tt> command-line option.)  In this case, we've
+  compiled the program with the <tt>sse4x2</tt> target, which targets the
+  SSE4 instruction set and doubles the number of program instances that run
+  in parallel from the baseline of four.  By doubling up and computing
+  eight results in parallel, the compiled code provides more
+  instruction-level parallelism to the CPU (at the cost of greater register
+  pressure).
+</p>
 <p><code>
 % make<br />
 ispc -O2 --target=sse4x2 mandelbrot.ispc -o objs/mandelbrot_ispc.o -h
@@ -164,13 +268,40 @@ speedup:
 %<br />
 </code></p>
 
+<p>
+Here is a downscaled version of the image that the program generates:
+</p>
+
+<center>
+<img src="mandelbrot.png" width=384 height=256>
+</center>
+
 <p>Note that all of the expsition up until now has been related to
  harvesting the available parallelism from the SIMD unit in a single CPU
- core.  Modern CPUs may from two to ten or more processing cores, each of
- which has a SIMD vector unit.  Computation can and should be parallelized
- across the processor cores 
+ core.  To fully use the system's computational resources also requires
+ parallelism across the CPU cores&mdash;modern CPUs may from two to ten or
+ more processing cores, each of which has a SIMD vector unit.
 </p>
-<img src="mandelbrot.png" width=768 height=512>
+
+<p> Thanks to the fact that<tt>ispc</tt> cleanly inter-operates with
+ application C/C++ code through a regular function call, one option would
+ be to rewrite the application code to be multi-threaded (for example,
+ using the task scheduler provided by
+ the <a href="http://threadingbuildingblocks.org/">Intel&#174; Thread
+ Building Blocks</a> or
+ the <a href="http://msdn.microsoft.com/en-us/library/dd504870.aspx">Microsoft
+ Concurrency Runtime</a>) and to then have parallel tasks that were in turn
+ partially or fully implemented in <tt>ispc</tt>.
+</p>
+
+<p>The second option for parallelizing across cores is to use the built-in
+  functionality for launching concurrent tasks that <tt>ispc</tt> offers.
+  The <tt>ispc</tt> language provides constructs for launching asynchronous
+  tasks that can execute concurrently with the rest of the program; see the
+  directory <tt>examples/mandelbrot_parallel</tt> in the <tt>ispc</tt>
+  distribution to see how to parallelize across both cores and the SIMD
+  units.
+</p>
         <br />
       </div>
     </div>

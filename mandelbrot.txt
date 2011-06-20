@@ -1,0 +1,172 @@
+	.section	__TEXT,__const
+	.align	4
+LCPI1_0:
+	.long	0                       ## 0x0
+	.long	1                       ## 0x1
+	.long	2                       ## 0x2
+	.long	3                       ## 0x3
+LCPI1_1:
+	.long	1082130432              ## float 4.000000e+00
+	.long	1082130432              ## float 4.000000e+00
+	.long	1082130432              ## float 4.000000e+00
+	.long	1082130432              ## float 4.000000e+00
+LCPI1_2:
+	.long	1073741824              ## float 2.000000e+00
+	.long	1073741824              ## float 2.000000e+00
+	.long	1073741824              ## float 2.000000e+00
+	.long	1073741824              ## float 2.000000e+00
+LCPI1_3:
+	.long	1                       ## 0x1
+	.long	1                       ## 0x1
+	.long	1                       ## 0x1
+	.long	1                       ## 0x1
+LCPI1_4:
+	.space	16
+	.section	__TEXT,__text,regular,pure_instructions
+	.globl	_mandelbrot_ispc
+	.align	4, 0x90
+_mandelbrot_ispc:                       ## @mandelbrot_ispc
+## BB#0:                                ## %allocas
+	pushq	%rbx
+	movq	%rcx, %r11
+	movl	%esi, %r9d
+                                        ## kill: XMM3<def> XMM3<kill> XMM3<def>
+                                        ## kill: XMM2<def> XMM2<kill> XMM2<def>
+                                        ## kill: XMM1<def> XMM1<kill> XMM1<def>
+                                        ## kill: XMM0<def> XMM0<kill> XMM0<def>
+	subss	%xmm0, %xmm2
+	cvtsi2ss	%edi, %xmm4
+	divss	%xmm4, %xmm2
+	subss	%xmm1, %xmm3
+	cvtsi2ss	%r9d, %xmm4
+	divss	%xmm4, %xmm3
+	testl	%r9d, %r9d
+	jle	LBB1_11
+## BB#1:                                ## %for_test32.preheader.lr.ph
+	pshufd	$0, %xmm3, %xmm3        ## xmm3 = xmm3[0,0,0,0]
+	movdqa	%xmm3, -80(%rsp)        ## 16-byte Spill
+	pshufd	$0, %xmm2, %xmm2        ## xmm2 = xmm2[0,0,0,0]
+	movdqa	%xmm2, -48(%rsp)        ## 16-byte Spill
+	movd	%edx, %xmm2
+	pshufd	$0, %xmm2, %xmm4        ## xmm4 = xmm2[0,0,0,0]
+	pxor	%xmm3, %xmm3
+	movdqa	%xmm4, %xmm2
+	pcmpgtd	%xmm3, %xmm2
+	pshufd	$0, %xmm1, %xmm1        ## xmm1 = xmm1[0,0,0,0]
+	movdqa	%xmm1, -64(%rsp)        ## 16-byte Spill
+	pshufd	$0, %xmm0, %xmm0        ## xmm0 = xmm0[0,0,0,0]
+	movdqa	%xmm0, -16(%rsp)        ## 16-byte Spill
+	leal	(,%rdi,4), %r8d
+	xorl	%esi, %esi
+	movmskps	%xmm2, %r10d
+	movaps	%xmm2, -32(%rsp)        ## 16-byte Spill
+	movaps	LCPI1_1(%rip), %xmm13
+	movaps	LCPI1_2(%rip), %xmm15
+	movdqa	LCPI1_3(%rip), %xmm14
+	movl	%esi, %edx
+	.align	4, 0x90
+LBB1_2:                                 ## %for_test32.preheader
+                                        ## =>This Loop Header: Depth=1
+                                        ##     Child Loop BB1_5 Depth 2
+                                        ##     Child Loop BB1_7 Depth 2
+                                        ##       Child Loop BB1_8 Depth 3
+	testl	%edi, %edi
+	jle	LBB1_10
+## BB#3:                                ## %for_loop34.lr.ph
+                                        ##   in Loop: Header=BB1_2 Depth=1
+	cvtsi2ss	%edx, %xmm0
+	xorl	%eax, %eax
+	testl	%r10d, %r10d
+	jne	LBB1_6
+## BB#4:                                ##   in Loop: Header=BB1_2 Depth=1
+	movl	%esi, %ecx
+	.align	4, 0x90
+LBB1_5:                                 ## %mandel___ffi.exit.us
+                                        ##   Parent Loop BB1_2 Depth=1
+                                        ## =>  This Inner Loop Header: Depth=2
+	movslq	%ecx, %rcx
+	pxor	%xmm0, %xmm0
+	movaps	%xmm0, (%r11,%rcx)
+	addl	$16, %ecx
+	addl	$4, %eax
+	cmpl	%edi, %eax
+	jl	LBB1_5
+	jmp	LBB1_10
+LBB1_6:                                 ##   in Loop: Header=BB1_2 Depth=1
+	pshufd	$0, %xmm0, %xmm2        ## xmm2 = xmm0[0,0,0,0]
+	mulps	-80(%rsp), %xmm2        ## 16-byte Folded Reload
+	addps	-64(%rsp), %xmm2        ## 16-byte Folded Reload
+	movl	%esi, %ecx
+	.align	4, 0x90
+LBB1_7:                                 ## %for_loop.i.lr.ph
+                                        ##   Parent Loop BB1_2 Depth=1
+                                        ## =>  This Loop Header: Depth=2
+                                        ##       Child Loop BB1_8 Depth 3
+	movd	%eax, %xmm0
+	pshufd	$0, %xmm0, %xmm0        ## xmm0 = xmm0[0,0,0,0]
+	paddd	LCPI1_0(%rip), %xmm0
+	cvtdq2ps	%xmm0, %xmm6
+	mulps	-48(%rsp), %xmm6        ## 16-byte Folded Reload
+	addps	-16(%rsp), %xmm6        ## 16-byte Folded Reload
+	xorps	%xmm8, %xmm8
+	movaps	-32(%rsp), %xmm0        ## 16-byte Reload
+	movaps	%xmm8, %xmm7
+	movaps	%xmm6, %xmm12
+	movaps	%xmm2, %xmm10
+	.align	4, 0x90
+LBB1_8:                                 ## %for_loop.i
+                                        ##   Parent Loop BB1_2 Depth=1
+                                        ##     Parent Loop BB1_7 Depth=2
+                                        ## =>    This Inner Loop Header: Depth=3
+	movaps	%xmm10, %xmm5
+	mulps	%xmm5, %xmm5
+	movaps	%xmm12, %xmm9
+	mulps	%xmm9, %xmm9
+	movaps	%xmm9, %xmm3
+	addps	%xmm5, %xmm3
+	movaps	%xmm13, %xmm1
+	cmpltps	%xmm3, %xmm1
+	subps	%xmm5, %xmm9
+	addps	%xmm6, %xmm9
+	andps	%xmm0, %xmm1
+	orps	%xmm1, %xmm8
+	movaps	%xmm8, %xmm1
+	andnps	%xmm0, %xmm1
+	movaps	%xmm12, %xmm11
+	mulps	%xmm15, %xmm11
+	movaps	%xmm1, %xmm0
+	blendvps	%xmm9, %xmm12
+	mulps	%xmm10, %xmm11
+	addps	%xmm2, %xmm11
+	movaps	%xmm1, %xmm0
+	blendvps	%xmm11, %xmm10
+	movaps	%xmm7, %xmm5
+	paddd	%xmm14, %xmm5
+	movaps	%xmm1, %xmm0
+	blendvps	%xmm5, %xmm7
+	movdqa	%xmm4, %xmm0
+	pcmpgtd	%xmm7, %xmm0
+	pand	%xmm1, %xmm0
+	movmskps	%xmm0, %ebx
+	testl	%ebx, %ebx
+	jne	LBB1_8
+## BB#9:                                ## %mandel___ffi.exit
+                                        ##   in Loop: Header=BB1_7 Depth=2
+	movslq	%ecx, %rcx
+	movdqa	%xmm7, (%r11,%rcx)
+	addl	$16, %ecx
+	addl	$4, %eax
+	cmpl	%edi, %eax
+	jl	LBB1_7
+LBB1_10:                                ## %for_exit35
+                                        ##   in Loop: Header=BB1_2 Depth=1
+	addl	%r8d, %esi
+	incl	%edx
+	cmpl	%edx, %r9d
+	jne	LBB1_2
+LBB1_11:                                ## %for_exit
+	popq	%rbx
+	ret
+
+
+.subsections_via_symbols
