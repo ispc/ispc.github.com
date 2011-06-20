@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="icon" type="image/png" href="favicon.png" />
+<link rel="stylesheet" href="images/style.css" type="text/css" media="all"  />
+<!-- WIN IE Style Sheets -->
+<!--[if IE]>
+  <![if gte IE 5.5]>
+   <![if gte IE 7]><link rel="stylesheet" 
+	type="text/css" media="screen,projection" 
+	href="images/ie.css" />
+	<![endif]>
+   <![if lt IE 7]><link rel="stylesheet" 
+	type="text/css" media="screen,projection" 
+	href="images/ie.css" />
+	<![endif]>
+  <![endif]>
+  <![if lt IE 5.5]>
+   <link rel="stylesheet"
+	type="text/css" media="screen,projection" 
+	href="images/ie.css" />
+    <![endif]>
+<![endif]-->
+<title>Intel&#174; SPMD Program Compiler</title>
+</head>
+<body>
+<div id="wrap">
+  <div id="wrap2">
+    <div id="header">
+      <h1 id="logo">Intel&#174; SPMD Program Compiler</h1>
+      <div id="slogan">An open-source compiler for high-performance SIMD programming on
+      the CPU</div>
+    </div>
+    <div id="nav">
+      <div id="nbar">
+        <ul>
+          <li id="selected"><a href="index.html">Home</a></li>
+          <li><a href="http://github.com/ispc/ispc/archives/master/">Downloads</a></li>
+          <li><a href="example.html">Example</a></li>
+          <li><a href="ispc.html">User's Guide</a></li>
+          <li><a href="doxygen/index.html">Doxygen</a></li>
+          <li><a href="http://github.com/ispc/ispc/wiki/">Wiki</a></li>
+          <li><a href="http://github.com/ispc/ispc/issues/">Bugs</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="content-wrap">
+      <div id="sidebar">
+          <div class="widgetspace">
+            <h1>Links</h1>
+            <ul class="menu">
+              <li><a href="http://intel.com">Intel, Inc.</a><a href="http://partners.ipower.com/z/57/CD5822/"></a></li>
+              <li><a href="http://github.com/ispc/ispc/">Intel SPMD Program
+              Compiler page on github</a></li>
+              <li><a href="http://llvm.org">The LLVM Project</a></li>
+            </ul>
+        </div>
+      </div>
+      <div id="content">
+        <h1>Announcing ispc, the Intel&#174; SPMD Program Compiler</h1>
+        <p><strong>ispc</strong> is a new compiler for "single program,
+          multiple
+          data" <a href="http://en.wikipedia.org/wiki/SPMD">(SPMD)</a>
+          programs.  With SPMD, the programmer writes a program that mostly
+          appears to be a regular serial program, though the execution
+          model is actually that a number of <i>program instances</i>
+          execute in parallel on the hardware.  (See
+          a <a href="example.html">more detailed example</a>.)
+          <tt>ispc</tt> compiles a C-based SPMD programming language to run
+          on the SIMD units of CPUs; it frequently provides a a 3x or more
+          speedup on CPUs with 4-wide SSE units, without any of the
+          difficulty of writing intrinsics code.
+          </p>There were a few principles and goals behind the design
+          of <tt>ispc</tt>:
+        <ul>
+          <li>To build a small C-like language that would deliver excellent
+            performance to performance-oriented programmers who want to run
+            SPMD programs on the CPU.</li>
+          <li>To privide a thin abstraction layer between the programmer
+            and the hardware&mdash;in particular, to have an execution and
+            data model where the programmer can cleanly reason about the
+            mapping of their source program to compiled assembly language
+            and the underlying hardware.</li>
+          <li>To it possible to harness the computational power of the SIMD
+            vector units without the extremely low-programmer-productivity
+            activity of directly writing intrinsics.</li>
+          <li>To explore opportunities from close-coupling between C/C++
+            application code and SPMD <tt>ispc</tt> code running on the
+            same processor&mdash;to have lightweight funcion calls betwen
+            the two languages, to share data directly via pointers without
+            copying or reformating, and so forth.</li>
+          </ul>
+        <p><tt>ispc</tt> is an open source compiler with a <a href="#">BSD
+          license</a>.  It uses the remarkable
+          <a href="http://llvm.org">LLVM Compiler Infrastructure</a> for
+          back-end code generation and optimization and
+          is <a href="http://github.com/ispc/ispc/">hosted</a>
+          on <a href="http://github.com/">github</a>. It supports Windows,
+          Mac, and Linux, with both x86 and x86-64 targets.  It currently
+          supports the SSE2 and SSE4 instruction sets, though support for
+          AVX should be available "soon".
+        </p>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div id="footer"> &copy; 2011 <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
+      <!-- Please Do Not remove this link, thank u -->
+      </div>
+  </div>
+  <!-- End Wrap2 -->
+</div>
+<!-- End Wrap -->
+</body>
+</html>

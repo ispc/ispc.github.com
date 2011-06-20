@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="icon" type="image/png" href="favicon.png" />
+<link rel="stylesheet" href="images/style.css" type="text/css" media="all"  />
+<!-- WIN IE Style Sheets -->
+<!--[if IE]>
+  <![if gte IE 5.5]>
+   <![if gte IE 7]><link rel="stylesheet" 
+	type="text/css" media="screen,projection" 
+	href="images/ie.css" />
+	<![endif]>
+   <![if lt IE 7]><link rel="stylesheet" 
+	type="text/css" media="screen,projection" 
+	href="images/ie.css" />
+	<![endif]>
+  <![endif]>
+  <![if lt IE 5.5]>
+   <link rel="stylesheet"
+	type="text/css" media="screen,projection" 
+	href="images/ie.css" />
+    <![endif]>
+<![endif]-->
+<title>Intel&#174; SPMD Program Compiler</title>
+</head>
+<body>
+<div id="wrap">
+  <div id="wrap2">
+    <div id="header">
+      <h1 id="logo">Intel&#174; SPMD Program Compiler</h1>
+      <div id="slogan">An open-source compiler for high-performance SIMD programming on
+      the CPU</div>
+    </div>
+    <div id="nav">
+      <div id="nbar">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="http://github.com/ispc/ispc/archives/master/">Downloads</a></li>
+          <li id="selected"><a href="example.html">Example</a></li>
+          <li><a href="ispc.html">User's Guide</a></li>
+          <li><a href="doxygen/index.html">Doxygen</a></li>
+          <li><a href="http://github.com/ispc/ispc/wiki/">Wiki</a></li>
+          <li><a href="http://github.com/ispc/ispc/issues/">Bugs</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="content-wrap">
+      <div id="sidebar">
+          <div class="widgetspace">
+            <h1>Links</h1>
+            <ul class="menu">
+              <li><a href="http://intel.com">Intel, Inc.</a><a href="http://partners.ipower.com/z/57/CD5822/"></a></li>
+              <li><a href="http://github.com/ispc/ispc/">Intel SPMD Program
+              Compiler page on github</a></li>
+              <li><a href="http://llvm.org">The LLVM Project</a></li>
+            </ul>
+        </div>
+      </div>
+      <div id="content">
+        <h1>A Simple Example</h1>
+<p>Here is a walkthrough of a simple example of using <tt>ispc</tt> to
+  compute an image of the Mandelbrot set.  The full source code for this
+  example is in the <tt>examples/mandelbrot</tt> directory of
+  the <tt>ispc</tt> distribution.
+</p>
+<p>First we have some code in the main program
+  file, <tt>mandelbrot.cpp</tt>, which is implemented in C++.  (We have
+  elided some of the details related to benchmarking that are in the
+  actual <tt>mandelbrot.cpp</tt> file here.)
+</p>
+<p><code>
+int main() {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;unsigned int width = 768, height = 512;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;float x0 = -2, x1 = 1;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;float y0 = -1, y1 = 1;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;int maxIterations = 256;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;int *buf = new int[width*height];<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;mandelbrot_ispc(x0, y0, x1, y1, width, height, maxIterations, buf);<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;// write output...<br />
+}<br />
+</code></p>
+
+
+<p><code>
+export void mandelbrot_ispc(uniform float x0, uniform float y0, <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniform float x1, uniform float y1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniform int width, uniform int height, <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniform int maxIterations,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reference uniform int output[])<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;float dx = (x1 - x0) / width;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;float dy = (y1 - y0) / height;<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;// Traverse the sample space in equally spaced steps with width *
+height samples<br />
+&nbsp;&nbsp;&nbsp;&nbsp;for (uniform int j = 0; j < height; j++) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (uniform int i = 0; i < width; i += programCount) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float x = x0 + (programIndex + i) * dx;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float y = y0 + j * dy;<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int index = j * width + i + programIndex;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output[index] = mandel(x, y, maxIterations);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+}<br />
+</code></p>
+
+
+<p><code>
+static inline int mandel(float c_re, float c_im, int count) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;float z_re = c_re, z_im = c_im;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;int i;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;for (i = 0; i < count; ++i) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (z_re * z_re + z_im * z_im > 4.)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float new_re = z_re*z_re - z_im*z_im;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float new_im = 2.f * z_re * z_im;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z_re = c_re + new_re;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z_im = c_im + new_im;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;return i;<br />
+}<br />
+</code></p>
+
+
+<p>To compile this example, install the <tt>ispc</tt> compiler in a
+  directory that is in your <tt>PATH</tt>, and run <tt>make</tt> on Mac OS
+  X or Linux, or build the with the <tt>mandelbrot.vcxproj</tt> build file
+  with MSVC 2010.  Note that the <tt>ispc</tt> compiler generates regular
+  object files that you can just link with object files compiled with
+  C/C++ compilers.</p>
+<p><code>
+% make<br />
+ispc -O2 --target=sse4x2 mandelbrot.ispc -o objs/mandelbrot_ispc.o -h
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objs/mandelbrot_ispc.h<br />
+g++ mandelbrot.cpp -Iobjs/ -O3 -Wall -c -o objs/mandelbrot.o<br />
+g++ mandelbrot_serial.cpp -Iobjs/ -O3 -Wall -c -o
+objs/mandelbrot_serial.o<br />
+g++ -Iobjs/ -O3 -Wall -o mandelbrot objs/mandelbrot.o objs/mandelbrot_ispc.o
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objs/mandelbrot_serial.o -lm<br />
+%<br />
+</code></p>
+
+<p>
+After the executable is built, running it benchmarks a serial
+implementation of computing the Mandelbrot set and the <tt>ispc</tt>
+version.  (You may want to compare the files <tt>mandelbrot.ispc</tt>
+and <tt>mandelbrot_serial.cpp</tt> to see the few syntactic differences
+between a C++ implementation of this computation and the <tt>ispc</tt>
+implementation.)  On an Intel&#174; Core2 CPU, doing this computation in
+parallel across the SIMD lanes of a single core gives a substantial
+speedup:
+</p>
+
+<p><code>
+% ./mandelbrot<br />
+[mandelbrot ispc]:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[133.913] million cycles<br />
+[mandelbrot serial]:&nbsp;&nbsp;&nbsp;&nbsp;[438.521] millon cycles<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(3.27x speedup from ISPC)<br />
+%<br />
+</code></p>
+
+<p>All this has been about harvesting parallelism on a single core.  If you
+want to parallelize across multiple cores...
+</p>
+<img src="mandelbrot.png" width=768 height=512>
+        <br />
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div id="footer"> &copy; 2011 <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
+      <!-- Please Do Not remove this link, thank u -->
+      </div>
+  </div>
+  <!-- End Wrap2 -->
+</div>
+<!-- End Wrap -->
+</body>
+</html>
