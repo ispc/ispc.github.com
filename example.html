@@ -104,7 +104,7 @@ things to notice here.
 <ol>
 <li>The <tt>export</tt> qualifier indicates that this function should be
   made available to be called by C/C++ code, not just from
-  other <tt>ispc</tt> functions.
+  other <tt>ispc</tt> functions.</li>
 <li>This function directly takes parameters passed by the C/C++ code as
   regular function parameters.  No API calls or a runtime library are
   necessary to set parameter values to pass to this function.</li>
@@ -153,8 +153,8 @@ the <tt>x</tt> direction and some in <tt>y</tt>, etc.
 &nbsp;&nbsp;&nbsp;&nbsp;float dx = (x1 - x0) / width;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;float dy = (y1 - y0) / height;<br />
 <br />
-&nbsp;&nbsp;&nbsp;&nbsp;for (uniform int j = 0; j < height; j++) {<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (uniform int i = 0; i < width; i += programCount) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;for (uniform int j = 0; j &lt; height; j++) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (uniform int i = 0; i &lt; width; i += programCount) {<br />
 </code></p>
 
 <p>
@@ -213,7 +213,7 @@ parallel on a 4-wide SSE unit.
 static inline int mandel(float c_re, float c_im, int count) {<br />
 &nbsp;&nbsp;&nbsp;&nbsp;float z_re = c_re, z_im = c_im;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;int i;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;for (i = 0; i < count; ++i) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;for (i = 0; i &lt; count; ++i) {<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (z_re * z_re + z_im * z_im > 4.)<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float new_re = z_re*z_re - z_im*z_im;<br />
@@ -277,7 +277,7 @@ Here is a downscaled version of the image that the program generates:
 </p>
 
 <center>
-<img src="mandelbrot.png" width=384 height=256>
+<img src="mandelbrot.png" width="384" height="256" alt="Mandelbrot set image"/>
 </center>
 
 <p>Note that all of the expsition up until now has been related to
