@@ -1346,595 +1346,615 @@
 <a name="l01315"></a>01315 
 <a name="l01316"></a>01316     <span class="keywordflow">if</span> (llvm::isa&lt;const llvm::PointerType&gt;(lvalue-&gt;getType())) {
 <a name="l01317"></a>01317         <span class="comment">// If the lvalue is a straight up regular pointer, then just issue</span>
-<a name="l01318"></a>01318         <span class="comment">// a regular load</span>
-<a name="l01319"></a>01319         llvm::Instruction *inst = <span class="keyword">new</span> <a class="code" href="classFunctionEmitContext.html#a5912b4abd4eae25a074cd8c2c86f505d">llvm::LoadInst</a>(lvalue, name ? name : <span class="stringliteral">&quot;load&quot;</span>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01320"></a>01320         <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(inst);
-<a name="l01321"></a>01321         <span class="keywordflow">return</span> inst;
-<a name="l01322"></a>01322     }
-<a name="l01323"></a>01323     <span class="keywordflow">else</span> {
-<a name="l01324"></a>01324         <span class="comment">// Otherwise we should have a varying lvalue and it&#39;s time for a</span>
-<a name="l01325"></a>01325         <span class="comment">// gather.  The &quot;type&quot; parameter only has to be non-NULL for the</span>
-<a name="l01326"></a>01326         <span class="comment">// gather path here (we can&#39;t reliably figure out all of the type</span>
-<a name="l01327"></a>01327         <span class="comment">// information we need from the LLVM::Type, so have to carry the</span>
-<a name="l01328"></a>01328         <span class="comment">// ispc type in through this path..</span>
-<a name="l01329"></a>01329         <a class="code" href="parse_8yy.html">assert</a>(type != <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l01330"></a>01330         <a class="code" href="parse_8yy.html">assert</a>(llvm::isa&lt;const llvm::ArrayType&gt;(lvalue-&gt;getType()));
-<a name="l01331"></a>01331         <span class="keywordflow">return</span> <a class="code" href="classFunctionEmitContext.html#aa50154a905e04929fb7b0c4a32907d30">gather</a>(lvalue, type, name);
-<a name="l01332"></a>01332     }
-<a name="l01333"></a>01333 }
-<a name="l01334"></a>01334 
-<a name="l01335"></a>01335 
-<a name="l01336"></a>01336 llvm::Value *
-<a name="l01337"></a><a class="code" href="classFunctionEmitContext.html#aa50154a905e04929fb7b0c4a32907d30">01337</a> <a class="code" href="classFunctionEmitContext.html#aa50154a905e04929fb7b0c4a32907d30">FunctionEmitContext::gather</a>(llvm::Value *lvalue, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type, 
-<a name="l01338"></a>01338                             <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
-<a name="l01339"></a>01339     <span class="comment">// We should have a varying lvalue if we get here...</span>
-<a name="l01340"></a>01340     <a class="code" href="parse_8yy.html">assert</a>(llvm::dyn_cast&lt;const llvm::ArrayType&gt;(lvalue-&gt;getType()));
-<a name="l01341"></a>01341 
-<a name="l01342"></a>01342     <span class="keyword">const</span> llvm::Type *retType = type-&gt;<a class="code" href="classType.html#ab324b2f6e207b63de653aeb530b90f46">LLVMType</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>);
-<a name="l01343"></a>01343 
-<a name="l01344"></a>01344     <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *st = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *<span class="keyword">&gt;</span>(type);
-<a name="l01345"></a>01345     <span class="keywordflow">if</span> (st) {
-<a name="l01346"></a>01346         <span class="comment">// If we&#39;re gathering structures, do an element-wise gather</span>
-<a name="l01347"></a>01347         <span class="comment">// recursively.</span>
-<a name="l01348"></a>01348         llvm::Value *retValue = llvm::UndefValue::get(retType);
-<a name="l01349"></a>01349         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; st-&gt;<a class="code" href="classStructType.html#a4e2af91b7501921235bdb4cc1f99be27">NumElements</a>(); ++i) {
-<a name="l01350"></a>01350             llvm::Value *eltPtrs = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(lvalue, 0, i);
-<a name="l01351"></a>01351             <span class="comment">// This in turn will be another gather</span>
-<a name="l01352"></a>01352             llvm::Value *eltValues = <a class="code" href="classFunctionEmitContext.html#a5912b4abd4eae25a074cd8c2c86f505d">LoadInst</a>(eltPtrs, st-&gt;<a class="code" href="classStructType.html#a4d22f6e74898c63e61e961a2b77836d6">GetMemberType</a>(i), 
-<a name="l01353"></a>01353                                               name);
-<a name="l01354"></a>01354             retValue = <a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">InsertInst</a>(retValue, eltValues, i, <span class="stringliteral">&quot;set_value&quot;</span>);
-<a name="l01355"></a>01355         }
-<a name="l01356"></a>01356         <span class="keywordflow">return</span> retValue;
-<a name="l01357"></a>01357     }
-<a name="l01358"></a>01358 
-<a name="l01359"></a>01359     <span class="keyword">const</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *vt = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *<span class="keyword">&gt;</span>(type);
-<a name="l01360"></a>01360     <span class="keywordflow">if</span> (vt) {
-<a name="l01361"></a>01361         <span class="comment">// Similarly, if it&#39;s a vector type, do a gather for each of the</span>
-<a name="l01362"></a>01362         <span class="comment">// vector elements</span>
-<a name="l01363"></a>01363         llvm::Value *retValue = llvm::UndefValue::get(retType);
-<a name="l01364"></a>01364         <span class="comment">// FIXME: yuck.  Change lvalues to be pointers to arrays so that</span>
-<a name="l01365"></a>01365         <span class="comment">// the GEP stuff in the loop below ends up computing pointers based</span>
-<a name="l01366"></a>01366         <span class="comment">// on elements in the vectors rather than incorrectly advancing to</span>
-<a name="l01367"></a>01367         <span class="comment">// the next vector...</span>
-<a name="l01368"></a>01368         <span class="keyword">const</span> llvm::Type *eltType = 
-<a name="l01369"></a>01369             vt-&gt;<a class="code" href="classVectorType.html#affde79090b837ad37e1ad1a2c857ab8a">GetBaseType</a>()-&gt;<a class="code" href="classType.html#ab0eff8692794d3437a91404c98985d20">GetAsUniformType</a>()-&gt;<a class="code" href="classType.html#ab324b2f6e207b63de653aeb530b90f46">LLVMType</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>);
-<a name="l01370"></a>01370         lvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(lvalue, llvm::PointerType::get(llvm::ArrayType::get(eltType, 0), 0));
+<a name="l01318"></a>01318         <span class="comment">// a regular load.  First figure out the alignment; in general we</span>
+<a name="l01319"></a>01319         <span class="comment">// can just assume the natural alignment (0 here), but for varying</span>
+<a name="l01320"></a>01320         <span class="comment">// atomic types, we need to make sure that the compiler emits</span>
+<a name="l01321"></a>01321         <span class="comment">// unaligned vector loads, so we specify a reduced alignment here.</span>
+<a name="l01322"></a>01322         <span class="keywordtype">int</span> align = 0;
+<a name="l01323"></a>01323         <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *atomicType = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *<span class="keyword">&gt;</span>(type);
+<a name="l01324"></a>01324         <span class="keywordflow">if</span> (atomicType != <a class="code" href="parse_8yy.html">NULL</a> &amp;&amp; atomicType-&gt;<a class="code" href="classType.html#affa605ca75a62c1ac079cfefa170cb3e">IsVaryingType</a>())
+<a name="l01325"></a>01325             <span class="comment">// We actually just want to align to the vector element</span>
+<a name="l01326"></a>01326             <span class="comment">// alignment, but can&#39;t easily get that here, so just tell LLVM</span>
+<a name="l01327"></a>01327             <span class="comment">// it&#39;s totally unaligned.  (This shouldn&#39;t make any difference</span>
+<a name="l01328"></a>01328             <span class="comment">// vs the proper alignment in practice.)</span>
+<a name="l01329"></a>01329             align = 1;
+<a name="l01330"></a>01330         llvm::Instruction *inst = <span class="keyword">new</span> <a class="code" href="classFunctionEmitContext.html#a5912b4abd4eae25a074cd8c2c86f505d">llvm::LoadInst</a>(lvalue, name ? name : <span class="stringliteral">&quot;load&quot;</span>,
+<a name="l01331"></a>01331                                                      <span class="keyword">false</span> <span class="comment">/* not volatile */</span>,
+<a name="l01332"></a>01332                                                      align, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01333"></a>01333         <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(inst);
+<a name="l01334"></a>01334         <span class="keywordflow">return</span> inst;
+<a name="l01335"></a>01335     }
+<a name="l01336"></a>01336     <span class="keywordflow">else</span> {
+<a name="l01337"></a>01337         <span class="comment">// Otherwise we should have a varying lvalue and it&#39;s time for a</span>
+<a name="l01338"></a>01338         <span class="comment">// gather.  The &quot;type&quot; parameter only has to be non-NULL for the</span>
+<a name="l01339"></a>01339         <span class="comment">// gather path here (we can&#39;t reliably figure out all of the type</span>
+<a name="l01340"></a>01340         <span class="comment">// information we need from the LLVM::Type, so have to carry the</span>
+<a name="l01341"></a>01341         <span class="comment">// ispc type in through this path..</span>
+<a name="l01342"></a>01342         <a class="code" href="parse_8yy.html">assert</a>(type != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l01343"></a>01343         <a class="code" href="parse_8yy.html">assert</a>(llvm::isa&lt;const llvm::ArrayType&gt;(lvalue-&gt;getType()));
+<a name="l01344"></a>01344         <span class="keywordflow">return</span> <a class="code" href="classFunctionEmitContext.html#aa50154a905e04929fb7b0c4a32907d30">gather</a>(lvalue, type, name);
+<a name="l01345"></a>01345     }
+<a name="l01346"></a>01346 }
+<a name="l01347"></a>01347 
+<a name="l01348"></a>01348 
+<a name="l01349"></a>01349 llvm::Value *
+<a name="l01350"></a><a class="code" href="classFunctionEmitContext.html#aa50154a905e04929fb7b0c4a32907d30">01350</a> <a class="code" href="classFunctionEmitContext.html#aa50154a905e04929fb7b0c4a32907d30">FunctionEmitContext::gather</a>(llvm::Value *lvalue, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type, 
+<a name="l01351"></a>01351                             <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
+<a name="l01352"></a>01352     <span class="comment">// We should have a varying lvalue if we get here...</span>
+<a name="l01353"></a>01353     <a class="code" href="parse_8yy.html">assert</a>(llvm::dyn_cast&lt;const llvm::ArrayType&gt;(lvalue-&gt;getType()));
+<a name="l01354"></a>01354 
+<a name="l01355"></a>01355     <span class="keyword">const</span> llvm::Type *retType = type-&gt;<a class="code" href="classType.html#ab324b2f6e207b63de653aeb530b90f46">LLVMType</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>);
+<a name="l01356"></a>01356 
+<a name="l01357"></a>01357     <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *st = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *<span class="keyword">&gt;</span>(type);
+<a name="l01358"></a>01358     <span class="keywordflow">if</span> (st) {
+<a name="l01359"></a>01359         <span class="comment">// If we&#39;re gathering structures, do an element-wise gather</span>
+<a name="l01360"></a>01360         <span class="comment">// recursively.</span>
+<a name="l01361"></a>01361         llvm::Value *retValue = llvm::UndefValue::get(retType);
+<a name="l01362"></a>01362         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; st-&gt;<a class="code" href="classStructType.html#a4e2af91b7501921235bdb4cc1f99be27">NumElements</a>(); ++i) {
+<a name="l01363"></a>01363             llvm::Value *eltPtrs = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(lvalue, 0, i);
+<a name="l01364"></a>01364             <span class="comment">// This in turn will be another gather</span>
+<a name="l01365"></a>01365             llvm::Value *eltValues = <a class="code" href="classFunctionEmitContext.html#a5912b4abd4eae25a074cd8c2c86f505d">LoadInst</a>(eltPtrs, st-&gt;<a class="code" href="classStructType.html#a4d22f6e74898c63e61e961a2b77836d6">GetMemberType</a>(i), 
+<a name="l01366"></a>01366                                               name);
+<a name="l01367"></a>01367             retValue = <a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">InsertInst</a>(retValue, eltValues, i, <span class="stringliteral">&quot;set_value&quot;</span>);
+<a name="l01368"></a>01368         }
+<a name="l01369"></a>01369         <span class="keywordflow">return</span> retValue;
+<a name="l01370"></a>01370     }
 <a name="l01371"></a>01371 
-<a name="l01372"></a>01372         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; vt-&gt;<a class="code" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a>(); ++i) {
-<a name="l01373"></a>01373             llvm::Value *eltPtrs = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(lvalue, 0, i);
-<a name="l01374"></a>01374             llvm::Value *eltValues = <a class="code" href="classFunctionEmitContext.html#a5912b4abd4eae25a074cd8c2c86f505d">LoadInst</a>(eltPtrs, vt-&gt;<a class="code" href="classVectorType.html#affde79090b837ad37e1ad1a2c857ab8a">GetBaseType</a>(), name);
-<a name="l01375"></a>01375             retValue = <a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">InsertInst</a>(retValue, eltValues, i, <span class="stringliteral">&quot;set_value&quot;</span>);
-<a name="l01376"></a>01376         }
-<a name="l01377"></a>01377         <span class="keywordflow">return</span> retValue;
-<a name="l01378"></a>01378     }
-<a name="l01379"></a>01379 
-<a name="l01380"></a>01380     <span class="keyword">const</span> <a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> *at = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> *<span class="keyword">&gt;</span>(type);
-<a name="l01381"></a>01381     <span class="keywordflow">if</span> (at) {
-<a name="l01382"></a>01382         <span class="comment">// Arrays are also handled recursively and element-wise</span>
-<a name="l01383"></a>01383         llvm::Value *retValue = llvm::UndefValue::get(retType);
-<a name="l01384"></a>01384         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; at-&gt;<a class="code" href="classArrayType.html#abd41c2442a7dc53f404399d746d0c6e8">GetElementCount</a>(); ++i) {
-<a name="l01385"></a>01385             llvm::Value *eltPtrs = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(lvalue, 0, i);
-<a name="l01386"></a>01386             llvm::Value *eltValues = <a class="code" href="classFunctionEmitContext.html#a5912b4abd4eae25a074cd8c2c86f505d">LoadInst</a>(eltPtrs, at-&gt;<a class="code" href="classArrayType.html#a0c07b5af9127e3dfc4626782f4227377">GetElementType</a>(), name);
-<a name="l01387"></a>01387             retValue = <a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">InsertInst</a>(retValue, eltValues, i, <span class="stringliteral">&quot;set_value&quot;</span>);
-<a name="l01388"></a>01388         }
-<a name="l01389"></a>01389         <span class="keywordflow">return</span> retValue;
-<a name="l01390"></a>01390     }
-<a name="l01391"></a>01391 
-<a name="l01392"></a>01392     <span class="comment">// Otherwise we should just have a basic scalar type and we can go and</span>
-<a name="l01393"></a>01393     <span class="comment">// do the actual gather</span>
-<a name="l01394"></a>01394     <a class="code" href="classFunctionEmitContext.html#afd18e81376746987a23a7b93792e784a">AddInstrumentationPoint</a>(<span class="stringliteral">&quot;gather&quot;</span>);
-<a name="l01395"></a>01395 
-<a name="l01396"></a>01396     llvm::Value *mask = <a class="code" href="classFunctionEmitContext.html#aa9861c694f2ac29e729b4d559016fdb5">GetMask</a>();
-<a name="l01397"></a>01397     llvm::Function *<a class="code" href="classFunctionEmitContext.html#aa50154a905e04929fb7b0c4a32907d30">gather</a> = <a class="code" href="parse_8yy.html">NULL</a>;
-<a name="l01398"></a>01398     <span class="comment">// Figure out which gather function to call based on the size of</span>
-<a name="l01399"></a>01399     <span class="comment">// the elements; will need to generalize this for 8 and 16-bit</span>
-<a name="l01400"></a>01400     <span class="comment">// types.</span>
-<a name="l01401"></a>01401     <span class="keywordflow">if</span> (retType == <a class="code" href="structLLVMTypes.html#acc5f145a0c405f27a80d48bd37adc154">LLVMTypes::DoubleVectorType</a> || 
-<a name="l01402"></a>01402         retType == <a class="code" href="structLLVMTypes.html#a799e5b2366087cac40bbc1565a82719c">LLVMTypes::Int64VectorType</a>)
-<a name="l01403"></a>01403         gather = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__pseudo_gather_64&quot;</span>);
-<a name="l01404"></a>01404     <span class="keywordflow">else</span> {
-<a name="l01405"></a>01405         <a class="code" href="parse_8yy.html">assert</a>(retType == <a class="code" href="structLLVMTypes.html#ac2d1ca30e6b69a22af4e14855f6d611e">LLVMTypes::FloatVectorType</a> || 
-<a name="l01406"></a>01406                retType == <a class="code" href="structLLVMTypes.html#aaeb30f93d5a1e06b109439a72bc7e75d">LLVMTypes::Int32VectorType</a>);
-<a name="l01407"></a>01407         gather = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__pseudo_gather_32&quot;</span>);
-<a name="l01408"></a>01408     }
-<a name="l01409"></a>01409     <a class="code" href="parse_8yy.html">assert</a>(gather);
-<a name="l01410"></a>01410 
-<a name="l01411"></a>01411     llvm::Value *voidlvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(lvalue, <a class="code" href="structLLVMTypes.html#a8ecbc5457965a4e9759542272b099273">LLVMTypes::VoidPointerType</a>);
-<a name="l01412"></a>01412     llvm::Instruction *call = <a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(gather, voidlvalue, mask, name);
-<a name="l01413"></a>01413     <span class="comment">// Add metadata about the source file location so that the</span>
-<a name="l01414"></a>01414     <span class="comment">// optimization passes can print useful performance warnings if we</span>
-<a name="l01415"></a>01415     <span class="comment">// can&#39;t optimize out this gather</span>
-<a name="l01416"></a>01416     <a class="code" href="classFunctionEmitContext.html#ac734fd6600297126709e557d58ea993b">addGSMetadata</a>(call, <a class="code" href="classFunctionEmitContext.html#a9fdefd08729bad7b92bb5a863a8ab1d3">currentPos</a>);
-<a name="l01417"></a>01417 
-<a name="l01418"></a>01418     llvm::Value *val = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(call, retType, <span class="stringliteral">&quot;gather_bitcast&quot;</span>);
-<a name="l01419"></a>01419 
-<a name="l01420"></a>01420     <span class="keywordflow">return</span> val;
-<a name="l01421"></a>01421 }
-<a name="l01422"></a>01422 
-<a name="l01423"></a>01423 <span class="comment"></span>
-<a name="l01424"></a>01424 <span class="comment">/** Add metadata to the given instruction to encode the current source file</span>
-<a name="l01425"></a>01425 <span class="comment">    position.  This data is used in the lGetSourcePosFromMetadata()</span>
-<a name="l01426"></a>01426 <span class="comment">    function in opt.cpp. </span>
-<a name="l01427"></a>01427 <span class="comment">*/</span>
-<a name="l01428"></a>01428 <span class="keywordtype">void</span>
-<a name="l01429"></a><a class="code" href="classFunctionEmitContext.html#ac734fd6600297126709e557d58ea993b">01429</a> <a class="code" href="classFunctionEmitContext.html#ac734fd6600297126709e557d58ea993b">FunctionEmitContext::addGSMetadata</a>(llvm::Instruction *inst, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos) {
-<a name="l01430"></a>01430     llvm::Value *str = llvm::MDString::get(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, pos.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>);
-<a name="l01431"></a>01431 <span class="preprocessor">#ifdef LLVM_2_8</span>
-<a name="l01432"></a>01432 <span class="preprocessor"></span>    llvm::MDNode *md = llvm::MDNode::get(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, &amp;str, 1);
-<a name="l01433"></a>01433 <span class="preprocessor">#else</span>
-<a name="l01434"></a>01434 <span class="preprocessor"></span>    llvm::MDNode *md = llvm::MDNode::get(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, str);
-<a name="l01435"></a>01435 <span class="preprocessor">#endif</span>
-<a name="l01436"></a>01436 <span class="preprocessor"></span>    inst-&gt;setMetadata(<span class="stringliteral">&quot;filename&quot;</span>, md);
-<a name="l01437"></a>01437 
-<a name="l01438"></a>01438     llvm::Value *line = <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(pos.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>);
-<a name="l01439"></a>01439 <span class="preprocessor">#ifdef LLVM_2_8</span>
-<a name="l01440"></a>01440 <span class="preprocessor"></span>    md = llvm::MDNode::get(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, &amp;first_line, 1);
-<a name="l01441"></a>01441 <span class="preprocessor">#else</span>
-<a name="l01442"></a>01442 <span class="preprocessor"></span>    md = llvm::MDNode::get(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, line);
-<a name="l01443"></a>01443 <span class="preprocessor">#endif</span>
-<a name="l01444"></a>01444 <span class="preprocessor"></span>    inst-&gt;setMetadata(<span class="stringliteral">&quot;line&quot;</span>, md);
-<a name="l01445"></a>01445 
-<a name="l01446"></a>01446     llvm::Value *column = <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(pos.<a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a>);
-<a name="l01447"></a>01447 <span class="preprocessor">#ifdef LLVM_2_8</span>
-<a name="l01448"></a>01448 <span class="preprocessor"></span>    md = llvm::MDNode::get(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, &amp;first_column, 1);
-<a name="l01449"></a>01449 <span class="preprocessor">#else</span>
-<a name="l01450"></a>01450 <span class="preprocessor"></span>    md = llvm::MDNode::get(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, column);
-<a name="l01451"></a>01451 <span class="preprocessor">#endif</span>
-<a name="l01452"></a>01452 <span class="preprocessor"></span>    inst-&gt;setMetadata(<span class="stringliteral">&quot;column&quot;</span>, md);
-<a name="l01453"></a>01453 }
-<a name="l01454"></a>01454 
-<a name="l01455"></a>01455 
-<a name="l01456"></a>01456 llvm::Value *
-<a name="l01457"></a><a class="code" href="classFunctionEmitContext.html#aea14cf7420790a7a995e44e9a2ee4ffb">01457</a> <a class="code" href="classFunctionEmitContext.html#aea14cf7420790a7a995e44e9a2ee4ffb">FunctionEmitContext::AllocaInst</a>(<span class="keyword">const</span> llvm::Type *llvmType, <span class="keyword">const</span> <span class="keywordtype">char</span> *name,
-<a name="l01458"></a>01458                                 <span class="keywordtype">int</span> align, <span class="keywordtype">bool</span> atEntryBlock) {
-<a name="l01459"></a>01459     llvm::AllocaInst *inst = <a class="code" href="parse_8yy.html">NULL</a>;
-<a name="l01460"></a>01460     <span class="keywordflow">if</span> (atEntryBlock) {
-<a name="l01461"></a>01461         <span class="comment">// We usually insert it right before the jump instruction at the</span>
-<a name="l01462"></a>01462         <span class="comment">// end of allocaBlock</span>
-<a name="l01463"></a>01463         llvm::Instruction *retInst = <a class="code" href="classFunctionEmitContext.html#a43fb87d454ebf2e2646e1cab19215b77">allocaBlock</a>-&gt;getTerminator();
-<a name="l01464"></a>01464         <a class="code" href="parse_8yy.html">assert</a>(retInst);
-<a name="l01465"></a>01465         inst = <span class="keyword">new</span> <a class="code" href="classFunctionEmitContext.html#aea14cf7420790a7a995e44e9a2ee4ffb">llvm::AllocaInst</a>(llvmType, name ? name : <span class="stringliteral">&quot;&quot;</span>, retInst);
-<a name="l01466"></a>01466     }
-<a name="l01467"></a>01467     <span class="keywordflow">else</span>
-<a name="l01468"></a>01468         <span class="comment">// Unless the caller overrode the default and wants it in the</span>
-<a name="l01469"></a>01469         <span class="comment">// current basic block</span>
-<a name="l01470"></a>01470         inst = <span class="keyword">new</span> <a class="code" href="classFunctionEmitContext.html#aea14cf7420790a7a995e44e9a2ee4ffb">llvm::AllocaInst</a>(llvmType, name ? name : <span class="stringliteral">&quot;&quot;</span>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01471"></a>01471 
-<a name="l01472"></a>01472     <span class="keywordflow">if</span> (align != 0)
-<a name="l01473"></a>01473         inst-&gt;setAlignment(align);
-<a name="l01474"></a>01474     <span class="comment">// Don&#39;t add debugging info to alloca instructions</span>
-<a name="l01475"></a>01475     <span class="keywordflow">return</span> inst;
-<a name="l01476"></a>01476 }
-<a name="l01477"></a>01477 
-<a name="l01478"></a>01478 <span class="comment"></span>
-<a name="l01479"></a>01479 <span class="comment">/** Code to store the given varying value to the given location, only</span>
-<a name="l01480"></a>01480 <span class="comment">    storing the elements that correspond to active program instances as</span>
-<a name="l01481"></a>01481 <span class="comment">    given by the provided storeMask value.  Note that the lvalue is only a</span>
-<a name="l01482"></a>01482 <span class="comment">    single pointer, not a varying lvalue of one pointer per program</span>
-<a name="l01483"></a>01483 <span class="comment">    instance (that case is handled by scatters).</span>
-<a name="l01484"></a>01484 <span class="comment"> */</span>
-<a name="l01485"></a>01485 <span class="keywordtype">void</span>
-<a name="l01486"></a><a class="code" href="classFunctionEmitContext.html#a49e3027e4cfe9f8c91b76200ab4f952d">01486</a> <a class="code" href="classFunctionEmitContext.html#a49e3027e4cfe9f8c91b76200ab4f952d">FunctionEmitContext::maskedStore</a>(llvm::Value *rvalue, llvm::Value *lvalue,
-<a name="l01487"></a>01487                                  <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *rvalueType, 
-<a name="l01488"></a>01488                                  llvm::Value *storeMask) {
-<a name="l01489"></a>01489     <span class="keywordflow">if</span> (rvalue == <a class="code" href="parse_8yy.html">NULL</a> || lvalue == <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l01490"></a>01490         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
-<a name="l01491"></a>01491         <span class="keywordflow">return</span>;
-<a name="l01492"></a>01492     }
-<a name="l01493"></a>01493 
-<a name="l01494"></a>01494     <a class="code" href="parse_8yy.html">assert</a>(llvm::isa&lt;const llvm::PointerType&gt;(lvalue-&gt;getType()));
-<a name="l01495"></a>01495     
-<a name="l01496"></a>01496     <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *structType = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *<span class="keyword">&gt;</span>(rvalueType);
-<a name="l01497"></a>01497     <span class="keywordflow">if</span> (structType != <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l01498"></a>01498         <span class="comment">// Assigning a structure</span>
-<a name="l01499"></a>01499         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; structType-&gt;<a class="code" href="classStructType.html#a4e2af91b7501921235bdb4cc1f99be27">NumElements</a>(); ++i) {
-<a name="l01500"></a>01500             llvm::Value *eltValue = <a class="code" href="classFunctionEmitContext.html#a371302ab96cfb2a4f03c372259a4654b">ExtractInst</a>(rvalue, i, <span class="stringliteral">&quot;rvalue_member&quot;</span>);
-<a name="l01501"></a>01501             llvm::Value *eltLValue = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(lvalue, 0, i, 
-<a name="l01502"></a>01502                                                        <span class="stringliteral">&quot;struct_lvalue_ptr&quot;</span>);
-<a name="l01503"></a>01503             <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(eltValue, eltLValue, storeMask, 
-<a name="l01504"></a>01504                       structType-&gt;<a class="code" href="classStructType.html#a4d22f6e74898c63e61e961a2b77836d6">GetMemberType</a>(i));
-<a name="l01505"></a>01505         }
-<a name="l01506"></a>01506         <span class="keywordflow">return</span>;
-<a name="l01507"></a>01507     }
-<a name="l01508"></a>01508 
-<a name="l01509"></a>01509     <span class="keyword">const</span> <a class="code" href="classSequentialType.html" title="Abstract base class for tpyes that represent sequences.">SequentialType</a> *sequentialType = 
-<a name="l01510"></a>01510         <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classSequentialType.html" title="Abstract base class for tpyes that represent sequences.">SequentialType</a> *<span class="keyword">&gt;</span>(rvalueType);
-<a name="l01511"></a>01511     <span class="keywordflow">if</span> (sequentialType != <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l01512"></a>01512         <span class="comment">// Assigning arrays and vectors. Handle each element individually</span>
-<a name="l01513"></a>01513         <span class="comment">// with what turns into a recursive call to makedStore()</span>
-<a name="l01514"></a>01514         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; sequentialType-&gt;<a class="code" href="classSequentialType.html#ad40ea0ff651bd92e7a555953085a5137">GetElementCount</a>(); ++i) {
-<a name="l01515"></a>01515             llvm::Value *eltLValue = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(lvalue, 0, i, <span class="stringliteral">&quot;lval_i_ptr&quot;</span>);
-<a name="l01516"></a>01516             llvm::Value *eltValue = <a class="code" href="classFunctionEmitContext.html#a371302ab96cfb2a4f03c372259a4654b">ExtractInst</a>(rvalue, i, <span class="stringliteral">&quot;array_i_val&quot;</span>);
-<a name="l01517"></a>01517             <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(eltValue, eltLValue, storeMask, 
-<a name="l01518"></a>01518                       sequentialType-&gt;<a class="code" href="classSequentialType.html#a923d9a8ec402a9880b6d149b8f372916">GetElementType</a>());
-<a name="l01519"></a>01519         }
-<a name="l01520"></a>01520         <span class="keywordflow">return</span>;
-<a name="l01521"></a>01521     }
-<a name="l01522"></a>01522 
-<a name="l01523"></a>01523     <span class="comment">// We must have a regular atomic type at this point</span>
-<a name="l01524"></a>01524     <a class="code" href="parse_8yy.html">assert</a>(dynamic_cast&lt;const AtomicType *&gt;(rvalueType) != <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l01525"></a>01525     rvalueType = rvalueType-&gt;<a class="code" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">GetAsNonConstType</a>();
-<a name="l01526"></a>01526 
-<a name="l01527"></a>01527     llvm::Function *maskedStoreFunc = <a class="code" href="parse_8yy.html">NULL</a>;
-<a name="l01528"></a>01528     <span class="comment">// Figure out if we need a 32-bit or 64-bit masked store.  This</span>
-<a name="l01529"></a>01529     <span class="comment">// will need to be generalized when/if 8 and 16-bit data types are</span>
-<a name="l01530"></a>01530     <span class="comment">// added.</span>
-<a name="l01531"></a>01531     <span class="keywordflow">if</span> (rvalueType == <a class="code" href="classAtomicType.html#a650ea00314faf8f7ee4f19fb8d5fe37d">AtomicType::VaryingDouble</a> || 
-<a name="l01532"></a>01532         rvalueType == <a class="code" href="classAtomicType.html#a58a98c38cae3c592a6d79546fe07f6d1">AtomicType::VaryingInt64</a> ||
-<a name="l01533"></a>01533         rvalueType == <a class="code" href="classAtomicType.html#acab78bfdc4a1dfb1509bf747f04fd856">AtomicType::VaryingUInt64</a>) {
-<a name="l01534"></a>01534         maskedStoreFunc = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__pseudo_masked_store_64&quot;</span>);
-<a name="l01535"></a>01535         lvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(lvalue, <a class="code" href="structLLVMTypes.html#aef87fc24302fdfa9e72fff50fce988ae">LLVMTypes::Int64VectorPointerType</a>, 
-<a name="l01536"></a>01536                              <span class="stringliteral">&quot;lvalue_to_int64vecptr&quot;</span>);
-<a name="l01537"></a>01537         rvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(rvalue, <a class="code" href="structLLVMTypes.html#a799e5b2366087cac40bbc1565a82719c">LLVMTypes::Int64VectorType</a>, 
-<a name="l01538"></a>01538                              <span class="stringliteral">&quot;rvalue_to_int64&quot;</span>);
-<a name="l01539"></a>01539     }
-<a name="l01540"></a>01540     <span class="keywordflow">else</span> {
-<a name="l01541"></a>01541         <a class="code" href="parse_8yy.html">assert</a>(rvalueType == <a class="code" href="classAtomicType.html#a0071de02d88675b521285f25f4008c83">AtomicType::VaryingFloat</a> ||
-<a name="l01542"></a>01542                rvalueType == <a class="code" href="classAtomicType.html#a4ea6e749bdc28ad68823ca2edc3bd37d">AtomicType::VaryingBool</a> ||
-<a name="l01543"></a>01543                rvalueType == <a class="code" href="classAtomicType.html#ae112e2d3aaefd2a4035ce998e4c71ff3">AtomicType::VaryingInt32</a> ||
-<a name="l01544"></a>01544                rvalueType == <a class="code" href="classAtomicType.html#a0f0ec8f289e2c824016d689987c6d774">AtomicType::VaryingUInt32</a>);
-<a name="l01545"></a>01545 
-<a name="l01546"></a>01546         maskedStoreFunc = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__pseudo_masked_store_32&quot;</span>);
-<a name="l01547"></a>01547         lvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(lvalue, <a class="code" href="structLLVMTypes.html#adbb32e4260df11c43b2c6ee662747546">LLVMTypes::Int32VectorPointerType</a>, 
-<a name="l01548"></a>01548                              <span class="stringliteral">&quot;lvalue_to_int32vecptr&quot;</span>);
-<a name="l01549"></a>01549         <span class="keywordflow">if</span> (rvalueType == <a class="code" href="classAtomicType.html#a0071de02d88675b521285f25f4008c83">AtomicType::VaryingFloat</a>)
-<a name="l01550"></a>01550             rvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(rvalue, <a class="code" href="structLLVMTypes.html#aaeb30f93d5a1e06b109439a72bc7e75d">LLVMTypes::Int32VectorType</a>, 
-<a name="l01551"></a>01551                                  <span class="stringliteral">&quot;rvalue_to_int32&quot;</span>);
+<a name="l01372"></a>01372     <span class="keyword">const</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *vt = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *<span class="keyword">&gt;</span>(type);
+<a name="l01373"></a>01373     <span class="keywordflow">if</span> (vt) {
+<a name="l01374"></a>01374         <span class="comment">// Similarly, if it&#39;s a vector type, do a gather for each of the</span>
+<a name="l01375"></a>01375         <span class="comment">// vector elements</span>
+<a name="l01376"></a>01376         llvm::Value *retValue = llvm::UndefValue::get(retType);
+<a name="l01377"></a>01377         <span class="comment">// FIXME: yuck.  Change lvalues to be pointers to arrays so that</span>
+<a name="l01378"></a>01378         <span class="comment">// the GEP stuff in the loop below ends up computing pointers based</span>
+<a name="l01379"></a>01379         <span class="comment">// on elements in the vectors rather than incorrectly advancing to</span>
+<a name="l01380"></a>01380         <span class="comment">// the next vector...</span>
+<a name="l01381"></a>01381         <span class="keyword">const</span> llvm::Type *eltType = 
+<a name="l01382"></a>01382             vt-&gt;<a class="code" href="classVectorType.html#affde79090b837ad37e1ad1a2c857ab8a">GetBaseType</a>()-&gt;<a class="code" href="classType.html#ab0eff8692794d3437a91404c98985d20">GetAsUniformType</a>()-&gt;<a class="code" href="classType.html#ab324b2f6e207b63de653aeb530b90f46">LLVMType</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>);
+<a name="l01383"></a>01383         lvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(lvalue, llvm::PointerType::get(llvm::ArrayType::get(eltType, 0), 0));
+<a name="l01384"></a>01384 
+<a name="l01385"></a>01385         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; vt-&gt;<a class="code" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a>(); ++i) {
+<a name="l01386"></a>01386             llvm::Value *eltPtrs = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(lvalue, 0, i);
+<a name="l01387"></a>01387             llvm::Value *eltValues = <a class="code" href="classFunctionEmitContext.html#a5912b4abd4eae25a074cd8c2c86f505d">LoadInst</a>(eltPtrs, vt-&gt;<a class="code" href="classVectorType.html#affde79090b837ad37e1ad1a2c857ab8a">GetBaseType</a>(), name);
+<a name="l01388"></a>01388             retValue = <a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">InsertInst</a>(retValue, eltValues, i, <span class="stringliteral">&quot;set_value&quot;</span>);
+<a name="l01389"></a>01389         }
+<a name="l01390"></a>01390         <span class="keywordflow">return</span> retValue;
+<a name="l01391"></a>01391     }
+<a name="l01392"></a>01392 
+<a name="l01393"></a>01393     <span class="keyword">const</span> <a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> *at = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> *<span class="keyword">&gt;</span>(type);
+<a name="l01394"></a>01394     <span class="keywordflow">if</span> (at) {
+<a name="l01395"></a>01395         <span class="comment">// Arrays are also handled recursively and element-wise</span>
+<a name="l01396"></a>01396         llvm::Value *retValue = llvm::UndefValue::get(retType);
+<a name="l01397"></a>01397         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; at-&gt;<a class="code" href="classArrayType.html#abd41c2442a7dc53f404399d746d0c6e8">GetElementCount</a>(); ++i) {
+<a name="l01398"></a>01398             llvm::Value *eltPtrs = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(lvalue, 0, i);
+<a name="l01399"></a>01399             llvm::Value *eltValues = <a class="code" href="classFunctionEmitContext.html#a5912b4abd4eae25a074cd8c2c86f505d">LoadInst</a>(eltPtrs, at-&gt;<a class="code" href="classArrayType.html#a0c07b5af9127e3dfc4626782f4227377">GetElementType</a>(), name);
+<a name="l01400"></a>01400             retValue = <a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">InsertInst</a>(retValue, eltValues, i, <span class="stringliteral">&quot;set_value&quot;</span>);
+<a name="l01401"></a>01401         }
+<a name="l01402"></a>01402         <span class="keywordflow">return</span> retValue;
+<a name="l01403"></a>01403     }
+<a name="l01404"></a>01404 
+<a name="l01405"></a>01405     <span class="comment">// Otherwise we should just have a basic scalar type and we can go and</span>
+<a name="l01406"></a>01406     <span class="comment">// do the actual gather</span>
+<a name="l01407"></a>01407     <a class="code" href="classFunctionEmitContext.html#afd18e81376746987a23a7b93792e784a">AddInstrumentationPoint</a>(<span class="stringliteral">&quot;gather&quot;</span>);
+<a name="l01408"></a>01408 
+<a name="l01409"></a>01409     llvm::Value *mask = <a class="code" href="classFunctionEmitContext.html#aa9861c694f2ac29e729b4d559016fdb5">GetMask</a>();
+<a name="l01410"></a>01410     llvm::Function *<a class="code" href="classFunctionEmitContext.html#aa50154a905e04929fb7b0c4a32907d30">gather</a> = <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l01411"></a>01411     <span class="comment">// Figure out which gather function to call based on the size of</span>
+<a name="l01412"></a>01412     <span class="comment">// the elements; will need to generalize this for 8 and 16-bit</span>
+<a name="l01413"></a>01413     <span class="comment">// types.</span>
+<a name="l01414"></a>01414     <span class="keywordflow">if</span> (retType == <a class="code" href="structLLVMTypes.html#acc5f145a0c405f27a80d48bd37adc154">LLVMTypes::DoubleVectorType</a> || 
+<a name="l01415"></a>01415         retType == <a class="code" href="structLLVMTypes.html#a799e5b2366087cac40bbc1565a82719c">LLVMTypes::Int64VectorType</a>)
+<a name="l01416"></a>01416         gather = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__pseudo_gather_64&quot;</span>);
+<a name="l01417"></a>01417     <span class="keywordflow">else</span> {
+<a name="l01418"></a>01418         <a class="code" href="parse_8yy.html">assert</a>(retType == <a class="code" href="structLLVMTypes.html#ac2d1ca30e6b69a22af4e14855f6d611e">LLVMTypes::FloatVectorType</a> || 
+<a name="l01419"></a>01419                retType == <a class="code" href="structLLVMTypes.html#aaeb30f93d5a1e06b109439a72bc7e75d">LLVMTypes::Int32VectorType</a>);
+<a name="l01420"></a>01420         gather = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__pseudo_gather_32&quot;</span>);
+<a name="l01421"></a>01421     }
+<a name="l01422"></a>01422     <a class="code" href="parse_8yy.html">assert</a>(gather);
+<a name="l01423"></a>01423 
+<a name="l01424"></a>01424     llvm::Value *voidlvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(lvalue, <a class="code" href="structLLVMTypes.html#a8ecbc5457965a4e9759542272b099273">LLVMTypes::VoidPointerType</a>);
+<a name="l01425"></a>01425     llvm::Instruction *call = <a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(gather, voidlvalue, mask, name);
+<a name="l01426"></a>01426     <span class="comment">// Add metadata about the source file location so that the</span>
+<a name="l01427"></a>01427     <span class="comment">// optimization passes can print useful performance warnings if we</span>
+<a name="l01428"></a>01428     <span class="comment">// can&#39;t optimize out this gather</span>
+<a name="l01429"></a>01429     <a class="code" href="classFunctionEmitContext.html#ac734fd6600297126709e557d58ea993b">addGSMetadata</a>(call, <a class="code" href="classFunctionEmitContext.html#a9fdefd08729bad7b92bb5a863a8ab1d3">currentPos</a>);
+<a name="l01430"></a>01430 
+<a name="l01431"></a>01431     llvm::Value *val = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(call, retType, <span class="stringliteral">&quot;gather_bitcast&quot;</span>);
+<a name="l01432"></a>01432 
+<a name="l01433"></a>01433     <span class="keywordflow">return</span> val;
+<a name="l01434"></a>01434 }
+<a name="l01435"></a>01435 
+<a name="l01436"></a>01436 <span class="comment"></span>
+<a name="l01437"></a>01437 <span class="comment">/** Add metadata to the given instruction to encode the current source file</span>
+<a name="l01438"></a>01438 <span class="comment">    position.  This data is used in the lGetSourcePosFromMetadata()</span>
+<a name="l01439"></a>01439 <span class="comment">    function in opt.cpp. </span>
+<a name="l01440"></a>01440 <span class="comment">*/</span>
+<a name="l01441"></a>01441 <span class="keywordtype">void</span>
+<a name="l01442"></a><a class="code" href="classFunctionEmitContext.html#ac734fd6600297126709e557d58ea993b">01442</a> <a class="code" href="classFunctionEmitContext.html#ac734fd6600297126709e557d58ea993b">FunctionEmitContext::addGSMetadata</a>(llvm::Instruction *inst, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos) {
+<a name="l01443"></a>01443     llvm::Value *str = llvm::MDString::get(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, pos.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>);
+<a name="l01444"></a>01444 <span class="preprocessor">#ifdef LLVM_2_8</span>
+<a name="l01445"></a>01445 <span class="preprocessor"></span>    llvm::MDNode *md = llvm::MDNode::get(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, &amp;str, 1);
+<a name="l01446"></a>01446 <span class="preprocessor">#else</span>
+<a name="l01447"></a>01447 <span class="preprocessor"></span>    llvm::MDNode *md = llvm::MDNode::get(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, str);
+<a name="l01448"></a>01448 <span class="preprocessor">#endif</span>
+<a name="l01449"></a>01449 <span class="preprocessor"></span>    inst-&gt;setMetadata(<span class="stringliteral">&quot;filename&quot;</span>, md);
+<a name="l01450"></a>01450 
+<a name="l01451"></a>01451     llvm::Value *line = <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(pos.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>);
+<a name="l01452"></a>01452 <span class="preprocessor">#ifdef LLVM_2_8</span>
+<a name="l01453"></a>01453 <span class="preprocessor"></span>    md = llvm::MDNode::get(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, &amp;line, 1);
+<a name="l01454"></a>01454 <span class="preprocessor">#else</span>
+<a name="l01455"></a>01455 <span class="preprocessor"></span>    md = llvm::MDNode::get(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, line);
+<a name="l01456"></a>01456 <span class="preprocessor">#endif</span>
+<a name="l01457"></a>01457 <span class="preprocessor"></span>    inst-&gt;setMetadata(<span class="stringliteral">&quot;line&quot;</span>, md);
+<a name="l01458"></a>01458 
+<a name="l01459"></a>01459     llvm::Value *column = <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(pos.<a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a>);
+<a name="l01460"></a>01460 <span class="preprocessor">#ifdef LLVM_2_8</span>
+<a name="l01461"></a>01461 <span class="preprocessor"></span>    md = llvm::MDNode::get(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, &amp;column, 1);
+<a name="l01462"></a>01462 <span class="preprocessor">#else</span>
+<a name="l01463"></a>01463 <span class="preprocessor"></span>    md = llvm::MDNode::get(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, column);
+<a name="l01464"></a>01464 <span class="preprocessor">#endif</span>
+<a name="l01465"></a>01465 <span class="preprocessor"></span>    inst-&gt;setMetadata(<span class="stringliteral">&quot;column&quot;</span>, md);
+<a name="l01466"></a>01466 }
+<a name="l01467"></a>01467 
+<a name="l01468"></a>01468 
+<a name="l01469"></a>01469 llvm::Value *
+<a name="l01470"></a><a class="code" href="classFunctionEmitContext.html#aea14cf7420790a7a995e44e9a2ee4ffb">01470</a> <a class="code" href="classFunctionEmitContext.html#aea14cf7420790a7a995e44e9a2ee4ffb">FunctionEmitContext::AllocaInst</a>(<span class="keyword">const</span> llvm::Type *llvmType, <span class="keyword">const</span> <span class="keywordtype">char</span> *name,
+<a name="l01471"></a>01471                                 <span class="keywordtype">int</span> align, <span class="keywordtype">bool</span> atEntryBlock) {
+<a name="l01472"></a>01472     llvm::AllocaInst *inst = <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l01473"></a>01473     <span class="keywordflow">if</span> (atEntryBlock) {
+<a name="l01474"></a>01474         <span class="comment">// We usually insert it right before the jump instruction at the</span>
+<a name="l01475"></a>01475         <span class="comment">// end of allocaBlock</span>
+<a name="l01476"></a>01476         llvm::Instruction *retInst = <a class="code" href="classFunctionEmitContext.html#a43fb87d454ebf2e2646e1cab19215b77">allocaBlock</a>-&gt;getTerminator();
+<a name="l01477"></a>01477         <a class="code" href="parse_8yy.html">assert</a>(retInst);
+<a name="l01478"></a>01478         inst = <span class="keyword">new</span> <a class="code" href="classFunctionEmitContext.html#aea14cf7420790a7a995e44e9a2ee4ffb">llvm::AllocaInst</a>(llvmType, name ? name : <span class="stringliteral">&quot;&quot;</span>, retInst);
+<a name="l01479"></a>01479     }
+<a name="l01480"></a>01480     <span class="keywordflow">else</span>
+<a name="l01481"></a>01481         <span class="comment">// Unless the caller overrode the default and wants it in the</span>
+<a name="l01482"></a>01482         <span class="comment">// current basic block</span>
+<a name="l01483"></a>01483         inst = <span class="keyword">new</span> <a class="code" href="classFunctionEmitContext.html#aea14cf7420790a7a995e44e9a2ee4ffb">llvm::AllocaInst</a>(llvmType, name ? name : <span class="stringliteral">&quot;&quot;</span>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01484"></a>01484 
+<a name="l01485"></a>01485     <span class="keywordflow">if</span> (align != 0)
+<a name="l01486"></a>01486         inst-&gt;setAlignment(align);
+<a name="l01487"></a>01487     <span class="comment">// Don&#39;t add debugging info to alloca instructions</span>
+<a name="l01488"></a>01488     <span class="keywordflow">return</span> inst;
+<a name="l01489"></a>01489 }
+<a name="l01490"></a>01490 
+<a name="l01491"></a>01491 <span class="comment"></span>
+<a name="l01492"></a>01492 <span class="comment">/** Code to store the given varying value to the given location, only</span>
+<a name="l01493"></a>01493 <span class="comment">    storing the elements that correspond to active program instances as</span>
+<a name="l01494"></a>01494 <span class="comment">    given by the provided storeMask value.  Note that the lvalue is only a</span>
+<a name="l01495"></a>01495 <span class="comment">    single pointer, not a varying lvalue of one pointer per program</span>
+<a name="l01496"></a>01496 <span class="comment">    instance (that case is handled by scatters).</span>
+<a name="l01497"></a>01497 <span class="comment"> */</span>
+<a name="l01498"></a>01498 <span class="keywordtype">void</span>
+<a name="l01499"></a><a class="code" href="classFunctionEmitContext.html#a49e3027e4cfe9f8c91b76200ab4f952d">01499</a> <a class="code" href="classFunctionEmitContext.html#a49e3027e4cfe9f8c91b76200ab4f952d">FunctionEmitContext::maskedStore</a>(llvm::Value *rvalue, llvm::Value *lvalue,
+<a name="l01500"></a>01500                                  <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *rvalueType, 
+<a name="l01501"></a>01501                                  llvm::Value *storeMask) {
+<a name="l01502"></a>01502     <span class="keywordflow">if</span> (rvalue == <a class="code" href="parse_8yy.html">NULL</a> || lvalue == <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01503"></a>01503         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
+<a name="l01504"></a>01504         <span class="keywordflow">return</span>;
+<a name="l01505"></a>01505     }
+<a name="l01506"></a>01506 
+<a name="l01507"></a>01507     <a class="code" href="parse_8yy.html">assert</a>(llvm::isa&lt;const llvm::PointerType&gt;(lvalue-&gt;getType()));
+<a name="l01508"></a>01508     
+<a name="l01509"></a>01509     <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *structType = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *<span class="keyword">&gt;</span>(rvalueType);
+<a name="l01510"></a>01510     <span class="keywordflow">if</span> (structType != <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01511"></a>01511         <span class="comment">// Assigning a structure</span>
+<a name="l01512"></a>01512         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; structType-&gt;<a class="code" href="classStructType.html#a4e2af91b7501921235bdb4cc1f99be27">NumElements</a>(); ++i) {
+<a name="l01513"></a>01513             llvm::Value *eltValue = <a class="code" href="classFunctionEmitContext.html#a371302ab96cfb2a4f03c372259a4654b">ExtractInst</a>(rvalue, i, <span class="stringliteral">&quot;rvalue_member&quot;</span>);
+<a name="l01514"></a>01514             llvm::Value *eltLValue = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(lvalue, 0, i, 
+<a name="l01515"></a>01515                                                        <span class="stringliteral">&quot;struct_lvalue_ptr&quot;</span>);
+<a name="l01516"></a>01516             <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(eltValue, eltLValue, storeMask, 
+<a name="l01517"></a>01517                       structType-&gt;<a class="code" href="classStructType.html#a4d22f6e74898c63e61e961a2b77836d6">GetMemberType</a>(i));
+<a name="l01518"></a>01518         }
+<a name="l01519"></a>01519         <span class="keywordflow">return</span>;
+<a name="l01520"></a>01520     }
+<a name="l01521"></a>01521 
+<a name="l01522"></a>01522     <span class="keyword">const</span> <a class="code" href="classSequentialType.html" title="Abstract base class for tpyes that represent sequences.">SequentialType</a> *sequentialType = 
+<a name="l01523"></a>01523         <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classSequentialType.html" title="Abstract base class for tpyes that represent sequences.">SequentialType</a> *<span class="keyword">&gt;</span>(rvalueType);
+<a name="l01524"></a>01524     <span class="keywordflow">if</span> (sequentialType != <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01525"></a>01525         <span class="comment">// Assigning arrays and vectors. Handle each element individually</span>
+<a name="l01526"></a>01526         <span class="comment">// with what turns into a recursive call to makedStore()</span>
+<a name="l01527"></a>01527         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; sequentialType-&gt;<a class="code" href="classSequentialType.html#ad40ea0ff651bd92e7a555953085a5137">GetElementCount</a>(); ++i) {
+<a name="l01528"></a>01528             llvm::Value *eltLValue = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(lvalue, 0, i, <span class="stringliteral">&quot;lval_i_ptr&quot;</span>);
+<a name="l01529"></a>01529             llvm::Value *eltValue = <a class="code" href="classFunctionEmitContext.html#a371302ab96cfb2a4f03c372259a4654b">ExtractInst</a>(rvalue, i, <span class="stringliteral">&quot;array_i_val&quot;</span>);
+<a name="l01530"></a>01530             <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(eltValue, eltLValue, storeMask, 
+<a name="l01531"></a>01531                       sequentialType-&gt;<a class="code" href="classSequentialType.html#a923d9a8ec402a9880b6d149b8f372916">GetElementType</a>());
+<a name="l01532"></a>01532         }
+<a name="l01533"></a>01533         <span class="keywordflow">return</span>;
+<a name="l01534"></a>01534     }
+<a name="l01535"></a>01535 
+<a name="l01536"></a>01536     <span class="comment">// We must have a regular atomic type at this point</span>
+<a name="l01537"></a>01537     <a class="code" href="parse_8yy.html">assert</a>(dynamic_cast&lt;const AtomicType *&gt;(rvalueType) != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l01538"></a>01538     rvalueType = rvalueType-&gt;<a class="code" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">GetAsNonConstType</a>();
+<a name="l01539"></a>01539 
+<a name="l01540"></a>01540     llvm::Function *maskedStoreFunc = <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l01541"></a>01541     <span class="comment">// Figure out if we need a 32-bit or 64-bit masked store.  This</span>
+<a name="l01542"></a>01542     <span class="comment">// will need to be generalized when/if 8 and 16-bit data types are</span>
+<a name="l01543"></a>01543     <span class="comment">// added.</span>
+<a name="l01544"></a>01544     <span class="keywordflow">if</span> (rvalueType == <a class="code" href="classAtomicType.html#a650ea00314faf8f7ee4f19fb8d5fe37d">AtomicType::VaryingDouble</a> || 
+<a name="l01545"></a>01545         rvalueType == <a class="code" href="classAtomicType.html#a58a98c38cae3c592a6d79546fe07f6d1">AtomicType::VaryingInt64</a> ||
+<a name="l01546"></a>01546         rvalueType == <a class="code" href="classAtomicType.html#acab78bfdc4a1dfb1509bf747f04fd856">AtomicType::VaryingUInt64</a>) {
+<a name="l01547"></a>01547         maskedStoreFunc = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__pseudo_masked_store_64&quot;</span>);
+<a name="l01548"></a>01548         lvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(lvalue, <a class="code" href="structLLVMTypes.html#aef87fc24302fdfa9e72fff50fce988ae">LLVMTypes::Int64VectorPointerType</a>, 
+<a name="l01549"></a>01549                              <span class="stringliteral">&quot;lvalue_to_int64vecptr&quot;</span>);
+<a name="l01550"></a>01550         rvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(rvalue, <a class="code" href="structLLVMTypes.html#a799e5b2366087cac40bbc1565a82719c">LLVMTypes::Int64VectorType</a>, 
+<a name="l01551"></a>01551                              <span class="stringliteral">&quot;rvalue_to_int64&quot;</span>);
 <a name="l01552"></a>01552     }
-<a name="l01553"></a>01553 
-<a name="l01554"></a>01554     std::vector&lt;llvm::Value *&gt; args;
-<a name="l01555"></a>01555     args.push_back(lvalue);
-<a name="l01556"></a>01556     args.push_back(rvalue);
-<a name="l01557"></a>01557     args.push_back(storeMask);
-<a name="l01558"></a>01558     <a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(maskedStoreFunc, args);
-<a name="l01559"></a>01559 }
-<a name="l01560"></a>01560 
-<a name="l01561"></a>01561 
-<a name="l01562"></a>01562 <span class="comment"></span>
-<a name="l01563"></a>01563 <span class="comment">/** Scatter the given varying value to the locations given by the varying</span>
-<a name="l01564"></a>01564 <span class="comment">    lvalue (which should be an array of pointers with size equal to the</span>
-<a name="l01565"></a>01565 <span class="comment">    target&#39;s vector width.  We want to store each rvalue element at the</span>
-<a name="l01566"></a>01566 <span class="comment">    corresponding pointer&#39;s location, *if* the mask for the corresponding</span>
-<a name="l01567"></a>01567 <span class="comment">    program instance are on.  If they&#39;re off, don&#39;t do anything.  </span>
-<a name="l01568"></a>01568 <span class="comment">*/</span>
-<a name="l01569"></a>01569 <span class="keywordtype">void</span>
-<a name="l01570"></a><a class="code" href="classFunctionEmitContext.html#a73e8d7862627b47a8591309666555ed4">01570</a> <a class="code" href="classFunctionEmitContext.html#a73e8d7862627b47a8591309666555ed4">FunctionEmitContext::scatter</a>(llvm::Value *rvalue, llvm::Value *lvalue, 
-<a name="l01571"></a>01571                              llvm::Value *storeMask, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *rvalueType) {
-<a name="l01572"></a>01572     <a class="code" href="parse_8yy.html">assert</a>(rvalueType-&gt;<a class="code" href="classType.html#affa605ca75a62c1ac079cfefa170cb3e">IsVaryingType</a>());
-<a name="l01573"></a>01573     <a class="code" href="parse_8yy.html">assert</a>(llvm::isa&lt;const llvm::ArrayType&gt;(lvalue-&gt;getType()));
+<a name="l01553"></a>01553     <span class="keywordflow">else</span> {
+<a name="l01554"></a>01554         <a class="code" href="parse_8yy.html">assert</a>(rvalueType == <a class="code" href="classAtomicType.html#a0071de02d88675b521285f25f4008c83">AtomicType::VaryingFloat</a> ||
+<a name="l01555"></a>01555                rvalueType == <a class="code" href="classAtomicType.html#a4ea6e749bdc28ad68823ca2edc3bd37d">AtomicType::VaryingBool</a> ||
+<a name="l01556"></a>01556                rvalueType == <a class="code" href="classAtomicType.html#ae112e2d3aaefd2a4035ce998e4c71ff3">AtomicType::VaryingInt32</a> ||
+<a name="l01557"></a>01557                rvalueType == <a class="code" href="classAtomicType.html#a0f0ec8f289e2c824016d689987c6d774">AtomicType::VaryingUInt32</a>);
+<a name="l01558"></a>01558 
+<a name="l01559"></a>01559         maskedStoreFunc = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__pseudo_masked_store_32&quot;</span>);
+<a name="l01560"></a>01560         lvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(lvalue, <a class="code" href="structLLVMTypes.html#adbb32e4260df11c43b2c6ee662747546">LLVMTypes::Int32VectorPointerType</a>, 
+<a name="l01561"></a>01561                              <span class="stringliteral">&quot;lvalue_to_int32vecptr&quot;</span>);
+<a name="l01562"></a>01562         <span class="keywordflow">if</span> (rvalueType == <a class="code" href="classAtomicType.html#a0071de02d88675b521285f25f4008c83">AtomicType::VaryingFloat</a>)
+<a name="l01563"></a>01563             rvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(rvalue, <a class="code" href="structLLVMTypes.html#aaeb30f93d5a1e06b109439a72bc7e75d">LLVMTypes::Int32VectorType</a>, 
+<a name="l01564"></a>01564                                  <span class="stringliteral">&quot;rvalue_to_int32&quot;</span>);
+<a name="l01565"></a>01565     }
+<a name="l01566"></a>01566 
+<a name="l01567"></a>01567     std::vector&lt;llvm::Value *&gt; args;
+<a name="l01568"></a>01568     args.push_back(lvalue);
+<a name="l01569"></a>01569     args.push_back(rvalue);
+<a name="l01570"></a>01570     args.push_back(storeMask);
+<a name="l01571"></a>01571     <a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(maskedStoreFunc, args);
+<a name="l01572"></a>01572 }
+<a name="l01573"></a>01573 
 <a name="l01574"></a>01574 
-<a name="l01575"></a>01575     <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *structType = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *<span class="keyword">&gt;</span>(rvalueType);
-<a name="l01576"></a>01576     <span class="keywordflow">if</span> (structType) {
-<a name="l01577"></a>01577         <span class="comment">// Scatter the struct elements individually</span>
-<a name="l01578"></a>01578         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; structType-&gt;<a class="code" href="classStructType.html#a4e2af91b7501921235bdb4cc1f99be27">NumElements</a>(); ++i) {
-<a name="l01579"></a>01579             llvm::Value *lv = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(lvalue, 0, i);
-<a name="l01580"></a>01580             llvm::Value *rv = <a class="code" href="classFunctionEmitContext.html#a371302ab96cfb2a4f03c372259a4654b">ExtractInst</a>(rvalue, i);
-<a name="l01581"></a>01581             <a class="code" href="classFunctionEmitContext.html#a73e8d7862627b47a8591309666555ed4">scatter</a>(rv, lv, storeMask, structType-&gt;<a class="code" href="classStructType.html#a4d22f6e74898c63e61e961a2b77836d6">GetMemberType</a>(i));
-<a name="l01582"></a>01582         }
-<a name="l01583"></a>01583         <span class="keywordflow">return</span>;
-<a name="l01584"></a>01584     }
-<a name="l01585"></a>01585 
-<a name="l01586"></a>01586     <span class="keyword">const</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *vt = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *<span class="keyword">&gt;</span>(rvalueType);
-<a name="l01587"></a>01587     <span class="keywordflow">if</span> (vt) {
-<a name="l01588"></a>01588         <span class="comment">// FIXME: yuck.  Change lvalues to be pointers to arrays so that</span>
-<a name="l01589"></a>01589         <span class="comment">// the GEP stuff in the loop below ends up computing pointers based</span>
-<a name="l01590"></a>01590         <span class="comment">// on elements in the vectors rather than incorrectly advancing to</span>
-<a name="l01591"></a>01591         <span class="comment">// the next vector...</span>
-<a name="l01592"></a>01592         <span class="keyword">const</span> llvm::Type *eltType = vt-&gt;<a class="code" href="classVectorType.html#affde79090b837ad37e1ad1a2c857ab8a">GetBaseType</a>()-&gt;<a class="code" href="classType.html#ab0eff8692794d3437a91404c98985d20">GetAsUniformType</a>()-&gt;<a class="code" href="classType.html#ab324b2f6e207b63de653aeb530b90f46">LLVMType</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>);
-<a name="l01593"></a>01593         lvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(lvalue, llvm::PointerType::get(llvm::ArrayType::get(eltType, 0), 0));
-<a name="l01594"></a>01594 
-<a name="l01595"></a>01595         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; vt-&gt;<a class="code" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a>(); ++i) {
-<a name="l01596"></a>01596             llvm::Value *lv = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(lvalue, 0, i);
-<a name="l01597"></a>01597             llvm::Value *rv = <a class="code" href="classFunctionEmitContext.html#a371302ab96cfb2a4f03c372259a4654b">ExtractInst</a>(rvalue, i);
-<a name="l01598"></a>01598             <a class="code" href="classFunctionEmitContext.html#a73e8d7862627b47a8591309666555ed4">scatter</a>(rv, lv, storeMask, vt-&gt;<a class="code" href="classVectorType.html#a87558faf9b83f232f1b1bd8dda7cba9a">GetElementType</a>());
-<a name="l01599"></a>01599         }
-<a name="l01600"></a>01600         <span class="keywordflow">return</span>;
-<a name="l01601"></a>01601     }
-<a name="l01602"></a>01602 
-<a name="l01603"></a>01603     <span class="comment">// I think this should be impossible</span>
-<a name="l01604"></a>01604     assert(dynamic_cast&lt;const ArrayType *&gt;(rvalueType) == <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l01605"></a>01605 
-<a name="l01606"></a>01606     <span class="comment">// And everything should be atomic from here on out...</span>
-<a name="l01607"></a>01607     assert(dynamic_cast&lt;const AtomicType *&gt;(rvalueType) != <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l01608"></a>01608 
-<a name="l01609"></a>01609     llvm::Function *func = <a class="code" href="parse_8yy.html">NULL</a>;
-<a name="l01610"></a>01610     <span class="keyword">const</span> llvm::Type *type = rvalue-&gt;getType();
-<a name="l01611"></a>01611     <span class="keywordflow">if</span> (type == <a class="code" href="structLLVMTypes.html#acc5f145a0c405f27a80d48bd37adc154">LLVMTypes::DoubleVectorType</a> || 
-<a name="l01612"></a>01612         type == <a class="code" href="structLLVMTypes.html#a799e5b2366087cac40bbc1565a82719c">LLVMTypes::Int64VectorType</a>) {
-<a name="l01613"></a>01613         func = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__pseudo_scatter_64&quot;</span>);
-<a name="l01614"></a>01614         rvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(rvalue, <a class="code" href="structLLVMTypes.html#a799e5b2366087cac40bbc1565a82719c">LLVMTypes::Int64VectorType</a>, <span class="stringliteral">&quot;rvalue2int&quot;</span>);
-<a name="l01615"></a>01615     }
-<a name="l01616"></a>01616     <span class="keywordflow">else</span> {
-<a name="l01617"></a>01617         <span class="comment">// FIXME: if this hits, presumably it&#39;s due to needing int8 and/or</span>
-<a name="l01618"></a>01618         <span class="comment">// int16 versions of scatter...</span>
-<a name="l01619"></a>01619         assert(type == <a class="code" href="structLLVMTypes.html#ac2d1ca30e6b69a22af4e14855f6d611e">LLVMTypes::FloatVectorType</a> || 
-<a name="l01620"></a>01620                type == <a class="code" href="structLLVMTypes.html#aaeb30f93d5a1e06b109439a72bc7e75d">LLVMTypes::Int32VectorType</a>);
-<a name="l01621"></a>01621         func = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__pseudo_scatter_32&quot;</span>);
-<a name="l01622"></a>01622         rvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(rvalue, <a class="code" href="structLLVMTypes.html#aaeb30f93d5a1e06b109439a72bc7e75d">LLVMTypes::Int32VectorType</a>, <span class="stringliteral">&quot;rvalue2int&quot;</span>);
-<a name="l01623"></a>01623     }
-<a name="l01624"></a>01624     assert(func != <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l01625"></a>01625     
-<a name="l01626"></a>01626     <a class="code" href="classFunctionEmitContext.html#afd18e81376746987a23a7b93792e784a">AddInstrumentationPoint</a>(<span class="stringliteral">&quot;scatter&quot;</span>);
-<a name="l01627"></a>01627 
-<a name="l01628"></a>01628     llvm::Value *voidlvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(lvalue, <a class="code" href="structLLVMTypes.html#a8ecbc5457965a4e9759542272b099273">LLVMTypes::VoidPointerType</a>);
-<a name="l01629"></a>01629     std::vector&lt;llvm::Value *&gt; args;
-<a name="l01630"></a>01630     args.push_back(voidlvalue);
-<a name="l01631"></a>01631     args.push_back(rvalue);
-<a name="l01632"></a>01632     args.push_back(storeMask);
-<a name="l01633"></a>01633     llvm::Instruction *inst = <a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(func, args);
-<a name="l01634"></a>01634     <a class="code" href="classFunctionEmitContext.html#ac734fd6600297126709e557d58ea993b">addGSMetadata</a>(inst, <a class="code" href="classFunctionEmitContext.html#a9fdefd08729bad7b92bb5a863a8ab1d3">currentPos</a>);
-<a name="l01635"></a>01635 }
-<a name="l01636"></a>01636 
-<a name="l01637"></a>01637 
-<a name="l01638"></a>01638 <span class="keywordtype">void</span>
-<a name="l01639"></a><a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">01639</a> <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">FunctionEmitContext::StoreInst</a>(llvm::Value *rvalue, llvm::Value *lvalue,
-<a name="l01640"></a>01640                                <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
-<a name="l01641"></a>01641     <span class="keywordflow">if</span> (rvalue == <a class="code" href="parse_8yy.html">NULL</a> || lvalue == <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l01642"></a>01642         <span class="comment">// may happen due to error elsewhere</span>
-<a name="l01643"></a>01643         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
-<a name="l01644"></a>01644         <span class="keywordflow">return</span>;
-<a name="l01645"></a>01645     }
-<a name="l01646"></a>01646 
-<a name="l01647"></a>01647     llvm::Instruction *inst = <span class="keyword">new</span> <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">llvm::StoreInst</a>(rvalue, lvalue, name, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01648"></a>01648     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(inst);
-<a name="l01649"></a>01649 }
+<a name="l01575"></a>01575 <span class="comment"></span>
+<a name="l01576"></a>01576 <span class="comment">/** Scatter the given varying value to the locations given by the varying</span>
+<a name="l01577"></a>01577 <span class="comment">    lvalue (which should be an array of pointers with size equal to the</span>
+<a name="l01578"></a>01578 <span class="comment">    target&#39;s vector width.  We want to store each rvalue element at the</span>
+<a name="l01579"></a>01579 <span class="comment">    corresponding pointer&#39;s location, *if* the mask for the corresponding</span>
+<a name="l01580"></a>01580 <span class="comment">    program instance are on.  If they&#39;re off, don&#39;t do anything.  </span>
+<a name="l01581"></a>01581 <span class="comment">*/</span>
+<a name="l01582"></a>01582 <span class="keywordtype">void</span>
+<a name="l01583"></a><a class="code" href="classFunctionEmitContext.html#a73e8d7862627b47a8591309666555ed4">01583</a> <a class="code" href="classFunctionEmitContext.html#a73e8d7862627b47a8591309666555ed4">FunctionEmitContext::scatter</a>(llvm::Value *rvalue, llvm::Value *lvalue, 
+<a name="l01584"></a>01584                              llvm::Value *storeMask, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *rvalueType) {
+<a name="l01585"></a>01585     <a class="code" href="parse_8yy.html">assert</a>(rvalueType-&gt;<a class="code" href="classType.html#affa605ca75a62c1ac079cfefa170cb3e">IsVaryingType</a>());
+<a name="l01586"></a>01586     <a class="code" href="parse_8yy.html">assert</a>(llvm::isa&lt;const llvm::ArrayType&gt;(lvalue-&gt;getType()));
+<a name="l01587"></a>01587 
+<a name="l01588"></a>01588     <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *structType = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *<span class="keyword">&gt;</span>(rvalueType);
+<a name="l01589"></a>01589     <span class="keywordflow">if</span> (structType) {
+<a name="l01590"></a>01590         <span class="comment">// Scatter the struct elements individually</span>
+<a name="l01591"></a>01591         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; structType-&gt;<a class="code" href="classStructType.html#a4e2af91b7501921235bdb4cc1f99be27">NumElements</a>(); ++i) {
+<a name="l01592"></a>01592             llvm::Value *lv = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(lvalue, 0, i);
+<a name="l01593"></a>01593             llvm::Value *rv = <a class="code" href="classFunctionEmitContext.html#a371302ab96cfb2a4f03c372259a4654b">ExtractInst</a>(rvalue, i);
+<a name="l01594"></a>01594             <a class="code" href="classFunctionEmitContext.html#a73e8d7862627b47a8591309666555ed4">scatter</a>(rv, lv, storeMask, structType-&gt;<a class="code" href="classStructType.html#a4d22f6e74898c63e61e961a2b77836d6">GetMemberType</a>(i));
+<a name="l01595"></a>01595         }
+<a name="l01596"></a>01596         <span class="keywordflow">return</span>;
+<a name="l01597"></a>01597     }
+<a name="l01598"></a>01598 
+<a name="l01599"></a>01599     <span class="keyword">const</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *vt = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *<span class="keyword">&gt;</span>(rvalueType);
+<a name="l01600"></a>01600     <span class="keywordflow">if</span> (vt) {
+<a name="l01601"></a>01601         <span class="comment">// FIXME: yuck.  Change lvalues to be pointers to arrays so that</span>
+<a name="l01602"></a>01602         <span class="comment">// the GEP stuff in the loop below ends up computing pointers based</span>
+<a name="l01603"></a>01603         <span class="comment">// on elements in the vectors rather than incorrectly advancing to</span>
+<a name="l01604"></a>01604         <span class="comment">// the next vector...</span>
+<a name="l01605"></a>01605         <span class="keyword">const</span> llvm::Type *eltType = vt-&gt;<a class="code" href="classVectorType.html#affde79090b837ad37e1ad1a2c857ab8a">GetBaseType</a>()-&gt;<a class="code" href="classType.html#ab0eff8692794d3437a91404c98985d20">GetAsUniformType</a>()-&gt;<a class="code" href="classType.html#ab324b2f6e207b63de653aeb530b90f46">LLVMType</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>);
+<a name="l01606"></a>01606         lvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(lvalue, llvm::PointerType::get(llvm::ArrayType::get(eltType, 0), 0));
+<a name="l01607"></a>01607 
+<a name="l01608"></a>01608         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; vt-&gt;<a class="code" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a>(); ++i) {
+<a name="l01609"></a>01609             llvm::Value *lv = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(lvalue, 0, i);
+<a name="l01610"></a>01610             llvm::Value *rv = <a class="code" href="classFunctionEmitContext.html#a371302ab96cfb2a4f03c372259a4654b">ExtractInst</a>(rvalue, i);
+<a name="l01611"></a>01611             <a class="code" href="classFunctionEmitContext.html#a73e8d7862627b47a8591309666555ed4">scatter</a>(rv, lv, storeMask, vt-&gt;<a class="code" href="classVectorType.html#a87558faf9b83f232f1b1bd8dda7cba9a">GetElementType</a>());
+<a name="l01612"></a>01612         }
+<a name="l01613"></a>01613         <span class="keywordflow">return</span>;
+<a name="l01614"></a>01614     }
+<a name="l01615"></a>01615 
+<a name="l01616"></a>01616     <span class="comment">// I think this should be impossible</span>
+<a name="l01617"></a>01617     assert(dynamic_cast&lt;const ArrayType *&gt;(rvalueType) == <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l01618"></a>01618 
+<a name="l01619"></a>01619     <span class="comment">// And everything should be atomic from here on out...</span>
+<a name="l01620"></a>01620     assert(dynamic_cast&lt;const AtomicType *&gt;(rvalueType) != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l01621"></a>01621 
+<a name="l01622"></a>01622     llvm::Function *func = <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l01623"></a>01623     <span class="keyword">const</span> llvm::Type *type = rvalue-&gt;getType();
+<a name="l01624"></a>01624     <span class="keywordflow">if</span> (type == <a class="code" href="structLLVMTypes.html#acc5f145a0c405f27a80d48bd37adc154">LLVMTypes::DoubleVectorType</a> || 
+<a name="l01625"></a>01625         type == <a class="code" href="structLLVMTypes.html#a799e5b2366087cac40bbc1565a82719c">LLVMTypes::Int64VectorType</a>) {
+<a name="l01626"></a>01626         func = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__pseudo_scatter_64&quot;</span>);
+<a name="l01627"></a>01627         rvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(rvalue, <a class="code" href="structLLVMTypes.html#a799e5b2366087cac40bbc1565a82719c">LLVMTypes::Int64VectorType</a>, <span class="stringliteral">&quot;rvalue2int&quot;</span>);
+<a name="l01628"></a>01628     }
+<a name="l01629"></a>01629     <span class="keywordflow">else</span> {
+<a name="l01630"></a>01630         <span class="comment">// FIXME: if this hits, presumably it&#39;s due to needing int8 and/or</span>
+<a name="l01631"></a>01631         <span class="comment">// int16 versions of scatter...</span>
+<a name="l01632"></a>01632         assert(type == <a class="code" href="structLLVMTypes.html#ac2d1ca30e6b69a22af4e14855f6d611e">LLVMTypes::FloatVectorType</a> || 
+<a name="l01633"></a>01633                type == <a class="code" href="structLLVMTypes.html#aaeb30f93d5a1e06b109439a72bc7e75d">LLVMTypes::Int32VectorType</a>);
+<a name="l01634"></a>01634         func = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__pseudo_scatter_32&quot;</span>);
+<a name="l01635"></a>01635         rvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(rvalue, <a class="code" href="structLLVMTypes.html#aaeb30f93d5a1e06b109439a72bc7e75d">LLVMTypes::Int32VectorType</a>, <span class="stringliteral">&quot;rvalue2int&quot;</span>);
+<a name="l01636"></a>01636     }
+<a name="l01637"></a>01637     assert(func != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l01638"></a>01638     
+<a name="l01639"></a>01639     <a class="code" href="classFunctionEmitContext.html#afd18e81376746987a23a7b93792e784a">AddInstrumentationPoint</a>(<span class="stringliteral">&quot;scatter&quot;</span>);
+<a name="l01640"></a>01640 
+<a name="l01641"></a>01641     llvm::Value *voidlvalue = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(lvalue, <a class="code" href="structLLVMTypes.html#a8ecbc5457965a4e9759542272b099273">LLVMTypes::VoidPointerType</a>);
+<a name="l01642"></a>01642     std::vector&lt;llvm::Value *&gt; args;
+<a name="l01643"></a>01643     args.push_back(voidlvalue);
+<a name="l01644"></a>01644     args.push_back(rvalue);
+<a name="l01645"></a>01645     args.push_back(storeMask);
+<a name="l01646"></a>01646     llvm::Instruction *inst = <a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(func, args);
+<a name="l01647"></a>01647     <a class="code" href="classFunctionEmitContext.html#ac734fd6600297126709e557d58ea993b">addGSMetadata</a>(inst, <a class="code" href="classFunctionEmitContext.html#a9fdefd08729bad7b92bb5a863a8ab1d3">currentPos</a>);
+<a name="l01648"></a>01648 }
+<a name="l01649"></a>01649 
 <a name="l01650"></a>01650 
-<a name="l01651"></a>01651 
-<a name="l01652"></a>01652 <span class="keywordtype">void</span>
-<a name="l01653"></a><a class="code" href="classFunctionEmitContext.html#a9238ed4cbccb1dd86ac23bdf94e3d16b">01653</a> <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">FunctionEmitContext::StoreInst</a>(llvm::Value *rvalue, llvm::Value *lvalue,
-<a name="l01654"></a>01654                                llvm::Value *storeMask, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *rvalueType,
-<a name="l01655"></a>01655                                <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
-<a name="l01656"></a>01656     <span class="keywordflow">if</span> (rvalue == <a class="code" href="parse_8yy.html">NULL</a> || lvalue == <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l01657"></a>01657         <span class="comment">// may happen due to error elsewhere</span>
-<a name="l01658"></a>01658         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
-<a name="l01659"></a>01659         <span class="keywordflow">return</span>;
-<a name="l01660"></a>01660     }
-<a name="l01661"></a>01661 
-<a name="l01662"></a>01662     <span class="comment">// Figure out what kind of store we&#39;re doing here</span>
-<a name="l01663"></a>01663     <span class="keywordflow">if</span> (rvalueType-&gt;<a class="code" href="classType.html#a0a997c011addd186c7a45a9352fe0edb">IsUniformType</a>()) {
-<a name="l01664"></a>01664         <span class="comment">// The easy case; a regular store</span>
-<a name="l01665"></a>01665         llvm::Instruction *si = <span class="keyword">new</span> <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">llvm::StoreInst</a>(rvalue, lvalue, name, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01666"></a>01666         <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(si);
-<a name="l01667"></a>01667     }
-<a name="l01668"></a>01668     <span class="keywordflow">else</span> <span class="keywordflow">if</span> (llvm::isa&lt;const llvm::ArrayType&gt;(lvalue-&gt;getType()))
-<a name="l01669"></a>01669         <span class="comment">// We have a varying lvalue (an array of pointers), so it&#39;s time to</span>
-<a name="l01670"></a>01670         <span class="comment">// scatter</span>
-<a name="l01671"></a>01671         <a class="code" href="classFunctionEmitContext.html#a73e8d7862627b47a8591309666555ed4">scatter</a>(rvalue, lvalue, storeMask, rvalueType);
-<a name="l01672"></a>01672     <span class="keywordflow">else</span> <span class="keywordflow">if</span> (storeMask == <a class="code" href="llvmutil_8h.html#abfdfa735e1a5647158f77a226c9acc3a">LLVMMaskAllOn</a>) {
-<a name="l01673"></a>01673         <span class="comment">// Otherwise it is a masked store unless we can determine that the</span>
-<a name="l01674"></a>01674         <span class="comment">// mask is all on...</span>
-<a name="l01675"></a>01675         llvm::Instruction *si = 
-<a name="l01676"></a>01676             <span class="keyword">new</span> <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">llvm::StoreInst</a>(rvalue, lvalue, name, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01677"></a>01677         <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(si);
-<a name="l01678"></a>01678     }
-<a name="l01679"></a>01679     <span class="keywordflow">else</span>
-<a name="l01680"></a>01680         <a class="code" href="classFunctionEmitContext.html#a49e3027e4cfe9f8c91b76200ab4f952d">maskedStore</a>(rvalue, lvalue, rvalueType, storeMask);
-<a name="l01681"></a>01681 }
-<a name="l01682"></a>01682 
+<a name="l01651"></a>01651 <span class="keywordtype">void</span>
+<a name="l01652"></a><a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">01652</a> <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">FunctionEmitContext::StoreInst</a>(llvm::Value *rvalue, llvm::Value *lvalue,
+<a name="l01653"></a>01653                                <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
+<a name="l01654"></a>01654     <span class="keywordflow">if</span> (rvalue == <a class="code" href="parse_8yy.html">NULL</a> || lvalue == <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01655"></a>01655         <span class="comment">// may happen due to error elsewhere</span>
+<a name="l01656"></a>01656         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
+<a name="l01657"></a>01657         <span class="keywordflow">return</span>;
+<a name="l01658"></a>01658     }
+<a name="l01659"></a>01659 
+<a name="l01660"></a>01660     llvm::Instruction *inst;
+<a name="l01661"></a>01661     <span class="keywordflow">if</span> (llvm::isa&lt;llvm::VectorType&gt;(rvalue-&gt;getType()))
+<a name="l01662"></a>01662         <span class="comment">// Specify an unaligned store, since we don&#39;t know that the lvalue</span>
+<a name="l01663"></a>01663         <span class="comment">// will in fact be aligned to a vector width here.  (Actually</span>
+<a name="l01664"></a>01664         <span class="comment">// should be aligned to the alignment of the vector elment type...)</span>
+<a name="l01665"></a>01665         inst = <span class="keyword">new</span> <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">llvm::StoreInst</a>(rvalue, lvalue, <span class="keyword">false</span> <span class="comment">/* not volatile */</span>,
+<a name="l01666"></a>01666                                    1, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01667"></a>01667     <span class="keywordflow">else</span>
+<a name="l01668"></a>01668         inst = <span class="keyword">new</span> <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">llvm::StoreInst</a>(rvalue, lvalue, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01669"></a>01669 
+<a name="l01670"></a>01670     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(inst);
+<a name="l01671"></a>01671 }
+<a name="l01672"></a>01672 
+<a name="l01673"></a>01673 
+<a name="l01674"></a>01674 <span class="keywordtype">void</span>
+<a name="l01675"></a><a class="code" href="classFunctionEmitContext.html#a9238ed4cbccb1dd86ac23bdf94e3d16b">01675</a> <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">FunctionEmitContext::StoreInst</a>(llvm::Value *rvalue, llvm::Value *lvalue,
+<a name="l01676"></a>01676                                llvm::Value *storeMask, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *rvalueType,
+<a name="l01677"></a>01677                                <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
+<a name="l01678"></a>01678     <span class="keywordflow">if</span> (rvalue == <a class="code" href="parse_8yy.html">NULL</a> || lvalue == <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01679"></a>01679         <span class="comment">// may happen due to error elsewhere</span>
+<a name="l01680"></a>01680         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
+<a name="l01681"></a>01681         <span class="keywordflow">return</span>;
+<a name="l01682"></a>01682     }
 <a name="l01683"></a>01683 
-<a name="l01684"></a>01684 <span class="keywordtype">void</span>
-<a name="l01685"></a><a class="code" href="classFunctionEmitContext.html#a7bc697a10788fbc50dc03ba9cd9a384f">01685</a> <a class="code" href="classFunctionEmitContext.html#a7bc697a10788fbc50dc03ba9cd9a384f">FunctionEmitContext::BranchInst</a>(llvm::BasicBlock *dest) {
-<a name="l01686"></a>01686     llvm::Instruction *b = llvm::BranchInst::Create(dest, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01687"></a>01687     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(b);
-<a name="l01688"></a>01688 }
-<a name="l01689"></a>01689 
-<a name="l01690"></a>01690 
-<a name="l01691"></a>01691 <span class="keywordtype">void</span>
-<a name="l01692"></a><a class="code" href="classFunctionEmitContext.html#a7f31d2b0b8796e66b1bff095fa0c666e">01692</a> <a class="code" href="classFunctionEmitContext.html#a7bc697a10788fbc50dc03ba9cd9a384f">FunctionEmitContext::BranchInst</a>(llvm::BasicBlock *trueBlock, 
-<a name="l01693"></a>01693                                 llvm::BasicBlock *falseBlock,
-<a name="l01694"></a>01694                                 llvm::Value *test) {
-<a name="l01695"></a>01695     <span class="keywordflow">if</span> (test == <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l01696"></a>01696         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
-<a name="l01697"></a>01697         <span class="keywordflow">return</span>;
+<a name="l01684"></a>01684     <span class="comment">// Figure out what kind of store we&#39;re doing here</span>
+<a name="l01685"></a>01685     <span class="keywordflow">if</span> (rvalueType-&gt;<a class="code" href="classType.html#a0a997c011addd186c7a45a9352fe0edb">IsUniformType</a>()) {
+<a name="l01686"></a>01686         <span class="comment">// The easy case; a regular store, natural alignment is fine</span>
+<a name="l01687"></a>01687         llvm::Instruction *si = <span class="keyword">new</span> <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">llvm::StoreInst</a>(rvalue, lvalue, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01688"></a>01688         <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(si);
+<a name="l01689"></a>01689     }
+<a name="l01690"></a>01690     <span class="keywordflow">else</span> <span class="keywordflow">if</span> (llvm::isa&lt;const llvm::ArrayType&gt;(lvalue-&gt;getType()))
+<a name="l01691"></a>01691         <span class="comment">// We have a varying lvalue (an array of pointers), so it&#39;s time to</span>
+<a name="l01692"></a>01692         <span class="comment">// scatter</span>
+<a name="l01693"></a>01693         <a class="code" href="classFunctionEmitContext.html#a73e8d7862627b47a8591309666555ed4">scatter</a>(rvalue, lvalue, storeMask, rvalueType);
+<a name="l01694"></a>01694     <span class="keywordflow">else</span> <span class="keywordflow">if</span> (storeMask == <a class="code" href="llvmutil_8h.html#abfdfa735e1a5647158f77a226c9acc3a">LLVMMaskAllOn</a>) {
+<a name="l01695"></a>01695         <span class="comment">// Otherwise it is a masked store unless we can determine that the</span>
+<a name="l01696"></a>01696         <span class="comment">// mask is all on...</span>
+<a name="l01697"></a>01697         <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(rvalue, lvalue, name);
 <a name="l01698"></a>01698     }
-<a name="l01699"></a>01699 
-<a name="l01700"></a>01700     llvm::Instruction *b = 
-<a name="l01701"></a>01701         llvm::BranchInst::Create(trueBlock, falseBlock, test, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01702"></a>01702     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(b);
-<a name="l01703"></a>01703 }
-<a name="l01704"></a>01704 
-<a name="l01705"></a>01705 
-<a name="l01706"></a>01706 llvm::Value *
-<a name="l01707"></a><a class="code" href="classFunctionEmitContext.html#a371302ab96cfb2a4f03c372259a4654b">01707</a> <a class="code" href="classFunctionEmitContext.html#a371302ab96cfb2a4f03c372259a4654b">FunctionEmitContext::ExtractInst</a>(llvm::Value *v, <span class="keywordtype">int</span> elt, <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
-<a name="l01708"></a>01708     <span class="keywordflow">if</span> (v == <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l01709"></a>01709         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
-<a name="l01710"></a>01710         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
-<a name="l01711"></a>01711     }
-<a name="l01712"></a>01712 
-<a name="l01713"></a>01713     llvm::Instruction *ei = <a class="code" href="parse_8yy.html">NULL</a>;
-<a name="l01714"></a>01714     <span class="keywordflow">if</span> (llvm::isa&lt;const llvm::VectorType&gt;(v-&gt;getType()))
-<a name="l01715"></a>01715         ei = llvm::ExtractElementInst::Create(v, <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(elt), 
-<a name="l01716"></a>01716                                               name ? name : <span class="stringliteral">&quot;extract&quot;</span>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01717"></a>01717     <span class="keywordflow">else</span>
-<a name="l01718"></a>01718         ei = llvm::ExtractValueInst::Create(v, elt, name ? name : <span class="stringliteral">&quot;extract&quot;</span>,
-<a name="l01719"></a>01719                                             <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01720"></a>01720     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(ei);
-<a name="l01721"></a>01721     <span class="keywordflow">return</span> ei;
-<a name="l01722"></a>01722 }
-<a name="l01723"></a>01723 
+<a name="l01699"></a>01699     <span class="keywordflow">else</span>
+<a name="l01700"></a>01700         <a class="code" href="classFunctionEmitContext.html#a49e3027e4cfe9f8c91b76200ab4f952d">maskedStore</a>(rvalue, lvalue, rvalueType, storeMask);
+<a name="l01701"></a>01701 }
+<a name="l01702"></a>01702 
+<a name="l01703"></a>01703 
+<a name="l01704"></a>01704 <span class="keywordtype">void</span>
+<a name="l01705"></a><a class="code" href="classFunctionEmitContext.html#a7bc697a10788fbc50dc03ba9cd9a384f">01705</a> <a class="code" href="classFunctionEmitContext.html#a7bc697a10788fbc50dc03ba9cd9a384f">FunctionEmitContext::BranchInst</a>(llvm::BasicBlock *dest) {
+<a name="l01706"></a>01706     llvm::Instruction *b = llvm::BranchInst::Create(dest, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01707"></a>01707     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(b);
+<a name="l01708"></a>01708 }
+<a name="l01709"></a>01709 
+<a name="l01710"></a>01710 
+<a name="l01711"></a>01711 <span class="keywordtype">void</span>
+<a name="l01712"></a><a class="code" href="classFunctionEmitContext.html#a7f31d2b0b8796e66b1bff095fa0c666e">01712</a> <a class="code" href="classFunctionEmitContext.html#a7bc697a10788fbc50dc03ba9cd9a384f">FunctionEmitContext::BranchInst</a>(llvm::BasicBlock *trueBlock, 
+<a name="l01713"></a>01713                                 llvm::BasicBlock *falseBlock,
+<a name="l01714"></a>01714                                 llvm::Value *test) {
+<a name="l01715"></a>01715     <span class="keywordflow">if</span> (test == <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01716"></a>01716         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
+<a name="l01717"></a>01717         <span class="keywordflow">return</span>;
+<a name="l01718"></a>01718     }
+<a name="l01719"></a>01719 
+<a name="l01720"></a>01720     llvm::Instruction *b = 
+<a name="l01721"></a>01721         llvm::BranchInst::Create(trueBlock, falseBlock, test, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01722"></a>01722     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(b);
+<a name="l01723"></a>01723 }
 <a name="l01724"></a>01724 
-<a name="l01725"></a>01725 llvm::Value *
-<a name="l01726"></a><a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">01726</a> <a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">FunctionEmitContext::InsertInst</a>(llvm::Value *v, llvm::Value *eltVal, <span class="keywordtype">int</span> elt, 
-<a name="l01727"></a>01727                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
-<a name="l01728"></a>01728     <span class="keywordflow">if</span> (v == <a class="code" href="parse_8yy.html">NULL</a> || eltVal == <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01725"></a>01725 
+<a name="l01726"></a>01726 llvm::Value *
+<a name="l01727"></a><a class="code" href="classFunctionEmitContext.html#a371302ab96cfb2a4f03c372259a4654b">01727</a> <a class="code" href="classFunctionEmitContext.html#a371302ab96cfb2a4f03c372259a4654b">FunctionEmitContext::ExtractInst</a>(llvm::Value *v, <span class="keywordtype">int</span> elt, <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
+<a name="l01728"></a>01728     <span class="keywordflow">if</span> (v == <a class="code" href="parse_8yy.html">NULL</a>) {
 <a name="l01729"></a>01729         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
 <a name="l01730"></a>01730         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
 <a name="l01731"></a>01731     }
 <a name="l01732"></a>01732 
-<a name="l01733"></a>01733     llvm::Instruction *ii = <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l01733"></a>01733     llvm::Instruction *ei = <a class="code" href="parse_8yy.html">NULL</a>;
 <a name="l01734"></a>01734     <span class="keywordflow">if</span> (llvm::isa&lt;const llvm::VectorType&gt;(v-&gt;getType()))
-<a name="l01735"></a>01735         ii = llvm::InsertElementInst::Create(v, eltVal, <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(elt), 
-<a name="l01736"></a>01736                                              name ? name : <span class="stringliteral">&quot;insert&quot;</span>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01735"></a>01735         ei = llvm::ExtractElementInst::Create(v, <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(elt), 
+<a name="l01736"></a>01736                                               name ? name : <span class="stringliteral">&quot;extract&quot;</span>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
 <a name="l01737"></a>01737     <span class="keywordflow">else</span>
-<a name="l01738"></a>01738         ii = llvm::InsertValueInst::Create(v, eltVal, elt, 
-<a name="l01739"></a>01739                                            name ? name : <span class="stringliteral">&quot;insert&quot;</span>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01740"></a>01740     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(ii);
-<a name="l01741"></a>01741     <span class="keywordflow">return</span> ii;
+<a name="l01738"></a>01738         ei = llvm::ExtractValueInst::Create(v, elt, name ? name : <span class="stringliteral">&quot;extract&quot;</span>,
+<a name="l01739"></a>01739                                             <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01740"></a>01740     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(ei);
+<a name="l01741"></a>01741     <span class="keywordflow">return</span> ei;
 <a name="l01742"></a>01742 }
 <a name="l01743"></a>01743 
 <a name="l01744"></a>01744 
-<a name="l01745"></a>01745 llvm::PHINode *
-<a name="l01746"></a><a class="code" href="classFunctionEmitContext.html#a896b4369f9d1048cdb608205c7437ee6">01746</a> <a class="code" href="classFunctionEmitContext.html#a896b4369f9d1048cdb608205c7437ee6">FunctionEmitContext::PhiNode</a>(<span class="keyword">const</span> llvm::Type *type, <span class="keywordtype">int</span> count, 
-<a name="l01747"></a>01747                              <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
-<a name="l01748"></a>01748     llvm::PHINode *pn = llvm::PHINode::Create(type, 
-<a name="l01749"></a>01749 #<span class="keywordflow">if</span> !defined(LLVM_2_8) &amp;&amp; !defined(LLVM_2_9)
-<a name="l01750"></a>01750                                               count, 
-<a name="l01751"></a>01751 #endif <span class="comment">// !LLVM_2_8 &amp;&amp; !LLVM_2_9</span>
-<a name="l01752"></a>01752                                               name ? name : <span class="stringliteral">&quot;phi&quot;</span>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01753"></a>01753     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(pn);
-<a name="l01754"></a>01754     <span class="keywordflow">return</span> pn;
-<a name="l01755"></a>01755 }
-<a name="l01756"></a>01756 
-<a name="l01757"></a>01757 
-<a name="l01758"></a>01758 llvm::Instruction *
-<a name="l01759"></a><a class="code" href="classFunctionEmitContext.html#a6ee68401d7f16bc5f386cec0b3e217e9">01759</a> <a class="code" href="classFunctionEmitContext.html#a6ee68401d7f16bc5f386cec0b3e217e9">FunctionEmitContext::SelectInst</a>(llvm::Value *test, llvm::Value *val0,
-<a name="l01760"></a>01760                                 llvm::Value *val1, <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
-<a name="l01761"></a>01761     <span class="keywordflow">if</span> (test == <a class="code" href="parse_8yy.html">NULL</a> || val0 == <a class="code" href="parse_8yy.html">NULL</a> || val1 == <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l01762"></a>01762         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
-<a name="l01763"></a>01763         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
-<a name="l01764"></a>01764     }
-<a name="l01765"></a>01765 
-<a name="l01766"></a>01766     llvm::Instruction *inst = 
-<a name="l01767"></a>01767         llvm::SelectInst::Create(test, val0, val1, name ? name : <span class="stringliteral">&quot;select&quot;</span>, 
-<a name="l01768"></a>01768                                  <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01769"></a>01769     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(inst);
-<a name="l01770"></a>01770     <span class="keywordflow">return</span> inst;
-<a name="l01771"></a>01771 }
-<a name="l01772"></a>01772 
-<a name="l01773"></a>01773 
-<a name="l01774"></a>01774 llvm::Instruction *
-<a name="l01775"></a><a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">01775</a> <a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">FunctionEmitContext::CallInst</a>(llvm::Function *func, 
-<a name="l01776"></a>01776                               <span class="keyword">const</span> std::vector&lt;llvm::Value *&gt; &amp;args,
-<a name="l01777"></a>01777                               <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
-<a name="l01778"></a>01778     <span class="keywordflow">if</span> (func == <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l01779"></a>01779         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
-<a name="l01780"></a>01780         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
-<a name="l01781"></a>01781     }
-<a name="l01782"></a>01782 
-<a name="l01783"></a>01783     llvm::Instruction *ci = 
-<a name="l01784"></a>01784         llvm::CallInst::Create(func, args.begin(), args.end(), 
-<a name="l01785"></a>01785                                name ? name : <span class="stringliteral">&quot;&quot;</span>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01786"></a>01786     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(ci);
-<a name="l01787"></a>01787     <span class="keywordflow">return</span> ci;
-<a name="l01788"></a>01788 }
-<a name="l01789"></a>01789 
-<a name="l01790"></a>01790 
-<a name="l01791"></a>01791 llvm::Instruction *
-<a name="l01792"></a><a class="code" href="classFunctionEmitContext.html#ae6b80ced9e8b13629b562974c1df7a1f">01792</a> <a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">FunctionEmitContext::CallInst</a>(llvm::Function *func, llvm::Value *arg, 
-<a name="l01793"></a>01793                               <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
-<a name="l01794"></a>01794     <span class="keywordflow">if</span> (func == <a class="code" href="parse_8yy.html">NULL</a> || arg == <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l01795"></a>01795         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
-<a name="l01796"></a>01796         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
-<a name="l01797"></a>01797     }
-<a name="l01798"></a>01798 
-<a name="l01799"></a>01799     llvm::Value *args[] = { arg };
-<a name="l01800"></a>01800     llvm::Instruction *ci = 
-<a name="l01801"></a>01801         llvm::CallInst::Create(func, &amp;args[0], &amp;args[1], name ? name : <span class="stringliteral">&quot;&quot;</span>,
-<a name="l01802"></a>01802                                <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01803"></a>01803     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(ci);
-<a name="l01804"></a>01804     <span class="keywordflow">return</span> ci;
-<a name="l01805"></a>01805 }
-<a name="l01806"></a>01806 
-<a name="l01807"></a>01807 
-<a name="l01808"></a>01808 llvm::Instruction *
-<a name="l01809"></a><a class="code" href="classFunctionEmitContext.html#a78546c668268e3c1d851cb141b00eaef">01809</a> <a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">FunctionEmitContext::CallInst</a>(llvm::Function *func, llvm::Value *arg0,
-<a name="l01810"></a>01810                               llvm::Value *arg1, <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
-<a name="l01811"></a>01811     <span class="keywordflow">if</span> (func == <a class="code" href="parse_8yy.html">NULL</a> || arg0 == <a class="code" href="parse_8yy.html">NULL</a> || arg1 == <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l01812"></a>01812         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
-<a name="l01813"></a>01813         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
-<a name="l01814"></a>01814     }
-<a name="l01815"></a>01815 
-<a name="l01816"></a>01816     llvm::Value *args[] = { arg0, arg1 };
-<a name="l01817"></a>01817     llvm::Instruction *ci = 
-<a name="l01818"></a>01818         llvm::CallInst::Create(func, &amp;args[0], &amp;args[2], name ? name : <span class="stringliteral">&quot;&quot;</span>, 
-<a name="l01819"></a>01819                                <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01820"></a>01820     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(ci);
-<a name="l01821"></a>01821     <span class="keywordflow">return</span> ci;
-<a name="l01822"></a>01822 }
-<a name="l01823"></a>01823 
-<a name="l01824"></a>01824 
-<a name="l01825"></a>01825 llvm::Instruction *
-<a name="l01826"></a><a class="code" href="classFunctionEmitContext.html#a3a8db168dd56251d3a82819c551d519a">01826</a> <a class="code" href="classFunctionEmitContext.html#a3a8db168dd56251d3a82819c551d519a">FunctionEmitContext::ReturnInst</a>() {
-<a name="l01827"></a>01827     <span class="keywordflow">if</span> (<a class="code" href="classFunctionEmitContext.html#a3f63b1d45380c0e3d4779b30b8a4e6bc">launchedTasks</a>) {
-<a name="l01828"></a>01828         <span class="comment">// Automatically add a sync call at the end of any function that</span>
-<a name="l01829"></a>01829         <span class="comment">// launched tasks</span>
-<a name="l01830"></a>01830         <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> noPos;
-<a name="l01831"></a>01831         noPos.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a> = <span class="stringliteral">&quot;__auto_sync&quot;</span>;
-<a name="l01832"></a>01832         <a class="code" href="classExprStmt.html" title="Statement representing a single expression.">ExprStmt</a> *es = <span class="keyword">new</span> <a class="code" href="classExprStmt.html" title="Statement representing a single expression.">ExprStmt</a>(<span class="keyword">new</span> <a class="code" href="classSyncExpr.html" title="A sync statement in the program (waits for all launched tasks before proceeding).">SyncExpr</a>(noPos), noPos);
-<a name="l01833"></a>01833         es-&gt;<a class="code" href="classExprStmt.html#a1b1ada3b809684da58eaf5d1c6a8f6d1">EmitCode</a>(<span class="keyword">this</span>); 
-<a name="l01834"></a>01834         <span class="keyword">delete</span> es;
-<a name="l01835"></a>01835     }
-<a name="l01836"></a>01836 
-<a name="l01837"></a>01837     llvm::Instruction *rinst = <a class="code" href="parse_8yy.html">NULL</a>;
-<a name="l01838"></a>01838     <span class="keywordflow">if</span> (<a class="code" href="classFunctionEmitContext.html#a70d3b0bcdece0038c841143f2e9c2470">returnValuePtr</a> != <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l01839"></a>01839         <span class="comment">// We have value(s) to return; load them from their storage</span>
-<a name="l01840"></a>01840         <span class="comment">// location</span>
-<a name="l01841"></a>01841         llvm::Value *retVal = <a class="code" href="classFunctionEmitContext.html#a5912b4abd4eae25a074cd8c2c86f505d">LoadInst</a>(<a class="code" href="classFunctionEmitContext.html#a70d3b0bcdece0038c841143f2e9c2470">returnValuePtr</a>, <a class="code" href="classFunctionEmitContext.html#a34e0ff7deddeb163fd9bd5b872d415e5">returnType</a>,
-<a name="l01842"></a>01842                                        <span class="stringliteral">&quot;return_value&quot;</span>);
-<a name="l01843"></a>01843         rinst = llvm::ReturnInst::Create(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, retVal, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01844"></a>01844     }
-<a name="l01845"></a>01845     <span class="keywordflow">else</span> {
-<a name="l01846"></a>01846         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="classFunctionEmitContext.html#a34e0ff7deddeb163fd9bd5b872d415e5">returnType</a> == <a class="code" href="classAtomicType.html#a28a79cd7526ec38bf8ae805bfbb179f3">AtomicType::Void</a>);
-<a name="l01847"></a>01847         rinst = llvm::ReturnInst::Create(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
-<a name="l01848"></a>01848     }
-<a name="l01849"></a>01849 
-<a name="l01850"></a>01850     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(rinst);
-<a name="l01851"></a>01851     <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a> = <a class="code" href="parse_8yy.html">NULL</a>;
-<a name="l01852"></a>01852     <span class="keywordflow">return</span> rinst;
-<a name="l01853"></a>01853 }
-<a name="l01854"></a>01854 
-<a name="l01855"></a>01855 
-<a name="l01856"></a>01856 llvm::Instruction *
-<a name="l01857"></a><a class="code" href="classFunctionEmitContext.html#a7da1698b7dc0b6210d0f1fc7953d580e">01857</a> <a class="code" href="classFunctionEmitContext.html#a7da1698b7dc0b6210d0f1fc7953d580e">FunctionEmitContext::LaunchInst</a>(llvm::Function *callee, 
-<a name="l01858"></a>01858                                 std::vector&lt;llvm::Value *&gt; &amp;argVals) {
-<a name="l01859"></a>01859     <span class="keywordflow">if</span> (callee == <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l01860"></a>01860         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
-<a name="l01861"></a>01861         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
-<a name="l01862"></a>01862     }
-<a name="l01863"></a>01863 
-<a name="l01864"></a>01864     <a class="code" href="classFunctionEmitContext.html#a3f63b1d45380c0e3d4779b30b8a4e6bc">launchedTasks</a> = <span class="keyword">true</span>;
-<a name="l01865"></a>01865 
-<a name="l01866"></a>01866     <span class="keyword">const</span> llvm::Type *argType = callee-&gt;arg_begin()-&gt;getType();
-<a name="l01867"></a>01867     <a class="code" href="parse_8yy.html">assert</a>(llvm::PointerType::classof(argType));
-<a name="l01868"></a>01868     <span class="keyword">const</span> llvm::PointerType *pt = <span class="keyword">static_cast&lt;</span><span class="keyword">const </span>llvm::PointerType *<span class="keyword">&gt;</span>(argType);
-<a name="l01869"></a>01869     <a class="code" href="parse_8yy.html">assert</a>(llvm::StructType::classof(pt-&gt;getElementType()));
-<a name="l01870"></a>01870     <span class="keyword">const</span> llvm::StructType *argStructType = 
-<a name="l01871"></a>01871         <span class="keyword">static_cast&lt;</span><span class="keyword">const </span>llvm::StructType *<span class="keyword">&gt;</span>(pt-&gt;getElementType());
-<a name="l01872"></a>01872     <a class="code" href="parse_8yy.html">assert</a>(argStructType-&gt;getNumElements() == argVals.size() + 1);
-<a name="l01873"></a>01873 
-<a name="l01874"></a>01874     <span class="comment">// Use alloca for space for the task args.  KEY DETAIL: pass false</span>
-<a name="l01875"></a>01875     <span class="comment">// to the call of FunctionEmitContext::AllocaInst so that the alloca</span>
-<a name="l01876"></a>01876     <span class="comment">// doesn&#39;t happen just once at the top of the function, but happens</span>
-<a name="l01877"></a>01877     <span class="comment">// each time the enclosing basic block executes.</span>
-<a name="l01878"></a>01878     <span class="keywordtype">int</span> align = 4 * <a class="code" href="util_8h.html#ae817c37205ad2e4a19a9e02359cb1e5f">RoundUpPow2</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a4b83ff7fe30594a1d28759fdf2ac3cc1">nativeVectorWidth</a>);
-<a name="l01879"></a>01879     llvm::Value *argmem = <a class="code" href="classFunctionEmitContext.html#aea14cf7420790a7a995e44e9a2ee4ffb">AllocaInst</a>(argStructType, <span class="stringliteral">&quot;argmem&quot;</span>, align, <span class="keyword">false</span>);
-<a name="l01880"></a>01880     llvm::Value *voidmem = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(argmem, <a class="code" href="structLLVMTypes.html#a8ecbc5457965a4e9759542272b099273">LLVMTypes::VoidPointerType</a>);
-<a name="l01881"></a>01881 
-<a name="l01882"></a>01882     <span class="comment">// Copy the values of the parameters into the appropriate place in</span>
-<a name="l01883"></a>01883     <span class="comment">// the argument block</span>
-<a name="l01884"></a>01884     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; argVals.size(); ++i) {
-<a name="l01885"></a>01885         llvm::Value *ptr = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(argmem, 0, i, <span class="stringliteral">&quot;funarg&quot;</span>);
-<a name="l01886"></a>01886         <span class="comment">// don&#39;t need to do masked store here, I think</span>
-<a name="l01887"></a>01887         <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(argVals[i], ptr);
-<a name="l01888"></a>01888     }
-<a name="l01889"></a>01889 
-<a name="l01890"></a>01890     <span class="comment">// copy in the mask</span>
-<a name="l01891"></a>01891     llvm::Value *mask = <a class="code" href="classFunctionEmitContext.html#aa9861c694f2ac29e729b4d559016fdb5">GetMask</a>();
-<a name="l01892"></a>01892     llvm::Value *ptr = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(argmem, 0, argVals.size(),
-<a name="l01893"></a>01893                                          <span class="stringliteral">&quot;funarg_mask&quot;</span>);
-<a name="l01894"></a>01894     <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(mask, ptr);
-<a name="l01895"></a>01895 
-<a name="l01896"></a>01896     <span class="comment">// And emit the call to the user-supplied task launch function, passing</span>
-<a name="l01897"></a>01897     <span class="comment">// a pointer to the task function being called and a pointer to the</span>
-<a name="l01898"></a>01898     <span class="comment">// argument block we just filled in</span>
-<a name="l01899"></a>01899     llvm::Value *fptr = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(callee, <a class="code" href="structLLVMTypes.html#a8ecbc5457965a4e9759542272b099273">LLVMTypes::VoidPointerType</a>);
-<a name="l01900"></a>01900     llvm::Function *flaunch = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;ISPCLaunch&quot;</span>);
-<a name="l01901"></a>01901     <a class="code" href="parse_8yy.html">assert</a>(flaunch != <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l01902"></a>01902     <span class="keywordflow">return</span> <a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(flaunch, fptr, voidmem, <span class="stringliteral">&quot;&quot;</span>);
-<a name="l01903"></a>01903 }
+<a name="l01745"></a>01745 llvm::Value *
+<a name="l01746"></a><a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">01746</a> <a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">FunctionEmitContext::InsertInst</a>(llvm::Value *v, llvm::Value *eltVal, <span class="keywordtype">int</span> elt, 
+<a name="l01747"></a>01747                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
+<a name="l01748"></a>01748     <span class="keywordflow">if</span> (v == <a class="code" href="parse_8yy.html">NULL</a> || eltVal == <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01749"></a>01749         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
+<a name="l01750"></a>01750         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l01751"></a>01751     }
+<a name="l01752"></a>01752 
+<a name="l01753"></a>01753     llvm::Instruction *ii = <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l01754"></a>01754     <span class="keywordflow">if</span> (llvm::isa&lt;const llvm::VectorType&gt;(v-&gt;getType()))
+<a name="l01755"></a>01755         ii = llvm::InsertElementInst::Create(v, eltVal, <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(elt), 
+<a name="l01756"></a>01756                                              name ? name : <span class="stringliteral">&quot;insert&quot;</span>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01757"></a>01757     <span class="keywordflow">else</span>
+<a name="l01758"></a>01758         ii = llvm::InsertValueInst::Create(v, eltVal, elt, 
+<a name="l01759"></a>01759                                            name ? name : <span class="stringliteral">&quot;insert&quot;</span>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01760"></a>01760     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(ii);
+<a name="l01761"></a>01761     <span class="keywordflow">return</span> ii;
+<a name="l01762"></a>01762 }
+<a name="l01763"></a>01763 
+<a name="l01764"></a>01764 
+<a name="l01765"></a>01765 llvm::PHINode *
+<a name="l01766"></a><a class="code" href="classFunctionEmitContext.html#a896b4369f9d1048cdb608205c7437ee6">01766</a> <a class="code" href="classFunctionEmitContext.html#a896b4369f9d1048cdb608205c7437ee6">FunctionEmitContext::PhiNode</a>(<span class="keyword">const</span> llvm::Type *type, <span class="keywordtype">int</span> count, 
+<a name="l01767"></a>01767                              <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
+<a name="l01768"></a>01768     llvm::PHINode *pn = llvm::PHINode::Create(type, 
+<a name="l01769"></a>01769 #<span class="keywordflow">if</span> !defined(LLVM_2_8) &amp;&amp; !defined(LLVM_2_9)
+<a name="l01770"></a>01770                                               count, 
+<a name="l01771"></a>01771 #endif <span class="comment">// !LLVM_2_8 &amp;&amp; !LLVM_2_9</span>
+<a name="l01772"></a>01772                                               name ? name : <span class="stringliteral">&quot;phi&quot;</span>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01773"></a>01773     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(pn);
+<a name="l01774"></a>01774     <span class="keywordflow">return</span> pn;
+<a name="l01775"></a>01775 }
+<a name="l01776"></a>01776 
+<a name="l01777"></a>01777 
+<a name="l01778"></a>01778 llvm::Instruction *
+<a name="l01779"></a><a class="code" href="classFunctionEmitContext.html#a6ee68401d7f16bc5f386cec0b3e217e9">01779</a> <a class="code" href="classFunctionEmitContext.html#a6ee68401d7f16bc5f386cec0b3e217e9">FunctionEmitContext::SelectInst</a>(llvm::Value *test, llvm::Value *val0,
+<a name="l01780"></a>01780                                 llvm::Value *val1, <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
+<a name="l01781"></a>01781     <span class="keywordflow">if</span> (test == <a class="code" href="parse_8yy.html">NULL</a> || val0 == <a class="code" href="parse_8yy.html">NULL</a> || val1 == <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01782"></a>01782         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
+<a name="l01783"></a>01783         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l01784"></a>01784     }
+<a name="l01785"></a>01785 
+<a name="l01786"></a>01786     llvm::Instruction *inst = 
+<a name="l01787"></a>01787         llvm::SelectInst::Create(test, val0, val1, name ? name : <span class="stringliteral">&quot;select&quot;</span>, 
+<a name="l01788"></a>01788                                  <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01789"></a>01789     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(inst);
+<a name="l01790"></a>01790     <span class="keywordflow">return</span> inst;
+<a name="l01791"></a>01791 }
+<a name="l01792"></a>01792 
+<a name="l01793"></a>01793 
+<a name="l01794"></a>01794 llvm::Instruction *
+<a name="l01795"></a><a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">01795</a> <a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">FunctionEmitContext::CallInst</a>(llvm::Function *func, 
+<a name="l01796"></a>01796                               <span class="keyword">const</span> std::vector&lt;llvm::Value *&gt; &amp;args,
+<a name="l01797"></a>01797                               <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
+<a name="l01798"></a>01798     <span class="keywordflow">if</span> (func == <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01799"></a>01799         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
+<a name="l01800"></a>01800         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l01801"></a>01801     }
+<a name="l01802"></a>01802 
+<a name="l01803"></a>01803     llvm::Instruction *ci = 
+<a name="l01804"></a>01804         llvm::CallInst::Create(func, args.begin(), args.end(), 
+<a name="l01805"></a>01805                                name ? name : <span class="stringliteral">&quot;&quot;</span>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01806"></a>01806     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(ci);
+<a name="l01807"></a>01807     <span class="keywordflow">return</span> ci;
+<a name="l01808"></a>01808 }
+<a name="l01809"></a>01809 
+<a name="l01810"></a>01810 
+<a name="l01811"></a>01811 llvm::Instruction *
+<a name="l01812"></a><a class="code" href="classFunctionEmitContext.html#ae6b80ced9e8b13629b562974c1df7a1f">01812</a> <a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">FunctionEmitContext::CallInst</a>(llvm::Function *func, llvm::Value *arg, 
+<a name="l01813"></a>01813                               <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
+<a name="l01814"></a>01814     <span class="keywordflow">if</span> (func == <a class="code" href="parse_8yy.html">NULL</a> || arg == <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01815"></a>01815         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
+<a name="l01816"></a>01816         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l01817"></a>01817     }
+<a name="l01818"></a>01818 
+<a name="l01819"></a>01819     llvm::Value *args[] = { arg };
+<a name="l01820"></a>01820     llvm::Instruction *ci = 
+<a name="l01821"></a>01821         llvm::CallInst::Create(func, &amp;args[0], &amp;args[1], name ? name : <span class="stringliteral">&quot;&quot;</span>,
+<a name="l01822"></a>01822                                <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01823"></a>01823     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(ci);
+<a name="l01824"></a>01824     <span class="keywordflow">return</span> ci;
+<a name="l01825"></a>01825 }
+<a name="l01826"></a>01826 
+<a name="l01827"></a>01827 
+<a name="l01828"></a>01828 llvm::Instruction *
+<a name="l01829"></a><a class="code" href="classFunctionEmitContext.html#a78546c668268e3c1d851cb141b00eaef">01829</a> <a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">FunctionEmitContext::CallInst</a>(llvm::Function *func, llvm::Value *arg0,
+<a name="l01830"></a>01830                               llvm::Value *arg1, <span class="keyword">const</span> <span class="keywordtype">char</span> *name) {
+<a name="l01831"></a>01831     <span class="keywordflow">if</span> (func == <a class="code" href="parse_8yy.html">NULL</a> || arg0 == <a class="code" href="parse_8yy.html">NULL</a> || arg1 == <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01832"></a>01832         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
+<a name="l01833"></a>01833         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l01834"></a>01834     }
+<a name="l01835"></a>01835 
+<a name="l01836"></a>01836     llvm::Value *args[] = { arg0, arg1 };
+<a name="l01837"></a>01837     llvm::Instruction *ci = 
+<a name="l01838"></a>01838         llvm::CallInst::Create(func, &amp;args[0], &amp;args[2], name ? name : <span class="stringliteral">&quot;&quot;</span>, 
+<a name="l01839"></a>01839                                <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01840"></a>01840     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(ci);
+<a name="l01841"></a>01841     <span class="keywordflow">return</span> ci;
+<a name="l01842"></a>01842 }
+<a name="l01843"></a>01843 
+<a name="l01844"></a>01844 
+<a name="l01845"></a>01845 llvm::Instruction *
+<a name="l01846"></a><a class="code" href="classFunctionEmitContext.html#a3a8db168dd56251d3a82819c551d519a">01846</a> <a class="code" href="classFunctionEmitContext.html#a3a8db168dd56251d3a82819c551d519a">FunctionEmitContext::ReturnInst</a>() {
+<a name="l01847"></a>01847     <span class="keywordflow">if</span> (<a class="code" href="classFunctionEmitContext.html#a3f63b1d45380c0e3d4779b30b8a4e6bc">launchedTasks</a>) {
+<a name="l01848"></a>01848         <span class="comment">// Automatically add a sync call at the end of any function that</span>
+<a name="l01849"></a>01849         <span class="comment">// launched tasks</span>
+<a name="l01850"></a>01850         <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> noPos;
+<a name="l01851"></a>01851         noPos.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a> = <span class="stringliteral">&quot;__auto_sync&quot;</span>;
+<a name="l01852"></a>01852         <a class="code" href="classExprStmt.html" title="Statement representing a single expression.">ExprStmt</a> *es = <span class="keyword">new</span> <a class="code" href="classExprStmt.html" title="Statement representing a single expression.">ExprStmt</a>(<span class="keyword">new</span> <a class="code" href="classSyncExpr.html" title="A sync statement in the program (waits for all launched tasks before proceeding).">SyncExpr</a>(noPos), noPos);
+<a name="l01853"></a>01853         es-&gt;<a class="code" href="classExprStmt.html#a1b1ada3b809684da58eaf5d1c6a8f6d1">EmitCode</a>(<span class="keyword">this</span>); 
+<a name="l01854"></a>01854         <span class="keyword">delete</span> es;
+<a name="l01855"></a>01855     }
+<a name="l01856"></a>01856 
+<a name="l01857"></a>01857     llvm::Instruction *rinst = <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l01858"></a>01858     <span class="keywordflow">if</span> (<a class="code" href="classFunctionEmitContext.html#a70d3b0bcdece0038c841143f2e9c2470">returnValuePtr</a> != <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01859"></a>01859         <span class="comment">// We have value(s) to return; load them from their storage</span>
+<a name="l01860"></a>01860         <span class="comment">// location</span>
+<a name="l01861"></a>01861         llvm::Value *retVal = <a class="code" href="classFunctionEmitContext.html#a5912b4abd4eae25a074cd8c2c86f505d">LoadInst</a>(<a class="code" href="classFunctionEmitContext.html#a70d3b0bcdece0038c841143f2e9c2470">returnValuePtr</a>, <a class="code" href="classFunctionEmitContext.html#a34e0ff7deddeb163fd9bd5b872d415e5">returnType</a>,
+<a name="l01862"></a>01862                                        <span class="stringliteral">&quot;return_value&quot;</span>);
+<a name="l01863"></a>01863         rinst = llvm::ReturnInst::Create(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, retVal, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01864"></a>01864     }
+<a name="l01865"></a>01865     <span class="keywordflow">else</span> {
+<a name="l01866"></a>01866         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="classFunctionEmitContext.html#a34e0ff7deddeb163fd9bd5b872d415e5">returnType</a> == <a class="code" href="classAtomicType.html#a28a79cd7526ec38bf8ae805bfbb179f3">AtomicType::Void</a>);
+<a name="l01867"></a>01867         rinst = llvm::ReturnInst::Create(*<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>, <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>);
+<a name="l01868"></a>01868     }
+<a name="l01869"></a>01869 
+<a name="l01870"></a>01870     <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(rinst);
+<a name="l01871"></a>01871     <a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a> = <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l01872"></a>01872     <span class="keywordflow">return</span> rinst;
+<a name="l01873"></a>01873 }
+<a name="l01874"></a>01874 
+<a name="l01875"></a>01875 
+<a name="l01876"></a>01876 llvm::Instruction *
+<a name="l01877"></a><a class="code" href="classFunctionEmitContext.html#a7da1698b7dc0b6210d0f1fc7953d580e">01877</a> <a class="code" href="classFunctionEmitContext.html#a7da1698b7dc0b6210d0f1fc7953d580e">FunctionEmitContext::LaunchInst</a>(llvm::Function *callee, 
+<a name="l01878"></a>01878                                 std::vector&lt;llvm::Value *&gt; &amp;argVals) {
+<a name="l01879"></a>01879     <span class="keywordflow">if</span> (callee == <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01880"></a>01880         <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
+<a name="l01881"></a>01881         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l01882"></a>01882     }
+<a name="l01883"></a>01883 
+<a name="l01884"></a>01884     <a class="code" href="classFunctionEmitContext.html#a3f63b1d45380c0e3d4779b30b8a4e6bc">launchedTasks</a> = <span class="keyword">true</span>;
+<a name="l01885"></a>01885 
+<a name="l01886"></a>01886     <span class="keyword">const</span> llvm::Type *argType = callee-&gt;arg_begin()-&gt;getType();
+<a name="l01887"></a>01887     <a class="code" href="parse_8yy.html">assert</a>(llvm::PointerType::classof(argType));
+<a name="l01888"></a>01888     <span class="keyword">const</span> llvm::PointerType *pt = <span class="keyword">static_cast&lt;</span><span class="keyword">const </span>llvm::PointerType *<span class="keyword">&gt;</span>(argType);
+<a name="l01889"></a>01889     <a class="code" href="parse_8yy.html">assert</a>(llvm::StructType::classof(pt-&gt;getElementType()));
+<a name="l01890"></a>01890     <span class="keyword">const</span> llvm::StructType *argStructType = 
+<a name="l01891"></a>01891         <span class="keyword">static_cast&lt;</span><span class="keyword">const </span>llvm::StructType *<span class="keyword">&gt;</span>(pt-&gt;getElementType());
+<a name="l01892"></a>01892     <a class="code" href="parse_8yy.html">assert</a>(argStructType-&gt;getNumElements() == argVals.size() + 1);
+<a name="l01893"></a>01893 
+<a name="l01894"></a>01894     <span class="comment">// Use alloca for space for the task args.  KEY DETAIL: pass false</span>
+<a name="l01895"></a>01895     <span class="comment">// to the call of FunctionEmitContext::AllocaInst so that the alloca</span>
+<a name="l01896"></a>01896     <span class="comment">// doesn&#39;t happen just once at the top of the function, but happens</span>
+<a name="l01897"></a>01897     <span class="comment">// each time the enclosing basic block executes.</span>
+<a name="l01898"></a>01898     <span class="keywordtype">int</span> align = 4 * <a class="code" href="util_8h.html#ae817c37205ad2e4a19a9e02359cb1e5f">RoundUpPow2</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a4b83ff7fe30594a1d28759fdf2ac3cc1">nativeVectorWidth</a>);
+<a name="l01899"></a>01899     llvm::Value *argmem = <a class="code" href="classFunctionEmitContext.html#aea14cf7420790a7a995e44e9a2ee4ffb">AllocaInst</a>(argStructType, <span class="stringliteral">&quot;argmem&quot;</span>, align, <span class="keyword">false</span>);
+<a name="l01900"></a>01900     llvm::Value *voidmem = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(argmem, <a class="code" href="structLLVMTypes.html#a8ecbc5457965a4e9759542272b099273">LLVMTypes::VoidPointerType</a>);
+<a name="l01901"></a>01901 
+<a name="l01902"></a>01902     <span class="comment">// Copy the values of the parameters into the appropriate place in</span>
+<a name="l01903"></a>01903     <span class="comment">// the argument block</span>
+<a name="l01904"></a>01904     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; argVals.size(); ++i) {
+<a name="l01905"></a>01905         llvm::Value *ptr = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(argmem, 0, i, <span class="stringliteral">&quot;funarg&quot;</span>);
+<a name="l01906"></a>01906         <span class="comment">// don&#39;t need to do masked store here, I think</span>
+<a name="l01907"></a>01907         <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(argVals[i], ptr);
+<a name="l01908"></a>01908     }
+<a name="l01909"></a>01909 
+<a name="l01910"></a>01910     <span class="comment">// copy in the mask</span>
+<a name="l01911"></a>01911     llvm::Value *mask = <a class="code" href="classFunctionEmitContext.html#aa9861c694f2ac29e729b4d559016fdb5">GetMask</a>();
+<a name="l01912"></a>01912     llvm::Value *ptr = <a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(argmem, 0, argVals.size(),
+<a name="l01913"></a>01913                                          <span class="stringliteral">&quot;funarg_mask&quot;</span>);
+<a name="l01914"></a>01914     <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(mask, ptr);
+<a name="l01915"></a>01915 
+<a name="l01916"></a>01916     <span class="comment">// And emit the call to the user-supplied task launch function, passing</span>
+<a name="l01917"></a>01917     <span class="comment">// a pointer to the task function being called and a pointer to the</span>
+<a name="l01918"></a>01918     <span class="comment">// argument block we just filled in</span>
+<a name="l01919"></a>01919     llvm::Value *fptr = <a class="code" href="classFunctionEmitContext.html#a88f17c90432ce00e917bccb7625fe222">BitCastInst</a>(callee, <a class="code" href="structLLVMTypes.html#a8ecbc5457965a4e9759542272b099273">LLVMTypes::VoidPointerType</a>);
+<a name="l01920"></a>01920     llvm::Function *flaunch = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;ISPCLaunch&quot;</span>);
+<a name="l01921"></a>01921     <a class="code" href="parse_8yy.html">assert</a>(flaunch != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l01922"></a>01922     <span class="keywordflow">return</span> <a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(flaunch, fptr, voidmem, <span class="stringliteral">&quot;&quot;</span>);
+<a name="l01923"></a>01923 }
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 21 2011 09:04:24 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Jun 24 2011 05:24:25 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>
