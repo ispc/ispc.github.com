@@ -74,7 +74,6 @@
       </div>
       <div id="content">
 <h1 class="title">Intel® SPMD Program Compiler User's Guide</h1>
-
 <p><tt class="docutils literal">ispc</tt> is a compiler for writing SPMD (single program multiple data)
 programs to run on the CPU.  The SPMD programming approach is widely known
 to graphics and GPGPU programmers; it is used for GPU shaders and CUDA* and
@@ -1768,7 +1767,7 @@ float appFunc(float x, int activeLanes) {
 <h2>Data Layout</h2>
 <p>In general, <tt class="docutils literal">ispc</tt> tries to ensure that <tt class="docutils literal">struct</tt> s and other complex
 datatypes are laid out in the same way in memory as they are in C/C++.
-Matching alignment is important for easy interoperability between C/C++
+Matching structure layout is important for easy interoperability between C/C++
 code and <tt class="docutils literal">ispc</tt> code.</p>
 <p>The main complexity in sharing data between <tt class="docutils literal">ispc</tt> and C/C++ often comes
 from reconciling data structures between <tt class="docutils literal">ispc</tt> code and application
@@ -1811,10 +1810,6 @@ float *array = new float[count];
 <pre class="literal-block">
 export void foo(uniform float array[], uniform int count)
 </pre>
-<p>(Though the pointer must be aligned to the compilation target's natural
-vector width; see the discussion of alignment restrictions in <a class="reference internal" href="#data-alignment-and-aliasing">Data
-Alignment and Aliasing</a> and the aligned allocation routines in
-<tt class="docutils literal">examples/options/options.cpp</tt> for example.)</p>
 <p>Similarly, <tt class="docutils literal">struct</tt> s from the application can have embedded pointers.
 This is handled with similar <tt class="docutils literal">[]</tt> syntax:</p>
 <pre class="literal-block">
@@ -1843,45 +1838,18 @@ vector types from C/C++ application code if possible.</p>
 </div>
 <div class="section" id="data-alignment-and-aliasing">
 <h2>Data Alignment and Aliasing</h2>
-<p>There are two important constraints that must be adhered to when passing
-pointers from the application to <tt class="docutils literal">ispc</tt> programs.</p>
-<p>The first constraint is alignment: any pointers from the host program that
-are passed to <tt class="docutils literal">ispc</tt> must be aligned to natural vector alignment of
-system--for example, 16 byte alignment on a target that supports Intel®
-SSE, 32-byte on an Intel® AVX target.  If this constraint isn't met, the
-program may abort at runtime with an unaligned memory access error.</p>
-<p>For example, in a <tt class="docutils literal">ispc</tt> function with the following declaration:</p>
-<pre class="literal-block">
-export void foo(uniform float in[], uniform float out[],
-                int count);
-</pre>
-<p>If the application is passing stack-allocated arrays for <tt class="docutils literal">in</tt> and
-<tt class="docutils literal">out</tt>, these C/C++ compiler must be told to align these arrays.</p>
-<pre class="literal-block">
-// MSVC, SSE target
-__declspec(align(16)) float in[16], out[16];
-foo(in, out, 16);
-</pre>
-<p>With the gcc/clang compilers, the syntax for providing alignment is
-slightly different:</p>
-<pre class="literal-block">
-float x[16] __attribute__ ((__align__(16)));
-foo(in, out, 16);
-</pre>
-<p>If the data being passed is dynamically allocated, the appropriate system
-aligned memory allocation routine should be used to allocate it (for
-example, <tt class="docutils literal">_aligned_malloc()</tt> with Windows*, <tt class="docutils literal">memalign()</tt> with
-Linux*; see the <tt class="docutils literal">AllocAligned()</tt> function in <tt class="docutils literal">examples/rt/rt.cpp</tt> for
-an example.)</p>
-<p>It is also required that it be valid to read memory at the first element of
-any array that is passed to <tt class="docutils literal">ispc</tt>.  In practice, this should just
-happen naturally, but it does mean that it is illegal to pass a <tt class="docutils literal">NULL</tt>
-pointer as a parameter to a <tt class="docutils literal">ispc</tt> function called from the application.</p>
-<p>The second key constraint is that pointers and references in <tt class="docutils literal">ispc</tt>
-programs must not alias.  The <tt class="docutils literal">ispc</tt> compiler assumes that different
-pointers can't end up pointing to the same memory location, either due to
-having the same initial value, or through array indexing in the program as
-it executed.</p>
+<p>There are are two important constraints that must be adhered to when
+passing pointers from the application to <tt class="docutils literal">ispc</tt> programs.</p>
+<p>The first is that it is required that it be valid to read memory at the
+first element of any array that is passed to <tt class="docutils literal">ispc</tt>.  In practice, this
+should just happen naturally, but it does mean that it is illegal to pass a
+<tt class="docutils literal">NULL</tt> pointer as a parameter to a <tt class="docutils literal">ispc</tt> function called from the
+application.</p>
+<p>The second constraint is that pointers and references in <tt class="docutils literal">ispc</tt> programs
+must not alias.  The <tt class="docutils literal">ispc</tt> compiler assumes that different pointers
+can't end up pointing to the same memory location, either due to having the
+same initial value, or through array indexing in the program as it
+executed.</p>
 <p>This aliasing constraint also applies to <tt class="docutils literal">reference</tt> parameters to
 functions.  Given a function like:</p>
 <pre class="literal-block">
@@ -1894,8 +1862,8 @@ void func(reference int a, reference int b) {
 another case of aliasing, and if the caller calls the function as <tt class="docutils literal">func(x,
 x)</tt>, it's not guaranteed that the <tt class="docutils literal">if</tt> test will evaluate to true, due
 to the compiler's requirement of no aliasing.</p>
-<p>(In the future, <tt class="docutils literal">ispc</tt> will have the ability to work with unaligned
-memory as well as have a mechanism to indicate that pointers may alias.)</p>
+<p>(In the future, <tt class="docutils literal">ispc</tt> will have a mechanism to indicate that pointers
+may alias.)</p>
 </div>
 </div>
 <div class="section" id="using-ispc-effectively">
