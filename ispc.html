@@ -142,7 +142,8 @@ compilation approaches (e.g. loop auto-vectorization.)</p>
 <li><a class="reference internal" href="#the-ispc-standard-library">The ISPC Standard Library</a><ul>
 <li><a class="reference internal" href="#math-functions">Math Functions</a></li>
 <li><a class="reference internal" href="#output-functions">Output Functions</a></li>
-<li><a class="reference internal" href="#cross-lane-operations">Cross-Lane Operations</a></li>
+<li><a class="reference internal" href="#cross-program-instance-operations">Cross-Program Instance Operations</a></li>
+<li><a class="reference internal" href="#packed-load-and-store-operations">Packed Load and Store Operations</a></li>
 <li><a class="reference internal" href="#low-level-bits">Low-Level Bits</a></li>
 </ul>
 </li>
@@ -363,7 +364,7 @@ passed along to the C pre-prcessor, which runs over the program input
 before it's compiled.  On Windows®, pre-processor definitions should be
 provided to the <tt class="docutils literal">cl</tt> call.</p>
 <p>By default, the compiler generates x86-64 Intel® SSE4 code.  To generate
-32-bit code, you can use the the <tt class="docutils literal"><span class="pre">--arch=x86</span></tt> command-line flag.  To
+32-bit code, you can use the <tt class="docutils literal"><span class="pre">--arch=x86</span></tt> command-line flag.  To
 select Intel® SSE2, use <tt class="docutils literal"><span class="pre">--target=sse2</span></tt>.</p>
 <p><tt class="docutils literal">ispc</tt> supports an alternative method for generating Intel® SSE4 code,
 where the program is &quot;doubled up&quot; and eight instances of it run in
@@ -1173,7 +1174,7 @@ section.)</p>
 <p>For <tt class="docutils literal">if</tt> statements where the different running SPMD program instances
 don't have coherent values for the boolean <tt class="docutils literal">if</tt> test, using <tt class="docutils literal">cif</tt>
 introduces some additional overhead from the <tt class="docutils literal">all</tt> and <tt class="docutils literal">any</tt> tests as
-well as the corresponding branches.  For cases where the the program
+well as the corresponding branches.  For cases where the program
 instances often do compute the same boolean value, this overhead is
 worthwhile.  If the control flow is in fact usually incoherent, this
 overhead only costs performance.</p>
@@ -1518,13 +1519,13 @@ first two program instances entered the <tt class="docutils literal">if</tt> blo
 values for the inactive program instances aren't printed.  (In other cases,
 they may have garbage values or be otherwise undefined.)</p>
 </div>
-<div class="section" id="cross-lane-operations">
-<h2>Cross-Lane Operations</h2>
-<p>Usually, <tt class="docutils literal">ispc</tt> code expresses independent computation on separate data
-elements.  There are, however, a number of cases where it's useful for the
-program instances to be able to cooperate in computing results.  The
-cross-lane operations described in this section provide primitives for
-communication between the running program instances.</p>
+<div class="section" id="cross-program-instance-operations">
+<h2>Cross-Program Instance Operations</h2>
+<p>Usually, <tt class="docutils literal">ispc</tt> code expresses independent programs performing
+computation on separate data elements.  There are, however, a number of
+cases where it's useful for the program instances to be able to cooperate
+in computing results.  The cross-lane operations described in this section
+provide primitives for communication between the running program instances.</p>
 <p>A few routines that evaluate conditions across the running program
 instances.  For example, <tt class="docutils literal">any()</tt> returns <tt class="docutils literal">true</tt> if the given value
 <tt class="docutils literal">v</tt> is <tt class="docutils literal">true</tt> for any of the SPMD program instances currently running,
@@ -1532,6 +1533,40 @@ and <tt class="docutils literal">all()</tt> returns <tt class="docutils literal"
 <pre class="literal-block">
 uniform bool any(bool v)
 uniform bool all(bool v)
+</pre>
+<p>To broadcast a value from one program instance to all of the others, a
+<tt class="docutils literal">broadcast()</tt> function is available.  It broadcasts the value of the
+<tt class="docutils literal">value</tt> parameter for the program instance given by <tt class="docutils literal">index</tt> to all of
+the running program instances.</p>
+<pre class="literal-block">
+float broadcast(float value, uniform int index)
+int32 broadcast(int32 value, uniform int index)
+double broadcast(double value, uniform int index)
+int64 broadcast(int64 value, uniform int index)
+</pre>
+<p>The <tt class="docutils literal">rotate()</tt> function allows each program instance to find the value of
+the given value that their neighbor <tt class="docutils literal">offset</tt> steps away has.  For
+example, on an 8-wide target, if <tt class="docutils literal">offset</tt> has the value (1, 2, 3, 4, 5,
+6, 7, 8) in each of the running program instances, then <tt class="docutils literal">rotate(value,
+<span class="pre">-1)</span></tt> causes the first program instance to get the value 8, the second
+program instance to get the value 1, the third 2, and so forth.  The
+provided offset value can be positive or negative, and may be greater than
+<tt class="docutils literal">programCount</tt> (it is masked to ensure valid offsets).</p>
+<pre class="literal-block">
+float rotate(float value, uniform int offset)
+int32 rotate(int32 value, uniform int offset)
+double rotate(double value, uniform int offset)
+int64 rotate(int64 value, uniform int offset)
+</pre>
+<p>Finally, <tt class="docutils literal">shuffle()</tt> allows fully general shuffling of values among the
+program instances.  Each program instance's value of permutation gives the
+program instance from which to get the value of <tt class="docutils literal">value</tt>.  The provided
+values for <tt class="docutils literal">permutation</tt> must all be between 0 and <tt class="docutils literal"><span class="pre">programCount-1</span></tt>.</p>
+<pre class="literal-block">
+float shuffle(float value, int permutation)
+int32 shuffle(int32 value, int permutation)
+double shuffle(double value, int permutation)
+int64 shuffle(int64 value, int permutation)
 </pre>
 <p>The various variants of <tt class="docutils literal">popcnt()</tt> return the population count--the
 number of bits set in the given value.</p>
@@ -1565,8 +1600,11 @@ uniform float reduce_max(float a, float b)
 uniform int reduce_max(int a, int b)
 uniform unsigned int reduce_max(unsigned int a, unsigned int b)
 </pre>
-<p>Finally, there are routines for writing out and reading in values from
-linear memory locations for the active program instances.
+</div>
+<div class="section" id="packed-load-and-store-operations">
+<h2>Packed Load and Store Operations</h2>
+<p>The standard library also offers routines for writing out and reading in
+values from linear memory locations for the active program instances.
 <tt class="docutils literal">packed_load_active()</tt> loads consecutive values from the given array,
 starting at <tt class="docutils literal">a[offset]</tt>, loading one value for each currently-executing
 program instance and storing it into that program instance's <tt class="docutils literal">val</tt>
@@ -1632,14 +1670,15 @@ unsigned int load_from_int16(uniform int a[],
 void store_to_int16(uniform int a[], uniform int offset,
                     unsigned int val)
 </pre>
-<p>There are two things to note in these functions.  First, note that these
+<p>There are three things to note in these functions.  First, note that these
 functions take <tt class="docutils literal">unsigned int</tt> arrays as parameters; you need
 to cast <cite>the ``int8_t`</cite> and <tt class="docutils literal">int16_t</tt> pointers from the C/C++ side to
 <tt class="docutils literal">unsigned int</tt> when passing them to <tt class="docutils literal">ispc</tt> code.  Second, although the
 arrays are passed as <tt class="docutils literal">unsigned int</tt>, in the array indexing calculation,
 with the <tt class="docutils literal">offset</tt> parameter, they are treated as if they were <tt class="docutils literal">int8</tt> or
 <tt class="docutils literal">int16</tt> types.  (i.e. the offset treated as being in terms of number of 8
-or 16-bit elements.)</p>
+or 16-bit elements.) Third, note that programIndex is implicitly added
+to offset.</p>
 <p>The <tt class="docutils literal">intbits()</tt> and <tt class="docutils literal">floatbits()</tt> functions can be used to implement
 low-level floating-point bit twiddling.  For example, <tt class="docutils literal">intbits()</tt> returns
 an <tt class="docutils literal">unsigned int</tt> that is a bit-for-bit copy of the given <tt class="docutils literal">float</tt>
@@ -2024,19 +2063,11 @@ export void length(Vector4 v[N_VEC], uniform float len[]) {
 </div>
 <div class="section" id="communicating-between-spmd-program-instances">
 <h2>Communicating Between SPMD Program Instances</h2>
-<p>The <tt class="docutils literal">programIndex</tt> built-in variable (see <a class="reference internal" href="#mapping-data-to-program-instances">Mapping Data To Program
-Instances</a>) can be used to communicate between the set of executing
-program instances.  Consider the following code, which shows all of the
-program instances writing into unique locations in an array.</p>
-<pre class="literal-block">
-float x = ...;
-uniform float allX[programCount];
-allX[programIndex] = x;
-</pre>
-<p>In this code, a program instance that reads <tt class="docutils literal">allX[0]</tt> finds the value of
-<tt class="docutils literal">x</tt> that was computed by the first of the running program instances, and
-so forth.  Program instances can communicate with their neighbor instances
-with indexing like <tt class="docutils literal"><span class="pre">allX[(programIndex+1)%programCount]</span></tt>.</p>
+<p>The <tt class="docutils literal">broadcast()</tt>, <tt class="docutils literal">rotate()</tt>, and <tt class="docutils literal">shuffle()</tt> standard library
+routines provide a variety of mechanisms for the running program instances
+to communicate values to each other during execution.  See the section
+<a class="reference internal" href="#cross-program-instance-operations">Cross-Program Instance Operations</a> for more information about their
+operation.</p>
 </div>
 <div class="section" id="gather-and-scatter">
 <h2>Gather and Scatter</h2>

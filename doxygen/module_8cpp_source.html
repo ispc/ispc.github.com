@@ -279,8 +279,8 @@
 <a name="l00248"></a>00248 
 <a name="l00249"></a>00249     <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *st = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *<span class="keyword">&gt;</span>(t);
 <a name="l00250"></a>00250     <span class="keywordflow">if</span> (st) {
-<a name="l00251"></a>00251         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; st-&gt;<a class="code" href="classStructType.html#a4e2af91b7501921235bdb4cc1f99be27">NumElements</a>(); ++i)
-<a name="l00252"></a>00252             <span class="keywordflow">if</span> (<a class="code" href="module_8cpp.html#a43472c1315bc80d4cd53c0a95bdb5f2f">lRecursiveCheckVarying</a>(st-&gt;<a class="code" href="classStructType.html#a4d22f6e74898c63e61e961a2b77836d6">GetMemberType</a>(i)))
+<a name="l00251"></a>00251         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; st-&gt;<a class="code" href="classStructType.html#a8f6a31348c6bb5043c8fead1342a0f04">GetElementCount</a>(); ++i)
+<a name="l00252"></a>00252             <span class="keywordflow">if</span> (<a class="code" href="module_8cpp.html#a43472c1315bc80d4cd53c0a95bdb5f2f">lRecursiveCheckVarying</a>(st-&gt;<a class="code" href="classStructType.html#a5b92de62ebc48fb25f4a5f5a083bdb75">GetElementType</a>(i)))
 <a name="l00253"></a>00253                 <span class="keywordflow">return</span> <span class="keyword">true</span>;
 <a name="l00254"></a>00254     }
 <a name="l00255"></a>00255     <span class="keywordflow">return</span> <span class="keyword">false</span>;
@@ -1072,8 +1072,8 @@
 <a name="l01041"></a>01041 <span class="keyword">static</span> <span class="keywordtype">void</span>
 <a name="l01042"></a><a class="code" href="module_8cpp.html#acbb5312e560d6e0197556f9aebdd6e1c">01042</a> <a class="code" href="module_8cpp.html#acbb5312e560d6e0197556f9aebdd6e1c">lRecursiveAddStructs</a>(<span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *structType,
 <a name="l01043"></a>01043                      std::vector&lt;const StructType *&gt; &amp;structParamTypes) {
-<a name="l01044"></a>01044     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; structType-&gt;<a class="code" href="classStructType.html#a4e2af91b7501921235bdb4cc1f99be27">NumElements</a>(); ++i) {
-<a name="l01045"></a>01045         <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *elementBaseType = structType-&gt;<a class="code" href="classStructType.html#a4d22f6e74898c63e61e961a2b77836d6">GetMemberType</a>(i)-&gt;<a class="code" href="classType.html#a51af28faf17eb05982547d9b340429eb">GetBaseType</a>();
+<a name="l01044"></a>01044     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; structType-&gt;<a class="code" href="classStructType.html#a8f6a31348c6bb5043c8fead1342a0f04">GetElementCount</a>(); ++i) {
+<a name="l01045"></a>01045         <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *elementBaseType = structType-&gt;<a class="code" href="classStructType.html#a5b92de62ebc48fb25f4a5f5a083bdb75">GetElementType</a>(i)-&gt;<a class="code" href="classType.html#a51af28faf17eb05982547d9b340429eb">GetBaseType</a>();
 <a name="l01046"></a>01046         <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *elementStructType = 
 <a name="l01047"></a>01047             <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *<span class="keyword">&gt;</span>(elementBaseType);
 <a name="l01048"></a>01048         <span class="keywordflow">if</span> (elementStructType != <a class="code" href="parse_8yy.html">NULL</a>) {
@@ -1143,9 +1143,9 @@
 <a name="l01112"></a>01112         <a class="code" href="structStructDAGNode.html">StructDAGNode</a> *node = <span class="keyword">new</span> <a class="code" href="structStructDAGNode.html">StructDAGNode</a>;
 <a name="l01113"></a>01113         structToNode[st] = node;
 <a name="l01114"></a>01114 
-<a name="l01115"></a>01115         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; st-&gt;<a class="code" href="classStructType.html#a4e2af91b7501921235bdb4cc1f99be27">NumElements</a>(); ++j) {
+<a name="l01115"></a>01115         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; st-&gt;<a class="code" href="classStructType.html#a8f6a31348c6bb5043c8fead1342a0f04">GetElementCount</a>(); ++j) {
 <a name="l01116"></a>01116             <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *elementStructType = 
-<a name="l01117"></a>01117                 <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *<span class="keyword">&gt;</span>(st-&gt;<a class="code" href="classStructType.html#a4d22f6e74898c63e61e961a2b77836d6">GetMemberType</a>(j));
+<a name="l01117"></a>01117                 <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *<span class="keyword">&gt;</span>(st-&gt;<a class="code" href="classStructType.html#a5b92de62ebc48fb25f4a5f5a083bdb75">GetElementType</a>(j));
 <a name="l01118"></a>01118             <span class="comment">// If this element is a struct type and we haven&#39;t already</span>
 <a name="l01119"></a>01119             <span class="comment">// processed it for the current struct type, then upate th</span>
 <a name="l01120"></a>01120             <span class="comment">// dependencies and record that this element type has other</span>
@@ -1175,8 +1175,8 @@
 <a name="l01144"></a>01144     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; sortedTypes.size(); ++i) {
 <a name="l01145"></a>01145         <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *st = sortedTypes[i];
 <a name="l01146"></a>01146         fprintf(file, <span class="stringliteral">&quot;struct %s {\n&quot;</span>, st-&gt;<a class="code" href="classStructType.html#a6edfc6a18f8acba8111bf2de63b8c870">GetStructName</a>().c_str());
-<a name="l01147"></a>01147         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; st-&gt;<a class="code" href="classStructType.html#a4e2af91b7501921235bdb4cc1f99be27">NumElements</a>(); ++j) {
-<a name="l01148"></a>01148             <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type = st-&gt;<a class="code" href="classStructType.html#a4d22f6e74898c63e61e961a2b77836d6">GetMemberType</a>(j)-&gt;<a class="code" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">GetAsNonConstType</a>();
+<a name="l01147"></a>01147         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; st-&gt;<a class="code" href="classStructType.html#a8f6a31348c6bb5043c8fead1342a0f04">GetElementCount</a>(); ++j) {
+<a name="l01148"></a>01148             <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type = st-&gt;<a class="code" href="classStructType.html#a5b92de62ebc48fb25f4a5f5a083bdb75">GetElementType</a>(j)-&gt;<a class="code" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">GetAsNonConstType</a>();
 <a name="l01149"></a>01149             std::string d = type-&gt;<a class="code" href="classType.html#a7e35141766bbc63333953263cd85d883">GetCDeclaration</a>(st-&gt;<a class="code" href="classStructType.html#aab5667325da5744dfecafc988737c812">GetElementName</a>(j));
 <a name="l01150"></a>01150             fprintf(file, <span class="stringliteral">&quot;    %s;\n&quot;</span>, d.c_str());
 <a name="l01151"></a>01151         }
@@ -1241,8 +1241,8 @@
 <a name="l01210"></a>01210                        std::vector&lt;const VectorType *&gt; *vectorParamTypes) {
 <a name="l01211"></a>01211     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; structParamTypes.size(); ++i) {
 <a name="l01212"></a>01212         <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *structType = structParamTypes[i];
-<a name="l01213"></a>01213         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; structType-&gt;<a class="code" href="classStructType.html#a4e2af91b7501921235bdb4cc1f99be27">NumElements</a>(); ++j) {
-<a name="l01214"></a>01214             <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *elementType = structType-&gt;<a class="code" href="classStructType.html#a4d22f6e74898c63e61e961a2b77836d6">GetMemberType</a>(j);
+<a name="l01213"></a>01213         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; structType-&gt;<a class="code" href="classStructType.html#a8f6a31348c6bb5043c8fead1342a0f04">GetElementCount</a>(); ++j) {
+<a name="l01214"></a>01214             <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *elementType = structType-&gt;<a class="code" href="classStructType.html#a5b92de62ebc48fb25f4a5f5a083bdb75">GetElementType</a>(j);
 <a name="l01215"></a>01215 
 <a name="l01216"></a>01216             <span class="keyword">const</span> <a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> *at = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> *<span class="keyword">&gt;</span>(elementType);
 <a name="l01217"></a>01217             <span class="keywordflow">if</span> (at)
@@ -1457,7 +1457,7 @@
 <a name="l01426"></a>01426 }
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jun 24 2011 05:24:25 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 1 2011 05:18:41 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

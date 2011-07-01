@@ -57,6 +57,8 @@ Defines</h2></td></tr>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lex_8ll.html#a5ed4fcacbfcd6e174677ce0fb2f58f8b">lEscapeChar</a> (char *str, char *pChar, <a class="el" href="structSourcePos.html">SourcePos</a> *pos)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lex_8ll.html#adabea079d8f966f556256f17535496c5">lStringConst</a> (YYSTYPE *yylval, <a class="el" href="structSourcePos.html">SourcePos</a> *pos)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lex_8ll.html#a108719de78483c317996c730270339ef">ipow2</a> (int exponent)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lex_8ll.html#ae98d8f82ffc0a116337a48cf7732f9f5">lParseHexFloat</a> (const char *ptr)</td></tr>
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lex_8ll.html#a0e9117de7e6a340559202f88a1dbd9c6">src</a> = 2</td></tr>
@@ -80,6 +82,26 @@ Variables</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Function Documentation</h2>
+<a class="anchor" id="a108719de78483c317996c730270339ef"></a><!-- doxytag: member="lex.ll::ipow2" ref="a108719de78483c317996c730270339ef" args="(int exponent)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static double ipow2 </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"> <em>exponent</em>&#160;)</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Compute the value 2^n, where the exponent is given as an integer. There are more efficient ways to do this, for example by just slamming the bits into the appropriate bits of the double, but let's just do the obvious thing. </p>
+
+<p>Definition at line <a class="el" href="lex_8ll_source.html#l07414">7414</a> of file <a class="el" href="lex_8ll_source.html">lex.ll</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a5ed4fcacbfcd6e174677ce0fb2f58f8b"></a><!-- doxytag: member="lex.ll::lEscapeChar" ref="a5ed4fcacbfcd6e174677ce0fb2f58f8b" args="(char *str, char *pChar, SourcePos *pos)" -->
 <div class="memitem">
 <div class="memproto">
@@ -112,7 +134,27 @@ Variables</h2></td></tr>
 <div class="memdoc">
 <p>Given a pointer to a position in a string, return the character that it represents, accounting for the escape characters supported in string constants. (i.e. given the literal string "\\", return the character '/'). The return value is the new position in the string and the decoded character is returned in *pChar. </p>
 
-<p>Definition at line <a class="el" href="lex_8ll_source.html#l07343">7343</a> of file <a class="el" href="lex_8ll_source.html">lex.ll</a>.</p>
+<p>Definition at line <a class="el" href="lex_8ll_source.html#l07348">7348</a> of file <a class="el" href="lex_8ll_source.html">lex.ll</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae98d8f82ffc0a116337a48cf7732f9f5"></a><!-- doxytag: member="lex.ll::lParseHexFloat" ref="ae98d8f82ffc0a116337a48cf7732f9f5" args="(const char *ptr)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static double lParseHexFloat </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"> <em>ptr</em>&#160;)</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Parse a hexadecimal-formatted floating-point number (C99 hex float constant-style). </p>
+
+<p>Definition at line <a class="el" href="lex_8ll_source.html#l07433">7433</a> of file <a class="el" href="lex_8ll_source.html">lex.ll</a>.</p>
 
 </div>
 </div>
@@ -142,7 +184,7 @@ Variables</h2></td></tr>
 <div class="memdoc">
 <p>Parse a string constant in the source file. For each character in the string, handle any escaped characters with <a class="el" href="lex_8ll.html#a5ed4fcacbfcd6e174677ce0fb2f58f8b">lEscapeChar()</a> and keep eating characters until we come to the closing quote. </p>
 
-<p>Definition at line <a class="el" href="lex_8ll_source.html#l07389">7389</a> of file <a class="el" href="lex_8ll_source.html">lex.ll</a>.</p>
+<p>Definition at line <a class="el" href="lex_8ll_source.html#l07394">7394</a> of file <a class="el" href="lex_8ll_source.html">lex.ll</a>.</p>
 
 </div>
 </div>
@@ -158,7 +200,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="lex_8ll_source.html#l07326">7326</a> of file <a class="el" href="lex_8ll_source.html">lex.ll</a>.</p>
+<p>Definition at line <a class="el" href="lex_8ll_source.html#l07331">7331</a> of file <a class="el" href="lex_8ll_source.html">lex.ll</a>.</p>
 
 <p>Referenced by <a class="el" href="ispc_8cpp_source.html#l00122">SourcePos::GetDIFile()</a>, and <a class="el" href="opt_8cpp_source.html#l00137">lGetSourcePosFromMetadata()</a>.</p>
 
@@ -175,12 +217,12 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="lex_8ll_source.html#l07323">7323</a> of file <a class="el" href="lex_8ll_source.html">lex.ll</a>.</p>
+<p>Definition at line <a class="el" href="lex_8ll_source.html#l07328">7328</a> of file <a class="el" href="lex_8ll_source.html">lex.ll</a>.</p>
 
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jun 24 2011 05:24:26 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 1 2011 05:18:41 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

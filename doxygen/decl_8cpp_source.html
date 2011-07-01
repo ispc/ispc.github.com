@@ -349,37 +349,39 @@
 <a name="l00318"></a>00318 <span class="comment">///////////////////////////////////////////////////////////////////////////</span>
 <a name="l00319"></a>00319 <span class="comment"></span>
 <a name="l00320"></a>00320 <span class="keywordtype">void</span>
-<a name="l00321"></a><a class="code" href="decl_8cpp.html#a5e2c8e4f58234ff96e743d9830f87fd6">00321</a> <a class="code" href="decl_8h.html#a5e2c8e4f58234ff96e743d9830f87fd6">GetStructTypesAndNames</a>(<span class="keyword">const</span> std::vector&lt;StructDeclaration *&gt; &amp;sd,
-<a name="l00322"></a>00322                        std::vector&lt;const Type *&gt; *elementTypes,
-<a name="l00323"></a>00323                        std::vector&lt;std::string&gt; *elementNames) {
-<a name="l00324"></a>00324     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; sd.size(); ++i) {
-<a name="l00325"></a>00325         <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type = sd[i]-&gt;type;
-<a name="l00326"></a>00326         <span class="comment">// FIXME: making this fake little DeclSpecs here is really</span>
-<a name="l00327"></a>00327         <span class="comment">// disgusting</span>
-<a name="l00328"></a>00328         <a class="code" href="classDeclSpecs.html" title="Representation of the declaration specifiers in a declaration.">DeclSpecs</a> ds(type);
-<a name="l00329"></a>00329         <span class="keywordflow">if</span> (type-&gt;<a class="code" href="classType.html#a0a997c011addd186c7a45a9352fe0edb">IsUniformType</a>()) 
-<a name="l00330"></a>00330             ds.<a class="code" href="classDeclSpecs.html#a6bdd853c56f0f4ee9460620e146ec706">typeQualifier</a> |= <a class="code" href="decl_8h.html#a4e1d46f163dbd13f9fe27a6b5074b8ea">TYPEQUAL_UNIFORM</a>;
-<a name="l00331"></a>00331         <span class="keywordflow">else</span>
-<a name="l00332"></a>00332             ds.<a class="code" href="classDeclSpecs.html#a6bdd853c56f0f4ee9460620e146ec706">typeQualifier</a> |= <a class="code" href="decl_8h.html#a1b7c547c3ec2c68546466f0ea2312224">TYPEQUAL_VARYING</a>;
-<a name="l00333"></a>00333 
-<a name="l00334"></a>00334         for (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; sd[i]-&gt;declarators-&gt;size(); ++j) {
-<a name="l00335"></a>00335             <a class="code" href="classDeclarator.html" title="Representation of the declaration of a single variable.">Declarator</a> *d = (*sd[i]-&gt;declarators)[j];
-<a name="l00336"></a>00336             d-&gt;<a class="code" href="classDeclarator.html#a72879c4c6bff2727333f62827547744d">InitFromDeclSpecs</a>(&amp;ds);
-<a name="l00337"></a>00337 
-<a name="l00338"></a>00338             <span class="comment">// if it&#39;s an unsized array, make it a reference to an unsized</span>
-<a name="l00339"></a>00339             <span class="comment">// array, so the caller can pass a pointer...</span>
-<a name="l00340"></a>00340             <span class="keyword">const</span> <a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> *at = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> *<span class="keyword">&gt;</span>(d-&gt;<a class="code" href="classDeclarator.html#a8d3ccd1f6ea67741989c653d9e22985d">sym</a>-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>);
-<a name="l00341"></a>00341             <span class="keywordflow">if</span> (at &amp;&amp; at-&gt;<a class="code" href="classArrayType.html#abd41c2442a7dc53f404399d746d0c6e8">GetElementCount</a>() == 0)
-<a name="l00342"></a>00342                 d-&gt;<a class="code" href="classDeclarator.html#a8d3ccd1f6ea67741989c653d9e22985d">sym</a>-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a> = <span class="keyword">new</span> <a class="code" href="classReferenceType.html" title="Type representing a reference to another (non-reference) type.">ReferenceType</a>(d-&gt;<a class="code" href="classDeclarator.html#a8d3ccd1f6ea67741989c653d9e22985d">sym</a>-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>, type-&gt;<a class="code" href="classType.html#a9a6d77fb89abc534e2ee1726cc13cf05">IsConstType</a>());
-<a name="l00343"></a>00343 
-<a name="l00344"></a>00344             elementTypes-&gt;push_back(d-&gt;<a class="code" href="classDeclarator.html#a8d3ccd1f6ea67741989c653d9e22985d">sym</a>-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>);
-<a name="l00345"></a>00345             elementNames-&gt;push_back(d-&gt;<a class="code" href="classDeclarator.html#a8d3ccd1f6ea67741989c653d9e22985d">sym</a>-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>);
-<a name="l00346"></a>00346         }
-<a name="l00347"></a>00347     }
-<a name="l00348"></a>00348 }
+<a name="l00321"></a><a class="code" href="decl_8cpp.html#a7766386a3e586e29665f3b2cdbfc2d20">00321</a> <a class="code" href="decl_8h.html#a7766386a3e586e29665f3b2cdbfc2d20">GetStructTypesNamesPositions</a>(<span class="keyword">const</span> std::vector&lt;StructDeclaration *&gt; &amp;sd,
+<a name="l00322"></a>00322                              std::vector&lt;const Type *&gt; *elementTypes,
+<a name="l00323"></a>00323                              std::vector&lt;std::string&gt; *elementNames,
+<a name="l00324"></a>00324                              std::vector&lt;SourcePos&gt; *elementPositions) {
+<a name="l00325"></a>00325     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; sd.size(); ++i) {
+<a name="l00326"></a>00326         <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type = sd[i]-&gt;type;
+<a name="l00327"></a>00327         <span class="comment">// FIXME: making this fake little DeclSpecs here is really</span>
+<a name="l00328"></a>00328         <span class="comment">// disgusting</span>
+<a name="l00329"></a>00329         <a class="code" href="classDeclSpecs.html" title="Representation of the declaration specifiers in a declaration.">DeclSpecs</a> ds(type);
+<a name="l00330"></a>00330         <span class="keywordflow">if</span> (type-&gt;<a class="code" href="classType.html#a0a997c011addd186c7a45a9352fe0edb">IsUniformType</a>()) 
+<a name="l00331"></a>00331             ds.<a class="code" href="classDeclSpecs.html#a6bdd853c56f0f4ee9460620e146ec706">typeQualifier</a> |= <a class="code" href="decl_8h.html#a4e1d46f163dbd13f9fe27a6b5074b8ea">TYPEQUAL_UNIFORM</a>;
+<a name="l00332"></a>00332         <span class="keywordflow">else</span>
+<a name="l00333"></a>00333             ds.<a class="code" href="classDeclSpecs.html#a6bdd853c56f0f4ee9460620e146ec706">typeQualifier</a> |= <a class="code" href="decl_8h.html#a1b7c547c3ec2c68546466f0ea2312224">TYPEQUAL_VARYING</a>;
+<a name="l00334"></a>00334 
+<a name="l00335"></a>00335         for (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; sd[i]-&gt;declarators-&gt;size(); ++j) {
+<a name="l00336"></a>00336             <a class="code" href="classDeclarator.html" title="Representation of the declaration of a single variable.">Declarator</a> *d = (*sd[i]-&gt;declarators)[j];
+<a name="l00337"></a>00337             d-&gt;<a class="code" href="classDeclarator.html#a72879c4c6bff2727333f62827547744d">InitFromDeclSpecs</a>(&amp;ds);
+<a name="l00338"></a>00338 
+<a name="l00339"></a>00339             <span class="comment">// if it&#39;s an unsized array, make it a reference to an unsized</span>
+<a name="l00340"></a>00340             <span class="comment">// array, so the caller can pass a pointer...</span>
+<a name="l00341"></a>00341             <span class="keyword">const</span> <a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> *at = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> *<span class="keyword">&gt;</span>(d-&gt;<a class="code" href="classDeclarator.html#a8d3ccd1f6ea67741989c653d9e22985d">sym</a>-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>);
+<a name="l00342"></a>00342             <span class="keywordflow">if</span> (at &amp;&amp; at-&gt;<a class="code" href="classArrayType.html#abd41c2442a7dc53f404399d746d0c6e8">GetElementCount</a>() == 0)
+<a name="l00343"></a>00343                 d-&gt;<a class="code" href="classDeclarator.html#a8d3ccd1f6ea67741989c653d9e22985d">sym</a>-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a> = <span class="keyword">new</span> <a class="code" href="classReferenceType.html" title="Type representing a reference to another (non-reference) type.">ReferenceType</a>(d-&gt;<a class="code" href="classDeclarator.html#a8d3ccd1f6ea67741989c653d9e22985d">sym</a>-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>, type-&gt;<a class="code" href="classType.html#a9a6d77fb89abc534e2ee1726cc13cf05">IsConstType</a>());
+<a name="l00344"></a>00344 
+<a name="l00345"></a>00345             elementTypes-&gt;push_back(d-&gt;<a class="code" href="classDeclarator.html#a8d3ccd1f6ea67741989c653d9e22985d">sym</a>-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>);
+<a name="l00346"></a>00346             elementNames-&gt;push_back(d-&gt;<a class="code" href="classDeclarator.html#a8d3ccd1f6ea67741989c653d9e22985d">sym</a>-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>);
+<a name="l00347"></a>00347             elementPositions-&gt;push_back(d-&gt;<a class="code" href="classDeclarator.html#a8d3ccd1f6ea67741989c653d9e22985d">sym</a>-&gt;<a class="code" href="classSymbol.html#a46a82d43e88a9a90211bcf420c91ebfb">pos</a>);
+<a name="l00348"></a>00348         }
+<a name="l00349"></a>00349     }
+<a name="l00350"></a>00350 }
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jun 24 2011 05:24:25 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 1 2011 05:18:40 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>
