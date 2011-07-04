@@ -144,6 +144,7 @@ compilation approaches (e.g. loop auto-vectorization.)</p>
 <li><a class="reference internal" href="#output-functions">Output Functions</a></li>
 <li><a class="reference internal" href="#cross-program-instance-operations">Cross-Program Instance Operations</a></li>
 <li><a class="reference internal" href="#packed-load-and-store-operations">Packed Load and Store Operations</a></li>
+<li><a class="reference internal" href="#atomic-operations-and-memory-fences">Atomic Operations and Memory Fences</a></li>
 <li><a class="reference internal" href="#low-level-bits">Low-Level Bits</a></li>
 </ul>
 </li>
@@ -171,25 +172,8 @@ compilation approaches (e.g. loop auto-vectorization.)</p>
 </ul>
 <div class="section" id="recent-changes-to-ispc">
 <h1>Recent Changes to ISPC</h1>
-<p>This section summarizes recent changes and bugfixes.</p>
-<ul class="simple">
-<li>17 May: Fixed a number of bugs related to error handling in Windows*.  In
-particular, if you use the <tt class="docutils literal">/E</tt> command line flag to <tt class="docutils literal">cl.exe</tt> (rather
-than <tt class="docutils literal">/EP</tt>) when using it as a preprocessor, then <tt class="docutils literal">ispc</tt> will
-correctly report the source file position with warnings and errors.</li>
-<li>15 May: Improved error messages and warnings in many cases.  For example,
-the column number is reported along with the line number and
-the source line with the error is printed as part of the message.</li>
-<li>8 May: <tt class="docutils literal">ispc</tt>'s typechecker has been substantially improved in how it
-handles <tt class="docutils literal">const</tt>-qualified types.  Some programs that previously
-compiled may now fail with errors related to <tt class="docutils literal">const</tt>.  For example,
-<tt class="docutils literal">ispc</tt> issues an error message if you try to assign a member of a const
-structure.</li>
-<li>2 May: &quot;uniform&quot; short-vector types are now stored across the lanes of
-the SIMD registers.  This enables you to also write classic 'explicit
-vector' computation in <tt class="docutils literal">ispc</tt> as well.  This change does change how
-these types are laid out in memory; see <a class="reference internal" href="#data-layout">Data Layout</a> for more details.)</li>
-</ul>
+<p>See the file <tt class="docutils literal">ReleaseNotes.txt</tt> in the <tt class="docutils literal">ispc</tt> distribution for a list
+of recent changes to the compiler.</p>
 </div>
 <div class="section" id="getting-started-with-ispc">
 <h1>Getting Started with ISPC</h1>
@@ -320,17 +304,9 @@ with application code, enter the following command</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.o
 </pre>
-<p>On Linux* and Mac OS*, <tt class="docutils literal">ispc</tt> automatically runs the C preprocessor on
-your input program; under Windows*, this must be done manually.  With
-Microsoft Visual C++ 2010*, the following custom build step for
-<tt class="docutils literal">ispc</tt> source files takes care of this job:</p>
-<pre class="literal-block">
-cl /E /TP %(Filename).ispc | ispc - -o %(Filename).obj -h %(Filename).h
-</pre>
-<p>The <tt class="docutils literal">cl</tt> call runs the C preprocessor on the <tt class="docutils literal">ispc</tt> file; the result is
-piped to <tt class="docutils literal">ispc</tt> to generate an object file and a header.  As an example,
-see the file <tt class="docutils literal">simple.vcxproj</tt> in the <tt class="docutils literal">examples/simple</tt> directory of the
-<tt class="docutils literal">ispc</tt> distribution.</p>
+<p><tt class="docutils literal">ispc</tt> automatically runs the C preprocessor on your input program before
+compiling it.  (This functionality can be disabled with the <tt class="docutils literal"><span class="pre">--nocpp</span></tt>
+command-line argument.)</p>
 <div class="section" id="command-line-options">
 <h2>Command-line Options</h2>
 <p>The <tt class="docutils literal">ispc</tt> executable can be run with <tt class="docutils literal"><span class="pre">--help</span></tt> to print a list of
@@ -759,18 +735,14 @@ int bar = ...;
 <pre class="literal-block">
 for (int i = 0; ...)
 </pre>
-<p>Arrays can be initialized with either a scalar value or with individual
-element values in braces:</p>
+<p>Arrays can be initialized with individual element values in braces:</p>
 <pre class="literal-block">
-int foo[10] = x;  // all ten elements take the value of x
 int bar[2][4] = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 } };
 </pre>
-<p>Structures can also be initialized both with scalar values or with element
-values in braces:</p>
+<p>Structures can also be initialized only with element values in braces:</p>
 <pre class="literal-block">
 struct Color { float r, g, b; };
 ....
-Color c = 1; // all are one
 Color d = { 0.5, .75, 1.0 }; // r = 0.5, ...
 </pre>
 </div>
@@ -1558,15 +1530,27 @@ int32 rotate(int32 value, uniform int offset)
 double rotate(double value, uniform int offset)
 int64 rotate(int64 value, uniform int offset)
 </pre>
-<p>Finally, <tt class="docutils literal">shuffle()</tt> allows fully general shuffling of values among the
-program instances.  Each program instance's value of permutation gives the
-program instance from which to get the value of <tt class="docutils literal">value</tt>.  The provided
-values for <tt class="docutils literal">permutation</tt> must all be between 0 and <tt class="docutils literal"><span class="pre">programCount-1</span></tt>.</p>
+<p>Finally, the <tt class="docutils literal">shuffle()</tt> functions allow two variants of fully general
+shuffling of values among the program instances.  For the first version,
+each program instance's value of permutation gives the program instance
+from which to get the value of <tt class="docutils literal">value</tt>.  The provided values for
+<tt class="docutils literal">permutation</tt> must all be between 0 and <tt class="docutils literal"><span class="pre">programCount-1</span></tt>.</p>
 <pre class="literal-block">
 float shuffle(float value, int permutation)
 int32 shuffle(int32 value, int permutation)
 double shuffle(double value, int permutation)
 int64 shuffle(int64 value, int permutation)
+</pre>
+<p>The second variant of <tt class="docutils literal">shuffle()</tt> permutes over the extended vector that
+is the concatenation of the two provided values.  In other words, a value
+of 0 in an element of <tt class="docutils literal">permutation</tt> corresponds to the first element of
+<tt class="docutils literal">value0</tt>, the value <tt class="docutils literal"><span class="pre">2*programCount-1</span></tt> corresponds to the last element
+of <tt class="docutils literal">value1</tt>, etc.)</p>
+<pre class="literal-block">
+float shuffle(float value0, float value1, int permutation)
+int32 shuffle(int32 value0, int32 value1, int permutation)
+double shuffle(double value0, double value1, int permutation)
+int64 shuffle(int64 value0, int64 value1, int permutation)
 </pre>
 <p>The various variants of <tt class="docutils literal">popcnt()</tt> return the population count--the
 number of bits set in the given value.</p>
@@ -1604,22 +1588,29 @@ uniform unsigned int reduce_max(unsigned int a, unsigned int b)
 <div class="section" id="packed-load-and-store-operations">
 <h2>Packed Load and Store Operations</h2>
 <p>The standard library also offers routines for writing out and reading in
-values from linear memory locations for the active program instances.
-<tt class="docutils literal">packed_load_active()</tt> loads consecutive values from the given array,
-starting at <tt class="docutils literal">a[offset]</tt>, loading one value for each currently-executing
-program instance and storing it into that program instance's <tt class="docutils literal">val</tt>
-variable.  It returns the total number of values loaded.  Similarly,
-<tt class="docutils literal">packed_store_active()</tt> stores the <tt class="docutils literal">val</tt> values for each program
-instances that executed the <tt class="docutils literal">packed_store_active()</tt> call, storing the
-results into the given array starting at the given offset.  It returns the
-total number of values stored.</p>
+values from linear memory locations for the active program instances.  The
+<tt class="docutils literal">packed_load_active()</tt> functions load consecutive values from the given
+array, starting at <tt class="docutils literal">a[offset]</tt>, loading one value for each
+currently-executing program instance and storing it into that program
+instance's <tt class="docutils literal">val</tt> variable.  They return the total number of values
+loaded.  Similarly, the <tt class="docutils literal">packed_store_active()</tt> functions store the
+<tt class="docutils literal">val</tt> values for each program instances that executed the
+<tt class="docutils literal">packed_store_active()</tt> call, storing the results into the given array
+starting at the given offset.  They return the total number of values
+stored.</p>
 <pre class="literal-block">
-uniform unsigned int packed_load_active(uniform int a[],
-                                        uniform int offset,
-                                        reference int val)
-uniform unsigned int packed_store_active(uniform int a[],
-                                         uniform int offset,
-                                         int val)
+uniform int packed_load_active(uniform int a[],
+                               uniform int offset,
+                               reference int val)
+uniform int packed_load_active(uniform unsigned int a[],
+                               uniform int offset,
+                               reference unsigned int val)
+uniform int packed_store_active(uniform int a[],
+                                uniform int offset,
+                                int val)
+uniform int packed_store_active(uniform unsigned int a[],
+                                uniform int offset,
+                                unsigned int val)
 </pre>
 <p>As an example of how these functions can be used, the following code shows
 the use of <tt class="docutils literal">packed_store_active()</tt>.  The program instances that are
@@ -1652,6 +1643,56 @@ float insert(float x, uniform int i, uniform float v)
 int insert(int x, uniform int i, uniform int v)
 </pre>
 </div>
+<div class="section" id="atomic-operations-and-memory-fences">
+<h2>Atomic Operations and Memory Fences</h2>
+<p>The usual range of atomic memory operations are provided in <tt class="docutils literal">ispc</tt>.  As an
+example, consider the 32-bit integer atomic add routine:</p>
+<pre class="literal-block">
+int32 atomic_add_global(reference uniform int32 val, int32 delta)
+</pre>
+<p>The semantics are the expected ones for an atomic add function: the value
+&quot;val&quot; has the value &quot;delta&quot; added to it atomically, and the old value of
+&quot;val&quot; is returned from the function.  (Thus, if multiple processors
+simultaneously issue atomic adds to the same memory location, the adds will
+be serialized by the hardware so that the correct result is computed in the
+end.)</p>
+<p>One thing to note is that that the value being added to here is a
+<tt class="docutils literal">uniform</tt> integer, while the increment amount and the return value are
+<tt class="docutils literal">varying</tt>.  In other words, the semantics are that each running program
+instance individually issues the atomic operation with its own <tt class="docutils literal">delta</tt>
+value and gets the previous value of <tt class="docutils literal">val</tt> back in return.</p>
+<p>Here are the declarations of the <tt class="docutils literal">int32</tt> variants of these functions.
+There are also <tt class="docutils literal">int64</tt> equivalents as well as variants that take
+<tt class="docutils literal">unsigned</tt> <tt class="docutils literal">int32</tt> and <tt class="docutils literal">int64</tt> values.</p>
+<pre class="literal-block">
+int32 atomic_add_global(reference uniform int32 val, int32 value)
+int32 atomic_subtract_global(reference uniform int32 val, int32 value)
+int32 atomic_min_global(reference uniform int32 val, int32 value)
+int32 atomic_max_global(reference uniform int32 val, int32 value)
+int32 atomic_and_global(reference uniform int32 val, int32 value)
+int32 atomic_or_global(reference uniform int32 val, int32 value)
+int32 atomic_xor_global(reference uniform int32 val, int32 value)
+int32 atomic_swap_global(reference uniform int32 val, int32 newval)
+</pre>
+<p>There is also an atomic &quot;compare and exchange&quot; function; it atomically
+compares the value in &quot;val&quot; to &quot;compare&quot;--if they match, it assigns
+&quot;newval&quot; to &quot;val&quot;.  In either case, the old value of &quot;val&quot; is returned.
+(As with the other atomic operations, there are also <tt class="docutils literal">unsigned</tt> and
+64-bit variants of this function.)</p>
+<pre class="literal-block">
+int32 atomic_compare_exchange_global(reference uniform int32 val,
+                                     int32 compare, int32 newval)
+</pre>
+<p><tt class="docutils literal">ispc</tt> also has a standard library routine that inserts a memory barrier
+into the code; it ensures that all memory reads and writes prior to be
+barrier complete before any reads or writes after the barrier are issued.
+See the <a class="reference external" href="http://www.kernel.org/doc/Documentation/memory-barriers.txt">Linux kernel documentation on memory barriers</a> for an excellent
+writeup on the need for that the use of memory barriers in multi-threaded
+code.</p>
+<pre class="literal-block">
+void memory_barrier();
+</pre>
+</div>
 <div class="section" id="low-level-bits">
 <h2>Low-Level Bits</h2>
 <p><tt class="docutils literal">ispc</tt> provides a number of bit/memory-level utility routines in its
@@ -1661,24 +1702,31 @@ to 8-bit and 16-bit integer values stored in memory, converting to and from
 and this conversion step are necessary because <tt class="docutils literal">ispc</tt> doesn't have native
 8-bit or 16-bit types in the language.)</p>
 <pre class="literal-block">
-unsigned int load_from_int8(uniform int a[],
+int load_from_int8(uniform int a[], uniform int offset)
+unsigned int load_from_int8(uniform unsigned int a[],
                             uniform int offset)
 void store_to_int8(uniform int a[], uniform int offset,
+                   int val)
+void store_to_int8(uniform unsigned int a[], uniform int offset,
                    unsigned int val)
 unsigned int load_from_int16(uniform int a[],
                              uniform int offset)
+unsigned unsigned int load_from_int16(uniform unsigned int a[],
+                                      uniform int offset)
 void store_to_int16(uniform int a[], uniform int offset,
+                    int val)
+void store_to_int16(uniform unsigned int a[], uniform int offset,
                     unsigned int val)
 </pre>
 <p>There are three things to note in these functions.  First, note that these
-functions take <tt class="docutils literal">unsigned int</tt> arrays as parameters; you need
-to cast <cite>the ``int8_t`</cite> and <tt class="docutils literal">int16_t</tt> pointers from the C/C++ side to
-<tt class="docutils literal">unsigned int</tt> when passing them to <tt class="docutils literal">ispc</tt> code.  Second, although the
-arrays are passed as <tt class="docutils literal">unsigned int</tt>, in the array indexing calculation,
-with the <tt class="docutils literal">offset</tt> parameter, they are treated as if they were <tt class="docutils literal">int8</tt> or
-<tt class="docutils literal">int16</tt> types.  (i.e. the offset treated as being in terms of number of 8
-or 16-bit elements.) Third, note that programIndex is implicitly added
-to offset.</p>
+functions take either <tt class="docutils literal">int</tt> or <tt class="docutils literal">unsigned int</tt> arrays as parameters; you
+need to cast <cite>the ``int8_t`</cite> and <tt class="docutils literal">int16_t</tt> pointers from the C/C++ side
+to <tt class="docutils literal">int</tt> or <tt class="docutils literal">unsigned int</tt> when passing them to <tt class="docutils literal">ispc</tt> code.  Second,
+although the arrays are passed as 32-bit integers, in the array indexing
+calculation, with the <tt class="docutils literal">offset</tt> parameter, they are treated as if they
+were <tt class="docutils literal">int8</tt> or <tt class="docutils literal">int16</tt> types (i.e. the offset treated as being in terms
+of number of 8 or 16-bit elements).  Third, note that the value of
+<tt class="docutils literal">programIndex</tt> is implicitly added to offset.</p>
 <p>The <tt class="docutils literal">intbits()</tt> and <tt class="docutils literal">floatbits()</tt> functions can be used to implement
 low-level floating-point bit twiddling.  For example, <tt class="docutils literal">intbits()</tt> returns
 an <tt class="docutils literal">unsigned int</tt> that is a bit-for-bit copy of the given <tt class="docutils literal">float</tt>
