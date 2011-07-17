@@ -77,7 +77,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArrayType.html#aa5978b1550276038bbf17b09bccbffc3">Mangle</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArrayType.html#a9101977af94bebe6ef2b7ca36debff3f">GetCDeclaration</a> (const std::string &amp;name) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::DIType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArrayType.html#aeb6c08334ad91a2801d89b45d00eec28">GetDIType</a> (llvm::DIDescriptor scope) const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">const llvm::ArrayType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArrayType.html#aa16424be83cd3d09820a17d95bd6a984">LLVMType</a> (llvm::LLVMContext *ctx) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">LLVM_TYPE_CONST llvm::ArrayType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArrayType.html#a765fb2392eb2b512b8d4627ba0ad5049">LLVMType</a> (llvm::LLVMContext *ctx) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArrayType.html#accb48932e380af236d45c9d0f338f8ff">TotalElementCount</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArrayType.html#abd41c2442a7dc53f404399d746d0c6e8">GetElementCount</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classType.html">Type</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArrayType.html#a0c07b5af9127e3dfc4626782f4227377">GetElementType</a> () const </td></tr>
@@ -94,7 +94,7 @@ Friends</h2></td></tr>
 <p>One-dimensional array type. </p>
 <p><a class="el" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> represents a one-dimensional array of instances of some other type. (Multi-dimensional arrays are represented by ArrayTypes that in turn hold ArrayTypes as their child types.) </p>
 
-<p>Definition at line <a class="el" href="type_8h_source.html#l00291">291</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p>Definition at line <a class="el" href="type_8h_source.html#l00337">337</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a36104aa58c4d94a6810ae2a0d49a9d9e"></a><!-- doxytag: member="ArrayType::ArrayType" ref="a36104aa58c4d94a6810ae2a0d49a9d9e" args="(const Type *elementType, int numElements)" -->
 <div class="memitem">
@@ -129,11 +129,11 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00424">424</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00641">641</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, and <a class="el" href="type_8h_source.html#l00344">numElements</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, and <a class="el" href="type_8h_source.html#l00390">numElements</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l00511">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00517">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00499">GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00493">GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l00631">GetSizedArray()</a>, <a class="el" href="type_8cpp_source.html#l00505">GetSOAType()</a>, and <a class="el" href="type_8cpp_source.html#l00769">SOAArrayType::soaType()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l00728">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00734">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00716">GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00710">GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l00848">GetSizedArray()</a>, <a class="el" href="type_8cpp_source.html#l00722">GetSOAType()</a>, and <a class="el" href="type_8cpp_source.html#l00986">SOAArrayType::soaType()</a>.</p>
 
 </div>
 </div>
@@ -157,9 +157,9 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSOAArrayType.html#a103e3eb44a8f8c531ee5dc03c4b5933e">SOAArrayType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00511">511</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00728">728</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8cpp_source.html#l00424">ArrayType()</a>, <a class="el" href="type_8h_source.html#l00342">child</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, and <a class="el" href="type_8h_source.html#l00344">numElements</a>.</p>
+<p>References <a class="el" href="type_8cpp_source.html#l00641">ArrayType()</a>, <a class="el" href="type_8h_source.html#l00388">child</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, and <a class="el" href="type_8h_source.html#l00390">numElements</a>.</p>
 
 </div>
 </div>
@@ -182,9 +182,9 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSOAArrayType.html#afed8963d27ab04928f228a330341f39f">SOAArrayType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00517">517</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00734">734</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8cpp_source.html#l00424">ArrayType()</a>, <a class="el" href="type_8h_source.html#l00342">child</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, and <a class="el" href="type_8h_source.html#l00344">numElements</a>.</p>
+<p>References <a class="el" href="type_8cpp_source.html#l00641">ArrayType()</a>, <a class="el" href="type_8h_source.html#l00388">child</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, and <a class="el" href="type_8h_source.html#l00390">numElements</a>.</p>
 
 </div>
 </div>
@@ -207,9 +207,9 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSOAArrayType.html#a9b46fa5533c61eb36098b5fc167f4c74">SOAArrayType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00499">499</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00716">716</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8cpp_source.html#l00424">ArrayType()</a>, <a class="el" href="type_8h_source.html#l00342">child</a>, <a class="el" href="classType.html#ab0eff8692794d3437a91404c98985d20">Type::GetAsUniformType()</a>, and <a class="el" href="type_8h_source.html#l00344">numElements</a>.</p>
+<p>References <a class="el" href="type_8cpp_source.html#l00641">ArrayType()</a>, <a class="el" href="type_8h_source.html#l00388">child</a>, <a class="el" href="classType.html#ab0eff8692794d3437a91404c98985d20">Type::GetAsUniformType()</a>, and <a class="el" href="type_8h_source.html#l00390">numElements</a>.</p>
 
 </div>
 </div>
@@ -232,9 +232,9 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSOAArrayType.html#a9472013210600f515959c1498ac32ecb">SOAArrayType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00493">493</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00710">710</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8cpp_source.html#l00424">ArrayType()</a>, <a class="el" href="type_8h_source.html#l00342">child</a>, <a class="el" href="classType.html#aedfa3c719db7ab073c5e1f75b4041e55">Type::GetAsVaryingType()</a>, and <a class="el" href="type_8h_source.html#l00344">numElements</a>.</p>
+<p>References <a class="el" href="type_8cpp_source.html#l00641">ArrayType()</a>, <a class="el" href="type_8h_source.html#l00388">child</a>, <a class="el" href="classType.html#aedfa3c719db7ab073c5e1f75b4041e55">Type::GetAsVaryingType()</a>, and <a class="el" href="type_8h_source.html#l00390">numElements</a>.</p>
 
 </div>
 </div>
@@ -255,11 +255,11 @@ Friends</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a51af28faf17eb05982547d9b340429eb">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00480">480</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00697">697</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00342">child</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00388">child</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l00567">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00686">SOAArrayType::GetString()</a>, <a class="el" href="type_8cpp_source.html#l00535">GetString()</a>, <a class="el" href="expr_8cpp_source.html#l03923">TypeCastExpr::GetValue()</a>, and <a class="el" href="module_8cpp_source.html#l01161">lGetVectorsFromStructs()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l00784">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00903">SOAArrayType::GetString()</a>, <a class="el" href="type_8cpp_source.html#l00752">GetString()</a>, and <a class="el" href="expr_8cpp_source.html#l03955">TypeCastExpr::GetValue()</a>.</p>
 
 </div>
 </div>
@@ -283,9 +283,9 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSOAArrayType.html#a1d8b743716baa455d1e6391e553d69e2">SOAArrayType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00567">567</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00784">784</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00342">child</a>, <a class="el" href="type_8cpp_source.html#l00480">GetBaseType()</a>, <a class="el" href="classType.html#a7e35141766bbc63333953263cd85d883">Type::GetCDeclaration()</a>, <a class="el" href="type_8h_source.html#l00344">numElements</a>, and <a class="el" href="parse_8yy_source.html#l13721">s</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00388">child</a>, <a class="el" href="type_8cpp_source.html#l00697">GetBaseType()</a>, <a class="el" href="classType.html#a7e35141766bbc63333953263cd85d883">Type::GetCDeclaration()</a>, <a class="el" href="type_8h_source.html#l00390">numElements</a>, and <a class="el" href="parse_8yy_source.html#l15828">s</a>.</p>
 
 </div>
 </div>
@@ -309,9 +309,9 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSOAArrayType.html#ac863293e344d93bd37848be1b24545fa">SOAArrayType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00595">595</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00812">812</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00342">child</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="util_8h_source.html#l00104">FATAL</a>, <a class="el" href="classType.html#a8b6ded269378020c769915bbbff3d73c">Type::GetDIType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="type_8h_source.html#l00344">numElements</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00388">child</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="util_8h_source.html#l00104">FATAL</a>, <a class="el" href="classType.html#a8b6ded269378020c769915bbbff3d73c">Type::GetDIType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="type_8h_source.html#l00390">numElements</a>.</p>
 
 </div>
 </div>
@@ -332,11 +332,11 @@ Friends</h2></td></tr>
 
 <p>Implements <a class="el" href="classCollectionType.html#abc5eb48e176e4abb0fa405d41ae99381">CollectionType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00523">523</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00740">740</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00344">numElements</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00390">numElements</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00232">DeclStmt::EmitCode()</a>, <a class="el" href="type_8cpp_source.html#l01756">Type::Equal()</a>, <a class="el" href="ctx_8cpp_source.html#l01381">FunctionEmitContext::gather()</a>, <a class="el" href="type_8cpp_source.html#l01356">ReferenceType::GetCDeclaration()</a>, <a class="el" href="decl_8cpp_source.html#l00321">GetStructTypesNamesPositions()</a>, <a class="el" href="expr_8cpp_source.html#l03923">TypeCastExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l00120">Expr::TypeConv()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00233">DeclStmt::EmitCode()</a>, <a class="el" href="type_8cpp_source.html#l02007">Type::Equal()</a>, <a class="el" href="ctx_8cpp_source.html#l01382">FunctionEmitContext::gather()</a>, <a class="el" href="type_8cpp_source.html#l01573">ReferenceType::GetCDeclaration()</a>, <a class="el" href="decl_8cpp_source.html#l00321">GetStructTypesNamesPositions()</a>, <a class="el" href="expr_8cpp_source.html#l03955">TypeCastExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l00120">Expr::TypeConv()</a>.</p>
 
 </div>
 </div>
@@ -357,11 +357,11 @@ Friends</h2></td></tr>
 
 <p>Implements <a class="el" href="classSequentialType.html#a923d9a8ec402a9880b6d149b8f372916">SequentialType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00529">529</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00746">746</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00342">child</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00388">child</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l01756">Type::Equal()</a>, <a class="el" href="ctx_8cpp_source.html#l01381">FunctionEmitContext::gather()</a>, <a class="el" href="type_8cpp_source.html#l01356">ReferenceType::GetCDeclaration()</a>, and <a class="el" href="expr_8cpp_source.html#l00120">Expr::TypeConv()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l02007">Type::Equal()</a>, <a class="el" href="ctx_8cpp_source.html#l01382">FunctionEmitContext::gather()</a>, <a class="el" href="type_8cpp_source.html#l01573">ReferenceType::GetCDeclaration()</a>, <a class="el" href="module_8cpp_source.html#l01199">lGetExportedTypes()</a>, and <a class="el" href="expr_8cpp_source.html#l00120">Expr::TypeConv()</a>.</p>
 
 </div>
 </div>
@@ -383,11 +383,11 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSOAArrayType.html#a6764cb91d62a19bc63612070216d33f5">SOAArrayType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00631">631</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00848">848</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8cpp_source.html#l00424">ArrayType()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="type_8h_source.html#l00342">child</a>, and <a class="el" href="type_8h_source.html#l00344">numElements</a>.</p>
+<p>References <a class="el" href="type_8cpp_source.html#l00641">ArrayType()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="type_8h_source.html#l00388">child</a>, and <a class="el" href="type_8h_source.html#l00390">numElements</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00232">DeclStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00233">DeclStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -411,9 +411,9 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSOAArrayType.html#af099c04d2425dd56f216a5dd848679d6">SOAArrayType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00505">505</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00722">722</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8cpp_source.html#l00424">ArrayType()</a>, <a class="el" href="type_8h_source.html#l00342">child</a>, <a class="el" href="classType.html#a912c0c79b5fcc6f29674f6310bad5256">Type::GetSOAType()</a>, and <a class="el" href="type_8h_source.html#l00344">numElements</a>.</p>
+<p>References <a class="el" href="type_8cpp_source.html#l00641">ArrayType()</a>, <a class="el" href="type_8h_source.html#l00388">child</a>, <a class="el" href="classType.html#a912c0c79b5fcc6f29674f6310bad5256">Type::GetSOAType()</a>, and <a class="el" href="type_8h_source.html#l00390">numElements</a>.</p>
 
 </div>
 </div>
@@ -436,9 +436,9 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSOAArrayType.html#a272ed4f4523c4f8d68264d226695f431">SOAArrayType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00535">535</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00752">752</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00342">child</a>, <a class="el" href="type_8cpp_source.html#l00480">GetBaseType()</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, <a class="el" href="type_8h_source.html#l00344">numElements</a>, and <a class="el" href="parse_8yy_source.html#l13721">s</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00388">child</a>, <a class="el" href="type_8cpp_source.html#l00697">GetBaseType()</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, <a class="el" href="type_8h_source.html#l00390">numElements</a>, and <a class="el" href="parse_8yy_source.html#l15828">s</a>.</p>
 
 </div>
 </div>
@@ -459,7 +459,7 @@ Friends</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a38ff6178597171c11f6e24566b251dea">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00468">468</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00685">685</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
 </div>
 </div>
@@ -480,9 +480,9 @@ Friends</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a9a6d77fb89abc534e2ee1726cc13cf05">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00474">474</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00691">691</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00342">child</a>, and <a class="el" href="classType.html#a9a6d77fb89abc534e2ee1726cc13cf05">Type::IsConstType()</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00388">child</a>, and <a class="el" href="classType.html#a9a6d77fb89abc534e2ee1726cc13cf05">Type::IsConstType()</a>.</p>
 
 </div>
 </div>
@@ -503,7 +503,7 @@ Friends</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#aeee9fe8b11fc75a300cf37f8b5c9f034">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00450">450</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00667">667</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
 </div>
 </div>
@@ -524,7 +524,7 @@ Friends</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a3b2b570093e27170d582b67211dd6836">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00456">456</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00673">673</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
 </div>
 </div>
@@ -545,9 +545,9 @@ Friends</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a0a997c011addd186c7a45a9352fe0edb">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00444">444</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00661">661</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00342">child</a>, and <a class="el" href="classType.html#a0a997c011addd186c7a45a9352fe0edb">Type::IsUniformType()</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00388">child</a>, and <a class="el" href="classType.html#a0a997c011addd186c7a45a9352fe0edb">Type::IsUniformType()</a>.</p>
 
 </div>
 </div>
@@ -568,16 +568,16 @@ Friends</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a9fb5648ec4eb5b432723cf0b3332f8d0">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00462">462</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00679">679</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aa16424be83cd3d09820a17d95bd6a984"></a><!-- doxytag: member="ArrayType::LLVMType" ref="aa16424be83cd3d09820a17d95bd6a984" args="(llvm::LLVMContext *ctx) const " -->
+<a class="anchor" id="a765fb2392eb2b512b8d4627ba0ad5049"></a><!-- doxytag: member="ArrayType::LLVMType" ref="a765fb2392eb2b512b8d4627ba0ad5049" args="(llvm::LLVMContext *ctx) const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const llvm::ArrayType * ArrayType::LLVMType </td>
+          <td class="memname">LLVM_TYPE_CONST llvm::ArrayType * ArrayType::LLVMType </td>
           <td>(</td>
           <td class="paramtype">llvm::LLVMContext *&#160;</td>
           <td class="paramname"> <em>ctx</em>&#160;)</td>
@@ -588,15 +588,15 @@ Friends</h2></td></tr>
 <div class="memdoc">
 <p>Returns the LLVM type corresponding to this ispc type </p>
 
-<p>Implements <a class="el" href="classType.html#ab324b2f6e207b63de653aeb530b90f46">Type</a>.</p>
+<p>Implements <a class="el" href="classType.html#aa7b08bf258938faa7e12b580b623621a">Type</a>.</p>
 
-<p>Reimplemented in <a class="el" href="classSOAArrayType.html#ab85bd16630a9eacd48907b5468cb972d">SOAArrayType</a>.</p>
+<p>Reimplemented in <a class="el" href="classSOAArrayType.html#a125cc14f1d9cd133367433a2e4ff5fb3">SOAArrayType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00432">432</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00649">649</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00342">child</a>, <a class="el" href="classType.html#ab324b2f6e207b63de653aeb530b90f46">Type::LLVMType()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="type_8h_source.html#l00344">numElements</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00388">child</a>, <a class="el" href="ispc_8h_source.html#l00080">LLVM_TYPE_CONST</a>, <a class="el" href="classType.html#aa7b08bf258938faa7e12b580b623621a">Type::LLVMType()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="type_8h_source.html#l00390">numElements</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l00734">SOAArrayType::LLVMType()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l00951">SOAArrayType::LLVMType()</a>.</p>
 
 </div>
 </div>
@@ -619,9 +619,9 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSOAArrayType.html#ab307bbab3a4371eaf1a152da0f61be1a">SOAArrayType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00555">555</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00772">772</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00342">child</a>, <a class="el" href="classType.html#a7bd23bd909d493d271dbe1024d212c06">Type::Mangle()</a>, <a class="el" href="type_8h_source.html#l00344">numElements</a>, and <a class="el" href="parse_8yy_source.html#l13721">s</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00388">child</a>, <a class="el" href="classType.html#a7bd23bd909d493d271dbe1024d212c06">Type::Mangle()</a>, <a class="el" href="type_8h_source.html#l00390">numElements</a>, and <a class="el" href="parse_8yy_source.html#l15828">s</a>.</p>
 
 </div>
 </div>
@@ -642,11 +642,11 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classSOAArrayType.html#ab35a17ca7cbeec8fa0fa0b05b6e3ad58">SOAArrayType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00585">585</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00802">802</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00342">child</a>, <a class="el" href="type_8h_source.html#l00344">numElements</a>, and <a class="el" href="type_8cpp_source.html#l00585">TotalElementCount()</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00388">child</a>, <a class="el" href="type_8h_source.html#l00390">numElements</a>, and <a class="el" href="type_8cpp_source.html#l00802">TotalElementCount()</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l01488">AssignExpr::GetValue()</a>, <a class="el" href="type_8cpp_source.html#l00723">SOAArrayType::TotalElementCount()</a>, and <a class="el" href="type_8cpp_source.html#l00585">TotalElementCount()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l01518">AssignExpr::GetValue()</a>, <a class="el" href="type_8cpp_source.html#l00940">SOAArrayType::TotalElementCount()</a>, and <a class="el" href="type_8cpp_source.html#l00802">TotalElementCount()</a>.</p>
 
 </div>
 </div>
@@ -662,7 +662,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="type_8h_source.html#l00340">340</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p>Definition at line <a class="el" href="type_8h_source.html#l00386">386</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 
 </div>
 </div>
@@ -679,9 +679,9 @@ Friends</h2></td></tr>
 <div class="memdoc">
 <p><a class="el" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> of the elements of the array. </p>
 
-<p>Definition at line <a class="el" href="type_8h_source.html#l00342">342</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p>Definition at line <a class="el" href="type_8h_source.html#l00388">388</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l00672">SOAArrayType::GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00511">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00679">SOAArrayType::GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00517">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00658">SOAArrayType::GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00499">GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00651">SOAArrayType::GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l00493">GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l00480">GetBaseType()</a>, <a class="el" href="type_8cpp_source.html#l00567">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00746">SOAArrayType::GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00595">GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00529">GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l00761">SOAArrayType::GetSizedArray()</a>, <a class="el" href="type_8cpp_source.html#l00631">GetSizedArray()</a>, <a class="el" href="type_8cpp_source.html#l00665">SOAArrayType::GetSOAType()</a>, <a class="el" href="type_8cpp_source.html#l00505">GetSOAType()</a>, <a class="el" href="type_8cpp_source.html#l00686">SOAArrayType::GetString()</a>, <a class="el" href="type_8cpp_source.html#l00535">GetString()</a>, <a class="el" href="type_8cpp_source.html#l00474">IsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00444">IsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00734">SOAArrayType::LLVMType()</a>, <a class="el" href="type_8cpp_source.html#l00432">LLVMType()</a>, <a class="el" href="type_8cpp_source.html#l00555">Mangle()</a>, <a class="el" href="type_8cpp_source.html#l00769">SOAArrayType::soaType()</a>, <a class="el" href="type_8cpp_source.html#l00723">SOAArrayType::TotalElementCount()</a>, and <a class="el" href="type_8cpp_source.html#l00585">TotalElementCount()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l00889">SOAArrayType::GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00728">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00896">SOAArrayType::GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00734">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00875">SOAArrayType::GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00716">GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00868">SOAArrayType::GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l00710">GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l00697">GetBaseType()</a>, <a class="el" href="type_8cpp_source.html#l00784">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00963">SOAArrayType::GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00812">GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00746">GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l00978">SOAArrayType::GetSizedArray()</a>, <a class="el" href="type_8cpp_source.html#l00848">GetSizedArray()</a>, <a class="el" href="type_8cpp_source.html#l00882">SOAArrayType::GetSOAType()</a>, <a class="el" href="type_8cpp_source.html#l00722">GetSOAType()</a>, <a class="el" href="type_8cpp_source.html#l00903">SOAArrayType::GetString()</a>, <a class="el" href="type_8cpp_source.html#l00752">GetString()</a>, <a class="el" href="type_8cpp_source.html#l00691">IsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00661">IsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00951">SOAArrayType::LLVMType()</a>, <a class="el" href="type_8cpp_source.html#l00649">LLVMType()</a>, <a class="el" href="type_8cpp_source.html#l00772">Mangle()</a>, <a class="el" href="type_8cpp_source.html#l00986">SOAArrayType::soaType()</a>, <a class="el" href="type_8cpp_source.html#l00940">SOAArrayType::TotalElementCount()</a>, and <a class="el" href="type_8cpp_source.html#l00802">TotalElementCount()</a>.</p>
 
 </div>
 </div>
@@ -697,9 +697,9 @@ Friends</h2></td></tr>
 <div class="memdoc">
 <p>Number of elements in the array. </p>
 
-<p>Definition at line <a class="el" href="type_8h_source.html#l00344">344</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p>Definition at line <a class="el" href="type_8h_source.html#l00390">390</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l00424">ArrayType()</a>, <a class="el" href="type_8cpp_source.html#l00672">SOAArrayType::GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00511">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00679">SOAArrayType::GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00517">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00658">SOAArrayType::GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00499">GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00651">SOAArrayType::GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l00493">GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l00567">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00595">GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00523">GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l00631">GetSizedArray()</a>, <a class="el" href="type_8cpp_source.html#l00665">SOAArrayType::GetSOAType()</a>, <a class="el" href="type_8cpp_source.html#l00505">GetSOAType()</a>, <a class="el" href="type_8cpp_source.html#l00686">SOAArrayType::GetString()</a>, <a class="el" href="type_8cpp_source.html#l00535">GetString()</a>, <a class="el" href="type_8cpp_source.html#l00432">LLVMType()</a>, <a class="el" href="type_8cpp_source.html#l00555">Mangle()</a>, <a class="el" href="type_8cpp_source.html#l00640">SOAArrayType::SOAArrayType()</a>, <a class="el" href="type_8cpp_source.html#l00769">SOAArrayType::soaType()</a>, <a class="el" href="type_8cpp_source.html#l00723">SOAArrayType::TotalElementCount()</a>, and <a class="el" href="type_8cpp_source.html#l00585">TotalElementCount()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l00641">ArrayType()</a>, <a class="el" href="type_8cpp_source.html#l00889">SOAArrayType::GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00728">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00896">SOAArrayType::GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00734">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00875">SOAArrayType::GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00716">GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00868">SOAArrayType::GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l00710">GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l00784">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00812">GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00740">GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l00848">GetSizedArray()</a>, <a class="el" href="type_8cpp_source.html#l00882">SOAArrayType::GetSOAType()</a>, <a class="el" href="type_8cpp_source.html#l00722">GetSOAType()</a>, <a class="el" href="type_8cpp_source.html#l00903">SOAArrayType::GetString()</a>, <a class="el" href="type_8cpp_source.html#l00752">GetString()</a>, <a class="el" href="type_8cpp_source.html#l00649">LLVMType()</a>, <a class="el" href="type_8cpp_source.html#l00772">Mangle()</a>, <a class="el" href="type_8cpp_source.html#l00857">SOAArrayType::SOAArrayType()</a>, <a class="el" href="type_8cpp_source.html#l00986">SOAArrayType::soaType()</a>, <a class="el" href="type_8cpp_source.html#l00940">SOAArrayType::TotalElementCount()</a>, and <a class="el" href="type_8cpp_source.html#l00802">TotalElementCount()</a>.</p>
 
 </div>
 </div>
@@ -708,7 +708,7 @@ Friends</h2></td></tr>
 <li><a class="el" href="type_8cpp_source.html">type.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 4 2011 18:29:50 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Jul 17 2011 16:54:29 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

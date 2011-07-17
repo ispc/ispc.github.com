@@ -85,7 +85,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionEmitContext.html#a79a9e68a7c7e3391d68167951cfa6612">GetStringPtr</a> (const std::string &amp;str)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::BasicBlock *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionEmitContext.html#a6e7755bf2175baf6c63eaf583e4d3fc0">CreateBasicBlock</a> (const char *name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionEmitContext.html#a0981fb1866ff3fce6c7db436f957c1c1">I1VecToBoolVec</a> (llvm::Value *b)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionEmitContext.html#a5bfe3f21485ff9c78db73805b17539c3">EmitMalloc</a> (const llvm::Type *ty)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionEmitContext.html#a09681e6602bc2c41ed05041c2a1b2414">EmitMalloc</a> (const llvm::Type *ty, int align=0)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionEmitContext.html#a1e3604b731da7c5c96ee1b2b386c997c">EmitFree</a> (llvm::Value *ptr)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionEmitContext.html#afd18e81376746987a23a7b93792e784a">AddInstrumentationPoint</a> (const char *note)</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Debugging support</div></td></tr>
@@ -218,7 +218,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00126">126</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8h_source.html#l00409">allocaBlock</a>, <a class="el" href="ctx_8cpp_source.html#l01501">AllocaInst()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8h_source.html#l00442">breakLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00453">breakTarget</a>, <a class="el" href="ctx_8h_source.html#l00447">continueLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00457">continueTarget</a>, <a class="el" href="ispc_8h_source.html#l00299">Globals::ctx</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="ctx_8h_source.html#l00478">diFile</a>, <a class="el" href="ctx_8h_source.html#l00482">diFunction</a>, <a class="el" href="ctx_8cpp_source.html#l00894">EmitVariableDebugInfo()</a>, <a class="el" href="ctx_8h_source.html#l00432">entryMask</a>, <a class="el" href="ispc_8h_source.html#l00103">SourcePos::first_line</a>, <a class="el" href="ctx_8h_source.html#l00426">funcStartPos</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ispc_8cpp_source.html#l00122">SourcePos::GetDIFile()</a>, <a class="el" href="classType.html#a8b6ded269378020c769915bbbff3d73c">Type::GetDIType()</a>, <a class="el" href="sym_8h_source.html#l00096">Symbol::isStatic</a>, <a class="el" href="ctx_8h_source.html#l00489">launchedTasks</a>, <a class="el" href="ispc_8h_source.html#l00187">Opt::level</a>, <a class="el" href="llvmutil_8cpp_source.html#l00069">LLVMMaskAllOff</a>, <a class="el" href="llvmutil_8cpp_source.html#l00068">LLVMMaskAllOn</a>, <a class="el" href="classType.html#ab324b2f6e207b63de653aeb530b90f46">Type::LLVMType()</a>, <a class="el" href="sym_8cpp_source.html#l00131">SymbolTable::LookupVariable()</a>, <a class="el" href="ctx_8h_source.html#l00436">loopMask</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="ctx_8h_source.html#l00417">maskPtr</a>, <a class="el" href="llvmutil_8h_source.html#l00065">LLVMTypes::MaskType</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00260">Globals::opt</a>, <a class="el" href="sym_8h_source.html#l00075">Symbol::pos</a>, <a class="el" href="ctx_8h_source.html#l00462">returnedLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00429">returnType</a>, <a class="el" href="ctx_8h_source.html#l00468">returnValuePtr</a>, <a class="el" href="ctx_8cpp_source.html#l00856">StartScope()</a>, <a class="el" href="sym_8h_source.html#l00077">Symbol::storagePtr</a>, <a class="el" href="ctx_8cpp_source.html#l01682">StoreInst()</a>, <a class="el" href="module_8h_source.html#l00089">Module::symbolTable</a>, <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>, and <a class="el" href="type_8h_source.html#l00237">AtomicType::Void</a>.</p>
+<p>References <a class="el" href="ctx_8h_source.html#l00409">allocaBlock</a>, <a class="el" href="ctx_8cpp_source.html#l01502">AllocaInst()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8h_source.html#l00442">breakLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00453">breakTarget</a>, <a class="el" href="ctx_8h_source.html#l00447">continueLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00457">continueTarget</a>, <a class="el" href="ispc_8h_source.html#l00308">Globals::ctx</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="ctx_8h_source.html#l00478">diFile</a>, <a class="el" href="ctx_8h_source.html#l00482">diFunction</a>, <a class="el" href="ctx_8cpp_source.html#l00895">EmitVariableDebugInfo()</a>, <a class="el" href="ctx_8h_source.html#l00432">entryMask</a>, <a class="el" href="ispc_8h_source.html#l00110">SourcePos::first_line</a>, <a class="el" href="ctx_8h_source.html#l00426">funcStartPos</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ispc_8cpp_source.html#l00122">SourcePos::GetDIFile()</a>, <a class="el" href="classType.html#a8b6ded269378020c769915bbbff3d73c">Type::GetDIType()</a>, <a class="el" href="sym_8h_source.html#l00096">Symbol::isStatic</a>, <a class="el" href="ctx_8h_source.html#l00489">launchedTasks</a>, <a class="el" href="ispc_8h_source.html#l00196">Opt::level</a>, <a class="el" href="llvmutil_8cpp_source.html#l00071">LLVMMaskAllOff</a>, <a class="el" href="llvmutil_8cpp_source.html#l00070">LLVMMaskAllOn</a>, <a class="el" href="classType.html#aa7b08bf258938faa7e12b580b623621a">Type::LLVMType()</a>, <a class="el" href="sym_8cpp_source.html#l00132">SymbolTable::LookupVariable()</a>, <a class="el" href="ctx_8h_source.html#l00436">loopMask</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="ctx_8h_source.html#l00417">maskPtr</a>, <a class="el" href="llvmutil_8h_source.html#l00067">LLVMTypes::MaskType</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00269">Globals::opt</a>, <a class="el" href="sym_8h_source.html#l00075">Symbol::pos</a>, <a class="el" href="ctx_8h_source.html#l00462">returnedLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00429">returnType</a>, <a class="el" href="ctx_8h_source.html#l00468">returnValuePtr</a>, <a class="el" href="ctx_8cpp_source.html#l00857">StartScope()</a>, <a class="el" href="sym_8h_source.html#l00077">Symbol::storagePtr</a>, <a class="el" href="ctx_8cpp_source.html#l01685">StoreInst()</a>, <a class="el" href="module_8h_source.html#l00089">Module::symbolTable</a>, <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>, and <a class="el" href="type_8h_source.html#l00237">AtomicType::Void</a>.</p>
 
 </div>
 </div>
@@ -275,11 +275,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Adds debugging metadata to the given instruction. If pos == NULL, use <a class="el" href="classFunctionEmitContext.html#a9fdefd08729bad7b92bb5a863a8ab1d3">FunctionEmitContext::currentPos</a> as the source file position for the instruction. Similarly, if a DIScope is provided, it's used and otherwise the scope is found from a <a class="el" href="classFunctionEmitContext.html#a7208b4f5782af355e07417770e076920">GetDIScope()</a> call. This takes a llvm::Value for the instruction rather than an llvm::Instruction for convenience; in calling code we often have Instructions stored using Value pointers; the code here returns silently if it's not actually given an instruction. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00838">838</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00839">839</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="ispc_8h_source.html#l00104">SourcePos::first_column</a>, <a class="el" href="ispc_8h_source.html#l00103">SourcePos::first_line</a>, <a class="el" href="ctx_8cpp_source.html#l00887">GetDIScope()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="ispc_8h_source.html#l00111">SourcePos::first_column</a>, <a class="el" href="ispc_8h_source.html#l00110">SourcePos::first_line</a>, <a class="el" href="ctx_8cpp_source.html#l00888">GetDIScope()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00959">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01080">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01735">BranchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01825">CallInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01195">CastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01046">CmpInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00916">EmitFunctionParameterDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l00760">EmitMalloc()</a>, <a class="el" href="ctx_8cpp_source.html#l00894">EmitVariableDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l01757">ExtractInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01212">FPCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01263">GetElementPtrInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01776">InsertInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01146">IntToPtrInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01340">LoadInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00993">NotOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01796">PhiNode()</a>, <a class="el" href="ctx_8cpp_source.html#l01114">PtrToIntInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01876">ReturnInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01809">SelectInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01229">SExtInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01682">StoreInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01178">TruncInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l01246">ZExtInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00960">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01081">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01738">BranchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01828">CallInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01196">CastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01047">CmpInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00917">EmitFunctionParameterDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l00760">EmitMalloc()</a>, <a class="el" href="ctx_8cpp_source.html#l00895">EmitVariableDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l01760">ExtractInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01213">FPCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01264">GetElementPtrInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01779">InsertInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01147">IntToPtrInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01341">LoadInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00994">NotOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01799">PhiNode()</a>, <a class="el" href="ctx_8cpp_source.html#l01115">PtrToIntInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01879">ReturnInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01812">SelectInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01230">SExtInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01685">StoreInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01179">TruncInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l01247">ZExtInst()</a>.</p>
 
 </div>
 </div>
@@ -309,11 +309,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Add metadata to the given instruction to encode the current source file position. This data is used in the <a class="el" href="opt_8cpp.html#a9ce816b84cb0c2ca769c486be11dde5f">lGetSourcePosFromMetadata()</a> function in <a class="el" href="opt_8cpp.html" title="Implementations of various ispc optimization passes that operate on the LLVM IR.">opt.cpp</a>. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01473">1473</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01474">1474</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00299">Globals::ctx</a>, <a class="el" href="ispc_8h_source.html#l00104">SourcePos::first_column</a>, <a class="el" href="ispc_8h_source.html#l00103">SourcePos::first_line</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00132">LLVMInt32()</a>, and <a class="el" href="ispc_8h_source.html#l00102">SourcePos::name</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00308">Globals::ctx</a>, <a class="el" href="ispc_8h_source.html#l00111">SourcePos::first_column</a>, <a class="el" href="ispc_8h_source.html#l00110">SourcePos::first_line</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00136">LLVMInt32()</a>, and <a class="el" href="ispc_8h_source.html#l00109">SourcePos::name</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01381">gather()</a>, and <a class="el" href="ctx_8cpp_source.html#l01613">scatter()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01382">gather()</a>, and <a class="el" href="ctx_8cpp_source.html#l01616">scatter()</a>.</p>
 
 </div>
 </div>
@@ -333,11 +333,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>If the user has asked to compile the program with instrumentation, this inserts a callback to the user-supplied instrumentation function at the current point in the code. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00805">805</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00806">806</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l01825">CallInst()</a>, <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>, <a class="el" href="ispc_8h_source.html#l00292">Globals::emitInstrumentation</a>, <a class="el" href="ispc_8h_source.html#l00103">SourcePos::first_line</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00694">LaneMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00792">lGetStringAsValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00132">LLVMInt32()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00102">SourcePos::name</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l01828">CallInst()</a>, <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>, <a class="el" href="ispc_8h_source.html#l00301">Globals::emitInstrumentation</a>, <a class="el" href="ispc_8h_source.html#l00110">SourcePos::first_line</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00694">LaneMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00793">lGetStringAsValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00136">LLVMInt32()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00109">SourcePos::name</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01381">gather()</a>, <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>, <a class="el" href="module_8cpp_source.html#l00592">lEmitFunctionCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00401">lEmitIfStatements()</a>, and <a class="el" href="ctx_8cpp_source.html#l01613">scatter()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01382">gather()</a>, <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>, <a class="el" href="module_8cpp_source.html#l00603">lEmitFunctionCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00410">lEmitIfStatements()</a>, and <a class="el" href="ctx_8cpp_source.html#l01616">scatter()</a>.</p>
 
 </div>
 </div>
@@ -355,13 +355,13 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Given a boolean mask value of type <a class="el" href="structLLVMTypes.html#acba980a64c1d55e6f6857bb2e95c494f">LLVMTypes::MaskType</a>, return an i1 value that indicates if all of the mask lanes are on. </p>
+<p>Given a boolean mask value of type <a class="el" href="structLLVMTypes.html#a16787367d57f72291b61968ca5d3a791">LLVMTypes::MaskType</a>, return an i1 value that indicates if all of the mask lanes are on. </p>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00686">686</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l01046">CmpInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8cpp_source.html#l00694">LaneMask()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00132">LLVMInt32()</a>, <a class="el" href="ispc_8h_source.html#l00262">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00173">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l01047">CmpInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8cpp_source.html#l00694">LaneMask()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00136">LLVMInt32()</a>, <a class="el" href="ispc_8h_source.html#l00271">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00182">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00290">BranchIfMaskAll()</a>, <a class="el" href="stmt_8cpp_source.html#l00570">IfStmt::emitCoherentTests()</a>, <a class="el" href="stmt_8cpp_source.html#l00618">IfStmt::emitMaskAllOn()</a>, and <a class="el" href="ctx_8cpp_source.html#l00706">MasksAllEqual()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00290">BranchIfMaskAll()</a>, <a class="el" href="stmt_8cpp_source.html#l00579">IfStmt::emitCoherentTests()</a>, <a class="el" href="stmt_8cpp_source.html#l00627">IfStmt::emitMaskAllOn()</a>, and <a class="el" href="ctx_8cpp_source.html#l00706">MasksAllEqual()</a>.</p>
 
 </div>
 </div>
@@ -403,11 +403,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Emits an alloca instruction to allocate stack storage for the given type. If a non-zero alignment is specified, the object is also allocated at the given alignment. By default, the alloca instruction is added at the start of the function in the entry basic block; if it should be added to the current basic block, then the atEntryBlock parameter should be false. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01501">1501</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01502">1502</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8h_source.html#l00409">allocaBlock</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ispc_8h_source.html#l00168">Target::nativeVectorWidth</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ispc_8h_source.html#l00262">Globals::target</a>.</p>
+<p>References <a class="el" href="ctx_8h_source.html#l00409">allocaBlock</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ispc_8h_source.html#l00177">Target::nativeVectorWidth</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ispc_8h_source.html#l00271">Globals::target</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01428">PrintStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00232">DeclStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, <a class="el" href="expr_8cpp_source.html#l02767">MemberExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02609">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02188">FunctionCallExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l01907">LaunchInst()</a>, <a class="el" href="module_8cpp_source.html#l00556">lCopyInTaskParameter()</a>, <a class="el" href="module_8cpp_source.html#l00592">lEmitFunctionCode()</a>, <a class="el" href="expr_8cpp_source.html#l01662">lEmitVaryingSelect()</a>, <a class="el" href="stmt_8cpp_source.html#l01387">lProcessPrintArg()</a>, and <a class="el" href="ctx_8cpp_source.html#l00372">StartLoop()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01437">PrintStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00233">DeclStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, <a class="el" href="expr_8cpp_source.html#l02805">MemberExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02647">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02226">FunctionCallExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l01910">LaunchInst()</a>, <a class="el" href="module_8cpp_source.html#l00567">lCopyInTaskParameter()</a>, <a class="el" href="module_8cpp_source.html#l00603">lEmitFunctionCode()</a>, <a class="el" href="expr_8cpp_source.html#l01692">lEmitVaryingSelect()</a>, <a class="el" href="stmt_8cpp_source.html#l01396">lProcessPrintArg()</a>, and <a class="el" href="ctx_8cpp_source.html#l00372">StartLoop()</a>.</p>
 
 </div>
 </div>
@@ -425,13 +425,13 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Given a boolean mask value of type <a class="el" href="structLLVMTypes.html#acba980a64c1d55e6f6857bb2e95c494f">LLVMTypes::MaskType</a>, return an i1 value that indicates if any of the mask lanes are on. </p>
+<p>Given a boolean mask value of type <a class="el" href="structLLVMTypes.html#a16787367d57f72291b61968ca5d3a791">LLVMTypes::MaskType</a>, return an i1 value that indicates if any of the mask lanes are on. </p>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00678">678</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l01046">CmpInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00694">LaneMask()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00132">LLVMInt32()</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l01047">CmpInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00694">LaneMask()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00136">LLVMInt32()</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00279">BranchIfMaskAny()</a>, and <a class="el" href="stmt_8cpp_source.html#l00618">IfStmt::emitMaskAllOn()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00279">BranchIfMaskAny()</a>, and <a class="el" href="stmt_8cpp_source.html#l00627">IfStmt::emitMaskAllOn()</a>.</p>
 
 </div>
 </div>
@@ -473,11 +473,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Emit the binary operator given by the inst parameter. If llvm::Values corresponding to VectorTypes are given as operands, this also handles applying the given operation to the vector elements. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00959">959</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00960">960</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01757">ExtractInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01776">InsertInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00943">lArrayVectorWidth()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01760">ExtractInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01779">InsertInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00944">lArrayVectorWidth()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l00684">IfStmt::emitMaskMixed()</a>, <a class="el" href="ctx_8cpp_source.html#l00324">EndIf()</a>, <a class="el" href="expr_8cpp_source.html#l00866">BinaryExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>, <a class="el" href="expr_8cpp_source.html#l00768">lEmitBinaryArith()</a>, <a class="el" href="expr_8cpp_source.html#l00746">lEmitBinaryBitOp()</a>, <a class="el" href="expr_8cpp_source.html#l00467">lEmitNegate()</a>, <a class="el" href="expr_8cpp_source.html#l00406">lEmitPrePostIncDec()</a>, <a class="el" href="stmt_8cpp_source.html#l00673">lTestMatchesMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00261">MaskAnd()</a>, <a class="el" href="ctx_8cpp_source.html#l00269">MaskAndNot()</a>, <a class="el" href="ctx_8cpp_source.html#l00586">RestoreContinuedLanes()</a>, and <a class="el" href="ctx_8cpp_source.html#l00424">restoreMaskGivenReturns()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l00693">IfStmt::emitMaskMixed()</a>, <a class="el" href="ctx_8cpp_source.html#l00324">EndIf()</a>, <a class="el" href="expr_8cpp_source.html#l00895">BinaryExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>, <a class="el" href="expr_8cpp_source.html#l00797">lEmitBinaryArith()</a>, <a class="el" href="expr_8cpp_source.html#l00775">lEmitBinaryBitOp()</a>, <a class="el" href="expr_8cpp_source.html#l00494">lEmitNegate()</a>, <a class="el" href="expr_8cpp_source.html#l00433">lEmitPrePostIncDec()</a>, <a class="el" href="stmt_8cpp_source.html#l00682">lTestMatchesMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00261">MaskAnd()</a>, <a class="el" href="ctx_8cpp_source.html#l00269">MaskAndNot()</a>, <a class="el" href="ctx_8cpp_source.html#l00586">RestoreContinuedLanes()</a>, and <a class="el" href="ctx_8cpp_source.html#l00424">restoreMaskGivenReturns()</a>.</p>
 
 </div>
 </div>
@@ -512,11 +512,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01080">1080</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01081">1081</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01757">ExtractInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8cpp_source.html#l01776">InsertInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00262">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00173">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01760">ExtractInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8cpp_source.html#l01779">InsertInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00271">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00182">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01428">PrintStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00782">EmitFree()</a>, <a class="el" href="ctx_8cpp_source.html#l00760">EmitMalloc()</a>, <a class="el" href="ctx_8cpp_source.html#l01381">gather()</a>, <a class="el" href="ctx_8cpp_source.html#l00718">GetStringPtr()</a>, <a class="el" href="expr_8cpp_source.html#l03923">TypeCastExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l01907">LaunchInst()</a>, <a class="el" href="expr_8cpp_source.html#l02589">lCastUniformVectorBasePtr()</a>, <a class="el" href="stmt_8cpp_source.html#l01387">lProcessPrintArg()</a>, <a class="el" href="ctx_8cpp_source.html#l01540">maskedStore()</a>, and <a class="el" href="ctx_8cpp_source.html#l01613">scatter()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01437">PrintStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00783">EmitFree()</a>, <a class="el" href="ctx_8cpp_source.html#l00760">EmitMalloc()</a>, <a class="el" href="ctx_8cpp_source.html#l01382">gather()</a>, <a class="el" href="ctx_8cpp_source.html#l00718">GetStringPtr()</a>, <a class="el" href="expr_8cpp_source.html#l03955">TypeCastExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l01910">LaunchInst()</a>, <a class="el" href="expr_8cpp_source.html#l02627">lCastUniformVectorBasePtr()</a>, <a class="el" href="stmt_8cpp_source.html#l01396">lProcessPrintArg()</a>, <a class="el" href="ctx_8cpp_source.html#l01541">maskedStore()</a>, and <a class="el" href="ctx_8cpp_source.html#l01616">scatter()</a>.</p>
 
 </div>
 </div>
@@ -548,9 +548,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00290">290</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00686">All()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l01735">BranchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00686">All()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l01738">BranchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -582,9 +582,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00279">279</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00678">Any()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l01735">BranchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00678">Any()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l01738">BranchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00301">BranchIfMaskNone()</a>, <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>, and <a class="el" href="expr_8cpp_source.html#l02188">FunctionCallExpr::GetValue()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00301">BranchIfMaskNone()</a>, <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>, and <a class="el" href="expr_8cpp_source.html#l02226">FunctionCallExpr::GetValue()</a>.</p>
 
 </div>
 </div>
@@ -635,11 +635,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01735">1735</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01738">1738</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, and <a class="el" href="ctx_8h_source.html#l00413">bblock</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, and <a class="el" href="ctx_8h_source.html#l00413">bblock</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00290">BranchIfMaskAll()</a>, <a class="el" href="ctx_8cpp_source.html#l00279">BranchIfMaskAny()</a>, <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00414">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00570">IfStmt::emitCoherentTests()</a>, <a class="el" href="stmt_8cpp_source.html#l00618">IfStmt::emitMaskAllOn()</a>, <a class="el" href="stmt_8cpp_source.html#l00684">IfStmt::emitMaskMixed()</a>, <a class="el" href="expr_8cpp_source.html#l02188">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>, and <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00290">BranchIfMaskAll()</a>, <a class="el" href="ctx_8cpp_source.html#l00279">BranchIfMaskAny()</a>, <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00423">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00579">IfStmt::emitCoherentTests()</a>, <a class="el" href="stmt_8cpp_source.html#l00627">IfStmt::emitMaskAllOn()</a>, <a class="el" href="stmt_8cpp_source.html#l00693">IfStmt::emitMaskMixed()</a>, <a class="el" href="expr_8cpp_source.html#l02226">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>, and <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>.</p>
 
 </div>
 </div>
@@ -674,9 +674,9 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01742">1742</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01745">1745</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
 </div>
 </div>
@@ -698,9 +698,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00440">440</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l00959">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01735">BranchInst()</a>, <a class="el" href="ctx_8h_source.html#l00442">breakLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00453">breakTarget</a>, <a class="el" href="ctx_8h_source.html#l00457">continueTarget</a>, <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>, <a class="el" href="util_8cpp_source.html#l00258">Error()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00535">ifsInLoopAllUniform()</a>, <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00069">LLVMMaskAllOff</a>, <a class="el" href="llvmutil_8cpp_source.html#l00068">LLVMMaskAllOn</a>, <a class="el" href="ctx_8cpp_source.html#l01340">LoadInst()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l01682">StoreInst()</a>, and <a class="el" href="util_8cpp_source.html#l00280">Warning()</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l00960">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01738">BranchInst()</a>, <a class="el" href="ctx_8h_source.html#l00442">breakLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00453">breakTarget</a>, <a class="el" href="ctx_8h_source.html#l00457">continueTarget</a>, <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>, <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00535">ifsInLoopAllUniform()</a>, <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00071">LLVMMaskAllOff</a>, <a class="el" href="llvmutil_8cpp_source.html#l00070">LLVMMaskAllOn</a>, <a class="el" href="ctx_8cpp_source.html#l01341">LoadInst()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l01685">StoreInst()</a>, and <a class="el" href="util_8cpp_source.html#l00282">Warning()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01187">BreakStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01196">BreakStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -736,9 +736,9 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>This is a convenience method that issues a call instruction to a function that takes just a single argument. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01842">1842</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01845">1845</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
 </div>
 </div>
@@ -780,9 +780,9 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>This is a convenience method that issues a call instruction to a function that takes two arguments. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01859">1859</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01862">1862</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
 </div>
 </div>
@@ -817,11 +817,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01825">1825</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01828">1828</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00805">AddInstrumentationPoint()</a>, <a class="el" href="stmt_8cpp_source.html#l01428">PrintStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00782">EmitFree()</a>, <a class="el" href="ctx_8cpp_source.html#l00760">EmitMalloc()</a>, <a class="el" href="ctx_8cpp_source.html#l01381">gather()</a>, <a class="el" href="expr_8cpp_source.html#l04476">SyncExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02188">FunctionCallExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l00694">LaneMask()</a>, <a class="el" href="ctx_8cpp_source.html#l01907">LaunchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01540">maskedStore()</a>, and <a class="el" href="ctx_8cpp_source.html#l01613">scatter()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00806">AddInstrumentationPoint()</a>, <a class="el" href="stmt_8cpp_source.html#l01437">PrintStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00783">EmitFree()</a>, <a class="el" href="ctx_8cpp_source.html#l00760">EmitMalloc()</a>, <a class="el" href="ctx_8cpp_source.html#l01382">gather()</a>, <a class="el" href="expr_8cpp_source.html#l04522">SyncExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02226">FunctionCallExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l00694">LaneMask()</a>, <a class="el" href="ctx_8cpp_source.html#l01910">LaunchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01541">maskedStore()</a>, and <a class="el" href="ctx_8cpp_source.html#l01616">scatter()</a>.</p>
 
 </div>
 </div>
@@ -862,11 +862,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01195">1195</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01196">1196</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l03577">lTypeConvAtomic()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l03618">lTypeConvAtomic()</a>.</p>
 
 </div>
 </div>
@@ -914,11 +914,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Emit a comparison instruction. If the operands are VectorTypes, then a value for the corresponding boolean <a class="el" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> is returned. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01046">1046</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01047">1047</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01757">ExtractInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01776">InsertInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00943">lArrayVectorWidth()</a>, <a class="el" href="ctx_8cpp_source.html#l01028">lGetMatchingBoolVectorType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01760">ExtractInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01779">InsertInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00944">lArrayVectorWidth()</a>, <a class="el" href="ctx_8cpp_source.html#l01029">lGetMatchingBoolVectorType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00686">All()</a>, <a class="el" href="ctx_8cpp_source.html#l00678">Any()</a>, <a class="el" href="expr_8cpp_source.html#l00811">lEmitBinaryCmp()</a>, <a class="el" href="expr_8cpp_source.html#l03577">lTypeConvAtomic()</a>, and <a class="el" href="ctx_8cpp_source.html#l00706">MasksAllEqual()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00686">All()</a>, <a class="el" href="ctx_8cpp_source.html#l00678">Any()</a>, <a class="el" href="expr_8cpp_source.html#l00840">lEmitBinaryCmp()</a>, <a class="el" href="expr_8cpp_source.html#l03618">lTypeConvAtomic()</a>, and <a class="el" href="ctx_8cpp_source.html#l00706">MasksAllEqual()</a>.</p>
 
 </div>
 </div>
@@ -940,9 +940,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00489">489</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00805">AddInstrumentationPoint()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l00959">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01735">BranchInst()</a>, <a class="el" href="ctx_8h_source.html#l00447">continueLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00457">continueTarget</a>, <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>, <a class="el" href="util_8cpp_source.html#l00258">Error()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00535">ifsInLoopAllUniform()</a>, <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00069">LLVMMaskAllOff</a>, <a class="el" href="llvmutil_8cpp_source.html#l00068">LLVMMaskAllOn</a>, <a class="el" href="ctx_8cpp_source.html#l01340">LoadInst()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l01682">StoreInst()</a>, and <a class="el" href="util_8cpp_source.html#l00280">Warning()</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00806">AddInstrumentationPoint()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l00960">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01738">BranchInst()</a>, <a class="el" href="ctx_8h_source.html#l00447">continueLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00457">continueTarget</a>, <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>, <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00535">ifsInLoopAllUniform()</a>, <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00071">LLVMMaskAllOff</a>, <a class="el" href="llvmutil_8cpp_source.html#l00070">LLVMMaskAllOn</a>, <a class="el" href="ctx_8cpp_source.html#l01341">LoadInst()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l01685">StoreInst()</a>, and <a class="el" href="util_8cpp_source.html#l00282">Warning()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01225">ContinueStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01234">ContinueStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -964,9 +964,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00730">730</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ispc_8h_source.html#l00299">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00054">g</a>.</p>
+<p>References <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ispc_8h_source.html#l00308">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00054">g</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00414">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00570">IfStmt::emitCoherentTests()</a>, <a class="el" href="stmt_8cpp_source.html#l00618">IfStmt::emitMaskAllOn()</a>, <a class="el" href="stmt_8cpp_source.html#l00684">IfStmt::emitMaskMixed()</a>, <a class="el" href="expr_8cpp_source.html#l02188">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>, and <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00423">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00579">IfStmt::emitCoherentTests()</a>, <a class="el" href="stmt_8cpp_source.html#l00627">IfStmt::emitMaskAllOn()</a>, <a class="el" href="stmt_8cpp_source.html#l00693">IfStmt::emitMaskMixed()</a>, <a class="el" href="expr_8cpp_source.html#l02226">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>, and <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>.</p>
 
 </div>
 </div>
@@ -998,9 +998,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00613">613</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00805">AddInstrumentationPoint()</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l00959">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01735">BranchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00730">CreateBasicBlock()</a>, <a class="el" href="ctx_8h_source.html#l00432">entryMask</a>, <a class="el" href="util_8cpp_source.html#l00258">Error()</a>, <a class="el" href="ctx_8h_source.html#l00426">funcStartPos</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00069">LLVMMaskAllOff</a>, <a class="el" href="ctx_8cpp_source.html#l01340">LoadInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00706">MasksAllEqual()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00142">ASTNode::pos</a>, <a class="el" href="ctx_8h_source.html#l00462">returnedLanesPtr</a>, <a class="el" href="ctx_8cpp_source.html#l01876">ReturnInst()</a>, <a class="el" href="ctx_8h_source.html#l00429">returnType</a>, <a class="el" href="ctx_8h_source.html#l00468">returnValuePtr</a>, <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l01682">StoreInst()</a>, <a class="el" href="expr_8cpp_source.html#l00120">Expr::TypeConv()</a>, <a class="el" href="ctx_8cpp_source.html#l00603">VaryingCFDepth()</a>, and <a class="el" href="type_8h_source.html#l00237">AtomicType::Void</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00806">AddInstrumentationPoint()</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l00960">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01738">BranchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00730">CreateBasicBlock()</a>, <a class="el" href="ctx_8h_source.html#l00432">entryMask</a>, <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="ctx_8h_source.html#l00426">funcStartPos</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00071">LLVMMaskAllOff</a>, <a class="el" href="ctx_8cpp_source.html#l01341">LoadInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00706">MasksAllEqual()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00151">ASTNode::pos</a>, <a class="el" href="ctx_8h_source.html#l00462">returnedLanesPtr</a>, <a class="el" href="ctx_8cpp_source.html#l01879">ReturnInst()</a>, <a class="el" href="ctx_8h_source.html#l00429">returnType</a>, <a class="el" href="ctx_8h_source.html#l00468">returnValuePtr</a>, <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l01685">StoreInst()</a>, <a class="el" href="expr_8cpp_source.html#l00120">Expr::TypeConv()</a>, <a class="el" href="ctx_8cpp_source.html#l00603">VaryingCFDepth()</a>, and <a class="el" href="type_8h_source.html#l00237">AtomicType::Void</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01264">ReturnStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01273">ReturnStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -1018,11 +1018,13 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Emit code to call the user-supplied ISPCFree function, passing it the given pointer to storage previously allocated by an <a class="el" href="classFunctionEmitContext.html#a5bfe3f21485ff9c78db73805b17539c3">EmitMalloc()</a> call. </p>
+<p>Emit code to call the user-supplied ISPCFree function, passing it the given pointer to storage previously allocated by an <a class="el" href="classFunctionEmitContext.html#a09681e6602bc2c41ed05041c2a1b2414">EmitMalloc()</a> call. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00782">782</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00783">783</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8cpp_source.html#l01080">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01825">CallInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="llvmutil_8h_source.html#l00053">LLVMTypes::VoidPointerType</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8cpp_source.html#l01081">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01828">CallInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="llvmutil_8h_source.html#l00054">LLVMTypes::VoidPointerType</a>.</p>
+
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00603">lEmitFunctionCode()</a>.</p>
 
 </div>
 </div>
@@ -1042,11 +1044,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Emits debugging information for the function parameter represented by sym. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00916">916</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00917">917</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="ctx_8h_source.html#l00482">diFunction</a>, <a class="el" href="ispc_8h_source.html#l00103">SourcePos::first_line</a>, <a class="el" href="ispc_8cpp_source.html#l00122">SourcePos::GetDIFile()</a>, <a class="el" href="classType.html#a8b6ded269378020c769915bbbff3d73c">Type::GetDIType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="sym_8h_source.html#l00075">Symbol::pos</a>, <a class="el" href="sym_8h_source.html#l00077">Symbol::storagePtr</a>, and <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="ctx_8h_source.html#l00482">diFunction</a>, <a class="el" href="ispc_8h_source.html#l00110">SourcePos::first_line</a>, <a class="el" href="ispc_8cpp_source.html#l00122">SourcePos::GetDIFile()</a>, <a class="el" href="classType.html#a8b6ded269378020c769915bbbff3d73c">Type::GetDIType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="sym_8h_source.html#l00075">Symbol::pos</a>, <a class="el" href="sym_8h_source.html#l00077">Symbol::storagePtr</a>, and <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00592">lEmitFunctionCode()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00603">lEmitFunctionCode()</a>.</p>
 
 </div>
 </div>
@@ -1077,7 +1079,7 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a5bfe3f21485ff9c78db73805b17539c3"></a><!-- doxytag: member="FunctionEmitContext::EmitMalloc" ref="a5bfe3f21485ff9c78db73805b17539c3" args="(const llvm::Type *ty)" -->
+<a class="anchor" id="a09681e6602bc2c41ed05041c2a1b2414"></a><!-- doxytag: member="FunctionEmitContext::EmitMalloc" ref="a09681e6602bc2c41ed05041c2a1b2414" args="(const llvm::Type *ty, int align=0)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1085,8 +1087,18 @@ Private Attributes</h2></td></tr>
           <td class="memname">llvm::Value * FunctionEmitContext::EmitMalloc </td>
           <td>(</td>
           <td class="paramtype">const llvm::Type *&#160;</td>
-          <td class="paramname"> <em>ty</em>&#160;)</td>
+          <td class="paramname"> <em>ty</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"> <em>align</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
@@ -1095,7 +1107,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00760">760</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l01080">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01825">CallInst()</a>, <a class="el" href="llvmutil_8h_source.html#l00059">LLVMTypes::Int64Type</a>, <a class="el" href="llvmutil_8cpp_source.html#l00132">LLVMInt32()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ctx_8cpp_source.html#l01114">PtrToIntInst()</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l01081">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01828">CallInst()</a>, <a class="el" href="llvmutil_8h_source.html#l00060">LLVMTypes::Int64Type</a>, <a class="el" href="llvmutil_8cpp_source.html#l00136">LLVMInt32()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ctx_8cpp_source.html#l01115">PtrToIntInst()</a>.</p>
+
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01910">LaunchInst()</a>.</p>
 
 </div>
 </div>
@@ -1115,11 +1129,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Emits debugging information for the variable represented by sym. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00894">894</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00895">895</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="ispc_8h_source.html#l00103">SourcePos::first_line</a>, <a class="el" href="ispc_8cpp_source.html#l00122">SourcePos::GetDIFile()</a>, <a class="el" href="ctx_8cpp_source.html#l00887">GetDIScope()</a>, <a class="el" href="classType.html#a8b6ded269378020c769915bbbff3d73c">Type::GetDIType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="sym_8h_source.html#l00075">Symbol::pos</a>, <a class="el" href="sym_8h_source.html#l00077">Symbol::storagePtr</a>, and <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="ispc_8h_source.html#l00110">SourcePos::first_line</a>, <a class="el" href="ispc_8cpp_source.html#l00122">SourcePos::GetDIFile()</a>, <a class="el" href="ctx_8cpp_source.html#l00888">GetDIScope()</a>, <a class="el" href="classType.html#a8b6ded269378020c769915bbbff3d73c">Type::GetDIType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="sym_8h_source.html#l00075">Symbol::pos</a>, <a class="el" href="sym_8h_source.html#l00077">Symbol::storagePtr</a>, and <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00232">DeclStmt::EmitCode()</a>, and <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00233">DeclStmt::EmitCode()</a>, and <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>.</p>
 
 </div>
 </div>
@@ -1140,9 +1154,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00324">324</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l00959">BinaryOperator()</a>, <a class="el" href="ctx_8h_source.html#l00442">breakLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00447">continueLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00474">controlFlowInfo</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l01340">LoadInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00993">NotOperator()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00424">restoreMaskGivenReturns()</a>, and <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l00960">BinaryOperator()</a>, <a class="el" href="ctx_8h_source.html#l00442">breakLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00447">continueLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00474">controlFlowInfo</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l01341">LoadInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00994">NotOperator()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00424">restoreMaskGivenReturns()</a>, and <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00414">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00618">IfStmt::emitMaskAllOn()</a>, and <a class="el" href="stmt_8cpp_source.html#l00684">IfStmt::emitMaskMixed()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00423">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00627">IfStmt::emitMaskAllOn()</a>, and <a class="el" href="stmt_8cpp_source.html#l00693">IfStmt::emitMaskMixed()</a>.</p>
 
 </div>
 </div>
@@ -1165,7 +1179,7 @@ Private Attributes</h2></td></tr>
 
 <p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00442">breakLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00453">breakTarget</a>, <a class="el" href="ctx_8h_source.html#l00447">continueLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00457">continueTarget</a>, <a class="el" href="ctx_8h_source.html#l00474">controlFlowInfo</a>, <a class="el" href="ctx_8h_source.html#l00436">loopMask</a>, and <a class="el" href="ctx_8cpp_source.html#l00424">restoreMaskGivenReturns()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -1184,11 +1198,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Inform the debugging information generation code that the current scope is ending in the source program. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00876">876</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00877">877</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
 <p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00486">debugScopes</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01306">StmtList::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l00401">lEmitIfStatements()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01315">StmtList::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l00410">lEmitIfStatements()</a>.</p>
 
 </div>
 </div>
@@ -1224,11 +1238,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>This convenience method maps to an llvm::ExtractElementInst if the given value is a llvm::VectorType, and to an llvm::ExtractValueInst otherwise. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01757">1757</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01760">1760</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="llvmutil_8cpp_source.html#l00132">LLVMInt32()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="llvmutil_8cpp_source.html#l00136">LLVMInt32()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00959">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01080">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01046">CmpInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01263">GetElementPtrInst()</a>, <a class="el" href="expr_8cpp_source.html#l03923">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l00737">I1VecToBoolVec()</a>, <a class="el" href="ctx_8cpp_source.html#l01146">IntToPtrInst()</a>, <a class="el" href="expr_8cpp_source.html#l03890">lUniformValueToVarying()</a>, <a class="el" href="ctx_8cpp_source.html#l01540">maskedStore()</a>, <a class="el" href="ctx_8cpp_source.html#l00993">NotOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01114">PtrToIntInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l01613">scatter()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00960">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01081">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01047">CmpInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01264">GetElementPtrInst()</a>, <a class="el" href="expr_8cpp_source.html#l03955">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l00737">I1VecToBoolVec()</a>, <a class="el" href="ctx_8cpp_source.html#l01147">IntToPtrInst()</a>, <a class="el" href="expr_8cpp_source.html#l03922">lUniformValueToVarying()</a>, <a class="el" href="ctx_8cpp_source.html#l01541">maskedStore()</a>, <a class="el" href="ctx_8cpp_source.html#l00994">NotOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01115">PtrToIntInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l01616">scatter()</a>.</p>
 
 </div>
 </div>
@@ -1263,11 +1277,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01212">1212</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01213">1213</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l03577">lTypeConvAtomic()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l03618">lTypeConvAtomic()</a>.</p>
 
 </div>
 </div>
@@ -1302,11 +1316,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01381">1381</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01382">1382</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l01473">addGSMetadata()</a>, <a class="el" href="ctx_8cpp_source.html#l00805">AddInstrumentationPoint()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8cpp_source.html#l01080">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01825">CallInst()</a>, <a class="el" href="ispc_8h_source.html#l00299">Globals::ctx</a>, <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>, <a class="el" href="llvmutil_8h_source.html#l00074">LLVMTypes::DoubleVectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00072">LLVMTypes::FloatVectorType</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="classType.html#ab0eff8692794d3437a91404c98985d20">Type::GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00822">VectorType::GetBaseType()</a>, <a class="el" href="type_8cpp_source.html#l00523">ArrayType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l00886">VectorType::GetElementCount()</a>, <a class="el" href="type_8h_source.html#l00509">StructType::GetElementCount()</a>, <a class="el" href="ctx_8cpp_source.html#l01263">GetElementPtrInst()</a>, <a class="el" href="type_8cpp_source.html#l00529">ArrayType::GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l01220">StructType::GetElementType()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l01776">InsertInst()</a>, <a class="el" href="llvmutil_8h_source.html#l00068">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00070">LLVMTypes::Int64VectorType</a>, <a class="el" href="classType.html#ab324b2f6e207b63de653aeb530b90f46">Type::LLVMType()</a>, <a class="el" href="ctx_8cpp_source.html#l01340">LoadInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="llvmutil_8h_source.html#l00053">LLVMTypes::VoidPointerType</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l01474">addGSMetadata()</a>, <a class="el" href="ctx_8cpp_source.html#l00806">AddInstrumentationPoint()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8cpp_source.html#l01081">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01828">CallInst()</a>, <a class="el" href="ispc_8h_source.html#l00308">Globals::ctx</a>, <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>, <a class="el" href="llvmutil_8h_source.html#l00076">LLVMTypes::DoubleVectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00074">LLVMTypes::FloatVectorType</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="classType.html#ab0eff8692794d3437a91404c98985d20">Type::GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l01039">VectorType::GetBaseType()</a>, <a class="el" href="type_8cpp_source.html#l00740">ArrayType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l01103">VectorType::GetElementCount()</a>, <a class="el" href="type_8h_source.html#l00555">StructType::GetElementCount()</a>, <a class="el" href="ctx_8cpp_source.html#l01264">GetElementPtrInst()</a>, <a class="el" href="type_8cpp_source.html#l00746">ArrayType::GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l01437">StructType::GetElementType()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l01779">InsertInst()</a>, <a class="el" href="llvmutil_8h_source.html#l00070">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00072">LLVMTypes::Int64VectorType</a>, <a class="el" href="classType.html#aa7b08bf258938faa7e12b580b623621a">Type::LLVMType()</a>, <a class="el" href="ctx_8cpp_source.html#l01341">LoadInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="llvmutil_8h_source.html#l00054">LLVMTypes::VoidPointerType</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01340">LoadInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01341">LoadInst()</a>.</p>
 
 </div>
 </div>
@@ -1329,7 +1343,7 @@ Private Attributes</h2></td></tr>
 
 <p>References <a class="el" href="ctx_8h_source.html#l00413">bblock</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01306">StmtList::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01264">ReturnStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01225">ContinueStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01187">BreakStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00414">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00232">DeclStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00071">ExprStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00618">IfStmt::emitMaskAllOn()</a>, <a class="el" href="stmt_8cpp_source.html#l00549">IfStmt::emitMaskedTrueAndFalse()</a>, <a class="el" href="stmt_8cpp_source.html#l00684">IfStmt::emitMaskMixed()</a>, <a class="el" href="expr_8cpp_source.html#l02188">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>, and <a class="el" href="module_8cpp_source.html#l00592">lEmitFunctionCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01315">StmtList::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01273">ReturnStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01234">ContinueStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01196">BreakStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00423">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00233">DeclStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00071">ExprStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00627">IfStmt::emitMaskAllOn()</a>, <a class="el" href="stmt_8cpp_source.html#l00558">IfStmt::emitMaskedTrueAndFalse()</a>, <a class="el" href="stmt_8cpp_source.html#l00693">IfStmt::emitMaskMixed()</a>, <a class="el" href="expr_8cpp_source.html#l02226">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>, and <a class="el" href="module_8cpp_source.html#l00603">lEmitFunctionCode()</a>.</p>
 
 </div>
 </div>
@@ -1347,7 +1361,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00832">832</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00833">833</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
 <p>References <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>.</p>
 
@@ -1368,11 +1382,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Returns the llvm::DIScope corresponding to the current program scope. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00887">887</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00888">888</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
 <p>References <a class="el" href="parse_8yy.html">assert</a>, and <a class="el" href="ctx_8h_source.html#l00486">debugScopes</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, and <a class="el" href="ctx_8cpp_source.html#l00894">EmitVariableDebugInfo()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, and <a class="el" href="ctx_8cpp_source.html#l00895">EmitVariableDebugInfo()</a>.</p>
 
 </div>
 </div>
@@ -1414,11 +1428,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>This GEP method is a generalization of the standard one in LLVM; it supports both uniform and varying basePtr values (an array of pointers) as well as uniform and varying index values (arrays of indices). </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01263">1263</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01264">1264</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01757">ExtractInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8cpp_source.html#l01776">InsertInst()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00325">LLVMPointerVectorType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00262">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00173">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01760">ExtractInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8cpp_source.html#l01779">InsertInst()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00329">LLVMPointerVectorType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00271">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00182">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01428">PrintStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01381">gather()</a>, <a class="el" href="ctx_8cpp_source.html#l01333">GetElementPtrInst()</a>, <a class="el" href="expr_8cpp_source.html#l02923">MemberExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l02671">IndexExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l02767">MemberExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02609">IndexExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l01907">LaunchInst()</a>, <a class="el" href="module_8cpp_source.html#l00556">lCopyInTaskParameter()</a>, <a class="el" href="module_8cpp_source.html#l00592">lEmitFunctionCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00130">lInitSymbol()</a>, <a class="el" href="ctx_8cpp_source.html#l01540">maskedStore()</a>, and <a class="el" href="ctx_8cpp_source.html#l01613">scatter()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01437">PrintStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01382">gather()</a>, <a class="el" href="ctx_8cpp_source.html#l01334">GetElementPtrInst()</a>, <a class="el" href="expr_8cpp_source.html#l02961">MemberExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l02709">IndexExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l02805">MemberExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02647">IndexExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l01910">LaunchInst()</a>, <a class="el" href="module_8cpp_source.html#l00567">lCopyInTaskParameter()</a>, <a class="el" href="module_8cpp_source.html#l00603">lEmitFunctionCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00130">lInitSymbol()</a>, <a class="el" href="ctx_8cpp_source.html#l01541">maskedStore()</a>, and <a class="el" href="ctx_8cpp_source.html#l01616">scatter()</a>.</p>
 
 </div>
 </div>
@@ -1460,9 +1474,9 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>This is a convenience method to generate a GEP instruction with indices with values with known constant values as the ispc program is being compiled. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01333">1333</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01334">1334</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l01263">GetElementPtrInst()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00132">LLVMInt32()</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l01264">GetElementPtrInst()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00136">LLVMInt32()</a>.</p>
 
 </div>
 </div>
@@ -1483,9 +1497,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00236">236</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l01340">LoadInst()</a>, <a class="el" href="ctx_8h_source.html#l00417">maskPtr</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l01341">LoadInst()</a>, <a class="el" href="ctx_8h_source.html#l00417">maskPtr</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00805">AddInstrumentationPoint()</a>, <a class="el" href="ctx_8cpp_source.html#l00290">BranchIfMaskAll()</a>, <a class="el" href="ctx_8cpp_source.html#l00279">BranchIfMaskAny()</a>, <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l01428">PrintStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00414">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00570">IfStmt::emitCoherentTests()</a>, <a class="el" href="stmt_8cpp_source.html#l00684">IfStmt::emitMaskMixed()</a>, <a class="el" href="ctx_8cpp_source.html#l00324">EndIf()</a>, <a class="el" href="ctx_8cpp_source.html#l01381">gather()</a>, <a class="el" href="expr_8cpp_source.html#l02188">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l01907">LaunchInst()</a>, <a class="el" href="expr_8cpp_source.html#l00406">lEmitPrePostIncDec()</a>, <a class="el" href="expr_8cpp_source.html#l01392">lStoreAssignResult()</a>, and <a class="el" href="ctx_8cpp_source.html#l00586">RestoreContinuedLanes()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00806">AddInstrumentationPoint()</a>, <a class="el" href="ctx_8cpp_source.html#l00290">BranchIfMaskAll()</a>, <a class="el" href="ctx_8cpp_source.html#l00279">BranchIfMaskAny()</a>, <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l01437">PrintStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00423">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00579">IfStmt::emitCoherentTests()</a>, <a class="el" href="stmt_8cpp_source.html#l00693">IfStmt::emitMaskMixed()</a>, <a class="el" href="ctx_8cpp_source.html#l00324">EndIf()</a>, <a class="el" href="ctx_8cpp_source.html#l01382">gather()</a>, <a class="el" href="expr_8cpp_source.html#l02226">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l01910">LaunchInst()</a>, <a class="el" href="expr_8cpp_source.html#l00433">lEmitPrePostIncDec()</a>, <a class="el" href="expr_8cpp_source.html#l01422">lStoreAssignResult()</a>, and <a class="el" href="ctx_8cpp_source.html#l00586">RestoreContinuedLanes()</a>.</p>
 
 </div>
 </div>
@@ -1507,9 +1521,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00718">718</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l01080">BitCastInst()</a>, <a class="el" href="ispc_8h_source.html#l00299">Globals::ctx</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, and <a class="el" href="llvmutil_8h_source.html#l00053">LLVMTypes::VoidPointerType</a>.</p>
+<p>References <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l01081">BitCastInst()</a>, <a class="el" href="ispc_8h_source.html#l00308">Globals::ctx</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, and <a class="el" href="llvmutil_8h_source.html#l00054">LLVMTypes::VoidPointerType</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01428">PrintStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01437">PrintStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -1527,13 +1541,13 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Given a vector with element type i1, return a vector of type <a class="el" href="structLLVMTypes.html#a22c5a8ef83e8bbb29585a2bdf036f9af">LLVMTypes::BoolVectorType</a>. This method handles the conversion for the targets where the bool vector element type is, for example, i32. </p>
+<p>Given a vector with element type i1, return a vector of type <a class="el" href="structLLVMTypes.html#ac111c8d53df4ef93584493ee0a19872c">LLVMTypes::BoolVectorType</a>. This method handles the conversion for the targets where the bool vector element type is, for example, i32. </p>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00737">737</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="llvmutil_8h_source.html#l00066">LLVMTypes::BoolVectorType</a>, <a class="el" href="ctx_8cpp_source.html#l01757">ExtractInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01776">InsertInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l01229">SExtInst()</a>.</p>
+<p>References <a class="el" href="llvmutil_8h_source.html#l00068">LLVMTypes::BoolVectorType</a>, <a class="el" href="ctx_8cpp_source.html#l01760">ExtractInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01779">InsertInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l01230">SExtInst()</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l00811">lEmitBinaryCmp()</a>, <a class="el" href="expr_8cpp_source.html#l03577">lTypeConvAtomic()</a>, and <a class="el" href="ctx_8cpp_source.html#l00706">MasksAllEqual()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l00840">lEmitBinaryCmp()</a>, <a class="el" href="expr_8cpp_source.html#l03618">lTypeConvAtomic()</a>, and <a class="el" href="ctx_8cpp_source.html#l00706">MasksAllEqual()</a>.</p>
 
 </div>
 </div>
@@ -1598,11 +1612,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>This convenience method maps to an llvm::InsertElementInst if the given value is a llvm::VectorType, and to an llvm::InsertValueInst otherwise. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01776">1776</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01779">1779</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="llvmutil_8cpp_source.html#l00132">LLVMInt32()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="llvmutil_8cpp_source.html#l00136">LLVMInt32()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00959">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01080">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01046">CmpInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01381">gather()</a>, <a class="el" href="ctx_8cpp_source.html#l01263">GetElementPtrInst()</a>, <a class="el" href="expr_8cpp_source.html#l03923">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l00737">I1VecToBoolVec()</a>, <a class="el" href="ctx_8cpp_source.html#l01146">IntToPtrInst()</a>, <a class="el" href="expr_8cpp_source.html#l03577">lTypeConvAtomic()</a>, <a class="el" href="expr_8cpp_source.html#l03890">lUniformValueToVarying()</a>, <a class="el" href="ctx_8cpp_source.html#l00993">NotOperator()</a>, and <a class="el" href="ctx_8cpp_source.html#l01114">PtrToIntInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00960">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01081">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01047">CmpInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01382">gather()</a>, <a class="el" href="ctx_8cpp_source.html#l01264">GetElementPtrInst()</a>, <a class="el" href="expr_8cpp_source.html#l03955">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l00737">I1VecToBoolVec()</a>, <a class="el" href="ctx_8cpp_source.html#l01147">IntToPtrInst()</a>, <a class="el" href="expr_8cpp_source.html#l03618">lTypeConvAtomic()</a>, <a class="el" href="expr_8cpp_source.html#l03922">lUniformValueToVarying()</a>, <a class="el" href="ctx_8cpp_source.html#l00994">NotOperator()</a>, and <a class="el" href="ctx_8cpp_source.html#l01115">PtrToIntInst()</a>.</p>
 
 </div>
 </div>
@@ -1637,9 +1651,9 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01146">1146</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01147">1147</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01757">ExtractInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8cpp_source.html#l01776">InsertInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00262">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00173">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01760">ExtractInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8cpp_source.html#l01779">InsertInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00271">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00182">Target::vectorWidth</a>.</p>
 
 </div>
 </div>
@@ -1660,7 +1674,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00552">552</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00805">AddInstrumentationPoint()</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l00959">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01735">BranchInst()</a>, <a class="el" href="ctx_8h_source.html#l00442">breakLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00447">continueLanesPtr</a>, <a class="el" href="ctx_8cpp_source.html#l00730">CreateBasicBlock()</a>, <a class="el" href="ctx_8cpp_source.html#l01340">LoadInst()</a>, <a class="el" href="ctx_8h_source.html#l00436">loopMask</a>, <a class="el" href="ctx_8cpp_source.html#l00706">MasksAllEqual()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ctx_8h_source.html#l00462">returnedLanesPtr</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00806">AddInstrumentationPoint()</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l00960">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01738">BranchInst()</a>, <a class="el" href="ctx_8h_source.html#l00442">breakLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00447">continueLanesPtr</a>, <a class="el" href="ctx_8cpp_source.html#l00730">CreateBasicBlock()</a>, <a class="el" href="ctx_8cpp_source.html#l01341">LoadInst()</a>, <a class="el" href="ctx_8h_source.html#l00436">loopMask</a>, <a class="el" href="ctx_8cpp_source.html#l00706">MasksAllEqual()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ctx_8h_source.html#l00462">returnedLanesPtr</a>.</p>
 
 <p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, and <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>.</p>
 
@@ -1680,13 +1694,13 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Given a boolean mask value of type <a class="el" href="structLLVMTypes.html#acba980a64c1d55e6f6857bb2e95c494f">LLVMTypes::MaskType</a>, return an i32 value wherein the i'th bit is on if and only if the i'th lane of the mask is on. </p>
+<p>Given a boolean mask value of type <a class="el" href="structLLVMTypes.html#a16787367d57f72291b61968ca5d3a791">LLVMTypes::MaskType</a>, return an i32 value wherein the i'th bit is on if and only if the i'th lane of the mask is on. </p>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00694">694</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8cpp_source.html#l01825">CallInst()</a>, <a class="el" href="sym_8cpp_source.html#l00163">SymbolTable::LookupFunction()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="module_8h_source.html#l00089">Module::symbolTable</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8cpp_source.html#l01828">CallInst()</a>, <a class="el" href="sym_8cpp_source.html#l00164">SymbolTable::LookupFunction()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="module_8h_source.html#l00089">Module::symbolTable</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00805">AddInstrumentationPoint()</a>, <a class="el" href="ctx_8cpp_source.html#l00686">All()</a>, <a class="el" href="ctx_8cpp_source.html#l00678">Any()</a>, and <a class="el" href="stmt_8cpp_source.html#l01428">PrintStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00806">AddInstrumentationPoint()</a>, <a class="el" href="ctx_8cpp_source.html#l00686">All()</a>, <a class="el" href="ctx_8cpp_source.html#l00678">Any()</a>, and <a class="el" href="stmt_8cpp_source.html#l01437">PrintStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -1716,11 +1730,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Launch an asynchronous task to run the given function, passing it he given argument values. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01907">1907</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01910">1910</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l01501">AllocaInst()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8cpp_source.html#l01080">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01825">CallInst()</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8cpp_source.html#l01263">GetElementPtrInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="ctx_8h_source.html#l00489">launchedTasks</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00168">Target::nativeVectorWidth</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="util_8h_source.html#l00048">RoundUpPow2()</a>, <a class="el" href="ctx_8cpp_source.html#l01682">StoreInst()</a>, <a class="el" href="ispc_8h_source.html#l00262">Globals::target</a>, and <a class="el" href="llvmutil_8h_source.html#l00053">LLVMTypes::VoidPointerType</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l01502">AllocaInst()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8cpp_source.html#l01081">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01828">CallInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00760">EmitMalloc()</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8cpp_source.html#l01264">GetElementPtrInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="ctx_8h_source.html#l00489">launchedTasks</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00177">Target::nativeVectorWidth</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="util_8h_source.html#l00048">RoundUpPow2()</a>, <a class="el" href="ctx_8cpp_source.html#l01685">StoreInst()</a>, <a class="el" href="ispc_8h_source.html#l00271">Globals::target</a>, and <a class="el" href="llvmutil_8h_source.html#l00054">LLVMTypes::VoidPointerType</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02188">FunctionCallExpr::GetValue()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02226">FunctionCallExpr::GetValue()</a>.</p>
 
 </div>
 </div>
@@ -1756,11 +1770,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Load from the memory location(s) given by lvalue. The lvalue may be varying, in which case this corresponds to a gather from the multiple memory locations given by the array of pointer values given by the lvalue. If the lvalue is not varying, then the type parameter may be NULL. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01340">1340</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01341">1341</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01381">gather()</a>, <a class="el" href="type_8h_source.html#l00085">Type::IsVaryingType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01382">gather()</a>, <a class="el" href="type_8h_source.html#l00085">Type::IsVaryingType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="ctx_8cpp_source.html#l00324">EndIf()</a>, <a class="el" href="ctx_8cpp_source.html#l01381">gather()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="expr_8cpp_source.html#l04353">SymbolExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04275">DereferenceExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02767">MemberExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02609">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02188">FunctionCallExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>, <a class="el" href="module_8cpp_source.html#l00556">lCopyInTaskParameter()</a>, <a class="el" href="module_8cpp_source.html#l00592">lEmitFunctionCode()</a>, <a class="el" href="expr_8cpp_source.html#l01417">lEmitOpAssign()</a>, <a class="el" href="expr_8cpp_source.html#l01662">lEmitVaryingSelect()</a>, <a class="el" href="ctx_8cpp_source.html#l00586">RestoreContinuedLanes()</a>, <a class="el" href="ctx_8cpp_source.html#l00424">restoreMaskGivenReturns()</a>, and <a class="el" href="ctx_8cpp_source.html#l01876">ReturnInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="ctx_8cpp_source.html#l00324">EndIf()</a>, <a class="el" href="ctx_8cpp_source.html#l01382">gather()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="expr_8cpp_source.html#l04399">SymbolExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04321">DereferenceExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02805">MemberExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02647">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02226">FunctionCallExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>, <a class="el" href="module_8cpp_source.html#l00567">lCopyInTaskParameter()</a>, <a class="el" href="module_8cpp_source.html#l00603">lEmitFunctionCode()</a>, <a class="el" href="expr_8cpp_source.html#l01447">lEmitOpAssign()</a>, <a class="el" href="expr_8cpp_source.html#l01692">lEmitVaryingSelect()</a>, <a class="el" href="ctx_8cpp_source.html#l00586">RestoreContinuedLanes()</a>, <a class="el" href="ctx_8cpp_source.html#l00424">restoreMaskGivenReturns()</a>, and <a class="el" href="ctx_8cpp_source.html#l01879">ReturnInst()</a>.</p>
 
 </div>
 </div>
@@ -1792,9 +1806,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00261">261</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00959">BinaryOperator()</a>, and <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00960">BinaryOperator()</a>, and <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00549">IfStmt::emitMaskedTrueAndFalse()</a>, and <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00558">IfStmt::emitMaskedTrueAndFalse()</a>, and <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>.</p>
 
 </div>
 </div>
@@ -1826,9 +1840,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00269">269</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00959">BinaryOperator()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00068">LLVMMaskAllOn</a>, and <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00960">BinaryOperator()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00070">LLVMMaskAllOn</a>, and <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00549">IfStmt::emitMaskedTrueAndFalse()</a>, and <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00558">IfStmt::emitMaskedTrueAndFalse()</a>, and <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>.</p>
 
 </div>
 </div>
@@ -1870,11 +1884,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Code to store the given varying value to the given location, only storing the elements that correspond to active program instances as given by the provided storeMask value. Note that the lvalue is only a single pointer, not a varying lvalue of one pointer per program instance (that case is handled by scatters). </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01540">1540</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01541">1541</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8cpp_source.html#l01080">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01825">CallInst()</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01757">ExtractInst()</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, <a class="el" href="classCollectionType.html#abc5eb48e176e4abb0fa405d41ae99381">CollectionType::GetElementCount()</a>, <a class="el" href="ctx_8cpp_source.html#l01263">GetElementPtrInst()</a>, <a class="el" href="classCollectionType.html#a6f8fa8323edfe0d729b9973a38254cf1">CollectionType::GetElementType()</a>, <a class="el" href="llvmutil_8h_source.html#l00069">LLVMTypes::Int32VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00068">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00071">LLVMTypes::Int64VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00070">LLVMTypes::Int64VectorType</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l01682">StoreInst()</a>, <a class="el" href="type_8h_source.html#l00223">AtomicType::VaryingBool</a>, <a class="el" href="type_8h_source.html#l00229">AtomicType::VaryingDouble</a>, <a class="el" href="type_8h_source.html#l00226">AtomicType::VaryingFloat</a>, <a class="el" href="type_8h_source.html#l00224">AtomicType::VaryingInt32</a>, <a class="el" href="type_8h_source.html#l00227">AtomicType::VaryingInt64</a>, <a class="el" href="type_8h_source.html#l00225">AtomicType::VaryingUInt32</a>, and <a class="el" href="type_8h_source.html#l00228">AtomicType::VaryingUInt64</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8cpp_source.html#l01081">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01828">CallInst()</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01760">ExtractInst()</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, <a class="el" href="classCollectionType.html#abc5eb48e176e4abb0fa405d41ae99381">CollectionType::GetElementCount()</a>, <a class="el" href="ctx_8cpp_source.html#l01264">GetElementPtrInst()</a>, <a class="el" href="classCollectionType.html#a6f8fa8323edfe0d729b9973a38254cf1">CollectionType::GetElementType()</a>, <a class="el" href="llvmutil_8h_source.html#l00071">LLVMTypes::Int32VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00070">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00073">LLVMTypes::Int64VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00072">LLVMTypes::Int64VectorType</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l01685">StoreInst()</a>, <a class="el" href="type_8h_source.html#l00223">AtomicType::VaryingBool</a>, <a class="el" href="type_8h_source.html#l00229">AtomicType::VaryingDouble</a>, <a class="el" href="type_8h_source.html#l00226">AtomicType::VaryingFloat</a>, <a class="el" href="type_8h_source.html#l00224">AtomicType::VaryingInt32</a>, <a class="el" href="type_8h_source.html#l00227">AtomicType::VaryingInt64</a>, <a class="el" href="type_8h_source.html#l00225">AtomicType::VaryingUInt32</a>, and <a class="el" href="type_8h_source.html#l00228">AtomicType::VaryingUInt64</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01705">StoreInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01708">StoreInst()</a>.</p>
 
 </div>
 </div>
@@ -1902,13 +1916,13 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Given two masks of type <a class="el" href="structLLVMTypes.html#acba980a64c1d55e6f6857bb2e95c494f">LLVMTypes::MaskType</a>, return an i1 value that indicates whether the two masks are equal. </p>
+<p>Given two masks of type <a class="el" href="structLLVMTypes.html#a16787367d57f72291b61968ca5d3a791">LLVMTypes::MaskType</a>, return an i1 value that indicates whether the two masks are equal. </p>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00706">706</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00686">All()</a>, <a class="el" href="ctx_8cpp_source.html#l01046">CmpInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l00737">I1VecToBoolVec()</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00686">All()</a>, <a class="el" href="ctx_8cpp_source.html#l01047">CmpInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l00737">I1VecToBoolVec()</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>, and <a class="el" href="stmt_8cpp_source.html#l00673">lTestMatchesMask()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>, and <a class="el" href="stmt_8cpp_source.html#l00682">lTestMatchesMask()</a>.</p>
 
 </div>
 </div>
@@ -1938,11 +1952,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Emit the "not" operator. Like <a class="el" href="classFunctionEmitContext.html#a0e1ad1750c0ef24b8b390ece464cb0e2">BinaryOperator()</a>, this also handles a VectorType-based operand. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00993">993</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00994">994</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01757">ExtractInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01776">InsertInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00943">lArrayVectorWidth()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01760">ExtractInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01779">InsertInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00944">lArrayVectorWidth()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00324">EndIf()</a>, <a class="el" href="expr_8cpp_source.html#l00492">UnaryExpr::GetValue()</a>, and <a class="el" href="ctx_8cpp_source.html#l00424">restoreMaskGivenReturns()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00324">EndIf()</a>, <a class="el" href="expr_8cpp_source.html#l00519">UnaryExpr::GetValue()</a>, and <a class="el" href="ctx_8cpp_source.html#l00424">restoreMaskGivenReturns()</a>.</p>
 
 </div>
 </div>
@@ -1977,11 +1991,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01796">1796</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01799">1799</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, and <a class="el" href="ctx_8h_source.html#l00413">bblock</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, and <a class="el" href="ctx_8h_source.html#l00413">bblock</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02188">FunctionCallExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02226">FunctionCallExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>.</p>
 
 </div>
 </div>
@@ -2033,9 +2047,9 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01114">1114</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01115">1115</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01757">ExtractInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8cpp_source.html#l01776">InsertInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00262">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00173">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ctx_8cpp_source.html#l01760">ExtractInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8cpp_source.html#l01779">InsertInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00271">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00182">Target::vectorWidth</a>.</p>
 
 <p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00760">EmitMalloc()</a>.</p>
 
@@ -2058,9 +2072,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00586">586</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00959">BinaryOperator()</a>, <a class="el" href="ctx_8h_source.html#l00447">continueLanesPtr</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00069">LLVMMaskAllOff</a>, <a class="el" href="ctx_8cpp_source.html#l01340">LoadInst()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>, and <a class="el" href="ctx_8cpp_source.html#l01682">StoreInst()</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00960">BinaryOperator()</a>, <a class="el" href="ctx_8h_source.html#l00447">continueLanesPtr</a>, <a class="el" href="ctx_8cpp_source.html#l00236">GetMask()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00071">LLVMMaskAllOff</a>, <a class="el" href="ctx_8cpp_source.html#l01341">LoadInst()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>, and <a class="el" href="ctx_8cpp_source.html#l01685">StoreInst()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -2081,7 +2095,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00424">424</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l00959">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01340">LoadInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00993">NotOperator()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8h_source.html#l00462">returnedLanesPtr</a>, and <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>.</p>
+<p>References <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ctx_8cpp_source.html#l00960">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01341">LoadInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00994">NotOperator()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8h_source.html#l00462">returnedLanesPtr</a>, and <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>.</p>
 
 <p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00324">EndIf()</a>, and <a class="el" href="ctx_8cpp_source.html#l00400">EndLoop()</a>.</p>
 
@@ -2101,11 +2115,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01876">1876</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01879">1879</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ispc_8h_source.html#l00299">Globals::ctx</a>, <a class="el" href="stmt_8cpp_source.html#l00071">ExprStmt::EmitCode()</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8h_source.html#l00489">launchedTasks</a>, <a class="el" href="ctx_8cpp_source.html#l01340">LoadInst()</a>, <a class="el" href="ispc_8h_source.html#l00102">SourcePos::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8h_source.html#l00429">returnType</a>, <a class="el" href="ctx_8h_source.html#l00468">returnValuePtr</a>, and <a class="el" href="type_8h_source.html#l00237">AtomicType::Void</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="ispc_8h_source.html#l00308">Globals::ctx</a>, <a class="el" href="stmt_8cpp_source.html#l00071">ExprStmt::EmitCode()</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ctx_8h_source.html#l00489">launchedTasks</a>, <a class="el" href="ctx_8cpp_source.html#l01341">LoadInst()</a>, <a class="el" href="ispc_8h_source.html#l00109">SourcePos::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8h_source.html#l00429">returnType</a>, <a class="el" href="ctx_8h_source.html#l00468">returnValuePtr</a>, and <a class="el" href="type_8h_source.html#l00237">AtomicType::Void</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, and <a class="el" href="module_8cpp_source.html#l00592">lEmitFunctionCode()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, and <a class="el" href="module_8cpp_source.html#l00603">lEmitFunctionCode()</a>.</p>
 
 </div>
 </div>
@@ -2147,11 +2161,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Scatter the given varying value to the locations given by the varying lvalue (which should be an array of pointers with size equal to the target's vector width. We want to store each rvalue element at the corresponding pointer's location, *if* the mask for the corresponding program instance are on. If they're off, don't do anything. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01613">1613</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01616">1616</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l01473">addGSMetadata()</a>, <a class="el" href="ctx_8cpp_source.html#l00805">AddInstrumentationPoint()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8cpp_source.html#l01080">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01825">CallInst()</a>, <a class="el" href="ispc_8h_source.html#l00299">Globals::ctx</a>, <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>, <a class="el" href="llvmutil_8h_source.html#l00074">LLVMTypes::DoubleVectorType</a>, <a class="el" href="ctx_8cpp_source.html#l01757">ExtractInst()</a>, <a class="el" href="llvmutil_8h_source.html#l00072">LLVMTypes::FloatVectorType</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="classType.html#ab0eff8692794d3437a91404c98985d20">Type::GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00822">VectorType::GetBaseType()</a>, <a class="el" href="type_8cpp_source.html#l00886">VectorType::GetElementCount()</a>, <a class="el" href="type_8h_source.html#l00509">StructType::GetElementCount()</a>, <a class="el" href="ctx_8cpp_source.html#l01263">GetElementPtrInst()</a>, <a class="el" href="type_8cpp_source.html#l00892">VectorType::GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l01220">StructType::GetElementType()</a>, <a class="el" href="llvmutil_8h_source.html#l00068">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00070">LLVMTypes::Int64VectorType</a>, <a class="el" href="type_8h_source.html#l00085">Type::IsVaryingType()</a>, <a class="el" href="classType.html#ab324b2f6e207b63de653aeb530b90f46">Type::LLVMType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="llvmutil_8h_source.html#l00053">LLVMTypes::VoidPointerType</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l01474">addGSMetadata()</a>, <a class="el" href="ctx_8cpp_source.html#l00806">AddInstrumentationPoint()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8cpp_source.html#l01081">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01828">CallInst()</a>, <a class="el" href="ispc_8h_source.html#l00308">Globals::ctx</a>, <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>, <a class="el" href="llvmutil_8h_source.html#l00076">LLVMTypes::DoubleVectorType</a>, <a class="el" href="ctx_8cpp_source.html#l01760">ExtractInst()</a>, <a class="el" href="llvmutil_8h_source.html#l00074">LLVMTypes::FloatVectorType</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="classType.html#ab0eff8692794d3437a91404c98985d20">Type::GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l01039">VectorType::GetBaseType()</a>, <a class="el" href="type_8cpp_source.html#l01103">VectorType::GetElementCount()</a>, <a class="el" href="type_8h_source.html#l00555">StructType::GetElementCount()</a>, <a class="el" href="ctx_8cpp_source.html#l01264">GetElementPtrInst()</a>, <a class="el" href="type_8cpp_source.html#l01109">VectorType::GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l01437">StructType::GetElementType()</a>, <a class="el" href="llvmutil_8h_source.html#l00070">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00072">LLVMTypes::Int64VectorType</a>, <a class="el" href="type_8h_source.html#l00085">Type::IsVaryingType()</a>, <a class="el" href="classType.html#aa7b08bf258938faa7e12b580b623621a">Type::LLVMType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="llvmutil_8h_source.html#l00054">LLVMTypes::VoidPointerType</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01705">StoreInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01708">StoreInst()</a>.</p>
 
 </div>
 </div>
@@ -2192,11 +2206,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01809">1809</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01812">1812</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>.</p>
 
 </div>
 </div>
@@ -2220,7 +2234,7 @@ Private Attributes</h2></td></tr>
 
 <p>References <a class="el" href="ctx_8h_source.html#l00413">bblock</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00414">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00570">IfStmt::emitCoherentTests()</a>, <a class="el" href="stmt_8cpp_source.html#l00618">IfStmt::emitMaskAllOn()</a>, <a class="el" href="stmt_8cpp_source.html#l00684">IfStmt::emitMaskMixed()</a>, <a class="el" href="expr_8cpp_source.html#l02188">FunctionCallExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00423">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00579">IfStmt::emitCoherentTests()</a>, <a class="el" href="stmt_8cpp_source.html#l00627">IfStmt::emitMaskAllOn()</a>, <a class="el" href="stmt_8cpp_source.html#l00693">IfStmt::emitMaskMixed()</a>, <a class="el" href="expr_8cpp_source.html#l02226">FunctionCallExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>.</p>
 
 </div>
 </div>
@@ -2240,11 +2254,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Set the current source file position; subsequent emitted instructions will have this position associated with them if debugging information is being generated. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00826">826</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00827">827</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
 <p>References <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01428">PrintStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01306">StmtList::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01264">ReturnStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01225">ContinueStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01187">BreakStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00414">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00232">DeclStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00071">ExprStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l04363">SymbolExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l02923">MemberExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l02671">IndexExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l04476">SyncExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04353">SymbolExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04275">DereferenceExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04207">ReferenceExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03923">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03218">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02767">MemberExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02609">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02188">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01488">AssignExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00866">BinaryExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00492">UnaryExpr::GetValue()</a>, <a class="el" href="module_8cpp_source.html#l00592">lEmitFunctionCode()</a>, <a class="el" href="expr_8cpp_source.html#l00467">lEmitNegate()</a>, <a class="el" href="expr_8cpp_source.html#l01417">lEmitOpAssign()</a>, and <a class="el" href="expr_8cpp_source.html#l00406">lEmitPrePostIncDec()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01437">PrintStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01315">StmtList::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01273">ReturnStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01234">ContinueStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01196">BreakStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00423">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00233">DeclStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00071">ExprStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l04409">SymbolExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l02961">MemberExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l02709">IndexExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l04522">SyncExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04399">SymbolExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04321">DereferenceExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04253">ReferenceExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03955">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03260">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02805">MemberExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02647">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02226">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01518">AssignExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00895">BinaryExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00519">UnaryExpr::GetValue()</a>, <a class="el" href="module_8cpp_source.html#l00603">lEmitFunctionCode()</a>, <a class="el" href="expr_8cpp_source.html#l00494">lEmitNegate()</a>, <a class="el" href="expr_8cpp_source.html#l01447">lEmitOpAssign()</a>, and <a class="el" href="expr_8cpp_source.html#l00433">lEmitPrePostIncDec()</a>.</p>
 
 </div>
 </div>
@@ -2268,7 +2282,7 @@ Private Attributes</h2></td></tr>
 
 <p>References <a class="el" href="ctx_8h_source.html#l00432">entryMask</a>, and <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00592">lEmitFunctionCode()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00603">lEmitFunctionCode()</a>.</p>
 
 </div>
 </div>
@@ -2292,7 +2306,7 @@ Private Attributes</h2></td></tr>
 
 <p>References <a class="el" href="ctx_8h_source.html#l00436">loopMask</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -2314,9 +2328,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00255">255</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8h_source.html#l00417">maskPtr</a>, and <a class="el" href="ctx_8cpp_source.html#l01682">StoreInst()</a>.</p>
+<p>References <a class="el" href="ctx_8h_source.html#l00417">maskPtr</a>, and <a class="el" href="ctx_8cpp_source.html#l01685">StoreInst()</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00570">IfStmt::emitCoherentTests()</a>, <a class="el" href="ctx_8cpp_source.html#l00324">EndIf()</a>, <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l00261">MaskAnd()</a>, <a class="el" href="ctx_8cpp_source.html#l00269">MaskAndNot()</a>, <a class="el" href="ctx_8cpp_source.html#l00586">RestoreContinuedLanes()</a>, <a class="el" href="ctx_8cpp_source.html#l00424">restoreMaskGivenReturns()</a>, and <a class="el" href="ctx_8cpp_source.html#l00242">SetEntryMask()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00579">IfStmt::emitCoherentTests()</a>, <a class="el" href="ctx_8cpp_source.html#l00324">EndIf()</a>, <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l00261">MaskAnd()</a>, <a class="el" href="ctx_8cpp_source.html#l00269">MaskAndNot()</a>, <a class="el" href="ctx_8cpp_source.html#l00586">RestoreContinuedLanes()</a>, <a class="el" href="ctx_8cpp_source.html#l00424">restoreMaskGivenReturns()</a>, and <a class="el" href="ctx_8cpp_source.html#l00242">SetEntryMask()</a>.</p>
 
 </div>
 </div>
@@ -2351,11 +2365,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01229">1229</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01230">1230</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00737">I1VecToBoolVec()</a>, and <a class="el" href="expr_8cpp_source.html#l03577">lTypeConvAtomic()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00737">I1VecToBoolVec()</a>, and <a class="el" href="expr_8cpp_source.html#l03618">lTypeConvAtomic()</a>.</p>
 
 </div>
 </div>
@@ -2399,9 +2413,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00372">372</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l01501">AllocaInst()</a>, <a class="el" href="ctx_8h_source.html#l00442">breakLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00453">breakTarget</a>, <a class="el" href="ctx_8h_source.html#l00447">continueLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00457">continueTarget</a>, <a class="el" href="ctx_8h_source.html#l00474">controlFlowInfo</a>, <a class="el" href="ctx_8cpp_source.html#l00114">CFInfo::GetLoop()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00069">LLVMMaskAllOff</a>, <a class="el" href="ctx_8h_source.html#l00436">loopMask</a>, <a class="el" href="llvmutil_8h_source.html#l00065">LLVMTypes::MaskType</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ctx_8cpp_source.html#l01682">StoreInst()</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l01502">AllocaInst()</a>, <a class="el" href="ctx_8h_source.html#l00442">breakLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00453">breakTarget</a>, <a class="el" href="ctx_8h_source.html#l00447">continueLanesPtr</a>, <a class="el" href="ctx_8h_source.html#l00457">continueTarget</a>, <a class="el" href="ctx_8h_source.html#l00474">controlFlowInfo</a>, <a class="el" href="ctx_8cpp_source.html#l00114">CFInfo::GetLoop()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00071">LLVMMaskAllOff</a>, <a class="el" href="ctx_8h_source.html#l00436">loopMask</a>, <a class="el" href="llvmutil_8h_source.html#l00067">LLVMTypes::MaskType</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ctx_8cpp_source.html#l01685">StoreInst()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -2420,11 +2434,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Inform the debugging information generation code that a new scope is starting in the source program. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00856">856</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00857">857</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>, <a class="el" href="ctx_8h_source.html#l00486">debugScopes</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="ctx_8h_source.html#l00478">diFile</a>, <a class="el" href="ctx_8h_source.html#l00482">diFunction</a>, <a class="el" href="ispc_8h_source.html#l00104">SourcePos::first_column</a>, <a class="el" href="ispc_8h_source.html#l00103">SourcePos::first_line</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8h_source.html#l00422">currentPos</a>, <a class="el" href="ctx_8h_source.html#l00486">debugScopes</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="ctx_8h_source.html#l00478">diFile</a>, <a class="el" href="ctx_8h_source.html#l00482">diFunction</a>, <a class="el" href="ispc_8h_source.html#l00111">SourcePos::first_column</a>, <a class="el" href="ispc_8h_source.html#l00110">SourcePos::first_line</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01306">StmtList::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00972">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00792">DoStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, and <a class="el" href="stmt_8cpp_source.html#l00401">lEmitIfStatements()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01315">StmtList::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00981">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00801">DoStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, and <a class="el" href="stmt_8cpp_source.html#l00410">lEmitIfStatements()</a>.</p>
 
 </div>
 </div>
@@ -2448,7 +2462,7 @@ Private Attributes</h2></td></tr>
 
 <p>References <a class="el" href="ctx_8h_source.html#l00474">controlFlowInfo</a>, and <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo::GetIf()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00414">IfStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00423">IfStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -2472,7 +2486,7 @@ Private Attributes</h2></td></tr>
 
 <p>References <a class="el" href="ctx_8h_source.html#l00474">controlFlowInfo</a>, and <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo::GetIf()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00414">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00618">IfStmt::emitMaskAllOn()</a>, and <a class="el" href="stmt_8cpp_source.html#l00684">IfStmt::emitMaskMixed()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00423">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00627">IfStmt::emitMaskAllOn()</a>, and <a class="el" href="stmt_8cpp_source.html#l00693">IfStmt::emitMaskMixed()</a>.</p>
 
 </div>
 </div>
@@ -2520,9 +2534,9 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>In this variant of <a class="el" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst()</a>, the lvalue may be varying. If so, this corresponds to a scatter. Whether the lvalue is uniform of varying, the given storeMask is used to mask the stores so that they only execute for the active program instances. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01705">1705</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01708">1708</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="classType.html#a0a997c011addd186c7a45a9352fe0edb">Type::IsUniformType()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00068">LLVMMaskAllOn</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="ctx_8cpp_source.html#l01540">maskedStore()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l01613">scatter()</a>, and <a class="el" href="ctx_8cpp_source.html#l01682">StoreInst()</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="classType.html#a0a997c011addd186c7a45a9352fe0edb">Type::IsUniformType()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00070">LLVMMaskAllOn</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="ctx_8cpp_source.html#l01541">maskedStore()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l01616">scatter()</a>, and <a class="el" href="ctx_8cpp_source.html#l01685">StoreInst()</a>.</p>
 
 </div>
 </div>
@@ -2558,11 +2572,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Standard store instruction; for this variant, the lvalue must be a single pointer, not a varying lvalue. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01682">1682</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01685">1685</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l01428">PrintStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, <a class="el" href="expr_8cpp_source.html#l02767">MemberExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02609">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02188">FunctionCallExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l01907">LaunchInst()</a>, <a class="el" href="module_8cpp_source.html#l00556">lCopyInTaskParameter()</a>, <a class="el" href="module_8cpp_source.html#l00592">lEmitFunctionCode()</a>, <a class="el" href="expr_8cpp_source.html#l00406">lEmitPrePostIncDec()</a>, <a class="el" href="expr_8cpp_source.html#l01662">lEmitVaryingSelect()</a>, <a class="el" href="stmt_8cpp_source.html#l00130">lInitSymbol()</a>, <a class="el" href="stmt_8cpp_source.html#l01387">lProcessPrintArg()</a>, <a class="el" href="expr_8cpp_source.html#l01392">lStoreAssignResult()</a>, <a class="el" href="ctx_8cpp_source.html#l01540">maskedStore()</a>, <a class="el" href="ctx_8cpp_source.html#l00586">RestoreContinuedLanes()</a>, <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00372">StartLoop()</a>, and <a class="el" href="ctx_8cpp_source.html#l01705">StoreInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l01437">PrintStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, <a class="el" href="expr_8cpp_source.html#l02805">MemberExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02647">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02226">FunctionCallExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l01910">LaunchInst()</a>, <a class="el" href="module_8cpp_source.html#l00567">lCopyInTaskParameter()</a>, <a class="el" href="module_8cpp_source.html#l00603">lEmitFunctionCode()</a>, <a class="el" href="expr_8cpp_source.html#l00433">lEmitPrePostIncDec()</a>, <a class="el" href="expr_8cpp_source.html#l01692">lEmitVaryingSelect()</a>, <a class="el" href="stmt_8cpp_source.html#l00130">lInitSymbol()</a>, <a class="el" href="stmt_8cpp_source.html#l01396">lProcessPrintArg()</a>, <a class="el" href="expr_8cpp_source.html#l01422">lStoreAssignResult()</a>, <a class="el" href="ctx_8cpp_source.html#l01541">maskedStore()</a>, <a class="el" href="ctx_8cpp_source.html#l00586">RestoreContinuedLanes()</a>, <a class="el" href="ctx_8cpp_source.html#l00255">SetMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00372">StartLoop()</a>, and <a class="el" href="ctx_8cpp_source.html#l01708">StoreInst()</a>.</p>
 
 </div>
 </div>
@@ -2597,11 +2611,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01178">1178</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01179">1179</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l03577">lTypeConvAtomic()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l03618">lTypeConvAtomic()</a>.</p>
 
 </div>
 </div>
@@ -2624,7 +2638,7 @@ Private Attributes</h2></td></tr>
 
 <p>References <a class="el" href="ctx_8h_source.html#l00474">controlFlowInfo</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l00232">DeclStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l01488">AssignExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00406">lEmitPrePostIncDec()</a>, and <a class="el" href="expr_8cpp_source.html#l01392">lStoreAssignResult()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l00233">DeclStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l01518">AssignExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00433">lEmitPrePostIncDec()</a>, and <a class="el" href="expr_8cpp_source.html#l01422">lStoreAssignResult()</a>.</p>
 
 </div>
 </div>
@@ -2659,11 +2673,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01246">1246</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01247">1247</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8h_source.html#l00413">bblock</a>, <a class="el" href="module_8h_source.html#l00085">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l03577">lTypeConvAtomic()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l03618">lTypeConvAtomic()</a>.</p>
 
 </div>
 </div>
@@ -2682,7 +2696,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8h_source.html#l00409">409</a> of file <a class="el" href="ctx_8h_source.html">ctx.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01501">AllocaInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01502">AllocaInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>.</p>
 
 </div>
 </div>
@@ -2700,7 +2714,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8h_source.html#l00413">413</a> of file <a class="el" href="ctx_8h_source.html">ctx.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00805">AddInstrumentationPoint()</a>, <a class="el" href="ctx_8cpp_source.html#l01501">AllocaInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00959">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01080">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00290">BranchIfMaskAll()</a>, <a class="el" href="ctx_8cpp_source.html#l00279">BranchIfMaskAny()</a>, <a class="el" href="ctx_8cpp_source.html#l00301">BranchIfMaskNone()</a>, <a class="el" href="ctx_8cpp_source.html#l01735">BranchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l01825">CallInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01195">CastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01046">CmpInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00730">CreateBasicBlock()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="ctx_8cpp_source.html#l00916">EmitFunctionParameterDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l00760">EmitMalloc()</a>, <a class="el" href="ctx_8cpp_source.html#l00894">EmitVariableDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l00324">EndIf()</a>, <a class="el" href="ctx_8cpp_source.html#l01757">ExtractInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01212">FPCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, <a class="el" href="ctx_8cpp_source.html#l00224">GetCurrentBasicBlock()</a>, <a class="el" href="ctx_8cpp_source.html#l01263">GetElementPtrInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00718">GetStringPtr()</a>, <a class="el" href="ctx_8cpp_source.html#l01776">InsertInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01146">IntToPtrInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>, <a class="el" href="ctx_8cpp_source.html#l01340">LoadInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00993">NotOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01796">PhiNode()</a>, <a class="el" href="ctx_8cpp_source.html#l01114">PtrToIntInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00424">restoreMaskGivenReturns()</a>, <a class="el" href="ctx_8cpp_source.html#l01876">ReturnInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01809">SelectInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00230">SetCurrentBasicBlock()</a>, <a class="el" href="ctx_8cpp_source.html#l01229">SExtInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01682">StoreInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01178">TruncInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l01246">ZExtInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00806">AddInstrumentationPoint()</a>, <a class="el" href="ctx_8cpp_source.html#l01502">AllocaInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00960">BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01081">BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00290">BranchIfMaskAll()</a>, <a class="el" href="ctx_8cpp_source.html#l00279">BranchIfMaskAny()</a>, <a class="el" href="ctx_8cpp_source.html#l00301">BranchIfMaskNone()</a>, <a class="el" href="ctx_8cpp_source.html#l01738">BranchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l01828">CallInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01196">CastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01047">CmpInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l00730">CreateBasicBlock()</a>, <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="ctx_8cpp_source.html#l00917">EmitFunctionParameterDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l00760">EmitMalloc()</a>, <a class="el" href="ctx_8cpp_source.html#l00895">EmitVariableDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l00324">EndIf()</a>, <a class="el" href="ctx_8cpp_source.html#l01760">ExtractInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01213">FPCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, <a class="el" href="ctx_8cpp_source.html#l00224">GetCurrentBasicBlock()</a>, <a class="el" href="ctx_8cpp_source.html#l01264">GetElementPtrInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00718">GetStringPtr()</a>, <a class="el" href="ctx_8cpp_source.html#l01779">InsertInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01147">IntToPtrInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00552">jumpIfAllLoopLanesAreDone()</a>, <a class="el" href="ctx_8cpp_source.html#l01341">LoadInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00994">NotOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01799">PhiNode()</a>, <a class="el" href="ctx_8cpp_source.html#l01115">PtrToIntInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00424">restoreMaskGivenReturns()</a>, <a class="el" href="ctx_8cpp_source.html#l01879">ReturnInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01812">SelectInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00230">SetCurrentBasicBlock()</a>, <a class="el" href="ctx_8cpp_source.html#l01230">SExtInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01685">StoreInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01179">TruncInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l01247">ZExtInst()</a>.</p>
 
 </div>
 </div>
@@ -2808,7 +2822,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8h_source.html#l00422">422</a> of file <a class="el" href="ctx_8h_source.html">ctx.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00838">AddDebugPos()</a>, <a class="el" href="ctx_8cpp_source.html#l00805">AddInstrumentationPoint()</a>, <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l01381">gather()</a>, <a class="el" href="ctx_8cpp_source.html#l00832">GetDebugPos()</a>, <a class="el" href="ctx_8cpp_source.html#l01613">scatter()</a>, <a class="el" href="ctx_8cpp_source.html#l00826">SetDebugPos()</a>, and <a class="el" href="ctx_8cpp_source.html#l00856">StartScope()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00839">AddDebugPos()</a>, <a class="el" href="ctx_8cpp_source.html#l00806">AddInstrumentationPoint()</a>, <a class="el" href="ctx_8cpp_source.html#l00440">Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00489">Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l01382">gather()</a>, <a class="el" href="ctx_8cpp_source.html#l00833">GetDebugPos()</a>, <a class="el" href="ctx_8cpp_source.html#l01616">scatter()</a>, <a class="el" href="ctx_8cpp_source.html#l00827">SetDebugPos()</a>, and <a class="el" href="ctx_8cpp_source.html#l00857">StartScope()</a>.</p>
 
 </div>
 </div>
@@ -2826,7 +2840,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8h_source.html#l00486">486</a> of file <a class="el" href="ctx_8h_source.html">ctx.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00876">EndScope()</a>, <a class="el" href="ctx_8cpp_source.html#l00887">GetDIScope()</a>, <a class="el" href="ctx_8cpp_source.html#l00856">StartScope()</a>, and <a class="el" href="ctx_8cpp_source.html#l00215">~FunctionEmitContext()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00877">EndScope()</a>, <a class="el" href="ctx_8cpp_source.html#l00888">GetDIScope()</a>, <a class="el" href="ctx_8cpp_source.html#l00857">StartScope()</a>, and <a class="el" href="ctx_8cpp_source.html#l00215">~FunctionEmitContext()</a>.</p>
 
 </div>
 </div>
@@ -2844,7 +2858,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8h_source.html#l00478">478</a> of file <a class="el" href="ctx_8h_source.html">ctx.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, and <a class="el" href="ctx_8cpp_source.html#l00856">StartScope()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, and <a class="el" href="ctx_8cpp_source.html#l00857">StartScope()</a>.</p>
 
 </div>
 </div>
@@ -2862,7 +2876,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8h_source.html#l00482">482</a> of file <a class="el" href="ctx_8h_source.html">ctx.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00916">EmitFunctionParameterDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, and <a class="el" href="ctx_8cpp_source.html#l00856">StartScope()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00917">EmitFunctionParameterDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, and <a class="el" href="ctx_8cpp_source.html#l00857">StartScope()</a>.</p>
 
 </div>
 </div>
@@ -2916,7 +2930,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8h_source.html#l00489">489</a> of file <a class="el" href="ctx_8h_source.html">ctx.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, <a class="el" href="ctx_8cpp_source.html#l01907">LaunchInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l01876">ReturnInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, <a class="el" href="ctx_8cpp_source.html#l01910">LaunchInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l01879">ReturnInst()</a>.</p>
 
 </div>
 </div>
@@ -2988,7 +3002,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8h_source.html#l00429">429</a> of file <a class="el" href="ctx_8h_source.html">ctx.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, and <a class="el" href="ctx_8cpp_source.html#l01876">ReturnInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, and <a class="el" href="ctx_8cpp_source.html#l01879">ReturnInst()</a>.</p>
 
 </div>
 </div>
@@ -3006,7 +3020,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ctx_8h_source.html#l00468">468</a> of file <a class="el" href="ctx_8h_source.html">ctx.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, and <a class="el" href="ctx_8cpp_source.html#l01876">ReturnInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00613">CurrentLanesReturned()</a>, <a class="el" href="ctx_8cpp_source.html#l00126">FunctionEmitContext()</a>, and <a class="el" href="ctx_8cpp_source.html#l01879">ReturnInst()</a>.</p>
 
 </div>
 </div>
@@ -3015,7 +3029,7 @@ Private Attributes</h2></td></tr>
 <li><a class="el" href="ctx_8cpp_source.html">ctx.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 4 2011 18:29:51 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Jul 17 2011 16:54:29 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

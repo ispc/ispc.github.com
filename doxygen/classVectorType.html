@@ -76,7 +76,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVectorType.html#a4d77328bd40e8e2d011b3c8d492f5457">GetString</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVectorType.html#afd4698761398f68cdf7aea539eaff557">Mangle</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVectorType.html#ab1ca821f3386908229a99971700d84de">GetCDeclaration</a> (const std::string &amp;name) const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">const llvm::Type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVectorType.html#ac7d26c18896f40aab05f04c666c4cf54">LLVMType</a> (llvm::LLVMContext *ctx) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">LLVM_TYPE_CONST llvm::Type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVectorType.html#adab71a5d675f778406bab04194c7e312">LLVMType</a> (llvm::LLVMContext *ctx) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::DIType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVectorType.html#aed5a430e9f14122aa53bc12df4263c41">GetDIType</a> (llvm::DIDescriptor scope) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classAtomicType.html">AtomicType</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVectorType.html#a87558faf9b83f232f1b1bd8dda7cba9a">GetElementType</a> () const </td></tr>
@@ -92,7 +92,7 @@ Private Attributes</h2></td></tr>
 <p>A (short) vector of atomic types. </p>
 <p><a class="el" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> is used to represent a fixed-size array of elements of an <a class="el" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a>. Vectors are similar to arrays in that they support indexing of the elements, but have two key differences. First, all arithmetic and logical operations that are value for the element type can be performed on corresponding VectorTypes (as long as the two VectorTypes have the same size). Second, VectorTypes of uniform elements are laid out in memory aligned to the target's vector size; this allows them to be packed 'horizontally' into vector registers. </p>
 
-<p>Definition at line <a class="el" href="type_8h_source.html#l00422">422</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p>Definition at line <a class="el" href="type_8h_source.html#l00468">468</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a2061f86acbaa8c02599688a0851773e6"></a><!-- doxytag: member="VectorType::VectorType" ref="a2061f86acbaa8c02599688a0851773e6" args="(const AtomicType *base, int size)" -->
 <div class="memitem">
@@ -119,11 +119,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00778">778</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00995">995</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="type_8h_source.html#l00452">base</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="type_8h_source.html#l00454">numElements</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="type_8h_source.html#l00498">base</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="type_8h_source.html#l00500">numElements</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l00847">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00853">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00834">GetAsUniformType()</a>, and <a class="el" href="type_8cpp_source.html#l00828">GetAsVaryingType()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l01064">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l01070">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l01051">GetAsUniformType()</a>, and <a class="el" href="type_8cpp_source.html#l01045">GetAsVaryingType()</a>.</p>
 
 </div>
 </div>
@@ -145,9 +145,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00847">847</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01064">1064</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, <a class="el" href="type_8cpp_source.html#l00167">AtomicType::GetAsConstType()</a>, <a class="el" href="type_8h_source.html#l00454">numElements</a>, and <a class="el" href="type_8cpp_source.html#l00778">VectorType()</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, <a class="el" href="type_8cpp_source.html#l00167">AtomicType::GetAsConstType()</a>, <a class="el" href="type_8h_source.html#l00500">numElements</a>, and <a class="el" href="type_8cpp_source.html#l00995">VectorType()</a>.</p>
 
 </div>
 </div>
@@ -168,11 +168,11 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00853">853</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01070">1070</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, <a class="el" href="type_8cpp_source.html#l00187">AtomicType::GetAsNonConstType()</a>, <a class="el" href="type_8h_source.html#l00454">numElements</a>, and <a class="el" href="type_8cpp_source.html#l00778">VectorType()</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, <a class="el" href="type_8cpp_source.html#l00187">AtomicType::GetAsNonConstType()</a>, <a class="el" href="type_8h_source.html#l00500">numElements</a>, and <a class="el" href="type_8cpp_source.html#l00995">VectorType()</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l01113">lEmitVectorTypedefs()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l01148">lEmitVectorTypedefs()</a>.</p>
 
 </div>
 </div>
@@ -193,9 +193,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#ab0eff8692794d3437a91404c98985d20">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00834">834</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01051">1051</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, <a class="el" href="type_8cpp_source.html#l00233">AtomicType::GetAsUniformType()</a>, <a class="el" href="type_8h_source.html#l00454">numElements</a>, and <a class="el" href="type_8cpp_source.html#l00778">VectorType()</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, <a class="el" href="type_8cpp_source.html#l00233">AtomicType::GetAsUniformType()</a>, <a class="el" href="type_8h_source.html#l00500">numElements</a>, and <a class="el" href="type_8cpp_source.html#l00995">VectorType()</a>.</p>
 
 </div>
 </div>
@@ -216,9 +216,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#aedfa3c719db7ab073c5e1f75b4041e55">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00828">828</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01045">1045</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, <a class="el" href="type_8cpp_source.html#l00213">AtomicType::GetAsVaryingType()</a>, <a class="el" href="type_8h_source.html#l00454">numElements</a>, and <a class="el" href="type_8cpp_source.html#l00778">VectorType()</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, <a class="el" href="type_8cpp_source.html#l00213">AtomicType::GetAsVaryingType()</a>, <a class="el" href="type_8h_source.html#l00500">numElements</a>, and <a class="el" href="type_8cpp_source.html#l00995">VectorType()</a>.</p>
 
 </div>
 </div>
@@ -239,11 +239,11 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a51af28faf17eb05982547d9b340429eb">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00822">822</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01039">1039</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01381">FunctionEmitContext::gather()</a>, <a class="el" href="module_8cpp_source.html#l01113">lEmitVectorTypedefs()</a>, <a class="el" href="expr_8cpp_source.html#l00317">lLLVMConstantValue()</a>, and <a class="el" href="ctx_8cpp_source.html#l01613">FunctionEmitContext::scatter()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01382">FunctionEmitContext::gather()</a>, <a class="el" href="module_8cpp_source.html#l01148">lEmitVectorTypedefs()</a>, <a class="el" href="expr_8cpp_source.html#l00340">lLLVMConstantValue()</a>, and <a class="el" href="ctx_8cpp_source.html#l01616">FunctionEmitContext::scatter()</a>.</p>
 
 </div>
 </div>
@@ -265,9 +265,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a7e35141766bbc63333953263cd85d883">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00877">877</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01094">1094</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, <a class="el" href="type_8cpp_source.html#l00304">AtomicType::GetCDeclaration()</a>, <a class="el" href="type_8h_source.html#l00454">numElements</a>, and <a class="el" href="parse_8yy_source.html#l13721">s</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, <a class="el" href="type_8cpp_source.html#l00304">AtomicType::GetCDeclaration()</a>, <a class="el" href="type_8h_source.html#l00500">numElements</a>, and <a class="el" href="parse_8yy_source.html#l15828">s</a>.</p>
 
 </div>
 </div>
@@ -289,9 +289,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a8b6ded269378020c769915bbbff3d73c">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00919">919</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01136">1136</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="util_8h_source.html#l00104">FATAL</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="type_8cpp_source.html#l00354">AtomicType::GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00786">IsUniformType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="ispc_8h_source.html#l00168">Target::nativeVectorWidth</a>, <a class="el" href="type_8h_source.html#l00454">numElements</a>, and <a class="el" href="ispc_8h_source.html#l00262">Globals::target</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, <a class="el" href="module_8h_source.html#l00097">Module::diBuilder</a>, <a class="el" href="util_8h_source.html#l00104">FATAL</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="type_8cpp_source.html#l00354">AtomicType::GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l01003">IsUniformType()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="ispc_8h_source.html#l00177">Target::nativeVectorWidth</a>, <a class="el" href="type_8h_source.html#l00500">numElements</a>, and <a class="el" href="ispc_8h_source.html#l00271">Globals::target</a>.</p>
 
 </div>
 </div>
@@ -312,11 +312,11 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classCollectionType.html#abc5eb48e176e4abb0fa405d41ae99381">CollectionType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00886">886</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01103">1103</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00454">numElements</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00500">numElements</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l01756">Type::Equal()</a>, <a class="el" href="ctx_8cpp_source.html#l01381">FunctionEmitContext::gather()</a>, <a class="el" href="expr_8cpp_source.html#l03923">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>, <a class="el" href="module_8cpp_source.html#l01113">lEmitVectorTypedefs()</a>, <a class="el" href="expr_8cpp_source.html#l00300">lMatchingBoolType()</a>, <a class="el" href="type_8cpp_source.html#l01633">lVectorConvert()</a>, <a class="el" href="type_8cpp_source.html#l01657">Type::MoreGeneralType()</a>, <a class="el" href="ctx_8cpp_source.html#l01613">FunctionEmitContext::scatter()</a>, <a class="el" href="expr_8cpp_source.html#l01819">SelectExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l01225">BinaryExpr::TypeCheck()</a>, and <a class="el" href="expr_8cpp_source.html#l00120">Expr::TypeConv()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l02007">Type::Equal()</a>, <a class="el" href="ctx_8cpp_source.html#l01382">FunctionEmitContext::gather()</a>, <a class="el" href="expr_8cpp_source.html#l03955">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>, <a class="el" href="module_8cpp_source.html#l01148">lEmitVectorTypedefs()</a>, <a class="el" href="expr_8cpp_source.html#l00323">lMatchingBoolType()</a>, <a class="el" href="type_8cpp_source.html#l01851">lVectorConvert()</a>, <a class="el" href="type_8cpp_source.html#l01875">Type::MoreGeneralType()</a>, <a class="el" href="ctx_8cpp_source.html#l01616">FunctionEmitContext::scatter()</a>, <a class="el" href="expr_8cpp_source.html#l01849">SelectExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l01255">BinaryExpr::TypeCheck()</a>, and <a class="el" href="expr_8cpp_source.html#l00120">Expr::TypeConv()</a>.</p>
 
 </div>
 </div>
@@ -337,11 +337,11 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classSequentialType.html#a923d9a8ec402a9880b6d149b8f372916">SequentialType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00892">892</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01109">1109</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l01756">Type::Equal()</a>, <a class="el" href="expr_8cpp_source.html#l02799">MemberExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l03923">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01675">SelectExpr::GetValue()</a>, <a class="el" href="type_8cpp_source.html#l01657">Type::MoreGeneralType()</a>, and <a class="el" href="ctx_8cpp_source.html#l01613">FunctionEmitContext::scatter()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l02007">Type::Equal()</a>, <a class="el" href="expr_8cpp_source.html#l02837">MemberExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l03955">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01705">SelectExpr::GetValue()</a>, <a class="el" href="type_8cpp_source.html#l01875">Type::MoreGeneralType()</a>, and <a class="el" href="ctx_8cpp_source.html#l01616">FunctionEmitContext::scatter()</a>.</p>
 
 </div>
 </div>
@@ -363,7 +363,7 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a912c0c79b5fcc6f29674f6310bad5256">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00840">840</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01057">1057</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
 </div>
 </div>
@@ -384,9 +384,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00859">859</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01076">1076</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, <a class="el" href="type_8cpp_source.html#l00260">AtomicType::GetString()</a>, <a class="el" href="type_8h_source.html#l00454">numElements</a>, and <a class="el" href="parse_8yy_source.html#l13721">s</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, <a class="el" href="type_8cpp_source.html#l00260">AtomicType::GetString()</a>, <a class="el" href="type_8h_source.html#l00500">numElements</a>, and <a class="el" href="parse_8yy_source.html#l15828">s</a>.</p>
 
 </div>
 </div>
@@ -405,11 +405,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Returns the number of elements stored in memory for the vector. For uniform vectors, this is rounded up so that the number of elements evenly divides the target's native vector width. </p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00948">948</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01165">1165</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="type_8cpp_source.html#l00233">AtomicType::GetAsUniformType()</a>, <a class="el" href="type_8h_source.html#l00085">Type::IsVaryingType()</a>, <a class="el" href="ispc_8h_source.html#l00168">Target::nativeVectorWidth</a>, <a class="el" href="type_8h_source.html#l00454">numElements</a>, and <a class="el" href="ispc_8h_source.html#l00262">Globals::target</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="type_8cpp_source.html#l00233">AtomicType::GetAsUniformType()</a>, <a class="el" href="type_8h_source.html#l00085">Type::IsVaryingType()</a>, <a class="el" href="ispc_8h_source.html#l00177">Target::nativeVectorWidth</a>, <a class="el" href="type_8h_source.html#l00500">numElements</a>, and <a class="el" href="ispc_8h_source.html#l00271">Globals::target</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l00898">LLVMType()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l01115">LLVMType()</a>.</p>
 
 </div>
 </div>
@@ -430,9 +430,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a38ff6178597171c11f6e24566b251dea">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00810">810</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01027">1027</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, and <a class="el" href="type_8cpp_source.html#l00138">AtomicType::IsBoolType()</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, and <a class="el" href="type_8cpp_source.html#l00138">AtomicType::IsBoolType()</a>.</p>
 
 </div>
 </div>
@@ -453,9 +453,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a9a6d77fb89abc534e2ee1726cc13cf05">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00816">816</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01033">1033</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, and <a class="el" href="type_8cpp_source.html#l00144">AtomicType::IsConstType()</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, and <a class="el" href="type_8cpp_source.html#l00144">AtomicType::IsConstType()</a>.</p>
 
 </div>
 </div>
@@ -476,9 +476,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#aeee9fe8b11fc75a300cf37f8b5c9f034">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00792">792</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01009">1009</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, and <a class="el" href="type_8cpp_source.html#l00119">AtomicType::IsFloatType()</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, and <a class="el" href="type_8cpp_source.html#l00119">AtomicType::IsFloatType()</a>.</p>
 
 </div>
 </div>
@@ -499,9 +499,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a3b2b570093e27170d582b67211dd6836">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00798">798</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01015">1015</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, and <a class="el" href="type_8cpp_source.html#l00125">AtomicType::IsIntType()</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, and <a class="el" href="type_8cpp_source.html#l00125">AtomicType::IsIntType()</a>.</p>
 
 </div>
 </div>
@@ -522,11 +522,11 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a0a997c011addd186c7a45a9352fe0edb">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00786">786</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01003">1003</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, and <a class="el" href="type_8cpp_source.html#l00113">AtomicType::IsUniformType()</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, and <a class="el" href="type_8cpp_source.html#l00113">AtomicType::IsUniformType()</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l00919">GetDIType()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l01136">GetDIType()</a>.</p>
 
 </div>
 </div>
@@ -547,18 +547,18 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a9fb5648ec4eb5b432723cf0b3332f8d0">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00804">804</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01021">1021</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, and <a class="el" href="type_8cpp_source.html#l00132">AtomicType::IsUnsignedType()</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, and <a class="el" href="type_8cpp_source.html#l00132">AtomicType::IsUnsignedType()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac7d26c18896f40aab05f04c666c4cf54"></a><!-- doxytag: member="VectorType::LLVMType" ref="ac7d26c18896f40aab05f04c666c4cf54" args="(llvm::LLVMContext *ctx) const " -->
+<a class="anchor" id="adab71a5d675f778406bab04194c7e312"></a><!-- doxytag: member="VectorType::LLVMType" ref="adab71a5d675f778406bab04194c7e312" args="(llvm::LLVMContext *ctx) const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const llvm::Type * VectorType::LLVMType </td>
+          <td class="memname">LLVM_TYPE_CONST llvm::Type * VectorType::LLVMType </td>
           <td>(</td>
           <td class="paramtype">llvm::LLVMContext *&#160;</td>
           <td class="paramname"> <em>ctx</em>&#160;)</td>
@@ -569,13 +569,13 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Returns the LLVM type corresponding to this ispc type </p>
 
-<p>Implements <a class="el" href="classType.html#ab324b2f6e207b63de653aeb530b90f46">Type</a>.</p>
+<p>Implements <a class="el" href="classType.html#aa7b08bf258938faa7e12b580b623621a">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00898">898</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01115">1115</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, <a class="el" href="type_8cpp_source.html#l00948">getVectorMemoryCount()</a>, <a class="el" href="type_8cpp_source.html#l00113">AtomicType::IsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00330">AtomicType::LLVMType()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, <a class="el" href="type_8cpp_source.html#l01165">getVectorMemoryCount()</a>, <a class="el" href="type_8cpp_source.html#l00113">AtomicType::IsUniformType()</a>, <a class="el" href="ispc_8h_source.html#l00080">LLVM_TYPE_CONST</a>, <a class="el" href="type_8cpp_source.html#l00330">AtomicType::LLVMType()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l00317">lLLVMConstantValue()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l00340">lLLVMConstantValue()</a>.</p>
 
 </div>
 </div>
@@ -596,9 +596,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a7bd23bd909d493d271dbe1024d212c06">Type</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00868">868</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01085">1085</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00452">base</a>, <a class="el" href="type_8cpp_source.html#l00283">AtomicType::Mangle()</a>, <a class="el" href="type_8h_source.html#l00454">numElements</a>, and <a class="el" href="parse_8yy_source.html#l13721">s</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00498">base</a>, <a class="el" href="type_8cpp_source.html#l00283">AtomicType::Mangle()</a>, <a class="el" href="type_8h_source.html#l00500">numElements</a>, and <a class="el" href="parse_8yy_source.html#l15828">s</a>.</p>
 
 </div>
 </div>
@@ -615,9 +615,9 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Base type that the vector holds elements of </p>
 
-<p>Definition at line <a class="el" href="type_8h_source.html#l00452">452</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p>Definition at line <a class="el" href="type_8h_source.html#l00498">498</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l00847">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00853">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00834">GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00828">GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l00822">GetBaseType()</a>, <a class="el" href="type_8cpp_source.html#l00877">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00919">GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00892">GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l00859">GetString()</a>, <a class="el" href="type_8cpp_source.html#l00948">getVectorMemoryCount()</a>, <a class="el" href="type_8cpp_source.html#l00810">IsBoolType()</a>, <a class="el" href="type_8cpp_source.html#l00816">IsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00792">IsFloatType()</a>, <a class="el" href="type_8cpp_source.html#l00798">IsIntType()</a>, <a class="el" href="type_8cpp_source.html#l00786">IsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00804">IsUnsignedType()</a>, <a class="el" href="type_8cpp_source.html#l00898">LLVMType()</a>, <a class="el" href="type_8cpp_source.html#l00868">Mangle()</a>, and <a class="el" href="type_8cpp_source.html#l00778">VectorType()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l01064">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l01070">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l01051">GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l01045">GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l01039">GetBaseType()</a>, <a class="el" href="type_8cpp_source.html#l01094">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l01136">GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l01109">GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l01076">GetString()</a>, <a class="el" href="type_8cpp_source.html#l01165">getVectorMemoryCount()</a>, <a class="el" href="type_8cpp_source.html#l01027">IsBoolType()</a>, <a class="el" href="type_8cpp_source.html#l01033">IsConstType()</a>, <a class="el" href="type_8cpp_source.html#l01009">IsFloatType()</a>, <a class="el" href="type_8cpp_source.html#l01015">IsIntType()</a>, <a class="el" href="type_8cpp_source.html#l01003">IsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l01021">IsUnsignedType()</a>, <a class="el" href="type_8cpp_source.html#l01115">LLVMType()</a>, <a class="el" href="type_8cpp_source.html#l01085">Mangle()</a>, and <a class="el" href="type_8cpp_source.html#l00995">VectorType()</a>.</p>
 
 </div>
 </div>
@@ -633,9 +633,9 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Number of elements in the vector </p>
 
-<p>Definition at line <a class="el" href="type_8h_source.html#l00454">454</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p>Definition at line <a class="el" href="type_8h_source.html#l00500">500</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l00847">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00853">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00834">GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00828">GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l00877">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00919">GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00886">GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l00859">GetString()</a>, <a class="el" href="type_8cpp_source.html#l00948">getVectorMemoryCount()</a>, <a class="el" href="type_8cpp_source.html#l00868">Mangle()</a>, and <a class="el" href="type_8cpp_source.html#l00778">VectorType()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l01064">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l01070">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l01051">GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l01045">GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l01094">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l01136">GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l01103">GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l01076">GetString()</a>, <a class="el" href="type_8cpp_source.html#l01165">getVectorMemoryCount()</a>, <a class="el" href="type_8cpp_source.html#l01085">Mangle()</a>, and <a class="el" href="type_8cpp_source.html#l00995">VectorType()</a>.</p>
 
 </div>
 </div>
@@ -644,7 +644,7 @@ Private Attributes</h2></td></tr>
 <li><a class="el" href="type_8cpp_source.html">type.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 4 2011 18:29:51 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Jul 17 2011 16:54:30 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

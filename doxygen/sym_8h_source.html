@@ -249,53 +249,58 @@
 <a name="l00218"></a>00218 <span class="comment">        in the symbol table that nearly (but not exactly) match the given</span>
 <a name="l00219"></a>00219 <span class="comment">        name. */</span>
 <a name="l00220"></a>00220     std::vector&lt;std::string&gt; <a class="code" href="classSymbolTable.html#af496f9175cb4a1370d61d9b166050324">ClosestTypeMatch</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name) <span class="keyword">const</span>;
-<a name="l00221"></a>00221 <span class="comment"></span>
-<a name="l00222"></a>00222 <span class="comment">    /** Prints out the entire contents of the symbol table to standard error.</span>
-<a name="l00223"></a>00223 <span class="comment">        (Debugging method). */</span>
-<a name="l00224"></a>00224     <span class="keywordtype">void</span> <a class="code" href="classSymbolTable.html#a6642684baa5464f91821d8a83595bb7b">Print</a>();
-<a name="l00225"></a>00225 
-<a name="l00226"></a>00226 <span class="keyword">private</span>:<span class="comment"></span>
-<a name="l00227"></a>00227 <span class="comment">    /** This member variable holds one \c vector of Symbol pointers for</span>
-<a name="l00228"></a>00228 <span class="comment">        each of the current active scopes as the program is being parsed.</span>
-<a name="l00229"></a>00229 <span class="comment">        New vectors of symbols are added and removed from the end of the</span>
-<a name="l00230"></a>00230 <span class="comment">        main vector, so searches for symbols start looking at the end of \c</span>
-<a name="l00231"></a>00231 <span class="comment">        variables and work backwards.</span>
-<a name="l00232"></a>00232 <span class="comment">     */</span>
-<a name="l00233"></a><a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">00233</a>     std::vector&lt;std::vector&lt;Symbol *&gt; *&gt; <a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">variables</a>;<span class="comment"></span>
-<a name="l00234"></a>00234 <span class="comment">    /** Because there is no scoping for function symbols, functions are</span>
-<a name="l00235"></a>00235 <span class="comment">        represented with a single STL \c map from names to symbols.  A STL</span>
-<a name="l00236"></a>00236 <span class="comment">        \c vector is used to store the function symbols for a given name</span>
-<a name="l00237"></a>00237 <span class="comment">        since, due to function overloading, a name can have multiple</span>
-<a name="l00238"></a>00238 <span class="comment">        function symbols associated with it. */</span>
-<a name="l00239"></a><a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">00239</a>     std::map&lt;std::string, std::vector&lt;Symbol *&gt; &gt; <a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">functions</a>;
-<a name="l00240"></a><a class="code" href="classSymbolTable.html#a03c3d3253785b20285973345d1ebda6c">00240</a>     <span class="keyword">typedef</span> std::map&lt;std::string, const Type *&gt; <a class="code" href="classSymbolTable.html#a03c3d3253785b20285973345d1ebda6c">TypeMapType</a>;<span class="comment"></span>
-<a name="l00241"></a>00241 <span class="comment">    /** Like variables, type definitions can be scoped.  A new \c TypeMapType</span>
-<a name="l00242"></a>00242 <span class="comment">        is added to the back of the \c types \c vector each time a new scope</span>
-<a name="l00243"></a>00243 <span class="comment">        is entered.  (And it&#39;s removed when the scope exits).</span>
-<a name="l00244"></a>00244 <span class="comment">     */</span>
-<a name="l00245"></a><a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">00245</a>     std::vector&lt;TypeMapType *&gt; <a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">types</a>;
-<a name="l00246"></a>00246 };
-<a name="l00247"></a>00247 
-<a name="l00248"></a>00248 
-<a name="l00249"></a>00249 <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Predicate&gt; 
-<a name="l00250"></a><a class="code" href="classSymbolTable.html#a405f262bf6a2687b2e804c92d5c99724">00250</a> <span class="keywordtype">void</span> <a class="code" href="classSymbolTable.html#a405f262bf6a2687b2e804c92d5c99724">SymbolTable::GetMatchingFunctions</a>(Predicate pred, 
-<a name="l00251"></a>00251                                        std::vector&lt;Symbol *&gt; *matches)<span class="keyword"> const </span>{
-<a name="l00252"></a>00252     <span class="comment">// Iterate through all function symbols and apply the given predicate.</span>
-<a name="l00253"></a>00253     <span class="comment">// If it returns true, add the Symbol * to the provided vector.</span>
-<a name="l00254"></a>00254     std::map&lt;std::string, std::vector&lt;Symbol *&gt; &gt;::const_iterator iter;
-<a name="l00255"></a>00255     <span class="keywordflow">for</span> (iter = <a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">functions</a>.begin(); iter != <a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">functions</a>.end(); ++iter) {
-<a name="l00256"></a>00256         <span class="keyword">const</span> std::vector&lt;Symbol *&gt; &amp;syms = iter-&gt;second;
-<a name="l00257"></a>00257         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; syms.size(); ++i) {
-<a name="l00258"></a>00258             <span class="keywordflow">if</span> (pred(syms[i]))
-<a name="l00259"></a>00259                 matches-&gt;push_back(syms[i]);
-<a name="l00260"></a>00260         }
-<a name="l00261"></a>00261     }
-<a name="l00262"></a>00262 }
-<a name="l00263"></a>00263 
-<a name="l00264"></a>00264 <span class="preprocessor">#endif // ISPC_SYM_H</span>
+<a name="l00221"></a>00221 
+<a name="l00222"></a>00222     std::vector&lt;std::string&gt; <a class="code" href="classSymbolTable.html#aa3608c26685895932ce7db07ec3ab73d">ClosestEnumTypeMatch</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name) <span class="keyword">const</span>;
+<a name="l00223"></a>00223 <span class="comment"></span>
+<a name="l00224"></a>00224 <span class="comment">    /** Prints out the entire contents of the symbol table to standard error.</span>
+<a name="l00225"></a>00225 <span class="comment">        (Debugging method). */</span>
+<a name="l00226"></a>00226     <span class="keywordtype">void</span> <a class="code" href="classSymbolTable.html#a6642684baa5464f91821d8a83595bb7b">Print</a>();
+<a name="l00227"></a>00227 
+<a name="l00228"></a>00228 <span class="keyword">private</span>:
+<a name="l00229"></a>00229     std::vector&lt;std::string&gt; <a class="code" href="classSymbolTable.html#a1cbb54b5e068d8b3da9a35fafd91af76">closestTypeMatch</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, 
+<a name="l00230"></a>00230                                               <span class="keywordtype">bool</span> structsVsEnums) <span class="keyword">const</span>;
+<a name="l00231"></a>00231 <span class="comment"></span>
+<a name="l00232"></a>00232 <span class="comment">    /** This member variable holds one \c vector of Symbol pointers for</span>
+<a name="l00233"></a>00233 <span class="comment">        each of the current active scopes as the program is being parsed.</span>
+<a name="l00234"></a>00234 <span class="comment">        New vectors of symbols are added and removed from the end of the</span>
+<a name="l00235"></a>00235 <span class="comment">        main vector, so searches for symbols start looking at the end of \c</span>
+<a name="l00236"></a>00236 <span class="comment">        variables and work backwards.</span>
+<a name="l00237"></a>00237 <span class="comment">     */</span>
+<a name="l00238"></a><a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">00238</a>     std::vector&lt;std::vector&lt;Symbol *&gt; *&gt; <a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">variables</a>;<span class="comment"></span>
+<a name="l00239"></a>00239 <span class="comment">    /** Because there is no scoping for function symbols, functions are</span>
+<a name="l00240"></a>00240 <span class="comment">        represented with a single STL \c map from names to symbols.  A STL</span>
+<a name="l00241"></a>00241 <span class="comment">        \c vector is used to store the function symbols for a given name</span>
+<a name="l00242"></a>00242 <span class="comment">        since, due to function overloading, a name can have multiple</span>
+<a name="l00243"></a>00243 <span class="comment">        function symbols associated with it. */</span>
+<a name="l00244"></a><a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">00244</a>     std::map&lt;std::string, std::vector&lt;Symbol *&gt; &gt; <a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">functions</a>;
+<a name="l00245"></a><a class="code" href="classSymbolTable.html#a03c3d3253785b20285973345d1ebda6c">00245</a>     <span class="keyword">typedef</span> std::map&lt;std::string, const Type *&gt; <a class="code" href="classSymbolTable.html#a03c3d3253785b20285973345d1ebda6c">TypeMapType</a>;<span class="comment"></span>
+<a name="l00246"></a>00246 <span class="comment">    /** Like variables, type definitions can be scoped.  A new \c TypeMapType</span>
+<a name="l00247"></a>00247 <span class="comment">        is added to the back of the \c types \c vector each time a new scope</span>
+<a name="l00248"></a>00248 <span class="comment">        is entered.  (And it&#39;s removed when the scope exits).</span>
+<a name="l00249"></a>00249 <span class="comment">     */</span>
+<a name="l00250"></a><a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">00250</a>     std::vector&lt;TypeMapType *&gt; <a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">types</a>;
+<a name="l00251"></a>00251 };
+<a name="l00252"></a>00252 
+<a name="l00253"></a>00253 
+<a name="l00254"></a>00254 <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Predicate&gt; 
+<a name="l00255"></a><a class="code" href="classSymbolTable.html#a405f262bf6a2687b2e804c92d5c99724">00255</a> <span class="keywordtype">void</span> <a class="code" href="classSymbolTable.html#a405f262bf6a2687b2e804c92d5c99724">SymbolTable::GetMatchingFunctions</a>(Predicate pred, 
+<a name="l00256"></a>00256                                        std::vector&lt;Symbol *&gt; *matches)<span class="keyword"> const </span>{
+<a name="l00257"></a>00257     <span class="comment">// Iterate through all function symbols and apply the given predicate.</span>
+<a name="l00258"></a>00258     <span class="comment">// If it returns true, add the Symbol * to the provided vector.</span>
+<a name="l00259"></a>00259     std::map&lt;std::string, std::vector&lt;Symbol *&gt; &gt;::const_iterator iter;
+<a name="l00260"></a>00260     <span class="keywordflow">for</span> (iter = <a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">functions</a>.begin(); iter != <a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">functions</a>.end(); ++iter) {
+<a name="l00261"></a>00261         <span class="keyword">const</span> std::vector&lt;Symbol *&gt; &amp;syms = iter-&gt;second;
+<a name="l00262"></a>00262         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; syms.size(); ++i) {
+<a name="l00263"></a>00263             <span class="keywordflow">if</span> (pred(syms[i]))
+<a name="l00264"></a>00264                 matches-&gt;push_back(syms[i]);
+<a name="l00265"></a>00265         }
+<a name="l00266"></a>00266     }
+<a name="l00267"></a>00267 }
+<a name="l00268"></a>00268 
+<a name="l00269"></a>00269 <span class="preprocessor">#endif // ISPC_SYM_H</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 4 2011 18:29:50 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Jul 17 2011 16:54:28 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>
