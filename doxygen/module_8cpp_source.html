@@ -1347,121 +1347,136 @@
 <a name="l01316"></a>01316     fprintf(f, <span class="stringliteral">&quot;#ifndef %s\n#define %s\n\n&quot;</span>, guard.c_str(), guard.c_str());
 <a name="l01317"></a>01317 
 <a name="l01318"></a>01318     fprintf(f, <span class="stringliteral">&quot;#include &lt;stdint.h&gt;\n\n&quot;</span>);
-<a name="l01319"></a>01319     fprintf(f, <span class="stringliteral">&quot;#ifdef __cplusplus\nnamespace ispc {\n#endif // __cplusplus\n\n&quot;</span>);
-<a name="l01320"></a>01320 
-<a name="l01321"></a>01321     <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">emitInstrumentation</a>) {
-<a name="l01322"></a>01322         fprintf(f, <span class="stringliteral">&quot;#define ISPC_INSTRUMENTATION 1\n&quot;</span>);
-<a name="l01323"></a>01323         fprintf(f, <span class="stringliteral">&quot;extern \&quot;C\&quot; {\n&quot;</span>);
-<a name="l01324"></a>01324         fprintf(f, <span class="stringliteral">&quot;  void ISPCInstrument(const char *fn, const char *note, int line, int mask);\n&quot;</span>);
-<a name="l01325"></a>01325         fprintf(f, <span class="stringliteral">&quot;}\n&quot;</span>);
-<a name="l01326"></a>01326     }
-<a name="l01327"></a>01327 
-<a name="l01328"></a>01328     <span class="comment">// Collect single linear arrays of the exported and extern &quot;C&quot;</span>
-<a name="l01329"></a>01329     <span class="comment">// functions</span>
-<a name="l01330"></a>01330     std::vector&lt;Symbol *&gt; exportedFuncs, externCFuncs;
-<a name="l01331"></a>01331     <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a66a01f1bae4f9c26eb1bc95780865954">symbolTable</a>-&gt;<a class="code" href="classSymbolTable.html#a405f262bf6a2687b2e804c92d5c99724">GetMatchingFunctions</a>(<a class="code" href="module_8cpp.html#a065a007555ce68e2a452b8bb88da0748">lIsExported</a>, &amp;exportedFuncs);
-<a name="l01332"></a>01332     <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a66a01f1bae4f9c26eb1bc95780865954">symbolTable</a>-&gt;<a class="code" href="classSymbolTable.html#a405f262bf6a2687b2e804c92d5c99724">GetMatchingFunctions</a>(<a class="code" href="module_8cpp.html#a17baea1878ee1fd83bc0222ef5a0c3dc">lIsExternC</a>, &amp;externCFuncs);
-<a name="l01333"></a>01333     
-<a name="l01334"></a>01334     <span class="comment">// Get all of the struct, vector, and enumerant types used as function</span>
-<a name="l01335"></a>01335     <span class="comment">// parameters.  These vectors may have repeats.</span>
-<a name="l01336"></a>01336     std::vector&lt;const StructType *&gt; exportedStructTypes;
-<a name="l01337"></a>01337     std::vector&lt;const EnumType *&gt; exportedEnumTypes;
-<a name="l01338"></a>01338     std::vector&lt;const VectorType *&gt; exportedVectorTypes;
-<a name="l01339"></a>01339     <a class="code" href="module_8cpp.html#adf642336622d2314295e223099102c7d">lGetExportedParamTypes</a>(exportedFuncs, &amp;exportedStructTypes,
-<a name="l01340"></a>01340                            &amp;exportedEnumTypes, &amp;exportedVectorTypes);
-<a name="l01341"></a>01341     <a class="code" href="module_8cpp.html#adf642336622d2314295e223099102c7d">lGetExportedParamTypes</a>(externCFuncs, &amp;exportedStructTypes,
-<a name="l01342"></a>01342                            &amp;exportedEnumTypes, &amp;exportedVectorTypes);
-<a name="l01343"></a>01343 
-<a name="l01344"></a>01344     <span class="comment">// And do the same for the &#39;extern&#39; globals</span>
-<a name="l01345"></a>01345     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classModule.html#aba55b186bd847378d41d9ab06e41125f">externGlobals</a>.size(); ++i)
-<a name="l01346"></a>01346         <a class="code" href="module_8cpp.html#a5187794c5c4476a266b3dcbc930c1fd2">lGetExportedTypes</a>(<a class="code" href="classModule.html#aba55b186bd847378d41d9ab06e41125f">externGlobals</a>[i]-&gt;type, &amp;exportedStructTypes,
-<a name="l01347"></a>01347                           &amp;exportedEnumTypes, &amp;exportedVectorTypes);
-<a name="l01348"></a>01348 
-<a name="l01349"></a>01349     <span class="comment">// And print them</span>
-<a name="l01350"></a>01350     <a class="code" href="module_8cpp.html#acaa1e995496d75646a99829dc94b1ed2">lEmitVectorTypedefs</a>(exportedVectorTypes, f);
-<a name="l01351"></a>01351     <a class="code" href="module_8cpp.html#a4cd0f93a97d39c554ca2891466cfae92">lEmitEnumDecls</a>(exportedEnumTypes, f);
-<a name="l01352"></a>01352     <a class="code" href="module_8cpp.html#ab0720aabde1ab2e75d9c4f1b4a3dcaed">lEmitStructDecls</a>(exportedStructTypes, f);
-<a name="l01353"></a>01353 
-<a name="l01354"></a>01354     <span class="comment">// emit externs for globals</span>
-<a name="l01355"></a>01355     <span class="keywordflow">if</span> (<a class="code" href="classModule.html#aba55b186bd847378d41d9ab06e41125f">externGlobals</a>.size() &gt; 0) {
-<a name="l01356"></a>01356         fprintf(f, <span class="stringliteral">&quot;///////////////////////////////////////////////////////////////////////////\n&quot;</span>);
-<a name="l01357"></a>01357         fprintf(f, <span class="stringliteral">&quot;// Globals declared \&quot;extern\&quot; from ispc code\n&quot;</span>);
-<a name="l01358"></a>01358         fprintf(f, <span class="stringliteral">&quot;///////////////////////////////////////////////////////////////////////////\n&quot;</span>);
-<a name="l01359"></a>01359         <a class="code" href="module_8cpp.html#ab37f1d2a15b440024190f018f174c190">lPrintExternGlobals</a>(f, <a class="code" href="classModule.html#aba55b186bd847378d41d9ab06e41125f">externGlobals</a>);
-<a name="l01360"></a>01360     }
-<a name="l01361"></a>01361 
-<a name="l01362"></a>01362     <span class="comment">// emit function declarations for exported stuff...</span>
-<a name="l01363"></a>01363     <span class="keywordflow">if</span> (exportedFuncs.size() &gt; 0) {
-<a name="l01364"></a>01364         fprintf(f, <span class="stringliteral">&quot;\n&quot;</span>);
-<a name="l01365"></a>01365         fprintf(f, <span class="stringliteral">&quot;///////////////////////////////////////////////////////////////////////////\n&quot;</span>);
-<a name="l01366"></a>01366         fprintf(f, <span class="stringliteral">&quot;// Functions exported from ispc code\n&quot;</span>);
-<a name="l01367"></a>01367         fprintf(f, <span class="stringliteral">&quot;///////////////////////////////////////////////////////////////////////////\n&quot;</span>);
-<a name="l01368"></a>01368         <a class="code" href="module_8cpp.html#a714c0a3a98d7afc6765cbde1a70ac67a">lPrintFunctionDeclarations</a>(f, exportedFuncs);
-<a name="l01369"></a>01369     }
-<a name="l01370"></a>01370 <span class="preprocessor">#if 0</span>
-<a name="l01371"></a>01371 <span class="preprocessor"></span>    <span class="keywordflow">if</span> (externCFuncs.size() &gt; 0) {
-<a name="l01372"></a>01372         fprintf(f, <span class="stringliteral">&quot;\n&quot;</span>);
+<a name="l01319"></a>01319 
+<a name="l01320"></a>01320     <span class="keywordflow">switch</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a3ca3d78d8240b68881e00af656df2951">isa</a>) {
+<a name="l01321"></a>01321     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa405a12bd45be878b6cc9c6d006e1dd76">Target::SSE2</a>:
+<a name="l01322"></a>01322         fprintf(f, <span class="stringliteral">&quot;#define ISPC_TARGET_SSE2\n\n&quot;</span>);
+<a name="l01323"></a>01323         <span class="keywordflow">break</span>;
+<a name="l01324"></a>01324     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa4ae729a3f9131ab5aa5d621fa6e24cc3">Target::SSE4</a>:
+<a name="l01325"></a>01325         fprintf(f, <span class="stringliteral">&quot;#define ISPC_TARGET_SSE4\n\n&quot;</span>);
+<a name="l01326"></a>01326         <span class="keywordflow">break</span>;
+<a name="l01327"></a>01327     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa0bb31e5429c5e5ae43b3ac3c76104ef7">Target::AVX</a>:
+<a name="l01328"></a>01328         fprintf(f, <span class="stringliteral">&quot;#define ISPC_TARGET_AVX\n\n&quot;</span>);
+<a name="l01329"></a>01329         <span class="keywordflow">break</span>;
+<a name="l01330"></a>01330     <span class="keywordflow">default</span>:
+<a name="l01331"></a>01331         <a class="code" href="util_8h.html#a14ec8c552061330276dfd86f506095a3">FATAL</a>(<span class="stringliteral">&quot;Unhandled target in header emission&quot;</span>);
+<a name="l01332"></a>01332     }
+<a name="l01333"></a>01333 
+<a name="l01334"></a>01334     fprintf(f, <span class="stringliteral">&quot;#ifdef __cplusplus\nnamespace ispc {\n#endif // __cplusplus\n\n&quot;</span>);
+<a name="l01335"></a>01335 
+<a name="l01336"></a>01336     <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">emitInstrumentation</a>) {
+<a name="l01337"></a>01337         fprintf(f, <span class="stringliteral">&quot;#define ISPC_INSTRUMENTATION 1\n&quot;</span>);
+<a name="l01338"></a>01338         fprintf(f, <span class="stringliteral">&quot;extern \&quot;C\&quot; {\n&quot;</span>);
+<a name="l01339"></a>01339         fprintf(f, <span class="stringliteral">&quot;  void ISPCInstrument(const char *fn, const char *note, int line, int mask);\n&quot;</span>);
+<a name="l01340"></a>01340         fprintf(f, <span class="stringliteral">&quot;}\n&quot;</span>);
+<a name="l01341"></a>01341     }
+<a name="l01342"></a>01342 
+<a name="l01343"></a>01343     <span class="comment">// Collect single linear arrays of the exported and extern &quot;C&quot;</span>
+<a name="l01344"></a>01344     <span class="comment">// functions</span>
+<a name="l01345"></a>01345     std::vector&lt;Symbol *&gt; exportedFuncs, externCFuncs;
+<a name="l01346"></a>01346     <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a66a01f1bae4f9c26eb1bc95780865954">symbolTable</a>-&gt;<a class="code" href="classSymbolTable.html#a405f262bf6a2687b2e804c92d5c99724">GetMatchingFunctions</a>(<a class="code" href="module_8cpp.html#a065a007555ce68e2a452b8bb88da0748">lIsExported</a>, &amp;exportedFuncs);
+<a name="l01347"></a>01347     <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a66a01f1bae4f9c26eb1bc95780865954">symbolTable</a>-&gt;<a class="code" href="classSymbolTable.html#a405f262bf6a2687b2e804c92d5c99724">GetMatchingFunctions</a>(<a class="code" href="module_8cpp.html#a17baea1878ee1fd83bc0222ef5a0c3dc">lIsExternC</a>, &amp;externCFuncs);
+<a name="l01348"></a>01348     
+<a name="l01349"></a>01349     <span class="comment">// Get all of the struct, vector, and enumerant types used as function</span>
+<a name="l01350"></a>01350     <span class="comment">// parameters.  These vectors may have repeats.</span>
+<a name="l01351"></a>01351     std::vector&lt;const StructType *&gt; exportedStructTypes;
+<a name="l01352"></a>01352     std::vector&lt;const EnumType *&gt; exportedEnumTypes;
+<a name="l01353"></a>01353     std::vector&lt;const VectorType *&gt; exportedVectorTypes;
+<a name="l01354"></a>01354     <a class="code" href="module_8cpp.html#adf642336622d2314295e223099102c7d">lGetExportedParamTypes</a>(exportedFuncs, &amp;exportedStructTypes,
+<a name="l01355"></a>01355                            &amp;exportedEnumTypes, &amp;exportedVectorTypes);
+<a name="l01356"></a>01356     <a class="code" href="module_8cpp.html#adf642336622d2314295e223099102c7d">lGetExportedParamTypes</a>(externCFuncs, &amp;exportedStructTypes,
+<a name="l01357"></a>01357                            &amp;exportedEnumTypes, &amp;exportedVectorTypes);
+<a name="l01358"></a>01358 
+<a name="l01359"></a>01359     <span class="comment">// And do the same for the &#39;extern&#39; globals</span>
+<a name="l01360"></a>01360     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classModule.html#aba55b186bd847378d41d9ab06e41125f">externGlobals</a>.size(); ++i)
+<a name="l01361"></a>01361         <a class="code" href="module_8cpp.html#a5187794c5c4476a266b3dcbc930c1fd2">lGetExportedTypes</a>(<a class="code" href="classModule.html#aba55b186bd847378d41d9ab06e41125f">externGlobals</a>[i]-&gt;type, &amp;exportedStructTypes,
+<a name="l01362"></a>01362                           &amp;exportedEnumTypes, &amp;exportedVectorTypes);
+<a name="l01363"></a>01363 
+<a name="l01364"></a>01364     <span class="comment">// And print them</span>
+<a name="l01365"></a>01365     <a class="code" href="module_8cpp.html#acaa1e995496d75646a99829dc94b1ed2">lEmitVectorTypedefs</a>(exportedVectorTypes, f);
+<a name="l01366"></a>01366     <a class="code" href="module_8cpp.html#a4cd0f93a97d39c554ca2891466cfae92">lEmitEnumDecls</a>(exportedEnumTypes, f);
+<a name="l01367"></a>01367     <a class="code" href="module_8cpp.html#ab0720aabde1ab2e75d9c4f1b4a3dcaed">lEmitStructDecls</a>(exportedStructTypes, f);
+<a name="l01368"></a>01368 
+<a name="l01369"></a>01369     <span class="comment">// emit externs for globals</span>
+<a name="l01370"></a>01370     <span class="keywordflow">if</span> (<a class="code" href="classModule.html#aba55b186bd847378d41d9ab06e41125f">externGlobals</a>.size() &gt; 0) {
+<a name="l01371"></a>01371         fprintf(f, <span class="stringliteral">&quot;///////////////////////////////////////////////////////////////////////////\n&quot;</span>);
+<a name="l01372"></a>01372         fprintf(f, <span class="stringliteral">&quot;// Globals declared \&quot;extern\&quot; from ispc code\n&quot;</span>);
 <a name="l01373"></a>01373         fprintf(f, <span class="stringliteral">&quot;///////////////////////////////////////////////////////////////////////////\n&quot;</span>);
-<a name="l01374"></a>01374         fprintf(f, <span class="stringliteral">&quot;// External C functions used by ispc code\n&quot;</span>);
-<a name="l01375"></a>01375         fprintf(f, <span class="stringliteral">&quot;///////////////////////////////////////////////////////////////////////////\n&quot;</span>);
-<a name="l01376"></a>01376         <a class="code" href="module_8cpp.html#a714c0a3a98d7afc6765cbde1a70ac67a">lPrintFunctionDeclarations</a>(f, externCFuncs);
-<a name="l01377"></a>01377     }
-<a name="l01378"></a>01378 <span class="preprocessor">#endif</span>
-<a name="l01379"></a>01379 <span class="preprocessor"></span>
-<a name="l01380"></a>01380     <span class="comment">// end namespace</span>
-<a name="l01381"></a>01381     fprintf(f, <span class="stringliteral">&quot;\n#ifdef __cplusplus\n}\n#endif // __cplusplus\n&quot;</span>);
-<a name="l01382"></a>01382 
-<a name="l01383"></a>01383     <span class="comment">// end guard</span>
-<a name="l01384"></a>01384     fprintf(f, <span class="stringliteral">&quot;\n#endif // %s\n&quot;</span>, guard.c_str());
-<a name="l01385"></a>01385 
-<a name="l01386"></a>01386     fclose(f);
-<a name="l01387"></a>01387     <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l01388"></a>01388 }
-<a name="l01389"></a>01389 
-<a name="l01390"></a>01390 
-<a name="l01391"></a>01391 <span class="keywordtype">void</span>
-<a name="l01392"></a>01392 <a class="code" href="classModule.html#a0b22b6e47f5ae32ca0ee762054fa3b2b">Module::execPreprocessor</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* infilename, llvm::raw_string_ostream* ostream)<span class="keyword"> const</span>
-<a name="l01393"></a>01393 <span class="keyword"></span>{
-<a name="l01394"></a>01394     clang::CompilerInstance inst;
-<a name="l01395"></a>01395     std::string error;
-<a name="l01396"></a>01396 
-<a name="l01397"></a>01397     inst.createFileManager();
-<a name="l01398"></a>01398     inst.createDiagnostics(0, NULL);
-<a name="l01399"></a>01399     clang::TargetOptions&amp; options = inst.getTargetOpts();
+<a name="l01374"></a>01374         <a class="code" href="module_8cpp.html#ab37f1d2a15b440024190f018f174c190">lPrintExternGlobals</a>(f, <a class="code" href="classModule.html#aba55b186bd847378d41d9ab06e41125f">externGlobals</a>);
+<a name="l01375"></a>01375     }
+<a name="l01376"></a>01376 
+<a name="l01377"></a>01377     <span class="comment">// emit function declarations for exported stuff...</span>
+<a name="l01378"></a>01378     <span class="keywordflow">if</span> (exportedFuncs.size() &gt; 0) {
+<a name="l01379"></a>01379         fprintf(f, <span class="stringliteral">&quot;\n&quot;</span>);
+<a name="l01380"></a>01380         fprintf(f, <span class="stringliteral">&quot;///////////////////////////////////////////////////////////////////////////\n&quot;</span>);
+<a name="l01381"></a>01381         fprintf(f, <span class="stringliteral">&quot;// Functions exported from ispc code\n&quot;</span>);
+<a name="l01382"></a>01382         fprintf(f, <span class="stringliteral">&quot;///////////////////////////////////////////////////////////////////////////\n&quot;</span>);
+<a name="l01383"></a>01383         <a class="code" href="module_8cpp.html#a714c0a3a98d7afc6765cbde1a70ac67a">lPrintFunctionDeclarations</a>(f, exportedFuncs);
+<a name="l01384"></a>01384     }
+<a name="l01385"></a>01385 <span class="preprocessor">#if 0</span>
+<a name="l01386"></a>01386 <span class="preprocessor"></span>    <span class="keywordflow">if</span> (externCFuncs.size() &gt; 0) {
+<a name="l01387"></a>01387         fprintf(f, <span class="stringliteral">&quot;\n&quot;</span>);
+<a name="l01388"></a>01388         fprintf(f, <span class="stringliteral">&quot;///////////////////////////////////////////////////////////////////////////\n&quot;</span>);
+<a name="l01389"></a>01389         fprintf(f, <span class="stringliteral">&quot;// External C functions used by ispc code\n&quot;</span>);
+<a name="l01390"></a>01390         fprintf(f, <span class="stringliteral">&quot;///////////////////////////////////////////////////////////////////////////\n&quot;</span>);
+<a name="l01391"></a>01391         <a class="code" href="module_8cpp.html#a714c0a3a98d7afc6765cbde1a70ac67a">lPrintFunctionDeclarations</a>(f, externCFuncs);
+<a name="l01392"></a>01392     }
+<a name="l01393"></a>01393 <span class="preprocessor">#endif</span>
+<a name="l01394"></a>01394 <span class="preprocessor"></span>
+<a name="l01395"></a>01395     <span class="comment">// end namespace</span>
+<a name="l01396"></a>01396     fprintf(f, <span class="stringliteral">&quot;\n#ifdef __cplusplus\n}\n#endif // __cplusplus\n&quot;</span>);
+<a name="l01397"></a>01397 
+<a name="l01398"></a>01398     <span class="comment">// end guard</span>
+<a name="l01399"></a>01399     fprintf(f, <span class="stringliteral">&quot;\n#endif // %s\n&quot;</span>, guard.c_str());
 <a name="l01400"></a>01400 
-<a name="l01401"></a>01401     llvm::Triple triple(<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getTargetTriple());
-<a name="l01402"></a>01402     <span class="keywordflow">if</span> (triple.getTriple().empty())
-<a name="l01403"></a>01403         triple.setTriple(llvm::sys::getHostTriple());
-<a name="l01404"></a>01404     
-<a name="l01405"></a>01405     options.Triple = triple.getTriple();
-<a name="l01406"></a>01406 
-<a name="l01407"></a>01407     clang::TargetInfo* target 
-<a name="l01408"></a>01408         = clang::TargetInfo::CreateTargetInfo(inst.getDiagnostics(), options);
-<a name="l01409"></a>01409 
-<a name="l01410"></a>01410     inst.setTarget(target);
-<a name="l01411"></a>01411     inst.createSourceManager(inst.getFileManager());
-<a name="l01412"></a>01412     inst.InitializeSourceManager(infilename);
-<a name="l01413"></a>01413 
-<a name="l01414"></a>01414     clang::PreprocessorOptions&amp; opts = inst.getPreprocessorOpts();
+<a name="l01401"></a>01401     fclose(f);
+<a name="l01402"></a>01402     <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l01403"></a>01403 }
+<a name="l01404"></a>01404 
+<a name="l01405"></a>01405 
+<a name="l01406"></a>01406 <span class="keywordtype">void</span>
+<a name="l01407"></a>01407 <a class="code" href="classModule.html#a0b22b6e47f5ae32ca0ee762054fa3b2b">Module::execPreprocessor</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* infilename, llvm::raw_string_ostream* ostream)<span class="keyword"> const</span>
+<a name="l01408"></a>01408 <span class="keyword"></span>{
+<a name="l01409"></a>01409     clang::CompilerInstance inst;
+<a name="l01410"></a>01410     std::string error;
+<a name="l01411"></a>01411 
+<a name="l01412"></a>01412     inst.createFileManager();
+<a name="l01413"></a>01413     inst.createDiagnostics(0, NULL);
+<a name="l01414"></a>01414     clang::TargetOptions&amp; options = inst.getTargetOpts();
 <a name="l01415"></a>01415 
-<a name="l01416"></a>01416     <span class="comment">//Add defs for ISPC and PI</span>
-<a name="l01417"></a>01417     opts.addMacroDef(<span class="stringliteral">&quot;ISPC&quot;</span>);
-<a name="l01418"></a>01418     opts.addMacroDef(<span class="stringliteral">&quot;PI=3.1415926535&quot;</span>);
-<a name="l01419"></a>01419 
-<a name="l01420"></a>01420     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">cppArgs</a>.size(); ++i) {
-<a name="l01421"></a>01421         <span class="comment">//Sanity Check, should really begin with -D</span>
-<a name="l01422"></a>01422         <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">cppArgs</a>[i].substr(0,2) == <span class="stringliteral">&quot;-D&quot;</span>) {
-<a name="l01423"></a>01423             opts.addMacroDef(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">cppArgs</a>[i].substr(2));
-<a name="l01424"></a>01424         }
-<a name="l01425"></a>01425     }    
-<a name="l01426"></a>01426     inst.createPreprocessor();
-<a name="l01427"></a>01427     clang::DoPrintPreprocessedInput(inst.getPreprocessor(),
-<a name="l01428"></a>01428                                     ostream, inst.getPreprocessorOutputOpts());
-<a name="l01429"></a>01429 }
+<a name="l01416"></a>01416     llvm::Triple triple(<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getTargetTriple());
+<a name="l01417"></a>01417     <span class="keywordflow">if</span> (triple.getTriple().empty())
+<a name="l01418"></a>01418         triple.setTriple(llvm::sys::getHostTriple());
+<a name="l01419"></a>01419     
+<a name="l01420"></a>01420     options.Triple = triple.getTriple();
+<a name="l01421"></a>01421 
+<a name="l01422"></a>01422     clang::TargetInfo* target 
+<a name="l01423"></a>01423         = clang::TargetInfo::CreateTargetInfo(inst.getDiagnostics(), options);
+<a name="l01424"></a>01424 
+<a name="l01425"></a>01425     inst.setTarget(target);
+<a name="l01426"></a>01426     inst.createSourceManager(inst.getFileManager());
+<a name="l01427"></a>01427     inst.InitializeSourceManager(infilename);
+<a name="l01428"></a>01428 
+<a name="l01429"></a>01429     clang::PreprocessorOptions&amp; opts = inst.getPreprocessorOpts();
 <a name="l01430"></a>01430 
+<a name="l01431"></a>01431     <span class="comment">//Add defs for ISPC and PI</span>
+<a name="l01432"></a>01432     opts.addMacroDef(<span class="stringliteral">&quot;ISPC&quot;</span>);
+<a name="l01433"></a>01433     opts.addMacroDef(<span class="stringliteral">&quot;PI=3.1415926535&quot;</span>);
+<a name="l01434"></a>01434 
+<a name="l01435"></a>01435     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">cppArgs</a>.size(); ++i) {
+<a name="l01436"></a>01436         <span class="comment">//Sanity Check, should really begin with -D</span>
+<a name="l01437"></a>01437         <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">cppArgs</a>[i].substr(0,2) == <span class="stringliteral">&quot;-D&quot;</span>) {
+<a name="l01438"></a>01438             opts.addMacroDef(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">cppArgs</a>[i].substr(2));
+<a name="l01439"></a>01439         }
+<a name="l01440"></a>01440     }    
+<a name="l01441"></a>01441     inst.createPreprocessor();
+<a name="l01442"></a>01442     clang::DoPrintPreprocessedInput(inst.getPreprocessor(),
+<a name="l01443"></a>01443                                     ostream, inst.getPreprocessorOutputOpts());
+<a name="l01444"></a>01444 }
+<a name="l01445"></a>01445 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sun Jul 17 2011 16:54:28 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 18 2011 13:04:16 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>
