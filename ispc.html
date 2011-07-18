@@ -118,6 +118,7 @@ compilation approaches (e.g. loop auto-vectorization.)</p>
 <li><a class="reference internal" href="#the-ispc-language">The ISPC Language</a><ul>
 <li><a class="reference internal" href="#lexical-structure">Lexical Structure</a></li>
 <li><a class="reference internal" href="#basic-types-and-type-qualifiers">Basic Types and Type Qualifiers</a></li>
+<li><a class="reference internal" href="#enumeration-types">Enumeration Types</a></li>
 <li><a class="reference internal" href="#short-vector-types">Short Vector Types</a></li>
 <li><a class="reference internal" href="#struct-and-array-types">Struct and Array Types</a></li>
 <li><a class="reference internal" href="#declarations-and-initializers">Declarations and Initializers</a></li>
@@ -557,11 +558,9 @@ is provided in parenthesis around the expression:</p>
 double foo = 1. / 3.;
 int bar = (float)bar + (float)bar;  // 32-bit float addition
 </pre>
-<p>Note: if a <tt class="docutils literal">bool</tt> is converted to an integer numeric type (<tt class="docutils literal">int</tt>,
-<tt class="docutils literal">int64</tt>, etc.), then the conversion is done with sign extension, not zero
-extension.  Thus, the resulting value has all bits set if the <tt class="docutils literal">bool</tt> is
-<tt class="docutils literal">true</tt>; for example, <tt class="docutils literal">0xffffffff</tt> for <tt class="docutils literal">int32</tt>.  This differs from C
-and C++, where a <tt class="docutils literal">true</tt> bool is converted to the integer value one.</p>
+<p>If a <tt class="docutils literal">bool</tt> is converted to an integer numeric type (<tt class="docutils literal">int</tt>, <tt class="docutils literal">int64</tt>,
+etc.), then the result is the value one if the <tt class="docutils literal">bool</tt> has the value
+<tt class="docutils literal">true</tt> and has the value zero otherwise.</p>
 <p>Variables can be declared with the <tt class="docutils literal">const</tt> qualifier, which prohibits
 their modification.</p>
 <pre class="literal-block">
@@ -589,6 +588,42 @@ void increment(reference float f) {
 }
 </pre>
 <p><tt class="docutils literal">ispc</tt> doesn't currently support pointer types.</p>
+</div>
+<div class="section" id="enumeration-types">
+<h2>Enumeration Types</h2>
+<p>It is possible to define user-defined enumeration types in <tt class="docutils literal">ispc</tt> with
+the <tt class="docutils literal">enum</tt> keyword, which is followed by an option enumeration type name
+and then a brace-delimited list of enumerators with optional values:</p>
+<pre class="literal-block">
+enum Color { RED, GREEN, BLUE };
+enum Flags {
+    UNINITIALIZED = 0,
+    INITIALIZED = 2,
+    CACHED = 4
+};
+</pre>
+<p>Each <tt class="docutils literal">enum</tt> declaration defines a new type; an attempt to implicitly
+convert between enumerations of different types gives a compile-time error,
+but enuemrations of different types can be explicitly cast to one other.</p>
+<pre class="literal-block">
+Color c = (Color)CACHED;
+</pre>
+<p>Enumerators are implicitly converted to integer types, however, so they can
+be directly passed to routines that take integer parameters and can be used
+in expressions including integers, for example.  However, the integer
+result of such an expression must be explicitly cast back to the enumerant
+type if it to be assigned to a variable with the enuemrant type.</p>
+<pre class="literal-block">
+Color c = RED;
+int nextColor = c+1;
+c = (Color)nextColor;
+</pre>
+<p>In this particular case, the explicit cast could be avoided using an
+increment operator.</p>
+<pre class="literal-block">
+Color c = RED;
+++c;  // c == GREEN now
+</pre>
 </div>
 <div class="section" id="short-vector-types">
 <h2>Short Vector Types</h2>
@@ -823,7 +858,6 @@ type.</li>
 <h2>C Constructs not in ISPC</h2>
 <p>The following C features are not available in <tt class="docutils literal">ispc</tt>.</p>
 <ul class="simple">
-<li><tt class="docutils literal">enum</tt> s</li>
 <li>Pointers and function pointers</li>
 <li><tt class="docutils literal">char</tt> and <tt class="docutils literal">short</tt> types</li>
 <li><tt class="docutils literal">switch</tt> statements</li>
@@ -1278,10 +1312,20 @@ current thread and thus doesn't require synchronization to access under
 parallel execution.</p>
 <p>If you use the task launch feature in <tt class="docutils literal">ispc</tt>, you must provide C/C++
 implementations of two functions and link them into your final executable
-file:</p>
+file.  Although these functions may be implemented in either language, they
+must have &quot;C&quot; linkage (i.e. their prototypes must be declared inside an
+<tt class="docutils literal">extern &quot;C&quot;</tt> block if they are defined in C++.)</p>
 <pre class="literal-block">
 void ISPCLaunch(void *funcptr, void *data);
 void ISPCSync();
+</pre>
+<p>On Windows, two additional functions must be provided to dynamically
+allocate and free memory to store the arguments passed to tasks.  (On OSX
+and Linux, the stack provides memory for task arguments; on Windows, the
+stack is generally not large enough to do this for large numbers of tasks.)</p>
+<pre class="literal-block">
+void *ISPCMalloc(int64_t size, int32_t alignment);
+void ISPCFree(void *ptr);
 </pre>
 <p>These are called by the task launch code generated by the <tt class="docutils literal">ispc</tt>
 compiler; the first is called to launch to launch a task and the second is
@@ -1660,10 +1704,14 @@ end.)</p>
 <tt class="docutils literal">uniform</tt> integer, while the increment amount and the return value are
 <tt class="docutils literal">varying</tt>.  In other words, the semantics are that each running program
 instance individually issues the atomic operation with its own <tt class="docutils literal">delta</tt>
-value and gets the previous value of <tt class="docutils literal">val</tt> back in return.</p>
+value and gets the previous value of <tt class="docutils literal">val</tt> back in return.  The atomics
+for the running program instances may be issued in arbitrary order; it's
+not guaranteed that they will be issued in <tt class="docutils literal">programIndex</tt> order, for
+example.</p>
 <p>Here are the declarations of the <tt class="docutils literal">int32</tt> variants of these functions.
 There are also <tt class="docutils literal">int64</tt> equivalents as well as variants that take
-<tt class="docutils literal">unsigned</tt> <tt class="docutils literal">int32</tt> and <tt class="docutils literal">int64</tt> values.</p>
+<tt class="docutils literal">unsigned</tt> <tt class="docutils literal">int32</tt> and <tt class="docutils literal">int64</tt> values.  (The <tt class="docutils literal">atomic_swap_global()</tt>
+function can be used with <tt class="docutils literal">float</tt> and <tt class="docutils literal">double</tt> types as well.)</p>
 <pre class="literal-block">
 int32 atomic_add_global(reference uniform int32 val, int32 value)
 int32 atomic_subtract_global(reference uniform int32 val, int32 value)
@@ -1678,7 +1726,8 @@ int32 atomic_swap_global(reference uniform int32 val, int32 newval)
 compares the value in &quot;val&quot; to &quot;compare&quot;--if they match, it assigns
 &quot;newval&quot; to &quot;val&quot;.  In either case, the old value of &quot;val&quot; is returned.
 (As with the other atomic operations, there are also <tt class="docutils literal">unsigned</tt> and
-64-bit variants of this function.)</p>
+64-bit variants of this function.  Furthermore, there are <tt class="docutils literal">float</tt> and
+<tt class="docutils literal">double</tt> variants as well.)</p>
 <pre class="literal-block">
 int32 atomic_compare_exchange_global(reference uniform int32 val,
                                      int32 compare, int32 newval)
@@ -1687,7 +1736,7 @@ int32 atomic_compare_exchange_global(reference uniform int32 val,
 into the code; it ensures that all memory reads and writes prior to be
 barrier complete before any reads or writes after the barrier are issued.
 See the <a class="reference external" href="http://www.kernel.org/doc/Documentation/memory-barriers.txt">Linux kernel documentation on memory barriers</a> for an excellent
-writeup on the need for that the use of memory barriers in multi-threaded
+writeup on the need for and the use of memory barriers in multi-threaded
 code.</p>
 <pre class="literal-block">
 void memory_barrier();
@@ -1695,6 +1744,14 @@ void memory_barrier();
 </div>
 <div class="section" id="low-level-bits">
 <h2>Low-Level Bits</h2>
+<p>Sometimes it's useful to convert a <tt class="docutils literal">bool</tt> value to an integer using sign
+extension so that the integer's bits are all on if the <tt class="docutils literal">bool</tt> has the
+value <tt class="docutils literal">true</tt> (rather than just having the value one).  The
+<tt class="docutils literal">sign_extend()</tt> functions provide this functionality:</p>
+<pre class="literal-block">
+int sign_extend(bool value)
+uniform int sign_extend(uniform bool value)
+</pre>
 <p><tt class="docutils literal">ispc</tt> provides a number of bit/memory-level utility routines in its
 standard library as well.  It has routines that load from and store
 to 8-bit and 16-bit integer values stored in memory, converting to and from
