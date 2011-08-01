@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Intel SPMD Program Compiler: stdlib-c.c File Reference</title>
+<title>Intel SPMD Program Compiler: builtins-c.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -31,7 +31,7 @@
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<h1>stdlib-c.c File Reference</h1>  </div>
+<h1>builtins-c.c File Reference</h1>  </div>
 </div>
 <div class="contents">
 
@@ -41,34 +41,34 @@
 <code>#include &lt;stdio.h&gt;</code><br/>
 <code>#include &lt;stdarg.h&gt;</code><br/>
 <!-- startSectionHeader --><div class="dynheader">
-Include dependency graph for stdlib-c.c:<!-- endSectionHeader --></div>
+Include dependency graph for builtins-c.c:<!-- endSectionHeader --></div>
 <!-- startSectionSummary --><!-- endSectionSummary --><!-- startSectionContent --><div class="dyncontent">
-<div class="center"><img src="stdlib-c_8c__incl.png" border="0" usemap="#stdlib-c_8c" alt=""/></div>
-<map name="stdlib-c_8c" id="stdlib-c_8c">
+<div class="center"><img src="builtins-c_8c__incl.png" border="0" usemap="#builtins-c_8c" alt=""/></div>
+<map name="builtins-c_8c" id="builtins-c_8c">
 </map>
 <!-- endSectionContent --></div>
 
-<p><a href="stdlib-c_8c_source.html">Go to the source code of this file.</a></p>
+<p><a href="builtins-c_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="define-members"></a>
 Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stdlib-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">PRINT_SCALAR</a>(fmt, type)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stdlib-c_8c.html#a6548da45799b79547b4d7336aee9f425">PRINT_VECTOR</a>(fmt, type)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="builtins-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">PRINT_SCALAR</a>(fmt, type)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="builtins-c_8c.html#a6548da45799b79547b4d7336aee9f425">PRINT_VECTOR</a>(fmt, type)</td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stdlib-c_8c.html#afdcfe6db5bea87bd493a3fe2c513d5ef">Bool</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="builtins-c_8c.html#afdcfe6db5bea87bd493a3fe2c513d5ef">Bool</a></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stdlib-c_8c.html#a75987568b5e9c7c1d2c1de4530da0b1f">__do_print</a> (const char *format, const char *types, int width, int mask, void **args)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="builtins-c_8c.html#a75987568b5e9c7c1d2c1de4530da0b1f">__do_print</a> (const char *format, const char *types, int width, int mask, void **args)</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Standard library function implementations written in C. </p>
 <p>This file provides C implementations of various functions that can be called from ispc programs; in other words, this file is *not* linked into the ispc compiler executable, but rather provides functions that can be compiled into ispc programs.</p>
-<p>When the ispc compiler is built, this file is compiled with clang to generate LLVM bitcode. This bitcode is later linked in to the program being compiled by the <a class="el" href="builtins_8h.html#a99f4b2e5607c0b34910d2f9b33435c2b">DefineStdlib()</a> function. The first way to access definitions from this file is by asking for them name from the llvm::Module's' symbol table (e.g. as the <a class="el" href="classPrintStmt.html" title="Representation of a print() statement in the program.">PrintStmt</a> implementation does with <a class="el" href="stdlib-c_8c.html#a75987568b5e9c7c1d2c1de4530da0b1f">__do_print()</a> below. Alternatively, if a function defined in this file has a signature that can be mapped back to ispc types by the lLLVMTypeToIspcType() function, then its declaration will be made available to ispc programs at compile time automatically. </p>
+<p>When the ispc compiler is built, this file is compiled with clang to generate LLVM bitcode. This bitcode is later linked in to the program being compiled by the <a class="el" href="builtins_8h.html#a99f4b2e5607c0b34910d2f9b33435c2b">DefineStdlib()</a> function. The first way to access definitions from this file is by asking for them name from the llvm::Module's' symbol table (e.g. as the <a class="el" href="classPrintStmt.html" title="Representation of a print() statement in the program.">PrintStmt</a> implementation does with <a class="el" href="builtins-c_8c.html#a75987568b5e9c7c1d2c1de4530da0b1f">__do_print()</a> below. Alternatively, if a function defined in this file has a signature that can be mapped back to ispc types by the lLLVMTypeToIspcType() function, then its declaration will be made available to ispc programs at compile time automatically. </p>
 
-<p>Definition in file <a class="el" href="stdlib-c_8c_source.html">stdlib-c.c</a>.</p>
+<p>Definition in file <a class="el" href="builtins-c_8c_source.html">builtins-c.c</a>.</p>
 <hr/><h2>Define Documentation</h2>
-<a class="anchor" id="a6306b3f199bfb0faf8fac3f10d462f0c"></a><!-- doxytag: member="stdlib&#45;c.c::PRINT_SCALAR" ref="a6306b3f199bfb0faf8fac3f10d462f0c" args="(fmt, type)" -->
+<a class="anchor" id="a6306b3f199bfb0faf8fac3f10d462f0c"></a><!-- doxytag: member="builtins&#45;c.c::PRINT_SCALAR" ref="a6306b3f199bfb0faf8fac3f10d462f0c" args="(fmt, type)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -95,13 +95,13 @@ Functions</h2></td></tr>
 <b>Value:</b><div class="fragment"><pre class="fragment">printf(fmt, *((type *)ptr)); \
     <span class="keywordflow">break</span>
 </pre></div>
-<p>Definition at line <a class="el" href="stdlib-c_8c_source.html#l00060">60</a> of file <a class="el" href="stdlib-c_8c_source.html">stdlib-c.c</a>.</p>
+<p>Definition at line <a class="el" href="builtins-c_8c_source.html#l00060">60</a> of file <a class="el" href="builtins-c_8c_source.html">builtins-c.c</a>.</p>
 
-<p>Referenced by <a class="el" href="stdlib-c_8c_source.html#l00087">__do_print()</a>.</p>
+<p>Referenced by <a class="el" href="builtins-c_8c_source.html#l00087">__do_print()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a6548da45799b79547b4d7336aee9f425"></a><!-- doxytag: member="stdlib&#45;c.c::PRINT_VECTOR" ref="a6548da45799b79547b4d7336aee9f425" args="(fmt, type)" -->
+<a class="anchor" id="a6548da45799b79547b4d7336aee9f425"></a><!-- doxytag: member="builtins&#45;c.c::PRINT_VECTOR" ref="a6548da45799b79547b4d7336aee9f425" args="(fmt, type)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -136,30 +136,30 @@ Functions</h2></td></tr>
     }                                                                   \
     <span class="keywordflow">break</span>
 </pre></div>
-<p>Definition at line <a class="el" href="stdlib-c_8c_source.html#l00064">64</a> of file <a class="el" href="stdlib-c_8c_source.html">stdlib-c.c</a>.</p>
+<p>Definition at line <a class="el" href="builtins-c_8c_source.html#l00064">64</a> of file <a class="el" href="builtins-c_8c_source.html">builtins-c.c</a>.</p>
 
-<p>Referenced by <a class="el" href="stdlib-c_8c_source.html#l00087">__do_print()</a>.</p>
+<p>Referenced by <a class="el" href="builtins-c_8c_source.html#l00087">__do_print()</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Typedef Documentation</h2>
-<a class="anchor" id="afdcfe6db5bea87bd493a3fe2c513d5ef"></a><!-- doxytag: member="stdlib&#45;c.c::Bool" ref="afdcfe6db5bea87bd493a3fe2c513d5ef" args="" -->
+<a class="anchor" id="afdcfe6db5bea87bd493a3fe2c513d5ef"></a><!-- doxytag: member="builtins&#45;c.c::Bool" ref="afdcfe6db5bea87bd493a3fe2c513d5ef" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef int <a class="el" href="stdlib-c_8c.html#afdcfe6db5bea87bd493a3fe2c513d5ef">Bool</a></td>
+          <td class="memname">typedef int <a class="el" href="builtins-c_8c.html#afdcfe6db5bea87bd493a3fe2c513d5ef">Bool</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="stdlib-c_8c_source.html#l00058">58</a> of file <a class="el" href="stdlib-c_8c_source.html">stdlib-c.c</a>.</p>
+<p>Definition at line <a class="el" href="builtins-c_8c_source.html#l00058">58</a> of file <a class="el" href="builtins-c_8c_source.html">builtins-c.c</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Function Documentation</h2>
-<a class="anchor" id="a75987568b5e9c7c1d2c1de4530da0b1f"></a><!-- doxytag: member="stdlib&#45;c.c::__do_print" ref="a75987568b5e9c7c1d2c1de4530da0b1f" args="(const char *format, const char *types, int width, int mask, void **args)" -->
+<a class="anchor" id="a75987568b5e9c7c1d2c1de4530da0b1f"></a><!-- doxytag: member="builtins&#45;c.c::__do_print" ref="a75987568b5e9c7c1d2c1de4530da0b1f" args="(const char *format, const char *types, int width, int mask, void **args)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -213,14 +213,14 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="stdlib-c_8c_source.html#l00087">87</a> of file <a class="el" href="stdlib-c_8c_source.html">stdlib-c.c</a>.</p>
+<p>Definition at line <a class="el" href="builtins-c_8c_source.html#l00087">87</a> of file <a class="el" href="builtins-c_8c_source.html">builtins-c.c</a>.</p>
 
-<p>References <a class="el" href="stdlib-c_8c_source.html#l00060">PRINT_SCALAR</a>, <a class="el" href="stdlib-c_8c_source.html#l00064">PRINT_VECTOR</a>, and <a class="el" href="parse_8yy.html">stdout</a>.</p>
+<p>References <a class="el" href="builtins-c_8c_source.html#l00060">PRINT_SCALAR</a>, <a class="el" href="builtins-c_8c_source.html#l00064">PRINT_VECTOR</a>, and <a class="el" href="parse_8yy.html">stdout</a>.</p>
 
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 18 2011 13:04:18 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 1 2011 12:30:57 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

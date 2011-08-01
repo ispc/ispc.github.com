@@ -145,6 +145,7 @@ compilation approaches (e.g. loop auto-vectorization.)</p>
 <li><a class="reference internal" href="#output-functions">Output Functions</a></li>
 <li><a class="reference internal" href="#cross-program-instance-operations">Cross-Program Instance Operations</a></li>
 <li><a class="reference internal" href="#packed-load-and-store-operations">Packed Load and Store Operations</a></li>
+<li><a class="reference internal" href="#conversions-to-and-from-half-precision-floats">Conversions To and From Half-Precision Floats</a></li>
 <li><a class="reference internal" href="#atomic-operations-and-memory-fences">Atomic Operations and Memory Fences</a></li>
 <li><a class="reference internal" href="#low-level-bits">Low-Level Bits</a></li>
 </ul>
@@ -160,6 +161,7 @@ compilation approaches (e.g. loop auto-vectorization.)</p>
 <li><a class="reference internal" href="#understanding-how-to-interoperate-with-the-application-s-data">Understanding How to Interoperate With the Application's Data</a></li>
 <li><a class="reference internal" href="#communicating-between-spmd-program-instances">Communicating Between SPMD Program Instances</a></li>
 <li><a class="reference internal" href="#gather-and-scatter">Gather and Scatter</a></li>
+<li><a class="reference internal" href="#and-16-bit-integer-types">8 and 16-bit Integer Types</a></li>
 <li><a class="reference internal" href="#low-level-vector-tricks">Low-level Vector Tricks</a></li>
 <li><a class="reference internal" href="#debugging">Debugging</a></li>
 <li><a class="reference internal" href="#the-fast-math-option">The &quot;Fast math&quot; Option</a></li>
@@ -457,7 +459,8 @@ doesn't support character constants.</p>
 <tt class="docutils literal">char</tt>, <tt class="docutils literal">cif</tt>, <tt class="docutils literal">cwhile</tt>, <tt class="docutils literal">const</tt>, <tt class="docutils literal">continue</tt>, <tt class="docutils literal">creturn</tt>,
 <tt class="docutils literal">default</tt>, <tt class="docutils literal">do</tt>, <tt class="docutils literal">double</tt>, <tt class="docutils literal">else</tt>, <tt class="docutils literal">enum</tt>, <tt class="docutils literal">export</tt>,
 <tt class="docutils literal">extern</tt>, <tt class="docutils literal">false</tt>, <tt class="docutils literal">float</tt>, <tt class="docutils literal">for</tt>, <tt class="docutils literal">goto</tt>, <tt class="docutils literal">if</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">int</tt>,
-<tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">reference</tt>, <tt class="docutils literal">return</tt>,
+<tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">print</tt>,
+<tt class="docutils literal">reference</tt>, <tt class="docutils literal">return</tt>,
 <tt class="docutils literal">signed</tt>, <tt class="docutils literal">sizeof</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">static</tt>, <tt class="docutils literal">struct</tt>, <tt class="docutils literal">switch</tt>,
 <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">typedef</tt>, <tt class="docutils literal">uniform</tt>, <tt class="docutils literal">union</tt>,
 <tt class="docutils literal">unsigned</tt>, <tt class="docutils literal">varying</tt>, <tt class="docutils literal">void</tt>, <tt class="docutils literal">volatile</tt>, <tt class="docutils literal">while</tt>.</p>
@@ -533,6 +536,10 @@ types.</p>
 <li><tt class="docutils literal">void</tt>: &quot;empty&quot; type representing no value.</li>
 <li><tt class="docutils literal">bool</tt>: boolean value; may be assigned <tt class="docutils literal">true</tt>, <tt class="docutils literal">false</tt>, or the
 value of a boolean expression.</li>
+<li><tt class="docutils literal">int8</tt>: 8-bit signed integer.</li>
+<li><tt class="docutils literal">unsigned int8</tt>: 8-bit unsigned integer.</li>
+<li><tt class="docutils literal">int16</tt>: 16-bit signed integer.</li>
+<li><tt class="docutils literal">unsigned int16</tt>: 16-bit unsigned integer.</li>
 <li><tt class="docutils literal">int</tt>: 32-bit signed integer; may also be specified as <tt class="docutils literal">int32</tt>.</li>
 <li><tt class="docutils literal">unsigned int</tt>: 32-bit unsigned integer; may also be specified as
 <tt class="docutils literal">unsigned int32</tt>.</li>
@@ -547,7 +554,8 @@ can be assigned to a variable of <tt class="docutils literal">int</tt> type dire
 arithmetic expressions with mixed types, types are promoted to the &quot;more
 general&quot; of the two types, with the following precedence:</p>
 <pre class="literal-block">
-double &gt; uint64 &gt; int64 &gt; float &gt; uint32 &gt; int32 &gt; bool
+double &gt; uint64 &gt; int64 &gt; float &gt; uint32 &gt; int32 &gt;
+    uint16 &gt; int16 &gt; uint8 &gt; int8 &gt; bool
 </pre>
 <p>In other words, adding an <tt class="docutils literal">int64</tt> to a <tt class="docutils literal">double</tt> causes the <tt class="docutils literal">int64</tt> to
 be converted to a <tt class="docutils literal">double</tt>, the addition to be performed, and a
@@ -680,6 +688,12 @@ int&lt;3&gt; bar = foo;    // ok, cast elements to ints
 int&lt;4&gt; bat = foo;    // ERROR: different vector lengths
 float&lt;4&gt; bing = foo; // ERROR: different vector lengths
 </pre>
+<p>For convenience, short vectors can be initialized with a list of individual
+element values:</p>
+<pre class="literal-block">
+float x = ..., y = ..., z = ...;
+float&lt;3&gt; pos = { x, y, z };
+</pre>
 <p>There are two mechanisms to access the individual elements of these short
 vector data types.  The first is with the array indexing operator:</p>
 <pre class="literal-block">
@@ -703,20 +717,20 @@ with <tt class="docutils literal">.z</tt> or <tt class="docutils literal">.b</tt
 using the array indexing operator with an index that is greater than the
 vector size, accessing an element that is beyond the vector's size is
 undefined behavior and may cause your program to crash.</p>
-<p>Note: <tt class="docutils literal">ispc</tt> doesn't support the &quot;swizzling&quot; operations that languages
-like HLSL do.  Only a single element of the vector can be accessed at a
-time with these member operators.</p>
+<p>It is also possible to construct new short vectors from other short vector
+values using this syntax, extended for &quot;swizzling&quot;.  For example,</p>
 <pre class="literal-block">
-float&lt;3&gt; foo = ...;
-float&lt;2&gt; bar = foo.xy;  // ERROR
-foo.xz = ...;           // ERROR
-func(foo.xyx);          // ERROR
+float&lt;3&gt; position = ...;
+float&lt;3&gt; new_pos = position.zyx;  // reverse order of components
+float&lt;2&gt; pos_2d = position.xy;
 </pre>
-<p>For convenience, short vectors can be initialized with a list of individual
-element values:</p>
+<p>Though a single element can be assigned to, as in the examples above, it is
+not currently possible to use swizzles on the left-hand side of assignment
+expressions:</p>
 <pre class="literal-block">
-float x = ..., y = ..., z = ...;
-float&lt;3&gt; pos = { x, y, z };
+int8&lt;2&gt; foo = ...;
+int8&lt;2&gt; bar = ...;
+foo.yz = bar;   // Error: can't assign to left-hand side of expression
 </pre>
 </div>
 <div class="section" id="struct-and-array-types">
@@ -1555,10 +1569,12 @@ uniform bool all(bool v)
 <tt class="docutils literal">value</tt> parameter for the program instance given by <tt class="docutils literal">index</tt> to all of
 the running program instances.</p>
 <pre class="literal-block">
-float broadcast(float value, uniform int index)
+int8 broadcast(int8 value, uniform int index)
+int16 broadcast(int16 value, uniform int index)
 int32 broadcast(int32 value, uniform int index)
-double broadcast(double value, uniform int index)
 int64 broadcast(int64 value, uniform int index)
+float broadcast(float value, uniform int index)
+double broadcast(double value, uniform int index)
 </pre>
 <p>The <tt class="docutils literal">rotate()</tt> function allows each program instance to find the value of
 the given value that their neighbor <tt class="docutils literal">offset</tt> steps away has.  For
@@ -1569,10 +1585,12 @@ program instance to get the value 1, the third 2, and so forth.  The
 provided offset value can be positive or negative, and may be greater than
 <tt class="docutils literal">programCount</tt> (it is masked to ensure valid offsets).</p>
 <pre class="literal-block">
-float rotate(float value, uniform int offset)
+int8 rotate(int8 value, uniform int offset)
+int16 rotate(int16 value, uniform int offset)
 int32 rotate(int32 value, uniform int offset)
-double rotate(double value, uniform int offset)
 int64 rotate(int64 value, uniform int offset)
+float rotate(float value, uniform int offset)
+double rotate(double value, uniform int offset)
 </pre>
 <p>Finally, the <tt class="docutils literal">shuffle()</tt> functions allow two variants of fully general
 shuffling of values among the program instances.  For the first version,
@@ -1580,10 +1598,12 @@ each program instance's value of permutation gives the program instance
 from which to get the value of <tt class="docutils literal">value</tt>.  The provided values for
 <tt class="docutils literal">permutation</tt> must all be between 0 and <tt class="docutils literal"><span class="pre">programCount-1</span></tt>.</p>
 <pre class="literal-block">
-float shuffle(float value, int permutation)
+int8 shuffle(int8 value, int permutation)
+int16 shuffle(int16 value, int permutation)
 int32 shuffle(int32 value, int permutation)
-double shuffle(double value, int permutation)
 int64 shuffle(int64 value, int permutation)
+float shuffle(float value, int permutation)
+double shuffle(double value, int permutation)
 </pre>
 <p>The second variant of <tt class="docutils literal">shuffle()</tt> permutes over the extended vector that
 is the concatenation of the two provided values.  In other words, a value
@@ -1591,10 +1611,12 @@ of 0 in an element of <tt class="docutils literal">permutation</tt> corresponds 
 <tt class="docutils literal">value0</tt>, the value <tt class="docutils literal"><span class="pre">2*programCount-1</span></tt> corresponds to the last element
 of <tt class="docutils literal">value1</tt>, etc.)</p>
 <pre class="literal-block">
-float shuffle(float value0, float value1, int permutation)
+int8 shuffle(int8 value0, int8 value1, int permutation)
+int16 shuffle(int16 value0, int16 value1, int permutation)
 int32 shuffle(int32 value0, int32 value1, int permutation)
-double shuffle(double value0, double value1, int permutation)
 int64 shuffle(int64 value0, int64 value1, int permutation)
+float shuffle(float value0, float value1, int permutation)
+double shuffle(double value0, double value1, int permutation)
 </pre>
 <p>The various variants of <tt class="docutils literal">popcnt()</tt> return the population count--the
 number of bits set in the given value.</p>
@@ -1681,10 +1703,36 @@ a single <tt class="docutils literal">uniform</tt> value.  Similarly, <tt class=
 where the <tt class="docutils literal">i</tt> th element of <tt class="docutils literal">x</tt> has been replaced with the value <tt class="docutils literal">v</tt>
 .</p>
 <pre class="literal-block">
+uniform int8 extract(int8 x, uniform int i)
+uniform int16 extract(int16 x, uniform int i)
+uniform int32 extract(int32 x, uniform int i)
+uniform int64 extract(int64 x, uniform int i)
 uniform float extract(float x, uniform int i)
-uniform int extract(int x, uniform int i)
+</pre>
+<pre class="literal-block">
+int8 insert(int8 x, uniform int i, uniform int8 v)
+int16 insert(int16 x, uniform int i, uniform int16 v)
+int32 insert(int32 x, uniform int i, uniform int32 v)
+int64 insert(int64 x, uniform int i, uniform int64 v)
 float insert(float x, uniform int i, uniform float v)
-int insert(int x, uniform int i, uniform int v)
+</pre>
+</div>
+<div class="section" id="conversions-to-and-from-half-precision-floats">
+<h2>Conversions To and From Half-Precision Floats</h2>
+<p>There are functions to convert to and from the IEEE 16-bit floating-point
+format.  Note that there is no <tt class="docutils literal">half</tt> data-type, and it isn't possible
+to do floating-point math directly with <tt class="docutils literal">half</tt> types in <tt class="docutils literal">ispc</tt>; these
+functions facilitate converting to and from half-format data in memory.</p>
+<p>To use them, half-format data should be loaded into an <tt class="docutils literal">int16</tt> and the
+<tt class="docutils literal">half_to_float()</tt> function used to convert it the a 32-bit floating point
+value.  To store a value to memory in half format, the <tt class="docutils literal">float_to_half()</tt>
+function returns the 16 bits that are the closest match to the given
+<tt class="docutils literal">float</tt>, in half format.</p>
+<pre class="literal-block">
+float half_to_float(unsigned int16 h)
+uniform float half_to_float(uniform unsigned int16 h)
+int16 float_to_half(float f)
+uniform int16 float_to_half(uniform float f)
 </pre>
 </div>
 <div class="section" id="atomic-operations-and-memory-fences">
@@ -1752,38 +1800,6 @@ value <tt class="docutils literal">true</tt> (rather than just having the value 
 int sign_extend(bool value)
 uniform int sign_extend(uniform bool value)
 </pre>
-<p><tt class="docutils literal">ispc</tt> provides a number of bit/memory-level utility routines in its
-standard library as well.  It has routines that load from and store
-to 8-bit and 16-bit integer values stored in memory, converting to and from
-32-bit integers for use in computation in <tt class="docutils literal">ispc</tt> code.  (These functions
-and this conversion step are necessary because <tt class="docutils literal">ispc</tt> doesn't have native
-8-bit or 16-bit types in the language.)</p>
-<pre class="literal-block">
-int load_from_int8(uniform int a[], uniform int offset)
-unsigned int load_from_int8(uniform unsigned int a[],
-                            uniform int offset)
-void store_to_int8(uniform int a[], uniform int offset,
-                   int val)
-void store_to_int8(uniform unsigned int a[], uniform int offset,
-                   unsigned int val)
-unsigned int load_from_int16(uniform int a[],
-                             uniform int offset)
-unsigned unsigned int load_from_int16(uniform unsigned int a[],
-                                      uniform int offset)
-void store_to_int16(uniform int a[], uniform int offset,
-                    int val)
-void store_to_int16(uniform unsigned int a[], uniform int offset,
-                    unsigned int val)
-</pre>
-<p>There are three things to note in these functions.  First, note that these
-functions take either <tt class="docutils literal">int</tt> or <tt class="docutils literal">unsigned int</tt> arrays as parameters; you
-need to cast <cite>the ``int8_t`</cite> and <tt class="docutils literal">int16_t</tt> pointers from the C/C++ side
-to <tt class="docutils literal">int</tt> or <tt class="docutils literal">unsigned int</tt> when passing them to <tt class="docutils literal">ispc</tt> code.  Second,
-although the arrays are passed as 32-bit integers, in the array indexing
-calculation, with the <tt class="docutils literal">offset</tt> parameter, they are treated as if they
-were <tt class="docutils literal">int8</tt> or <tt class="docutils literal">int16</tt> types (i.e. the offset treated as being in terms
-of number of 8 or 16-bit elements).  Third, note that the value of
-<tt class="docutils literal">programIndex</tt> is implicitly added to offset.</p>
 <p>The <tt class="docutils literal">intbits()</tt> and <tt class="docutils literal">floatbits()</tt> functions can be used to implement
 low-level floating-point bit twiddling.  For example, <tt class="docutils literal">intbits()</tt> returns
 an <tt class="docutils literal">unsigned int</tt> that is a bit-for-bit copy of the given <tt class="docutils literal">float</tt>
@@ -2218,6 +2234,13 @@ uniform int x = ...;
 return array[2*x + programIndex];
 </pre>
 <p>A regular vector load is done from array, starting at offset <tt class="docutils literal">2*x</tt>.</p>
+</div>
+<div class="section" id="and-16-bit-integer-types">
+<h2>8 and 16-bit Integer Types</h2>
+<p>The code generated for 8 and 16-bit integer types is generally not as
+efficient as the code generated for 32-bit integer types.  It is generally
+worthwhile to use 32-bit integer types for intermediate computations, even
+if the final result will be stored in a smaller integer type.</p>
 </div>
 <div class="section" id="low-level-vector-tricks">
 <h2>Low-level Vector Tricks</h2>

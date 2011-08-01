@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Intel SPMD Program Compiler: stdlib-c.c Source File</title>
+<title>Intel SPMD Program Compiler: builtins-c.c Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -26,10 +26,10 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<h1>stdlib-c.c</h1>  </div>
+<h1>builtins-c.c</h1>  </div>
 </div>
 <div class="contents">
-<a href="stdlib-c_8c.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/*</span>
+<a href="builtins-c_8c.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/*</span>
 <a name="l00002"></a>00002 <span class="comment">  Copyright (c) 2010-2011, Intel Corporation</span>
 <a name="l00003"></a>00003 <span class="comment">  All rights reserved.</span>
 <a name="l00004"></a>00004 <span class="comment"></span>
@@ -62,7 +62,7 @@
 <a name="l00031"></a>00031 <span class="comment">   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  </span>
 <a name="l00032"></a>00032 <span class="comment">*/</span>
 <a name="l00033"></a>00033 <span class="comment"></span>
-<a name="l00034"></a>00034 <span class="comment">/** @file stdlib-c.c</span>
+<a name="l00034"></a>00034 <span class="comment">/** @file builtins-c.c</span>
 <a name="l00035"></a>00035 <span class="comment">    @brief Standard library function implementations written in C.</span>
 <a name="l00036"></a>00036 <span class="comment"></span>
 <a name="l00037"></a>00037 <span class="comment">    This file provides C implementations of various functions that can be</span>
@@ -86,13 +86,13 @@
 <a name="l00055"></a>00055 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
 <a name="l00056"></a>00056 <span class="preprocessor">#include &lt;stdarg.h&gt;</span>
 <a name="l00057"></a>00057 
-<a name="l00058"></a><a class="code" href="stdlib-c_8c.html#afdcfe6db5bea87bd493a3fe2c513d5ef">00058</a> <span class="keyword">typedef</span> <span class="keywordtype">int</span> <a class="code" href="stdlib-c_8c.html#afdcfe6db5bea87bd493a3fe2c513d5ef">Bool</a>;
+<a name="l00058"></a><a class="code" href="builtins-c_8c.html#afdcfe6db5bea87bd493a3fe2c513d5ef">00058</a> <span class="keyword">typedef</span> <span class="keywordtype">int</span> <a class="code" href="builtins-c_8c.html#afdcfe6db5bea87bd493a3fe2c513d5ef">Bool</a>;
 <a name="l00059"></a>00059 
-<a name="l00060"></a><a class="code" href="stdlib-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">00060</a> <span class="preprocessor">#define PRINT_SCALAR(fmt, type)  \</span>
+<a name="l00060"></a><a class="code" href="builtins-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">00060</a> <span class="preprocessor">#define PRINT_SCALAR(fmt, type)  \</span>
 <a name="l00061"></a>00061 <span class="preprocessor">    printf(fmt, *((type *)ptr)); \</span>
 <a name="l00062"></a>00062 <span class="preprocessor">    break</span>
 <a name="l00063"></a>00063 <span class="preprocessor"></span>
-<a name="l00064"></a><a class="code" href="stdlib-c_8c.html#a6548da45799b79547b4d7336aee9f425">00064</a> <span class="preprocessor">#define PRINT_VECTOR(fmt, type)                                         \</span>
+<a name="l00064"></a><a class="code" href="builtins-c_8c.html#a6548da45799b79547b4d7336aee9f425">00064</a> <span class="preprocessor">#define PRINT_VECTOR(fmt, type)                                         \</span>
 <a name="l00065"></a>00065 <span class="preprocessor">    putchar(&#39;[&#39;);                                                       \</span>
 <a name="l00066"></a>00066 <span class="preprocessor">    for (int i = 0; i &lt; width; ++i) {                                   \</span>
 <a name="l00067"></a>00067 <span class="preprocessor">        </span><span class="comment">/* only print the value if the current lane is executing */</span>     \
@@ -115,7 +115,7 @@
 <a name="l00084"></a>00084 <span class="comment">    @param mask    Current lane mask when the print statemnt is called</span>
 <a name="l00085"></a>00085 <span class="comment">    @param args    Array of pointers to the values to be printed</span>
 <a name="l00086"></a>00086 <span class="comment"> */</span>
-<a name="l00087"></a><a class="code" href="stdlib-c_8c.html#a75987568b5e9c7c1d2c1de4530da0b1f">00087</a> <span class="keywordtype">void</span> <a class="code" href="stdlib-c_8c.html#a75987568b5e9c7c1d2c1de4530da0b1f">__do_print</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *format, <span class="keyword">const</span> <span class="keywordtype">char</span> *types, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> mask, 
+<a name="l00087"></a><a class="code" href="builtins-c_8c.html#a75987568b5e9c7c1d2c1de4530da0b1f">00087</a> <span class="keywordtype">void</span> <a class="code" href="builtins-c_8c.html#a75987568b5e9c7c1d2c1de4530da0b1f">__do_print</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *format, <span class="keyword">const</span> <span class="keywordtype">char</span> *types, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> mask, 
 <a name="l00088"></a>00088                 <span class="keywordtype">void</span> **args) {
 <a name="l00089"></a>00089     <span class="keywordflow">if</span> (mask == 0) 
 <a name="l00090"></a>00090         <span class="keywordflow">return</span>;
@@ -133,32 +133,32 @@
 <a name="l00102"></a>00102                 <span class="comment">// printf() formatting string.</span>
 <a name="l00103"></a>00103                 <span class="keywordflow">switch</span> (*types) {
 <a name="l00104"></a>00104                 <span class="keywordflow">case</span> <span class="charliteral">&#39;b&#39;</span>: {
-<a name="l00105"></a>00105                     printf(<span class="stringliteral">&quot;%s&quot;</span>, *((<a class="code" href="stdlib-c_8c.html#afdcfe6db5bea87bd493a3fe2c513d5ef">Bool</a> *)ptr) ? <span class="stringliteral">&quot;true&quot;</span> : <span class="stringliteral">&quot;false&quot;</span>);
+<a name="l00105"></a>00105                     printf(<span class="stringliteral">&quot;%s&quot;</span>, *((<a class="code" href="builtins-c_8c.html#afdcfe6db5bea87bd493a3fe2c513d5ef">Bool</a> *)ptr) ? <span class="stringliteral">&quot;true&quot;</span> : <span class="stringliteral">&quot;false&quot;</span>);
 <a name="l00106"></a>00106                     <span class="keywordflow">break</span>;
 <a name="l00107"></a>00107                 }
 <a name="l00108"></a>00108                 <span class="keywordflow">case</span> <span class="charliteral">&#39;B&#39;</span>: {
 <a name="l00109"></a>00109                     putchar(<span class="charliteral">&#39;[&#39;</span>);
 <a name="l00110"></a>00110                     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; width; ++i) {
 <a name="l00111"></a>00111                         <span class="keywordflow">if</span> (mask &amp; (1&lt;&lt;i))
-<a name="l00112"></a>00112                             printf(<span class="stringliteral">&quot;%s&quot;</span>, ((<a class="code" href="stdlib-c_8c.html#afdcfe6db5bea87bd493a3fe2c513d5ef">Bool</a> *)ptr)[i] ? <span class="stringliteral">&quot;true&quot;</span> : <span class="stringliteral">&quot;false&quot;</span>);
+<a name="l00112"></a>00112                             printf(<span class="stringliteral">&quot;%s&quot;</span>, ((<a class="code" href="builtins-c_8c.html#afdcfe6db5bea87bd493a3fe2c513d5ef">Bool</a> *)ptr)[i] ? <span class="stringliteral">&quot;true&quot;</span> : <span class="stringliteral">&quot;false&quot;</span>);
 <a name="l00113"></a>00113                         <span class="keywordflow">else</span>
 <a name="l00114"></a>00114                             printf(<span class="stringliteral">&quot;_________&quot;</span>);
 <a name="l00115"></a>00115                         putchar(i != width-1 ? <span class="charliteral">&#39;,&#39;</span> : <span class="charliteral">&#39;]&#39;</span>);
 <a name="l00116"></a>00116                     }
 <a name="l00117"></a>00117                     <span class="keywordflow">break</span>;
 <a name="l00118"></a>00118                 }
-<a name="l00119"></a>00119                 <span class="keywordflow">case</span> <span class="charliteral">&#39;i&#39;</span>: <a class="code" href="stdlib-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">PRINT_SCALAR</a>(<span class="stringliteral">&quot;%d&quot;</span>, <span class="keywordtype">int</span>);
-<a name="l00120"></a>00120                 <span class="keywordflow">case</span> <span class="charliteral">&#39;I&#39;</span>: <a class="code" href="stdlib-c_8c.html#a6548da45799b79547b4d7336aee9f425">PRINT_VECTOR</a>(<span class="stringliteral">&quot;%d&quot;</span>, <span class="keywordtype">int</span>);
-<a name="l00121"></a>00121                 <span class="keywordflow">case</span> <span class="charliteral">&#39;u&#39;</span>: <a class="code" href="stdlib-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">PRINT_SCALAR</a>(<span class="stringliteral">&quot;%u&quot;</span>, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>);
-<a name="l00122"></a>00122                 <span class="keywordflow">case</span> <span class="charliteral">&#39;U&#39;</span>: <a class="code" href="stdlib-c_8c.html#a6548da45799b79547b4d7336aee9f425">PRINT_VECTOR</a>(<span class="stringliteral">&quot;%u&quot;</span>, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>);
-<a name="l00123"></a>00123                 <span class="keywordflow">case</span> <span class="charliteral">&#39;f&#39;</span>: <a class="code" href="stdlib-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">PRINT_SCALAR</a>(<span class="stringliteral">&quot;%f&quot;</span>, <span class="keywordtype">float</span>);
-<a name="l00124"></a>00124                 <span class="keywordflow">case</span> <span class="charliteral">&#39;F&#39;</span>: <a class="code" href="stdlib-c_8c.html#a6548da45799b79547b4d7336aee9f425">PRINT_VECTOR</a>(<span class="stringliteral">&quot;%f&quot;</span>, <span class="keywordtype">float</span>);
-<a name="l00125"></a>00125                 <span class="keywordflow">case</span> <span class="charliteral">&#39;l&#39;</span>: <a class="code" href="stdlib-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">PRINT_SCALAR</a>(<span class="stringliteral">&quot;%lld&quot;</span>, <span class="keywordtype">long</span> <span class="keywordtype">long</span>);
-<a name="l00126"></a>00126                 <span class="keywordflow">case</span> <span class="charliteral">&#39;L&#39;</span>: <a class="code" href="stdlib-c_8c.html#a6548da45799b79547b4d7336aee9f425">PRINT_VECTOR</a>(<span class="stringliteral">&quot;%lld&quot;</span>, <span class="keywordtype">long</span> <span class="keywordtype">long</span>);
-<a name="l00127"></a>00127                 <span class="keywordflow">case</span> <span class="charliteral">&#39;v&#39;</span>: <a class="code" href="stdlib-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">PRINT_SCALAR</a>(<span class="stringliteral">&quot;%llu&quot;</span>, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span>);
-<a name="l00128"></a>00128                 <span class="keywordflow">case</span> <span class="charliteral">&#39;V&#39;</span>: <a class="code" href="stdlib-c_8c.html#a6548da45799b79547b4d7336aee9f425">PRINT_VECTOR</a>(<span class="stringliteral">&quot;%llu&quot;</span>, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span>);
-<a name="l00129"></a>00129                 <span class="keywordflow">case</span> <span class="charliteral">&#39;d&#39;</span>: <a class="code" href="stdlib-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">PRINT_SCALAR</a>(<span class="stringliteral">&quot;%f&quot;</span>, <span class="keywordtype">double</span>);
-<a name="l00130"></a>00130                 <span class="keywordflow">case</span> <span class="charliteral">&#39;D&#39;</span>: <a class="code" href="stdlib-c_8c.html#a6548da45799b79547b4d7336aee9f425">PRINT_VECTOR</a>(<span class="stringliteral">&quot;%f&quot;</span>, <span class="keywordtype">double</span>);
+<a name="l00119"></a>00119                 <span class="keywordflow">case</span> <span class="charliteral">&#39;i&#39;</span>: <a class="code" href="builtins-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">PRINT_SCALAR</a>(<span class="stringliteral">&quot;%d&quot;</span>, <span class="keywordtype">int</span>);
+<a name="l00120"></a>00120                 <span class="keywordflow">case</span> <span class="charliteral">&#39;I&#39;</span>: <a class="code" href="builtins-c_8c.html#a6548da45799b79547b4d7336aee9f425">PRINT_VECTOR</a>(<span class="stringliteral">&quot;%d&quot;</span>, <span class="keywordtype">int</span>);
+<a name="l00121"></a>00121                 <span class="keywordflow">case</span> <span class="charliteral">&#39;u&#39;</span>: <a class="code" href="builtins-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">PRINT_SCALAR</a>(<span class="stringliteral">&quot;%u&quot;</span>, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>);
+<a name="l00122"></a>00122                 <span class="keywordflow">case</span> <span class="charliteral">&#39;U&#39;</span>: <a class="code" href="builtins-c_8c.html#a6548da45799b79547b4d7336aee9f425">PRINT_VECTOR</a>(<span class="stringliteral">&quot;%u&quot;</span>, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>);
+<a name="l00123"></a>00123                 <span class="keywordflow">case</span> <span class="charliteral">&#39;f&#39;</span>: <a class="code" href="builtins-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">PRINT_SCALAR</a>(<span class="stringliteral">&quot;%f&quot;</span>, <span class="keywordtype">float</span>);
+<a name="l00124"></a>00124                 <span class="keywordflow">case</span> <span class="charliteral">&#39;F&#39;</span>: <a class="code" href="builtins-c_8c.html#a6548da45799b79547b4d7336aee9f425">PRINT_VECTOR</a>(<span class="stringliteral">&quot;%f&quot;</span>, <span class="keywordtype">float</span>);
+<a name="l00125"></a>00125                 <span class="keywordflow">case</span> <span class="charliteral">&#39;l&#39;</span>: <a class="code" href="builtins-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">PRINT_SCALAR</a>(<span class="stringliteral">&quot;%lld&quot;</span>, <span class="keywordtype">long</span> <span class="keywordtype">long</span>);
+<a name="l00126"></a>00126                 <span class="keywordflow">case</span> <span class="charliteral">&#39;L&#39;</span>: <a class="code" href="builtins-c_8c.html#a6548da45799b79547b4d7336aee9f425">PRINT_VECTOR</a>(<span class="stringliteral">&quot;%lld&quot;</span>, <span class="keywordtype">long</span> <span class="keywordtype">long</span>);
+<a name="l00127"></a>00127                 <span class="keywordflow">case</span> <span class="charliteral">&#39;v&#39;</span>: <a class="code" href="builtins-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">PRINT_SCALAR</a>(<span class="stringliteral">&quot;%llu&quot;</span>, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span>);
+<a name="l00128"></a>00128                 <span class="keywordflow">case</span> <span class="charliteral">&#39;V&#39;</span>: <a class="code" href="builtins-c_8c.html#a6548da45799b79547b4d7336aee9f425">PRINT_VECTOR</a>(<span class="stringliteral">&quot;%llu&quot;</span>, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span>);
+<a name="l00129"></a>00129                 <span class="keywordflow">case</span> <span class="charliteral">&#39;d&#39;</span>: <a class="code" href="builtins-c_8c.html#a6306b3f199bfb0faf8fac3f10d462f0c">PRINT_SCALAR</a>(<span class="stringliteral">&quot;%f&quot;</span>, <span class="keywordtype">double</span>);
+<a name="l00130"></a>00130                 <span class="keywordflow">case</span> <span class="charliteral">&#39;D&#39;</span>: <a class="code" href="builtins-c_8c.html#a6548da45799b79547b4d7336aee9f425">PRINT_VECTOR</a>(<span class="stringliteral">&quot;%f&quot;</span>, <span class="keywordtype">double</span>);
 <a name="l00131"></a>00131                 <span class="keywordflow">default</span>:
 <a name="l00132"></a>00132                     printf(<span class="stringliteral">&quot;UNKNOWN TYPE &quot;</span>);
 <a name="l00133"></a>00133                     putchar(*types);
@@ -172,7 +172,7 @@
 <a name="l00141"></a>00141 }
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 18 2011 13:04:16 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 1 2011 12:30:56 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

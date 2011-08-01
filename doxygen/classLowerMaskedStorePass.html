@@ -62,9 +62,9 @@ Static Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLowerMaskedStorePass.html#a0042053b3f7b1a2c98a6fe048d1e515a">ID</a> = 0</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
-<p>When the front-end needs to do a masked store, it emits a __pseudo_masked_store_{32,64} call as a placeholder. This pass lowers these calls to either __masked_store_{32,64} or __masked_store_blend_{32,64} calls. </p>
+<p>When the front-end needs to do a masked store, it emits a __pseudo_masked_store_{8,16,32,64} call as a placeholder. This pass lowers these calls to either __masked_store_{8,16,32,64} or __masked_store_blend_{8,16,32,64} calls. </p>
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l01170">1170</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l01327">1327</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a3cdcf5977ddce7be7940cb18771bc9c3"></a><!-- doxytag: member="LowerMaskedStorePass::LowerMaskedStorePass" ref="a3cdcf5977ddce7be7940cb18771bc9c3" args="()" -->
 <div class="memitem">
@@ -80,7 +80,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l01173">1173</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l01330">1330</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -99,7 +99,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l01175">1175</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l01332">1332</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -118,9 +118,9 @@ Static Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l01235">1235</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l01385">1385</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ispc_8h_source.html#l00210">Opt::disableBlendedMaskedStores</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ispc_8h_source.html#l00166">Target::isa</a>, <a class="el" href="opt_8cpp_source.html#l00103">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l01194">lIsStackVariablePointer()</a>, <a class="el" href="opt_8cpp_source.html#l01218">lMaskedStoreName()</a>, <a class="el" href="ispc_8cpp_source.html#l00055">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00269">Globals::opt</a>, <a class="el" href="ispc_8h_source.html#l00163">Target::SSE2</a>, <a class="el" href="ispc_8h_source.html#l00163">Target::SSE4</a>, and <a class="el" href="ispc_8h_source.html#l00271">Globals::target</a>.</p>
+<p>References <a class="el" href="opt_8cpp_source.html#l01379">LMSInfo::blendFunc</a>, <a class="el" href="ispc_8h_source.html#l00210">Opt::disableBlendedMaskedStores</a>, <a class="el" href="ispc_8cpp_source.html#l00054">g</a>, <a class="el" href="ispc_8h_source.html#l00166">Target::isa</a>, <a class="el" href="opt_8cpp_source.html#l00103">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l01351">lIsStackVariablePointer()</a>, <a class="el" href="opt_8cpp_source.html#l01380">LMSInfo::maskedStoreFunc</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00269">Globals::opt</a>, <a class="el" href="opt_8cpp_source.html#l01378">LMSInfo::pseudoFunc</a>, <a class="el" href="ispc_8h_source.html#l00163">Target::SSE2</a>, <a class="el" href="ispc_8h_source.html#l00163">Target::SSE4</a>, and <a class="el" href="ispc_8h_source.html#l00271">Globals::target</a>.</p>
 
 </div>
 </div>
@@ -136,7 +136,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l01172">1172</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l01329">1329</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -144,7 +144,7 @@ Static Public Attributes</h2></td></tr>
 <li><a class="el" href="opt_8cpp_source.html">opt.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 18 2011 13:04:21 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 1 2011 12:30:59 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>
