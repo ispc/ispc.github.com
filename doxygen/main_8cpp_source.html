@@ -240,141 +240,146 @@
 <a name="l00209"></a>00209             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">cppArgs</a>.push_back(argv[i]);
 <a name="l00210"></a>00210         }
 <a name="l00211"></a>00211 <span class="preprocessor">#endif // !ISPC_IS_WINDOWS</span>
-<a name="l00212"></a>00212 <span class="preprocessor"></span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strncmp(argv[i], <span class="stringliteral">&quot;--arch=&quot;</span>, 7))
+<a name="l00212"></a>00212 <span class="preprocessor"></span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strncmp(argv[i], <span class="stringliteral">&quot;--arch=&quot;</span>, 7)) {
 <a name="l00213"></a>00213             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">arch</a> = argv[i] + 7;
-<a name="l00214"></a>00214         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strncmp(argv[i], <span class="stringliteral">&quot;--cpu=&quot;</span>, 6))
-<a name="l00215"></a>00215             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">cpu</a> = argv[i] + 6;
-<a name="l00216"></a>00216         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--fast-math&quot;</span>))
-<a name="l00217"></a>00217             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">fastMath</a> = <span class="keyword">true</span>;
-<a name="l00218"></a>00218         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--debug&quot;</span>))
-<a name="l00219"></a>00219             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a> = <span class="keyword">true</span>;
-<a name="l00220"></a>00220         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--instrument&quot;</span>))
-<a name="l00221"></a>00221             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">emitInstrumentation</a> = <span class="keyword">true</span>;
-<a name="l00222"></a>00222         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-g&quot;</span>)) {
-<a name="l00223"></a>00223             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">generateDebuggingSymbols</a> = <span class="keyword">true</span>;
-<a name="l00224"></a>00224             debugSet = <span class="keyword">true</span>;
-<a name="l00225"></a>00225         }
-<a name="l00226"></a>00226         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--emit-asm&quot;</span>))
-<a name="l00227"></a>00227             ot = <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a4cc66c9913b9cf518de07fa0b9eba2ab">Module::Asm</a>;
-<a name="l00228"></a>00228         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--emit-llvm&quot;</span>))
-<a name="l00229"></a>00229             ot = <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16ae8863b243bc8a917cf50fce1e9066e40">Module::Bitcode</a>;
-<a name="l00230"></a>00230         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--emit-obj&quot;</span>))
-<a name="l00231"></a>00231             ot = <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a05b2f887873eb944be6de4399afedf74">Module::Object</a>;
-<a name="l00232"></a>00232         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--target&quot;</span>)) {
-<a name="l00233"></a>00233             <span class="keywordflow">if</span> (++i == argc) <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
-<a name="l00234"></a>00234             <a class="code" href="main_8cpp.html#a99fe3aae3dbb4365f8ad4e5bd068f05e">lDoTarget</a>(argv[i]);
-<a name="l00235"></a>00235             targetSet = <span class="keyword">true</span>;
-<a name="l00236"></a>00236         }
-<a name="l00237"></a>00237         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strncmp(argv[i], <span class="stringliteral">&quot;--target=&quot;</span>, 9)) {
-<a name="l00238"></a>00238             <span class="keyword">const</span> <span class="keywordtype">char</span> *target = argv[i] + 9;
-<a name="l00239"></a>00239             <a class="code" href="main_8cpp.html#a99fe3aae3dbb4365f8ad4e5bd068f05e">lDoTarget</a>(target);
-<a name="l00240"></a>00240         }
-<a name="l00241"></a>00241         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strncmp(argv[i], <span class="stringliteral">&quot;--math-lib=&quot;</span>, 11)) {
-<a name="l00242"></a>00242             <span class="keyword">const</span> <span class="keywordtype">char</span> *lib = argv[i] + 11;
-<a name="l00243"></a>00243             <span class="keywordflow">if</span> (!strcmp(lib, <span class="stringliteral">&quot;default&quot;</span>))
-<a name="l00244"></a>00244                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a> = <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3f9d7b36c46f10ce2e7246c587fdb284">Globals::Math_ISPC</a>;
-<a name="l00245"></a>00245             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(lib, <span class="stringliteral">&quot;fast&quot;</span>))
-<a name="l00246"></a>00246                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a> = <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a8c7eff35ae130e97be933e1bf32cc35b">Globals::Math_ISPCFast</a>;
-<a name="l00247"></a>00247             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(lib, <span class="stringliteral">&quot;svml&quot;</span>))
-<a name="l00248"></a>00248                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a> = <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45af2767474d6d68689e5438e5885d3600b">Globals::Math_SVML</a>;
-<a name="l00249"></a>00249             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(lib, <span class="stringliteral">&quot;system&quot;</span>))
-<a name="l00250"></a>00250                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a> = <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3e401778bb86ff534f0f59d55d61a6ac">Globals::Math_System</a>;
-<a name="l00251"></a>00251             <span class="keywordflow">else</span>
-<a name="l00252"></a>00252                 <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
-<a name="l00253"></a>00253         }
-<a name="l00254"></a>00254         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strncmp(argv[i], <span class="stringliteral">&quot;--opt=&quot;</span>, 6)) {
-<a name="l00255"></a>00255             <span class="keyword">const</span> <span class="keywordtype">char</span> *opt = argv[i] + 6;
-<a name="l00256"></a>00256             <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-blended-masked-stores&quot;</span>))
-<a name="l00257"></a>00257                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a441c78a679b7bc088d879ade8d20845f">disableBlendedMaskedStores</a> = <span class="keyword">true</span>;
-<a name="l00258"></a>00258             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-coherent-control-flow&quot;</span>))
-<a name="l00259"></a>00259                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a269b3d2789b821a74a7255b2fd308da4">disableCoherentControlFlow</a> = <span class="keyword">true</span>;
-<a name="l00260"></a>00260             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-uniform-control-flow&quot;</span>))
-<a name="l00261"></a>00261                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">disableUniformControlFlow</a> = <span class="keyword">true</span>;
-<a name="l00262"></a>00262             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-gather-scatter-optimizations&quot;</span>))
-<a name="l00263"></a>00263                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a515b1fed805b43f36ec51403c8d4f3bf">disableGatherScatterOptimizations</a> = <span class="keyword">true</span>;
-<a name="l00264"></a>00264             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-blending-removal&quot;</span>))
-<a name="l00265"></a>00265                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a4922c058dd40b20fcda0022be7a7d6ea">disableMaskedStoreToStore</a> = <span class="keyword">true</span>;
-<a name="l00266"></a>00266             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-gather-scatter-flattening&quot;</span>))
-<a name="l00267"></a>00267                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a6e55373ff211bb3ea9d98d731d074c92">disableGatherScatterFlattening</a> = <span class="keyword">true</span>;
-<a name="l00268"></a>00268             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-uniform-memory-optimizations&quot;</span>))
-<a name="l00269"></a>00269                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#ade00ce91375beef743b1dc773a526d12">disableUniformMemoryOptimizations</a> = <span class="keyword">true</span>;
-<a name="l00270"></a>00270             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-masked-store-optimizations&quot;</span>))
-<a name="l00271"></a>00271                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a2c9adc53ac4a504bf41f84aa68b1d471">disableMaskedStoreOptimizations</a> = <span class="keyword">true</span>;
-<a name="l00272"></a>00272             <span class="keywordflow">else</span> 
-<a name="l00273"></a>00273                 <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
-<a name="l00274"></a>00274         }
-<a name="l00275"></a>00275         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--woff&quot;</span>) || !strcmp(argv[i], <span class="stringliteral">&quot;-woff&quot;</span>)) {
-<a name="l00276"></a>00276             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a59396e4fc487ea16b659d6e370bcb624">disableWarnings</a> = <span class="keyword">true</span>;
-<a name="l00277"></a>00277             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">emitPerfWarnings</a> = <span class="keyword">false</span>;
-<a name="l00278"></a>00278         }
-<a name="l00279"></a>00279         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--wno-perf&quot;</span>) || !strcmp(argv[i], <span class="stringliteral">&quot;-wno-perf&quot;</span>))
-<a name="l00280"></a>00280             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">emitPerfWarnings</a> = <span class="keyword">false</span>;
-<a name="l00281"></a>00281         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-o&quot;</span>) || !strcmp(argv[i], <span class="stringliteral">&quot;--outfile&quot;</span>)) {
-<a name="l00282"></a>00282             <span class="keywordflow">if</span> (++i == argc) <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
-<a name="l00283"></a>00283             outFileName = argv[i];
-<a name="l00284"></a>00284         }
-<a name="l00285"></a>00285         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-h&quot;</span>) || !strcmp(argv[i], <span class="stringliteral">&quot;--header-outfile&quot;</span>)) {
-<a name="l00286"></a>00286             <span class="keywordflow">if</span> (++i == argc) <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
-<a name="l00287"></a>00287             headerFileName = argv[i];
-<a name="l00288"></a>00288         }
-<a name="l00289"></a>00289         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-O0&quot;</span>)) {
-<a name="l00290"></a>00290             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a> = 0;
-<a name="l00291"></a>00291             optSet = <span class="keyword">true</span>;
-<a name="l00292"></a>00292         }
-<a name="l00293"></a>00293         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-O&quot;</span>) ||  !strcmp(argv[i], <span class="stringliteral">&quot;-O1&quot;</span>) || 
-<a name="l00294"></a>00294                  !strcmp(argv[i], <span class="stringliteral">&quot;-O2&quot;</span>) || !strcmp(argv[i], <span class="stringliteral">&quot;-O3&quot;</span>)) {
-<a name="l00295"></a>00295             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a> = 1;
+<a name="l00214"></a>00214             <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">arch</a> == <span class="stringliteral">&quot;x86&quot;</span>)
+<a name="l00215"></a>00215                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#abd4421f5023c496015e1c78fc2f2eea8">is32bit</a> = <span class="keyword">true</span>;
+<a name="l00216"></a>00216             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">arch</a> == <span class="stringliteral">&quot;x86-64&quot;</span>)
+<a name="l00217"></a>00217                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#abd4421f5023c496015e1c78fc2f2eea8">is32bit</a> = <span class="keyword">false</span>;
+<a name="l00218"></a>00218         }
+<a name="l00219"></a>00219         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strncmp(argv[i], <span class="stringliteral">&quot;--cpu=&quot;</span>, 6))
+<a name="l00220"></a>00220             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">cpu</a> = argv[i] + 6;
+<a name="l00221"></a>00221         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--fast-math&quot;</span>))
+<a name="l00222"></a>00222             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">fastMath</a> = <span class="keyword">true</span>;
+<a name="l00223"></a>00223         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--debug&quot;</span>))
+<a name="l00224"></a>00224             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a> = <span class="keyword">true</span>;
+<a name="l00225"></a>00225         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--instrument&quot;</span>))
+<a name="l00226"></a>00226             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">emitInstrumentation</a> = <span class="keyword">true</span>;
+<a name="l00227"></a>00227         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-g&quot;</span>)) {
+<a name="l00228"></a>00228             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">generateDebuggingSymbols</a> = <span class="keyword">true</span>;
+<a name="l00229"></a>00229             debugSet = <span class="keyword">true</span>;
+<a name="l00230"></a>00230         }
+<a name="l00231"></a>00231         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--emit-asm&quot;</span>))
+<a name="l00232"></a>00232             ot = <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a4cc66c9913b9cf518de07fa0b9eba2ab">Module::Asm</a>;
+<a name="l00233"></a>00233         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--emit-llvm&quot;</span>))
+<a name="l00234"></a>00234             ot = <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16ae8863b243bc8a917cf50fce1e9066e40">Module::Bitcode</a>;
+<a name="l00235"></a>00235         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--emit-obj&quot;</span>))
+<a name="l00236"></a>00236             ot = <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a05b2f887873eb944be6de4399afedf74">Module::Object</a>;
+<a name="l00237"></a>00237         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--target&quot;</span>)) {
+<a name="l00238"></a>00238             <span class="keywordflow">if</span> (++i == argc) <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
+<a name="l00239"></a>00239             <a class="code" href="main_8cpp.html#a99fe3aae3dbb4365f8ad4e5bd068f05e">lDoTarget</a>(argv[i]);
+<a name="l00240"></a>00240             targetSet = <span class="keyword">true</span>;
+<a name="l00241"></a>00241         }
+<a name="l00242"></a>00242         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strncmp(argv[i], <span class="stringliteral">&quot;--target=&quot;</span>, 9)) {
+<a name="l00243"></a>00243             <span class="keyword">const</span> <span class="keywordtype">char</span> *target = argv[i] + 9;
+<a name="l00244"></a>00244             <a class="code" href="main_8cpp.html#a99fe3aae3dbb4365f8ad4e5bd068f05e">lDoTarget</a>(target);
+<a name="l00245"></a>00245         }
+<a name="l00246"></a>00246         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strncmp(argv[i], <span class="stringliteral">&quot;--math-lib=&quot;</span>, 11)) {
+<a name="l00247"></a>00247             <span class="keyword">const</span> <span class="keywordtype">char</span> *lib = argv[i] + 11;
+<a name="l00248"></a>00248             <span class="keywordflow">if</span> (!strcmp(lib, <span class="stringliteral">&quot;default&quot;</span>))
+<a name="l00249"></a>00249                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a> = <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3f9d7b36c46f10ce2e7246c587fdb284">Globals::Math_ISPC</a>;
+<a name="l00250"></a>00250             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(lib, <span class="stringliteral">&quot;fast&quot;</span>))
+<a name="l00251"></a>00251                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a> = <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a8c7eff35ae130e97be933e1bf32cc35b">Globals::Math_ISPCFast</a>;
+<a name="l00252"></a>00252             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(lib, <span class="stringliteral">&quot;svml&quot;</span>))
+<a name="l00253"></a>00253                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a> = <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45af2767474d6d68689e5438e5885d3600b">Globals::Math_SVML</a>;
+<a name="l00254"></a>00254             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(lib, <span class="stringliteral">&quot;system&quot;</span>))
+<a name="l00255"></a>00255                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a> = <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3e401778bb86ff534f0f59d55d61a6ac">Globals::Math_System</a>;
+<a name="l00256"></a>00256             <span class="keywordflow">else</span>
+<a name="l00257"></a>00257                 <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
+<a name="l00258"></a>00258         }
+<a name="l00259"></a>00259         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strncmp(argv[i], <span class="stringliteral">&quot;--opt=&quot;</span>, 6)) {
+<a name="l00260"></a>00260             <span class="keyword">const</span> <span class="keywordtype">char</span> *opt = argv[i] + 6;
+<a name="l00261"></a>00261             <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-blended-masked-stores&quot;</span>))
+<a name="l00262"></a>00262                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a441c78a679b7bc088d879ade8d20845f">disableBlendedMaskedStores</a> = <span class="keyword">true</span>;
+<a name="l00263"></a>00263             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-coherent-control-flow&quot;</span>))
+<a name="l00264"></a>00264                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a269b3d2789b821a74a7255b2fd308da4">disableCoherentControlFlow</a> = <span class="keyword">true</span>;
+<a name="l00265"></a>00265             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-uniform-control-flow&quot;</span>))
+<a name="l00266"></a>00266                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">disableUniformControlFlow</a> = <span class="keyword">true</span>;
+<a name="l00267"></a>00267             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-gather-scatter-optimizations&quot;</span>))
+<a name="l00268"></a>00268                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a515b1fed805b43f36ec51403c8d4f3bf">disableGatherScatterOptimizations</a> = <span class="keyword">true</span>;
+<a name="l00269"></a>00269             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-blending-removal&quot;</span>))
+<a name="l00270"></a>00270                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a4922c058dd40b20fcda0022be7a7d6ea">disableMaskedStoreToStore</a> = <span class="keyword">true</span>;
+<a name="l00271"></a>00271             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-gather-scatter-flattening&quot;</span>))
+<a name="l00272"></a>00272                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a6e55373ff211bb3ea9d98d731d074c92">disableGatherScatterFlattening</a> = <span class="keyword">true</span>;
+<a name="l00273"></a>00273             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-uniform-memory-optimizations&quot;</span>))
+<a name="l00274"></a>00274                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#ade00ce91375beef743b1dc773a526d12">disableUniformMemoryOptimizations</a> = <span class="keyword">true</span>;
+<a name="l00275"></a>00275             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(opt, <span class="stringliteral">&quot;disable-masked-store-optimizations&quot;</span>))
+<a name="l00276"></a>00276                 <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a2c9adc53ac4a504bf41f84aa68b1d471">disableMaskedStoreOptimizations</a> = <span class="keyword">true</span>;
+<a name="l00277"></a>00277             <span class="keywordflow">else</span> 
+<a name="l00278"></a>00278                 <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
+<a name="l00279"></a>00279         }
+<a name="l00280"></a>00280         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--woff&quot;</span>) || !strcmp(argv[i], <span class="stringliteral">&quot;-woff&quot;</span>)) {
+<a name="l00281"></a>00281             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a59396e4fc487ea16b659d6e370bcb624">disableWarnings</a> = <span class="keyword">true</span>;
+<a name="l00282"></a>00282             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">emitPerfWarnings</a> = <span class="keyword">false</span>;
+<a name="l00283"></a>00283         }
+<a name="l00284"></a>00284         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--wno-perf&quot;</span>) || !strcmp(argv[i], <span class="stringliteral">&quot;-wno-perf&quot;</span>))
+<a name="l00285"></a>00285             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">emitPerfWarnings</a> = <span class="keyword">false</span>;
+<a name="l00286"></a>00286         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-o&quot;</span>) || !strcmp(argv[i], <span class="stringliteral">&quot;--outfile&quot;</span>)) {
+<a name="l00287"></a>00287             <span class="keywordflow">if</span> (++i == argc) <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
+<a name="l00288"></a>00288             outFileName = argv[i];
+<a name="l00289"></a>00289         }
+<a name="l00290"></a>00290         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-h&quot;</span>) || !strcmp(argv[i], <span class="stringliteral">&quot;--header-outfile&quot;</span>)) {
+<a name="l00291"></a>00291             <span class="keywordflow">if</span> (++i == argc) <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
+<a name="l00292"></a>00292             headerFileName = argv[i];
+<a name="l00293"></a>00293         }
+<a name="l00294"></a>00294         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-O0&quot;</span>)) {
+<a name="l00295"></a>00295             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a> = 0;
 <a name="l00296"></a>00296             optSet = <span class="keyword">true</span>;
 <a name="l00297"></a>00297         }
-<a name="l00298"></a>00298         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-&quot;</span>))
-<a name="l00299"></a>00299             ;
-<a name="l00300"></a>00300         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--nostdlib&quot;</span>))
-<a name="l00301"></a>00301             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a65b6c565d6264e535d48a27f89de3329">includeStdlib</a> = <span class="keyword">false</span>;
-<a name="l00302"></a>00302         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--nocpp&quot;</span>))
-<a name="l00303"></a>00303             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#aa150c22538b58a8a390466ce996d9a6f">runCPP</a> = <span class="keyword">false</span>;
-<a name="l00304"></a>00304         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-v&quot;</span>) || !strcmp(argv[i], <span class="stringliteral">&quot;--version&quot;</span>)) {
-<a name="l00305"></a>00305             printf(<span class="stringliteral">&quot;Intel(r) SPMD Program Compiler (ispc) build %s (%s)\n&quot;</span>, 
-<a name="l00306"></a>00306                    BUILD_DATE, BUILD_VERSION);
-<a name="l00307"></a>00307             <span class="keywordflow">return</span> 0;
-<a name="l00308"></a>00308         }
-<a name="l00309"></a>00309         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (argv[i][0] == <span class="charliteral">&#39;-&#39;</span>)
-<a name="l00310"></a>00310             <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
-<a name="l00311"></a>00311         <span class="keywordflow">else</span> {
-<a name="l00312"></a>00312             <span class="keywordflow">if</span> (file != <a class="code" href="parse_8yy.html">NULL</a>)
-<a name="l00313"></a>00313                 <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
-<a name="l00314"></a>00314             <span class="keywordflow">else</span>
-<a name="l00315"></a>00315                 file = argv[i];
-<a name="l00316"></a>00316         }
-<a name="l00317"></a>00317     }
-<a name="l00318"></a>00318 
-<a name="l00319"></a>00319     <span class="comment">// If the user specified -g, then the default optimization level is 0.</span>
-<a name="l00320"></a>00320     <span class="comment">// If -g wasn&#39;t specified, the default optimization level is 1 (full</span>
-<a name="l00321"></a>00321     <span class="comment">// optimization).</span>
-<a name="l00322"></a>00322     <span class="keywordflow">if</span> (debugSet &amp;&amp; !optSet)
-<a name="l00323"></a>00323         <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a> = 0;
-<a name="l00324"></a>00324 
-<a name="l00325"></a>00325     <span class="comment">// Make SSE2 the default target on atom unless the target has been set</span>
-<a name="l00326"></a>00326     <span class="comment">// explicitly.</span>
-<a name="l00327"></a>00327     <span class="keywordflow">if</span> (!targetSet &amp;&amp; (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">cpu</a> == <span class="stringliteral">&quot;atom&quot;</span>))
-<a name="l00328"></a>00328         <a class="code" href="main_8cpp.html#a99fe3aae3dbb4365f8ad4e5bd068f05e">lDoTarget</a>(<span class="stringliteral">&quot;sse2&quot;</span>);
+<a name="l00298"></a>00298         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-O&quot;</span>) ||  !strcmp(argv[i], <span class="stringliteral">&quot;-O1&quot;</span>) || 
+<a name="l00299"></a>00299                  !strcmp(argv[i], <span class="stringliteral">&quot;-O2&quot;</span>) || !strcmp(argv[i], <span class="stringliteral">&quot;-O3&quot;</span>)) {
+<a name="l00300"></a>00300             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a> = 1;
+<a name="l00301"></a>00301             optSet = <span class="keyword">true</span>;
+<a name="l00302"></a>00302         }
+<a name="l00303"></a>00303         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-&quot;</span>))
+<a name="l00304"></a>00304             ;
+<a name="l00305"></a>00305         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--nostdlib&quot;</span>))
+<a name="l00306"></a>00306             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a65b6c565d6264e535d48a27f89de3329">includeStdlib</a> = <span class="keyword">false</span>;
+<a name="l00307"></a>00307         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;--nocpp&quot;</span>))
+<a name="l00308"></a>00308             <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#aa150c22538b58a8a390466ce996d9a6f">runCPP</a> = <span class="keyword">false</span>;
+<a name="l00309"></a>00309         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(argv[i], <span class="stringliteral">&quot;-v&quot;</span>) || !strcmp(argv[i], <span class="stringliteral">&quot;--version&quot;</span>)) {
+<a name="l00310"></a>00310             printf(<span class="stringliteral">&quot;Intel(r) SPMD Program Compiler (ispc) build %s (%s)\n&quot;</span>, 
+<a name="l00311"></a>00311                    BUILD_DATE, BUILD_VERSION);
+<a name="l00312"></a>00312             <span class="keywordflow">return</span> 0;
+<a name="l00313"></a>00313         }
+<a name="l00314"></a>00314         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (argv[i][0] == <span class="charliteral">&#39;-&#39;</span>)
+<a name="l00315"></a>00315             <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
+<a name="l00316"></a>00316         <span class="keywordflow">else</span> {
+<a name="l00317"></a>00317             <span class="keywordflow">if</span> (file != <a class="code" href="parse_8yy.html">NULL</a>)
+<a name="l00318"></a>00318                 <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
+<a name="l00319"></a>00319             <span class="keywordflow">else</span>
+<a name="l00320"></a>00320                 file = argv[i];
+<a name="l00321"></a>00321         }
+<a name="l00322"></a>00322     }
+<a name="l00323"></a>00323 
+<a name="l00324"></a>00324     <span class="comment">// If the user specified -g, then the default optimization level is 0.</span>
+<a name="l00325"></a>00325     <span class="comment">// If -g wasn&#39;t specified, the default optimization level is 1 (full</span>
+<a name="l00326"></a>00326     <span class="comment">// optimization).</span>
+<a name="l00327"></a>00327     <span class="keywordflow">if</span> (debugSet &amp;&amp; !optSet)
+<a name="l00328"></a>00328         <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a> = 0;
 <a name="l00329"></a>00329 
-<a name="l00330"></a>00330     <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a> = <span class="keyword">new</span> <a class="code" href="classModule.html">Module</a>(file);
-<a name="l00331"></a>00331     <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8b6e48b76bbbf940b5f05a2fe4a926f1">CompileFile</a>() == 0) {
-<a name="l00332"></a>00332         <span class="keywordflow">if</span> (outFileName != <a class="code" href="parse_8yy.html">NULL</a>)
-<a name="l00333"></a>00333             <span class="keywordflow">if</span> (!<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#aebb514e9617091b89c67364e7899e81e">WriteOutput</a>(ot, outFileName))
-<a name="l00334"></a>00334                 <span class="keywordflow">return</span> 1;
-<a name="l00335"></a>00335         <span class="keywordflow">if</span> (headerFileName != <a class="code" href="parse_8yy.html">NULL</a>)
-<a name="l00336"></a>00336             <span class="keywordflow">if</span> (!<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#aebb514e9617091b89c67364e7899e81e">WriteOutput</a>(<a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16aa363d09f10db3dba3593abbf5b0b38c6">Module::Header</a>, headerFileName))
-<a name="l00337"></a>00337                 <span class="keywordflow">return</span> 1;
-<a name="l00338"></a>00338     }
-<a name="l00339"></a>00339     <span class="keywordtype">int</span> errorCount = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a>;
-<a name="l00340"></a>00340     <span class="keyword">delete</span> <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>;
-<a name="l00341"></a>00341 
-<a name="l00342"></a>00342     <span class="keywordflow">return</span> errorCount &gt; 0;
-<a name="l00343"></a>00343 }
+<a name="l00330"></a>00330     <span class="comment">// Make SSE2 the default target on atom unless the target has been set</span>
+<a name="l00331"></a>00331     <span class="comment">// explicitly.</span>
+<a name="l00332"></a>00332     <span class="keywordflow">if</span> (!targetSet &amp;&amp; (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">cpu</a> == <span class="stringliteral">&quot;atom&quot;</span>))
+<a name="l00333"></a>00333         <a class="code" href="main_8cpp.html#a99fe3aae3dbb4365f8ad4e5bd068f05e">lDoTarget</a>(<span class="stringliteral">&quot;sse2&quot;</span>);
+<a name="l00334"></a>00334 
+<a name="l00335"></a>00335     <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a> = <span class="keyword">new</span> <a class="code" href="classModule.html">Module</a>(file);
+<a name="l00336"></a>00336     <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8b6e48b76bbbf940b5f05a2fe4a926f1">CompileFile</a>() == 0) {
+<a name="l00337"></a>00337         <span class="keywordflow">if</span> (outFileName != <a class="code" href="parse_8yy.html">NULL</a>)
+<a name="l00338"></a>00338             <span class="keywordflow">if</span> (!<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#aebb514e9617091b89c67364e7899e81e">WriteOutput</a>(ot, outFileName))
+<a name="l00339"></a>00339                 <span class="keywordflow">return</span> 1;
+<a name="l00340"></a>00340         <span class="keywordflow">if</span> (headerFileName != <a class="code" href="parse_8yy.html">NULL</a>)
+<a name="l00341"></a>00341             <span class="keywordflow">if</span> (!<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#aebb514e9617091b89c67364e7899e81e">WriteOutput</a>(<a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16aa363d09f10db3dba3593abbf5b0b38c6">Module::Header</a>, headerFileName))
+<a name="l00342"></a>00342                 <span class="keywordflow">return</span> 1;
+<a name="l00343"></a>00343     }
+<a name="l00344"></a>00344     <span class="keywordtype">int</span> errorCount = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a>;
+<a name="l00345"></a>00345     <span class="keyword">delete</span> <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>;
+<a name="l00346"></a>00346 
+<a name="l00347"></a>00347     <span class="keywordflow">return</span> errorCount &gt; 0;
+<a name="l00348"></a>00348 }
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 1 2011 12:30:57 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 17 2011 15:15:00 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>
