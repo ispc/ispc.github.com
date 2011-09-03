@@ -1495,87 +1495,90 @@
 <a name="l01464"></a>01464     llvm::Value *args[5];
 <a name="l01465"></a>01465     std::string argTypes;
 <a name="l01466"></a>01466 
-<a name="l01467"></a>01467     <span class="keywordflow">if</span> (<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a> == <a class="code" href="parse_8yy.html">NULL</a>)
-<a name="l01468"></a>01468         args[4] = <a class="code" href="parse_8yy.html">NULL</a>;
-<a name="l01469"></a>01469     <span class="keywordflow">else</span> {
-<a name="l01470"></a>01470         <span class="comment">// Get the values passed to the print() statement evaluated and</span>
-<a name="l01471"></a>01471         <span class="comment">// stored in memory so that we set up the array of pointers to them</span>
-<a name="l01472"></a>01472         <span class="comment">// for the 5th __do_print() argument</span>
-<a name="l01473"></a>01473         <a class="code" href="classExprList.html" title="A list of expressions.">ExprList</a> *elist = <span class="keyword">dynamic_cast&lt;</span><a class="code" href="classExprList.html" title="A list of expressions.">ExprList</a> *<span class="keyword">&gt;</span>(<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>);
-<a name="l01474"></a>01474         <span class="keywordtype">int</span> nArgs = elist ? elist-&gt;<a class="code" href="classExprList.html#a701a2dc534fd40e2255bdb1b397daa5e">exprs</a>.size() : 1;
-<a name="l01475"></a>01475 
-<a name="l01476"></a>01476         <span class="comment">// Allocate space for the array of pointers to values to be printed </span>
-<a name="l01477"></a>01477         <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *argPtrArrayType = 
-<a name="l01478"></a>01478             llvm::ArrayType::get(<a class="code" href="structLLVMTypes.html#a006e6061ce47f085f9ef6cc58c3ab0cf">LLVMTypes::VoidPointerType</a>, nArgs);
-<a name="l01479"></a>01479         llvm::Value *argPtrArray = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa21be6e3fb27438472f5f153bbec75b9">AllocaInst</a>(argPtrArrayType,
-<a name="l01480"></a>01480                                                    <span class="stringliteral">&quot;print_arg_ptrs&quot;</span>);
-<a name="l01481"></a>01481         <span class="comment">// Store the array pointer as a void **, which is what __do_print()</span>
-<a name="l01482"></a>01482         <span class="comment">// expects</span>
-<a name="l01483"></a>01483         args[4] = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aae63d1b9a48bab086bf7b2ed3a3e72a2">BitCastInst</a>(argPtrArray, 
-<a name="l01484"></a>01484                                    llvm::PointerType::get(<a class="code" href="structLLVMTypes.html#a006e6061ce47f085f9ef6cc58c3ab0cf">LLVMTypes::VoidPointerType</a>, 0));
-<a name="l01485"></a>01485 
-<a name="l01486"></a>01486         <span class="comment">// Now, for each of the arguments, emit code to evaluate its value</span>
-<a name="l01487"></a>01487         <span class="comment">// and store the value into alloca&#39;d storage.  Then store the</span>
-<a name="l01488"></a>01488         <span class="comment">// pointer to the alloca&#39;d storage into argPtrArray.</span>
-<a name="l01489"></a>01489         <span class="keywordflow">if</span> (elist) {
-<a name="l01490"></a>01490             <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; elist-&gt;<a class="code" href="classExprList.html#a701a2dc534fd40e2255bdb1b397daa5e">exprs</a>.size(); ++i) {
-<a name="l01491"></a>01491                 <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *expr = elist-&gt;<a class="code" href="classExprList.html#a701a2dc534fd40e2255bdb1b397daa5e">exprs</a>[i];
-<a name="l01492"></a>01492                 <span class="keywordflow">if</span> (!expr)
-<a name="l01493"></a>01493                     <span class="keywordflow">return</span>;
-<a name="l01494"></a>01494                 llvm::Value *ptr = <a class="code" href="stmt_8cpp.html#a7cfa70198585e5eae24838d2b7fed965">lProcessPrintArg</a>(expr, ctx, argTypes);
-<a name="l01495"></a>01495                 <span class="keywordflow">if</span> (!ptr)
+<a name="l01467"></a>01467     <span class="keywordflow">if</span> (<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a> == <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l01468"></a>01468         <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *ptrPtrType = 
+<a name="l01469"></a>01469             llvm::PointerType::get(<a class="code" href="structLLVMTypes.html#a006e6061ce47f085f9ef6cc58c3ab0cf">LLVMTypes::VoidPointerType</a>, 0);
+<a name="l01470"></a>01470         args[4] = llvm::Constant::getNullValue(ptrPtrType);
+<a name="l01471"></a>01471     }
+<a name="l01472"></a>01472     <span class="keywordflow">else</span> {
+<a name="l01473"></a>01473         <span class="comment">// Get the values passed to the print() statement evaluated and</span>
+<a name="l01474"></a>01474         <span class="comment">// stored in memory so that we set up the array of pointers to them</span>
+<a name="l01475"></a>01475         <span class="comment">// for the 5th __do_print() argument</span>
+<a name="l01476"></a>01476         <a class="code" href="classExprList.html" title="A list of expressions.">ExprList</a> *elist = <span class="keyword">dynamic_cast&lt;</span><a class="code" href="classExprList.html" title="A list of expressions.">ExprList</a> *<span class="keyword">&gt;</span>(<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>);
+<a name="l01477"></a>01477         <span class="keywordtype">int</span> nArgs = elist ? elist-&gt;<a class="code" href="classExprList.html#a701a2dc534fd40e2255bdb1b397daa5e">exprs</a>.size() : 1;
+<a name="l01478"></a>01478 
+<a name="l01479"></a>01479         <span class="comment">// Allocate space for the array of pointers to values to be printed </span>
+<a name="l01480"></a>01480         <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *argPtrArrayType = 
+<a name="l01481"></a>01481             llvm::ArrayType::get(<a class="code" href="structLLVMTypes.html#a006e6061ce47f085f9ef6cc58c3ab0cf">LLVMTypes::VoidPointerType</a>, nArgs);
+<a name="l01482"></a>01482         llvm::Value *argPtrArray = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa21be6e3fb27438472f5f153bbec75b9">AllocaInst</a>(argPtrArrayType,
+<a name="l01483"></a>01483                                                    <span class="stringliteral">&quot;print_arg_ptrs&quot;</span>);
+<a name="l01484"></a>01484         <span class="comment">// Store the array pointer as a void **, which is what __do_print()</span>
+<a name="l01485"></a>01485         <span class="comment">// expects</span>
+<a name="l01486"></a>01486         args[4] = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aae63d1b9a48bab086bf7b2ed3a3e72a2">BitCastInst</a>(argPtrArray, 
+<a name="l01487"></a>01487                                    llvm::PointerType::get(<a class="code" href="structLLVMTypes.html#a006e6061ce47f085f9ef6cc58c3ab0cf">LLVMTypes::VoidPointerType</a>, 0));
+<a name="l01488"></a>01488 
+<a name="l01489"></a>01489         <span class="comment">// Now, for each of the arguments, emit code to evaluate its value</span>
+<a name="l01490"></a>01490         <span class="comment">// and store the value into alloca&#39;d storage.  Then store the</span>
+<a name="l01491"></a>01491         <span class="comment">// pointer to the alloca&#39;d storage into argPtrArray.</span>
+<a name="l01492"></a>01492         <span class="keywordflow">if</span> (elist) {
+<a name="l01493"></a>01493             <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; elist-&gt;<a class="code" href="classExprList.html#a701a2dc534fd40e2255bdb1b397daa5e">exprs</a>.size(); ++i) {
+<a name="l01494"></a>01494                 <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *expr = elist-&gt;<a class="code" href="classExprList.html#a701a2dc534fd40e2255bdb1b397daa5e">exprs</a>[i];
+<a name="l01495"></a>01495                 <span class="keywordflow">if</span> (!expr)
 <a name="l01496"></a>01496                     <span class="keywordflow">return</span>;
-<a name="l01497"></a>01497 
-<a name="l01498"></a>01498                 llvm::Value *arrayPtr = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(argPtrArray, 0, i);
-<a name="l01499"></a>01499                 ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(ptr, arrayPtr);
-<a name="l01500"></a>01500             }
-<a name="l01501"></a>01501         }
-<a name="l01502"></a>01502         <span class="keywordflow">else</span> {
-<a name="l01503"></a>01503             llvm::Value *ptr = <a class="code" href="stmt_8cpp.html#a7cfa70198585e5eae24838d2b7fed965">lProcessPrintArg</a>(<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>, ctx, argTypes);
-<a name="l01504"></a>01504             <span class="keywordflow">if</span> (!ptr)
-<a name="l01505"></a>01505                 <span class="keywordflow">return</span>;
-<a name="l01506"></a>01506             llvm::Value *arrayPtr = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(argPtrArray, 0, 0);
-<a name="l01507"></a>01507             ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(ptr, arrayPtr);
-<a name="l01508"></a>01508         }
-<a name="l01509"></a>01509     }
-<a name="l01510"></a>01510 
-<a name="l01511"></a>01511     <span class="comment">// Now we can emit code to call __do_print()</span>
-<a name="l01512"></a>01512     llvm::Function *printFunc = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__do_print&quot;</span>);
-<a name="l01513"></a>01513     <a class="code" href="parse_8yy.html">assert</a>(printFunc);
-<a name="l01514"></a>01514 
-<a name="l01515"></a>01515     <span class="comment">// Set up the rest of the parameters to it</span>
-<a name="l01516"></a>01516     args[0] = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a79a9e68a7c7e3391d68167951cfa6612">GetStringPtr</a>(<a class="code" href="classPrintStmt.html#a50d68cfc613077ff9f14f8b406a1b2db">format</a>);
-<a name="l01517"></a>01517     args[1] = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a79a9e68a7c7e3391d68167951cfa6612">GetStringPtr</a>(argTypes);
-<a name="l01518"></a>01518     args[2] = <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>);
-<a name="l01519"></a>01519     args[3] = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#ae55900502a7d2511e461b334d9cff126">LaneMask</a>(ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa9861c694f2ac29e729b4d559016fdb5">GetMask</a>());
-<a name="l01520"></a>01520     std::vector&lt;llvm::Value *&gt; argVec(&amp;args[0], &amp;args[5]);
-<a name="l01521"></a>01521     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(printFunc, argVec, <span class="stringliteral">&quot;&quot;</span>);
-<a name="l01522"></a>01522 }
-<a name="l01523"></a>01523 
-<a name="l01524"></a>01524 
-<a name="l01525"></a>01525 <span class="keywordtype">void</span>
-<a name="l01526"></a><a class="code" href="classPrintStmt.html#a62be166288c26754f50c66305a61b599">01526</a> <a class="code" href="classPrintStmt.html#a62be166288c26754f50c66305a61b599">PrintStmt::Print</a>(<span class="keywordtype">int</span> indent)<span class="keyword"> const </span>{
-<a name="l01527"></a>01527     printf(<span class="stringliteral">&quot;%*cPrint Stmt (%s)&quot;</span>, indent, <span class="charliteral">&#39; &#39;</span>, <a class="code" href="classPrintStmt.html#a50d68cfc613077ff9f14f8b406a1b2db">format</a>.c_str());
-<a name="l01528"></a>01528 }
-<a name="l01529"></a>01529 
-<a name="l01530"></a>01530 
-<a name="l01531"></a>01531 <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *
-<a name="l01532"></a><a class="code" href="classPrintStmt.html#a14178fdddde1291a31def11a05cff18e">01532</a> <a class="code" href="classPrintStmt.html#a14178fdddde1291a31def11a05cff18e">PrintStmt::Optimize</a>() {
-<a name="l01533"></a>01533     <span class="keywordflow">if</span> (<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>) 
-<a name="l01534"></a>01534         <a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a> = <a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>-&gt;<a class="code" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Optimize</a>();
-<a name="l01535"></a>01535     <span class="keywordflow">return</span> <span class="keyword">this</span>;
-<a name="l01536"></a>01536 }
-<a name="l01537"></a>01537 
-<a name="l01538"></a>01538 
-<a name="l01539"></a>01539 <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *
-<a name="l01540"></a><a class="code" href="classPrintStmt.html#aa025a579a6a07556a8da4dd8760e81bb">01540</a> <a class="code" href="classPrintStmt.html#aa025a579a6a07556a8da4dd8760e81bb">PrintStmt::TypeCheck</a>() {
-<a name="l01541"></a>01541     <span class="keywordflow">if</span> (<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>) 
-<a name="l01542"></a>01542         <a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a> = <a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>-&gt;<a class="code" href="classExpr.html#acf568bb978a23556c8e40f2662715190">TypeCheck</a>();
-<a name="l01543"></a>01543     <span class="keywordflow">return</span> <span class="keyword">this</span>;
-<a name="l01544"></a>01544 }
+<a name="l01497"></a>01497                 llvm::Value *ptr = <a class="code" href="stmt_8cpp.html#a7cfa70198585e5eae24838d2b7fed965">lProcessPrintArg</a>(expr, ctx, argTypes);
+<a name="l01498"></a>01498                 <span class="keywordflow">if</span> (!ptr)
+<a name="l01499"></a>01499                     <span class="keywordflow">return</span>;
+<a name="l01500"></a>01500 
+<a name="l01501"></a>01501                 llvm::Value *arrayPtr = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(argPtrArray, 0, i);
+<a name="l01502"></a>01502                 ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(ptr, arrayPtr);
+<a name="l01503"></a>01503             }
+<a name="l01504"></a>01504         }
+<a name="l01505"></a>01505         <span class="keywordflow">else</span> {
+<a name="l01506"></a>01506             llvm::Value *ptr = <a class="code" href="stmt_8cpp.html#a7cfa70198585e5eae24838d2b7fed965">lProcessPrintArg</a>(<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>, ctx, argTypes);
+<a name="l01507"></a>01507             <span class="keywordflow">if</span> (!ptr)
+<a name="l01508"></a>01508                 <span class="keywordflow">return</span>;
+<a name="l01509"></a>01509             llvm::Value *arrayPtr = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(argPtrArray, 0, 0);
+<a name="l01510"></a>01510             ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(ptr, arrayPtr);
+<a name="l01511"></a>01511         }
+<a name="l01512"></a>01512     }
+<a name="l01513"></a>01513 
+<a name="l01514"></a>01514     <span class="comment">// Now we can emit code to call __do_print()</span>
+<a name="l01515"></a>01515     llvm::Function *printFunc = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__do_print&quot;</span>);
+<a name="l01516"></a>01516     <a class="code" href="parse_8yy.html">assert</a>(printFunc);
+<a name="l01517"></a>01517 
+<a name="l01518"></a>01518     <span class="comment">// Set up the rest of the parameters to it</span>
+<a name="l01519"></a>01519     args[0] = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a79a9e68a7c7e3391d68167951cfa6612">GetStringPtr</a>(<a class="code" href="classPrintStmt.html#a50d68cfc613077ff9f14f8b406a1b2db">format</a>);
+<a name="l01520"></a>01520     args[1] = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a79a9e68a7c7e3391d68167951cfa6612">GetStringPtr</a>(argTypes);
+<a name="l01521"></a>01521     args[2] = <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>);
+<a name="l01522"></a>01522     args[3] = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#ae55900502a7d2511e461b334d9cff126">LaneMask</a>(ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa9861c694f2ac29e729b4d559016fdb5">GetMask</a>());
+<a name="l01523"></a>01523     std::vector&lt;llvm::Value *&gt; argVec(&amp;args[0], &amp;args[5]);
+<a name="l01524"></a>01524     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(printFunc, argVec, <span class="stringliteral">&quot;&quot;</span>);
+<a name="l01525"></a>01525 }
+<a name="l01526"></a>01526 
+<a name="l01527"></a>01527 
+<a name="l01528"></a>01528 <span class="keywordtype">void</span>
+<a name="l01529"></a><a class="code" href="classPrintStmt.html#a62be166288c26754f50c66305a61b599">01529</a> <a class="code" href="classPrintStmt.html#a62be166288c26754f50c66305a61b599">PrintStmt::Print</a>(<span class="keywordtype">int</span> indent)<span class="keyword"> const </span>{
+<a name="l01530"></a>01530     printf(<span class="stringliteral">&quot;%*cPrint Stmt (%s)&quot;</span>, indent, <span class="charliteral">&#39; &#39;</span>, <a class="code" href="classPrintStmt.html#a50d68cfc613077ff9f14f8b406a1b2db">format</a>.c_str());
+<a name="l01531"></a>01531 }
+<a name="l01532"></a>01532 
+<a name="l01533"></a>01533 
+<a name="l01534"></a>01534 <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *
+<a name="l01535"></a><a class="code" href="classPrintStmt.html#a14178fdddde1291a31def11a05cff18e">01535</a> <a class="code" href="classPrintStmt.html#a14178fdddde1291a31def11a05cff18e">PrintStmt::Optimize</a>() {
+<a name="l01536"></a>01536     <span class="keywordflow">if</span> (<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>) 
+<a name="l01537"></a>01537         <a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a> = <a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>-&gt;<a class="code" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Optimize</a>();
+<a name="l01538"></a>01538     <span class="keywordflow">return</span> <span class="keyword">this</span>;
+<a name="l01539"></a>01539 }
+<a name="l01540"></a>01540 
+<a name="l01541"></a>01541 
+<a name="l01542"></a>01542 <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *
+<a name="l01543"></a><a class="code" href="classPrintStmt.html#aa025a579a6a07556a8da4dd8760e81bb">01543</a> <a class="code" href="classPrintStmt.html#aa025a579a6a07556a8da4dd8760e81bb">PrintStmt::TypeCheck</a>() {
+<a name="l01544"></a>01544     <span class="keywordflow">if</span> (<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>) 
+<a name="l01545"></a>01545         <a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a> = <a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>-&gt;<a class="code" href="classExpr.html#acf568bb978a23556c8e40f2662715190">TypeCheck</a>();
+<a name="l01546"></a>01546     <span class="keywordflow">return</span> <span class="keyword">this</span>;
+<a name="l01547"></a>01547 }
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 17 2011 15:15:01 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Sep 3 2011 07:15:46 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

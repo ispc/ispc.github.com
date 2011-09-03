@@ -100,263 +100,295 @@
 <a name="l00069"></a>00069     <span class="keyword">class </span><a class="code" href="classFunctionType.html" title="Type representing a function (return type + argument types)">FunctionType</a>;
 <a name="l00070"></a>00070     <span class="keyword">class </span>LLVMContext;
 <a name="l00071"></a>00071     <span class="keyword">class </span><a class="code" href="classModule.html">Module</a>;
-<a name="l00072"></a>00072     <span class="keyword">class </span><a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a>;
-<a name="l00073"></a>00073     <span class="keyword">class </span>Value;
-<a name="l00074"></a>00074 }
-<a name="l00075"></a>00075 
-<a name="l00076"></a>00076 <span class="comment">// llvm::Type *s are no longer const in llvm 3.0</span>
-<a name="l00077"></a>00077 <span class="preprocessor">#if defined(LLVM_3_0) || defined(LLVM_3_0svn)</span>
-<a name="l00078"></a>00078 <span class="preprocessor"></span><span class="preprocessor">#define LLVM_TYPE_CONST</span>
-<a name="l00079"></a>00079 <span class="preprocessor"></span><span class="preprocessor">#else</span>
-<a name="l00080"></a><a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">00080</a> <span class="preprocessor"></span><span class="preprocessor">#define LLVM_TYPE_CONST const</span>
-<a name="l00081"></a>00081 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00082"></a>00082 <span class="preprocessor"></span>
-<a name="l00083"></a>00083 <span class="keyword">class </span><a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a>;
-<a name="l00084"></a>00084 <span class="keyword">class </span><a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a>;
-<a name="l00085"></a>00085 <span class="keyword">class </span><a class="code" href="classDeclSpecs.html" title="Representation of the declaration specifiers in a declaration.">DeclSpecs</a>;
-<a name="l00086"></a>00086 <span class="keyword">class </span><a class="code" href="classDeclaration.html" title="Representation of a full declaration of one or more variables, including the shared DeclSpecs as well...">Declaration</a>;
-<a name="l00087"></a>00087 <span class="keyword">class </span><a class="code" href="classDeclarator.html" title="Representation of the declaration of a single variable.">Declarator</a>;
-<a name="l00088"></a>00088 <span class="keyword">class </span><a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a>;
-<a name="l00089"></a>00089 <span class="keyword">class </span><a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a>;
-<a name="l00090"></a>00090 <span class="keyword">class </span><a class="code" href="classExprList.html" title="A list of expressions.">ExprList</a>;
-<a name="l00091"></a>00091 <span class="keyword">class </span><a class="code" href="classFunctionType.html" title="Type representing a function (return type + argument types)">FunctionType</a>;
-<a name="l00092"></a>00092 <span class="keyword">class </span>GatherBuffer;
-<a name="l00093"></a>00093 <span class="keyword">class </span><a class="code" href="classModule.html">Module</a>;
-<a name="l00094"></a>00094 <span class="keyword">class </span><a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a>;
-<a name="l00095"></a>00095 <span class="keyword">class </span><a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a>;
-<a name="l00096"></a>00096 <span class="keyword">class </span><a class="code" href="classSymbolTable.html" title="Symbol table that holds all known symbols during parsing and compilation.">SymbolTable</a>;
-<a name="l00097"></a>00097 <span class="keyword">class </span><a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a>;
-<a name="l00098"></a>00098 <span class="comment"></span>
-<a name="l00099"></a>00099 <span class="comment">/** @brief Representation of a range of positions in a source file.</span>
+<a name="l00072"></a>00072     <span class="keyword">class </span><a class="code" href="structTarget.html" title="Structure that defines a compilation target.">Target</a>;
+<a name="l00073"></a>00073     <span class="keyword">class </span>TargetMachine;
+<a name="l00074"></a>00074     <span class="keyword">class </span><a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a>;
+<a name="l00075"></a>00075     <span class="keyword">class </span>Value;
+<a name="l00076"></a>00076 }
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078 <span class="comment">// llvm::Type *s are no longer const in llvm 3.0</span>
+<a name="l00079"></a>00079 <span class="preprocessor">#if defined(LLVM_3_0) || defined(LLVM_3_0svn)</span>
+<a name="l00080"></a>00080 <span class="preprocessor"></span><span class="preprocessor">#define LLVM_TYPE_CONST</span>
+<a name="l00081"></a>00081 <span class="preprocessor"></span><span class="preprocessor">#else</span>
+<a name="l00082"></a><a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">00082</a> <span class="preprocessor"></span><span class="preprocessor">#define LLVM_TYPE_CONST const</span>
+<a name="l00083"></a>00083 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00084"></a>00084 <span class="preprocessor"></span>
+<a name="l00085"></a>00085 <span class="keyword">class </span><a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a>;
+<a name="l00086"></a>00086 <span class="keyword">class </span><a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a>;
+<a name="l00087"></a>00087 <span class="keyword">class </span><a class="code" href="classDeclSpecs.html" title="Representation of the declaration specifiers in a declaration.">DeclSpecs</a>;
+<a name="l00088"></a>00088 <span class="keyword">class </span><a class="code" href="classDeclaration.html" title="Representation of a full declaration of one or more variables, including the shared DeclSpecs as well...">Declaration</a>;
+<a name="l00089"></a>00089 <span class="keyword">class </span><a class="code" href="classDeclarator.html" title="Representation of the declaration of a single variable.">Declarator</a>;
+<a name="l00090"></a>00090 <span class="keyword">class </span><a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a>;
+<a name="l00091"></a>00091 <span class="keyword">class </span><a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a>;
+<a name="l00092"></a>00092 <span class="keyword">class </span><a class="code" href="classExprList.html" title="A list of expressions.">ExprList</a>;
+<a name="l00093"></a>00093 <span class="keyword">class </span><a class="code" href="classFunctionType.html" title="Type representing a function (return type + argument types)">FunctionType</a>;
+<a name="l00094"></a>00094 <span class="keyword">class </span>GatherBuffer;
+<a name="l00095"></a>00095 <span class="keyword">class </span><a class="code" href="classModule.html">Module</a>;
+<a name="l00096"></a>00096 <span class="keyword">class </span><a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a>;
+<a name="l00097"></a>00097 <span class="keyword">class </span><a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a>;
+<a name="l00098"></a>00098 <span class="keyword">class </span><a class="code" href="classSymbolTable.html" title="Symbol table that holds all known symbols during parsing and compilation.">SymbolTable</a>;
+<a name="l00099"></a>00099 <span class="keyword">class </span><a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a>;
 <a name="l00100"></a>00100 <span class="comment"></span>
-<a name="l00101"></a>00101 <span class="comment">    This class represents a range of characters in a source file</span>
-<a name="l00102"></a>00102 <span class="comment">    (e.g. those that span a token&#39;s definition), from starting line and</span>
-<a name="l00103"></a>00103 <span class="comment">    column to ending line and column.  (These values are tracked by the</span>
-<a name="l00104"></a>00104 <span class="comment">    lexing code).  Both lines and columns are counted starting from one.</span>
-<a name="l00105"></a>00105 <span class="comment"> */</span>
-<a name="l00106"></a><a class="code" href="structSourcePos.html">00106</a> <span class="keyword">struct </span><a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> {
-<a name="l00107"></a>00107     <a class="code" href="structSourcePos.html#a25c0ccc23c043b77941675fb33eb78b4">SourcePos</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *n = <a class="code" href="parse_8yy.html">NULL</a>, <span class="keywordtype">int</span> l = 0, <span class="keywordtype">int</span> c = 0);
-<a name="l00108"></a>00108 
-<a name="l00109"></a><a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">00109</a>     <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>;
-<a name="l00110"></a><a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">00110</a>     <span class="keywordtype">int</span> <a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>;
-<a name="l00111"></a><a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">00111</a>     <span class="keywordtype">int</span> <a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a>;
-<a name="l00112"></a><a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">00112</a>     <span class="keywordtype">int</span> <a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a>;
-<a name="l00113"></a><a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">00113</a>     <span class="keywordtype">int</span> <a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a>;
-<a name="l00114"></a>00114 <span class="comment"></span>
-<a name="l00115"></a>00115 <span class="comment">    /** Prints the filename and line/column range to standard output. */</span>
-<a name="l00116"></a>00116     <span class="keywordtype">void</span> <a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">Print</a>() <span class="keyword">const</span>;
-<a name="l00117"></a>00117 <span class="comment"></span>
-<a name="l00118"></a>00118 <span class="comment">    /** Returns a LLVM DIFile object that represents the SourcePos&#39;s file */</span>
-<a name="l00119"></a>00119     llvm::DIFile <a class="code" href="structSourcePos.html#a57433eabbd210646542327733061bc3a">GetDIFile</a>() <span class="keyword">const</span>;
-<a name="l00120"></a>00120 
-<a name="l00121"></a>00121     <span class="keywordtype">bool</span> <a class="code" href="structSourcePos.html#ae0f1fca8c871e86a0e4eb0475132e777">operator==</a>(<span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> &amp;p2) <span class="keyword">const</span>;
-<a name="l00122"></a>00122 };
-<a name="l00123"></a>00123 
-<a name="l00124"></a>00124 <span class="comment"></span>
-<a name="l00125"></a>00125 <span class="comment">/** @brief Abstract base class for nodes in the abstract syntax tree (AST).</span>
+<a name="l00101"></a>00101 <span class="comment">/** @brief Representation of a range of positions in a source file.</span>
+<a name="l00102"></a>00102 <span class="comment"></span>
+<a name="l00103"></a>00103 <span class="comment">    This class represents a range of characters in a source file</span>
+<a name="l00104"></a>00104 <span class="comment">    (e.g. those that span a token&#39;s definition), from starting line and</span>
+<a name="l00105"></a>00105 <span class="comment">    column to ending line and column.  (These values are tracked by the</span>
+<a name="l00106"></a>00106 <span class="comment">    lexing code).  Both lines and columns are counted starting from one.</span>
+<a name="l00107"></a>00107 <span class="comment"> */</span>
+<a name="l00108"></a><a class="code" href="structSourcePos.html">00108</a> <span class="keyword">struct </span><a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> {
+<a name="l00109"></a>00109     <a class="code" href="structSourcePos.html#a25c0ccc23c043b77941675fb33eb78b4">SourcePos</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *n = <a class="code" href="parse_8yy.html">NULL</a>, <span class="keywordtype">int</span> l = 0, <span class="keywordtype">int</span> c = 0);
+<a name="l00110"></a>00110 
+<a name="l00111"></a><a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">00111</a>     <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>;
+<a name="l00112"></a><a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">00112</a>     <span class="keywordtype">int</span> <a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>;
+<a name="l00113"></a><a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">00113</a>     <span class="keywordtype">int</span> <a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a>;
+<a name="l00114"></a><a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">00114</a>     <span class="keywordtype">int</span> <a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a>;
+<a name="l00115"></a><a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">00115</a>     <span class="keywordtype">int</span> <a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a>;
+<a name="l00116"></a>00116 <span class="comment"></span>
+<a name="l00117"></a>00117 <span class="comment">    /** Prints the filename and line/column range to standard output. */</span>
+<a name="l00118"></a>00118     <span class="keywordtype">void</span> <a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">Print</a>() <span class="keyword">const</span>;
+<a name="l00119"></a>00119 <span class="comment"></span>
+<a name="l00120"></a>00120 <span class="comment">    /** Returns a LLVM DIFile object that represents the SourcePos&#39;s file */</span>
+<a name="l00121"></a>00121     llvm::DIFile <a class="code" href="structSourcePos.html#a57433eabbd210646542327733061bc3a">GetDIFile</a>() <span class="keyword">const</span>;
+<a name="l00122"></a>00122 
+<a name="l00123"></a>00123     <span class="keywordtype">bool</span> <a class="code" href="structSourcePos.html#ae0f1fca8c871e86a0e4eb0475132e777">operator==</a>(<span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> &amp;p2) <span class="keyword">const</span>;
+<a name="l00124"></a>00124 };
+<a name="l00125"></a>00125 
 <a name="l00126"></a>00126 <span class="comment"></span>
-<a name="l00127"></a>00127 <span class="comment">    This class defines a basic interface that all abstract syntax tree</span>
-<a name="l00128"></a>00128 <span class="comment">    (AST) nodes must implement.  The base classes for both expressions</span>
-<a name="l00129"></a>00129 <span class="comment">    (Expr) and statements (Stmt) inherit from this class.</span>
-<a name="l00130"></a>00130 <span class="comment">*/</span>
-<a name="l00131"></a><a class="code" href="classASTNode.html">00131</a> <span class="keyword">class </span><a class="code" href="classASTNode.html" title="Abstract base class for nodes in the abstract syntax tree (AST).">ASTNode</a> {
-<a name="l00132"></a>00132 <span class="keyword">public</span>:
-<a name="l00133"></a><a class="code" href="classASTNode.html#adacd1e72bdef50169988993850670db5">00133</a>     <a class="code" href="classASTNode.html#adacd1e72bdef50169988993850670db5">ASTNode</a>(<a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p) : <a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>(p) { }
-<a name="l00134"></a>00134     <span class="keyword">virtual</span> <a class="code" href="classASTNode.html#a41a691f37fa038eb183280effeb8ba4e">~ASTNode</a>();
-<a name="l00135"></a>00135 <span class="comment"></span>
-<a name="l00136"></a>00136 <span class="comment">    /** The Optimize() method should perform any appropriate early-stage</span>
-<a name="l00137"></a>00137 <span class="comment">        optimizations on the node (e.g. constant folding).  The caller</span>
-<a name="l00138"></a>00138 <span class="comment">        should use the returned ASTNode * in place of the original node.</span>
-<a name="l00139"></a>00139 <span class="comment">        This method may return NULL if an error is encountered during</span>
-<a name="l00140"></a>00140 <span class="comment">        optimization. */</span>
-<a name="l00141"></a>00141     <span class="keyword">virtual</span> <a class="code" href="classASTNode.html" title="Abstract base class for nodes in the abstract syntax tree (AST).">ASTNode</a> *<a class="code" href="classASTNode.html#aebe510bd406956a389354e1123eaccb2">Optimize</a>() = 0;
-<a name="l00142"></a>00142 <span class="comment"></span>
-<a name="l00143"></a>00143 <span class="comment">    /** Type checking should be performed by the node when this method is</span>
-<a name="l00144"></a>00144 <span class="comment">        called.  In the event of an error, a NULL value may be returned.</span>
-<a name="l00145"></a>00145 <span class="comment">        As with ASTNode::Optimize(), the caller should store the returned</span>
-<a name="l00146"></a>00146 <span class="comment">        pointer in place of the original ASTNode *. */</span>
-<a name="l00147"></a>00147     <span class="keyword">virtual</span> <a class="code" href="classASTNode.html" title="Abstract base class for nodes in the abstract syntax tree (AST).">ASTNode</a> *<a class="code" href="classASTNode.html#add9e93eefd1dad4d9108971d39a28870">TypeCheck</a>() = 0;
-<a name="l00148"></a>00148 <span class="comment"></span>
-<a name="l00149"></a>00149 <span class="comment">    /** All AST nodes must track the file position where they are</span>
-<a name="l00150"></a>00150 <span class="comment">        defined. */</span>
-<a name="l00151"></a><a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">00151</a>     <span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> <a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>;
-<a name="l00152"></a>00152 };
-<a name="l00153"></a>00153 <span class="comment"></span>
-<a name="l00154"></a>00154 <span class="comment">/** @brief Structure that defines a compilation target </span>
+<a name="l00127"></a>00127 <span class="comment">/** @brief Abstract base class for nodes in the abstract syntax tree (AST).</span>
+<a name="l00128"></a>00128 <span class="comment"></span>
+<a name="l00129"></a>00129 <span class="comment">    This class defines a basic interface that all abstract syntax tree</span>
+<a name="l00130"></a>00130 <span class="comment">    (AST) nodes must implement.  The base classes for both expressions</span>
+<a name="l00131"></a>00131 <span class="comment">    (Expr) and statements (Stmt) inherit from this class.</span>
+<a name="l00132"></a>00132 <span class="comment">*/</span>
+<a name="l00133"></a><a class="code" href="classASTNode.html">00133</a> <span class="keyword">class </span><a class="code" href="classASTNode.html" title="Abstract base class for nodes in the abstract syntax tree (AST).">ASTNode</a> {
+<a name="l00134"></a>00134 <span class="keyword">public</span>:
+<a name="l00135"></a><a class="code" href="classASTNode.html#adacd1e72bdef50169988993850670db5">00135</a>     <a class="code" href="classASTNode.html#adacd1e72bdef50169988993850670db5">ASTNode</a>(<a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p) : <a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>(p) { }
+<a name="l00136"></a>00136     <span class="keyword">virtual</span> <a class="code" href="classASTNode.html#a41a691f37fa038eb183280effeb8ba4e">~ASTNode</a>();
+<a name="l00137"></a>00137 <span class="comment"></span>
+<a name="l00138"></a>00138 <span class="comment">    /** The Optimize() method should perform any appropriate early-stage</span>
+<a name="l00139"></a>00139 <span class="comment">        optimizations on the node (e.g. constant folding).  The caller</span>
+<a name="l00140"></a>00140 <span class="comment">        should use the returned ASTNode * in place of the original node.</span>
+<a name="l00141"></a>00141 <span class="comment">        This method may return NULL if an error is encountered during</span>
+<a name="l00142"></a>00142 <span class="comment">        optimization. */</span>
+<a name="l00143"></a>00143     <span class="keyword">virtual</span> <a class="code" href="classASTNode.html" title="Abstract base class for nodes in the abstract syntax tree (AST).">ASTNode</a> *<a class="code" href="classASTNode.html#aebe510bd406956a389354e1123eaccb2">Optimize</a>() = 0;
+<a name="l00144"></a>00144 <span class="comment"></span>
+<a name="l00145"></a>00145 <span class="comment">    /** Type checking should be performed by the node when this method is</span>
+<a name="l00146"></a>00146 <span class="comment">        called.  In the event of an error, a NULL value may be returned.</span>
+<a name="l00147"></a>00147 <span class="comment">        As with ASTNode::Optimize(), the caller should store the returned</span>
+<a name="l00148"></a>00148 <span class="comment">        pointer in place of the original ASTNode *. */</span>
+<a name="l00149"></a>00149     <span class="keyword">virtual</span> <a class="code" href="classASTNode.html" title="Abstract base class for nodes in the abstract syntax tree (AST).">ASTNode</a> *<a class="code" href="classASTNode.html#add9e93eefd1dad4d9108971d39a28870">TypeCheck</a>() = 0;
+<a name="l00150"></a>00150 <span class="comment"></span>
+<a name="l00151"></a>00151 <span class="comment">    /** All AST nodes must track the file position where they are</span>
+<a name="l00152"></a>00152 <span class="comment">        defined. */</span>
+<a name="l00153"></a><a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">00153</a>     <span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> <a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>;
+<a name="l00154"></a>00154 };
 <a name="l00155"></a>00155 <span class="comment"></span>
-<a name="l00156"></a>00156 <span class="comment">    This structure defines a compilation target for the ispc compiler.</span>
-<a name="l00157"></a>00157 <span class="comment">*/</span>
-<a name="l00158"></a><a class="code" href="structTarget.html">00158</a> <span class="keyword">struct </span><a class="code" href="structTarget.html" title="Structure that defines a compilation target.">Target</a> {
-<a name="l00159"></a>00159     <a class="code" href="structTarget.html#a7008d6752ce64f82e56aae6ea6c2bb65">Target</a>();
-<a name="l00160"></a>00160 <span class="comment"></span>
-<a name="l00161"></a>00161 <span class="comment">    /** Enumerator giving the instruction sets that the compiler can</span>
-<a name="l00162"></a>00162 <span class="comment">        target. */</span>
-<a name="l00163"></a><a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa4ae729a3f9131ab5aa5d621fa6e24cc3">00163</a>     <span class="keyword">enum</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512f">ISA</a> { <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa405a12bd45be878b6cc9c6d006e1dd76">SSE2</a>, <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa4ae729a3f9131ab5aa5d621fa6e24cc3">SSE4</a>, <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa0bb31e5429c5e5ae43b3ac3c76104ef7">AVX</a> };
-<a name="l00164"></a>00164 <span class="comment"></span>
-<a name="l00165"></a>00165 <span class="comment">    /** Instruction set being compiled to. */</span>
-<a name="l00166"></a><a class="code" href="structTarget.html#a3ca3d78d8240b68881e00af656df2951">00166</a>     <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512f">ISA</a> <a class="code" href="structTarget.html#a3ca3d78d8240b68881e00af656df2951">isa</a>;
-<a name="l00167"></a>00167 <span class="comment"></span>
-<a name="l00168"></a>00168 <span class="comment">    /** Target system architecture.  (e.g. &quot;x86-64&quot;, &quot;x86&quot;). */</span>
-<a name="l00169"></a><a class="code" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">00169</a>     std::string <a class="code" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">arch</a>;
+<a name="l00156"></a>00156 <span class="comment">/** @brief Structure that defines a compilation target </span>
+<a name="l00157"></a>00157 <span class="comment"></span>
+<a name="l00158"></a>00158 <span class="comment">    This structure defines a compilation target for the ispc compiler.</span>
+<a name="l00159"></a>00159 <span class="comment">*/</span>
+<a name="l00160"></a><a class="code" href="structTarget.html">00160</a> <span class="keyword">struct </span><a class="code" href="structTarget.html" title="Structure that defines a compilation target.">Target</a> {<span class="comment"></span>
+<a name="l00161"></a>00161 <span class="comment">    /** Initializes the given Target pointer for a target of the given</span>
+<a name="l00162"></a>00162 <span class="comment">        name, if the name is a known target.  Returns true if the</span>
+<a name="l00163"></a>00163 <span class="comment">        target was initialized and false if the name is unknown. */</span>
+<a name="l00164"></a>00164     <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="structTarget.html#a59efa8ddb6f626ca0b819b7b0264dd03">GetTarget</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">arch</a>, <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">cpu</a>, <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structTarget.html#a3ca3d78d8240b68881e00af656df2951">isa</a>,
+<a name="l00165"></a>00165                           <a class="code" href="structTarget.html" title="Structure that defines a compilation target.">Target</a> *);
+<a name="l00166"></a>00166 <span class="comment"></span>
+<a name="l00167"></a>00167 <span class="comment">    /** Returns a comma-delimited string giving the names of the currently</span>
+<a name="l00168"></a>00168 <span class="comment">        supported target ISAs. */</span>
+<a name="l00169"></a>00169     <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structTarget.html#aa4eef29d6c935850bfcd7b3245618c31">SupportedTargetISAs</a>();
 <a name="l00170"></a>00170 <span class="comment"></span>
-<a name="l00171"></a>00171 <span class="comment">    /** Is the target architecture 32 or 64 bit */</span>
-<a name="l00172"></a><a class="code" href="structTarget.html#abd4421f5023c496015e1c78fc2f2eea8">00172</a>     <span class="keywordtype">bool</span> <a class="code" href="structTarget.html#abd4421f5023c496015e1c78fc2f2eea8">is32bit</a>;
-<a name="l00173"></a>00173 <span class="comment"></span>
-<a name="l00174"></a>00174 <span class="comment">    /** Target CPU. (e.g. &quot;corei7&quot;, &quot;corei7-avx&quot;, ..) */</span>
-<a name="l00175"></a><a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">00175</a>     std::string <a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">cpu</a>;
-<a name="l00176"></a>00176 <span class="comment"></span>
-<a name="l00177"></a>00177 <span class="comment">    /** Native vector width of the vector instruction set.  Note that this</span>
-<a name="l00178"></a>00178 <span class="comment">        value is directly derived from the ISA Being used (e.g. it&#39;s 4 for</span>
-<a name="l00179"></a>00179 <span class="comment">        SSE, 8 for AVX, etc.) */</span>
-<a name="l00180"></a><a class="code" href="structTarget.html#a4b83ff7fe30594a1d28759fdf2ac3cc1">00180</a>     <span class="keywordtype">int</span> <a class="code" href="structTarget.html#a4b83ff7fe30594a1d28759fdf2ac3cc1">nativeVectorWidth</a>;
-<a name="l00181"></a>00181 <span class="comment"></span>
-<a name="l00182"></a>00182 <span class="comment">    /** Actual vector width currently being compiled to.  This may be an</span>
-<a name="l00183"></a>00183 <span class="comment">        integer multiple of the native vector width, for example if we&#39;re</span>
-<a name="l00184"></a>00184 <span class="comment">        &quot;doubling up&quot; and compiling 8-wide on a 4-wide SSE system. */</span>
-<a name="l00185"></a><a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">00185</a>     <span class="keywordtype">int</span> <a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>;
-<a name="l00186"></a>00186 };
-<a name="l00187"></a>00187 <span class="comment"></span>
-<a name="l00188"></a>00188 <span class="comment">/** @brief Structure that collects optimization options</span>
+<a name="l00171"></a>00171 <span class="comment">    /** Returns a comma-delimited string giving the names of the currently</span>
+<a name="l00172"></a>00172 <span class="comment">        supported target CPUs. */</span>
+<a name="l00173"></a>00173     <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structTarget.html#a5104570c83ae7dbdcc007a60f3ab0b43">SupportedTargetCPUs</a>();
+<a name="l00174"></a>00174 <span class="comment"></span>
+<a name="l00175"></a>00175 <span class="comment">    /** Returns a comma-delimited string giving the names of the currently</span>
+<a name="l00176"></a>00176 <span class="comment">        supported target architectures. */</span>
+<a name="l00177"></a>00177     <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structTarget.html#a5041eb44952f1f269cb0e261818183cc">SupportedTargetArchs</a>();
+<a name="l00178"></a>00178 <span class="comment"></span>
+<a name="l00179"></a>00179 <span class="comment">    /** Returns a triple string specifying the target architecture, vendor,</span>
+<a name="l00180"></a>00180 <span class="comment">        and environment. */</span>
+<a name="l00181"></a>00181     std::string <a class="code" href="structTarget.html#ab2ff7278411fa2284c11853ec218dad3">GetTripleString</a>() <span class="keyword">const</span>;
+<a name="l00182"></a>00182 <span class="comment"></span>
+<a name="l00183"></a>00183 <span class="comment">    /** Returns the LLVM TargetMachine object corresponding to this</span>
+<a name="l00184"></a>00184 <span class="comment">        target. */</span>
+<a name="l00185"></a>00185     llvm::TargetMachine *<a class="code" href="structTarget.html#a555a165ae94adf95dc5f6696dc636002">GetTargetMachine</a>() <span class="keyword">const</span>;
+<a name="l00186"></a>00186 <span class="comment"></span>
+<a name="l00187"></a>00187 <span class="comment">    /** llvm Target object representing this target. */</span>
+<a name="l00188"></a><a class="code" href="structTarget.html#a55890a8b4d0f386f67b0e3497da6c238">00188</a>     <span class="keyword">const</span> llvm::Target *<a class="code" href="structTarget.html#a55890a8b4d0f386f67b0e3497da6c238">target</a>;
 <a name="l00189"></a>00189 <span class="comment"></span>
-<a name="l00190"></a>00190 <span class="comment">    This structure collects all of the options related to optimization of</span>
-<a name="l00191"></a>00191 <span class="comment">    generated code. </span>
-<a name="l00192"></a>00192 <span class="comment">*/</span>
-<a name="l00193"></a><a class="code" href="structOpt.html">00193</a> <span class="keyword">struct </span><a class="code" href="structOpt.html" title="Structure that collects optimization options.">Opt</a> {
-<a name="l00194"></a>00194     <a class="code" href="structOpt.html#ae1ec631e0d039be80e5182b5d79ec0dd">Opt</a>();
-<a name="l00195"></a>00195     <span class="comment"></span>
-<a name="l00196"></a>00196 <span class="comment">    /** Optimization level.  Currently, the only valid values are 0,</span>
-<a name="l00197"></a>00197 <span class="comment">        indicating essentially no optimization, and 1, indicating as much</span>
-<a name="l00198"></a>00198 <span class="comment">        optimization as possible. */</span>
-<a name="l00199"></a><a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">00199</a>     <span class="keywordtype">int</span> <a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a>;
-<a name="l00200"></a>00200 <span class="comment"></span>
-<a name="l00201"></a>00201 <span class="comment">    /** Indicates whether &quot;fast and loose&quot; numerically unsafe optimizations</span>
-<a name="l00202"></a>00202 <span class="comment">        should be performed.  This is false by default. */</span>
-<a name="l00203"></a><a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">00203</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">fastMath</a>;
-<a name="l00204"></a>00204 <span class="comment"></span>
-<a name="l00205"></a>00205 <span class="comment">    /** On targets that don&#39;t have a masked store instruction but do have a</span>
-<a name="l00206"></a>00206 <span class="comment">        blending instruction, by default, we simulate masked stores by</span>
-<a name="l00207"></a>00207 <span class="comment">        loading the old value, blending, and storing the result.  This can</span>
-<a name="l00208"></a>00208 <span class="comment">        potentially be unsafe in multi-threaded code, in that it writes to</span>
-<a name="l00209"></a>00209 <span class="comment">        locations that aren&#39;t supposed to be written to.  Setting this</span>
-<a name="l00210"></a>00210 <span class="comment">        value to true disables this work-around, and instead implements</span>
-<a name="l00211"></a>00211 <span class="comment">        masked stores by &#39;scalarizing&#39; them, so that we iterate over the</span>
-<a name="l00212"></a>00212 <span class="comment">        ISIMD lanes and do a scalar write for the ones that are running. */</span>
-<a name="l00213"></a><a class="code" href="structOpt.html#a441c78a679b7bc088d879ade8d20845f">00213</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a441c78a679b7bc088d879ade8d20845f">disableBlendedMaskedStores</a>;
-<a name="l00214"></a>00214 <span class="comment"></span>
-<a name="l00215"></a>00215 <span class="comment">    /** Disables the &#39;coherent control flow&#39; constructs in the</span>
-<a name="l00216"></a>00216 <span class="comment">        language. (e.g. this causes &quot;cif&quot; statements to be demoted to &quot;if&quot;</span>
-<a name="l00217"></a>00217 <span class="comment">        statements.)  This is likely only useful for measuring the impact</span>
-<a name="l00218"></a>00218 <span class="comment">        of coherent control flow. */</span>
-<a name="l00219"></a><a class="code" href="structOpt.html#a269b3d2789b821a74a7255b2fd308da4">00219</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a269b3d2789b821a74a7255b2fd308da4">disableCoherentControlFlow</a>;
-<a name="l00220"></a>00220 <span class="comment"></span>
-<a name="l00221"></a>00221 <span class="comment">    /** Disables uniform control flow optimizations (e.g. this changes an</span>
-<a name="l00222"></a>00222 <span class="comment">        &quot;if&quot; statement with a uniform condition to have a varying</span>
-<a name="l00223"></a>00223 <span class="comment">        condition).  This is likely only useful for measuring the impact of</span>
-<a name="l00224"></a>00224 <span class="comment">        uniform control flow. */</span>
-<a name="l00225"></a><a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">00225</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">disableUniformControlFlow</a>;
-<a name="l00226"></a>00226 <span class="comment"></span>
-<a name="l00227"></a>00227 <span class="comment">    /** Disables the backend optimizations related to gather/scatter</span>
-<a name="l00228"></a>00228 <span class="comment">        (e.g. transforming gather from sequential locations to an unaligned</span>
-<a name="l00229"></a>00229 <span class="comment">        load, etc.)  This is likely only useful for measuring the impact of</span>
-<a name="l00230"></a>00230 <span class="comment">        these optimizations. */</span>
-<a name="l00231"></a><a class="code" href="structOpt.html#a515b1fed805b43f36ec51403c8d4f3bf">00231</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a515b1fed805b43f36ec51403c8d4f3bf">disableGatherScatterOptimizations</a>;
+<a name="l00190"></a>00190 <span class="comment">    /** Enumerator giving the instruction sets that the compiler can</span>
+<a name="l00191"></a>00191 <span class="comment">        target. */</span>
+<a name="l00192"></a><a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa4ae729a3f9131ab5aa5d621fa6e24cc3">00192</a>     <span class="keyword">enum</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512f">ISA</a> { <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa405a12bd45be878b6cc9c6d006e1dd76">SSE2</a>, <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa4ae729a3f9131ab5aa5d621fa6e24cc3">SSE4</a>, <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa0bb31e5429c5e5ae43b3ac3c76104ef7">AVX</a> };
+<a name="l00193"></a>00193 <span class="comment"></span>
+<a name="l00194"></a>00194 <span class="comment">    /** Instruction set being compiled to. */</span>
+<a name="l00195"></a><a class="code" href="structTarget.html#a3ca3d78d8240b68881e00af656df2951">00195</a>     <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512f">ISA</a> <a class="code" href="structTarget.html#a3ca3d78d8240b68881e00af656df2951">isa</a>;
+<a name="l00196"></a>00196 <span class="comment"></span>
+<a name="l00197"></a>00197 <span class="comment">    /** Target system architecture.  (e.g. &quot;x86-64&quot;, &quot;x86&quot;). */</span>
+<a name="l00198"></a><a class="code" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">00198</a>     std::string <a class="code" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">arch</a>;
+<a name="l00199"></a>00199 <span class="comment"></span>
+<a name="l00200"></a>00200 <span class="comment">    /** Is the target architecture 32 or 64 bit */</span>
+<a name="l00201"></a><a class="code" href="structTarget.html#abd4421f5023c496015e1c78fc2f2eea8">00201</a>     <span class="keywordtype">bool</span> <a class="code" href="structTarget.html#abd4421f5023c496015e1c78fc2f2eea8">is32bit</a>;
+<a name="l00202"></a>00202 <span class="comment"></span>
+<a name="l00203"></a>00203 <span class="comment">    /** Target CPU. (e.g. &quot;corei7&quot;, &quot;corei7-avx&quot;, ..) */</span>
+<a name="l00204"></a><a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">00204</a>     std::string <a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">cpu</a>;
+<a name="l00205"></a>00205 <span class="comment"></span>
+<a name="l00206"></a>00206 <span class="comment">    /** Target-specific attributes to pass along to the LLVM backend */</span>
+<a name="l00207"></a><a class="code" href="structTarget.html#a01424094b1354481c1d6b200c8889fe5">00207</a>     std::string <a class="code" href="structTarget.html#a01424094b1354481c1d6b200c8889fe5">attributes</a>;
+<a name="l00208"></a>00208 <span class="comment"></span>
+<a name="l00209"></a>00209 <span class="comment">    /** Native vector width of the vector instruction set.  Note that this</span>
+<a name="l00210"></a>00210 <span class="comment">        value is directly derived from the ISA Being used (e.g. it&#39;s 4 for</span>
+<a name="l00211"></a>00211 <span class="comment">        SSE, 8 for AVX, etc.) */</span>
+<a name="l00212"></a><a class="code" href="structTarget.html#a4b83ff7fe30594a1d28759fdf2ac3cc1">00212</a>     <span class="keywordtype">int</span> <a class="code" href="structTarget.html#a4b83ff7fe30594a1d28759fdf2ac3cc1">nativeVectorWidth</a>;
+<a name="l00213"></a>00213 <span class="comment"></span>
+<a name="l00214"></a>00214 <span class="comment">    /** Actual vector width currently being compiled to.  This may be an</span>
+<a name="l00215"></a>00215 <span class="comment">        integer multiple of the native vector width, for example if we&#39;re</span>
+<a name="l00216"></a>00216 <span class="comment">        &quot;doubling up&quot; and compiling 8-wide on a 4-wide SSE system. */</span>
+<a name="l00217"></a><a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">00217</a>     <span class="keywordtype">int</span> <a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>;
+<a name="l00218"></a>00218 };
+<a name="l00219"></a>00219 <span class="comment"></span>
+<a name="l00220"></a>00220 <span class="comment">/** @brief Structure that collects optimization options</span>
+<a name="l00221"></a>00221 <span class="comment"></span>
+<a name="l00222"></a>00222 <span class="comment">    This structure collects all of the options related to optimization of</span>
+<a name="l00223"></a>00223 <span class="comment">    generated code. </span>
+<a name="l00224"></a>00224 <span class="comment">*/</span>
+<a name="l00225"></a><a class="code" href="structOpt.html">00225</a> <span class="keyword">struct </span><a class="code" href="structOpt.html" title="Structure that collects optimization options.">Opt</a> {
+<a name="l00226"></a>00226     <a class="code" href="structOpt.html#ae1ec631e0d039be80e5182b5d79ec0dd">Opt</a>();
+<a name="l00227"></a>00227     <span class="comment"></span>
+<a name="l00228"></a>00228 <span class="comment">    /** Optimization level.  Currently, the only valid values are 0,</span>
+<a name="l00229"></a>00229 <span class="comment">        indicating essentially no optimization, and 1, indicating as much</span>
+<a name="l00230"></a>00230 <span class="comment">        optimization as possible. */</span>
+<a name="l00231"></a><a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">00231</a>     <span class="keywordtype">int</span> <a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a>;
 <a name="l00232"></a>00232 <span class="comment"></span>
-<a name="l00233"></a>00233 <span class="comment">    /** Disables the optimization that demotes masked stores to regular</span>
-<a name="l00234"></a>00234 <span class="comment">        stores when the store is happening at the same control flow level</span>
-<a name="l00235"></a>00235 <span class="comment">        where the variable was declared.  This is likely only useful for</span>
-<a name="l00236"></a>00236 <span class="comment">        measuring the impact of this optimization. */</span>
-<a name="l00237"></a><a class="code" href="structOpt.html#a4922c058dd40b20fcda0022be7a7d6ea">00237</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a4922c058dd40b20fcda0022be7a7d6ea">disableMaskedStoreToStore</a>;
-<a name="l00238"></a>00238 <span class="comment"></span>
-<a name="l00239"></a>00239 <span class="comment">    /** Disables the optimization that detects when the execution mask is</span>
-<a name="l00240"></a>00240 <span class="comment">        all on and emits code for gathers and scatters that doesn&#39;t loop</span>
-<a name="l00241"></a>00241 <span class="comment">        over the SIMD lanes but just does the scalar loads and stores</span>
-<a name="l00242"></a>00242 <span class="comment">        directly. */</span>
-<a name="l00243"></a><a class="code" href="structOpt.html#a6e55373ff211bb3ea9d98d731d074c92">00243</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a6e55373ff211bb3ea9d98d731d074c92">disableGatherScatterFlattening</a>;
-<a name="l00244"></a>00244 <span class="comment"></span>
-<a name="l00245"></a>00245 <span class="comment">    /** Disables the optimizations that detect when arrays are being</span>
-<a name="l00246"></a>00246 <span class="comment">        indexed with &#39;uniform&#39; values and issue scalar loads/stores rather</span>
-<a name="l00247"></a>00247 <span class="comment">        than gathers/scatters.  This is likely only useful for measuring</span>
-<a name="l00248"></a>00248 <span class="comment">        the impact of this optimization. */</span>
-<a name="l00249"></a><a class="code" href="structOpt.html#ade00ce91375beef743b1dc773a526d12">00249</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#ade00ce91375beef743b1dc773a526d12">disableUniformMemoryOptimizations</a>;
-<a name="l00250"></a>00250 <span class="comment"></span>
-<a name="l00251"></a>00251 <span class="comment">    /** Disables optimizations for masked stores: masked stores with the</span>
-<a name="l00252"></a>00252 <span class="comment">        mask all on are transformed to regular stores, and masked stores</span>
-<a name="l00253"></a>00253 <span class="comment">        with the mask are all off are removed (which in turn can allow</span>
-<a name="l00254"></a>00254 <span class="comment">        eliminating additional dead code related to computing the value</span>
-<a name="l00255"></a>00255 <span class="comment">        stored).  This is likely only useful for measuring the impact of</span>
-<a name="l00256"></a>00256 <span class="comment">        this optimization. */</span>
-<a name="l00257"></a><a class="code" href="structOpt.html#a2c9adc53ac4a504bf41f84aa68b1d471">00257</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a2c9adc53ac4a504bf41f84aa68b1d471">disableMaskedStoreOptimizations</a>;
-<a name="l00258"></a>00258 };
-<a name="l00259"></a>00259 <span class="comment"></span>
-<a name="l00260"></a>00260 <span class="comment">/** @brief This structure collects together a number of global variables. </span>
-<a name="l00261"></a>00261 <span class="comment"></span>
-<a name="l00262"></a>00262 <span class="comment">    This structure collects a number of global variables that mostly</span>
-<a name="l00263"></a>00263 <span class="comment">    represent parameter settings for this compilation run.  In particular,</span>
-<a name="l00264"></a>00264 <span class="comment">    none of these values should change after compilation befins; their</span>
-<a name="l00265"></a>00265 <span class="comment">    values are all set during command-line argument processing or very</span>
-<a name="l00266"></a>00266 <span class="comment">    early during the compiler&#39;s execution, before any files are parsed.</span>
-<a name="l00267"></a>00267 <span class="comment">  */</span>
-<a name="l00268"></a><a class="code" href="structGlobals.html">00268</a> <span class="keyword">struct </span><a class="code" href="structGlobals.html" title="This structure collects together a number of global variables.">Globals</a> {
-<a name="l00269"></a>00269     <a class="code" href="structGlobals.html#a3b78cfdbe2809ad8b6b722969dda4425">Globals</a>();
+<a name="l00233"></a>00233 <span class="comment">    /** Indicates whether &quot;fast and loose&quot; numerically unsafe optimizations</span>
+<a name="l00234"></a>00234 <span class="comment">        should be performed.  This is false by default. */</span>
+<a name="l00235"></a><a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">00235</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">fastMath</a>;
+<a name="l00236"></a>00236 <span class="comment"></span>
+<a name="l00237"></a>00237 <span class="comment">    /** On targets that don&#39;t have a masked store instruction but do have a</span>
+<a name="l00238"></a>00238 <span class="comment">        blending instruction, by default, we simulate masked stores by</span>
+<a name="l00239"></a>00239 <span class="comment">        loading the old value, blending, and storing the result.  This can</span>
+<a name="l00240"></a>00240 <span class="comment">        potentially be unsafe in multi-threaded code, in that it writes to</span>
+<a name="l00241"></a>00241 <span class="comment">        locations that aren&#39;t supposed to be written to.  Setting this</span>
+<a name="l00242"></a>00242 <span class="comment">        value to true disables this work-around, and instead implements</span>
+<a name="l00243"></a>00243 <span class="comment">        masked stores by &#39;scalarizing&#39; them, so that we iterate over the</span>
+<a name="l00244"></a>00244 <span class="comment">        ISIMD lanes and do a scalar write for the ones that are running. */</span>
+<a name="l00245"></a><a class="code" href="structOpt.html#a441c78a679b7bc088d879ade8d20845f">00245</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a441c78a679b7bc088d879ade8d20845f">disableBlendedMaskedStores</a>;
+<a name="l00246"></a>00246 <span class="comment"></span>
+<a name="l00247"></a>00247 <span class="comment">    /** Disables the &#39;coherent control flow&#39; constructs in the</span>
+<a name="l00248"></a>00248 <span class="comment">        language. (e.g. this causes &quot;cif&quot; statements to be demoted to &quot;if&quot;</span>
+<a name="l00249"></a>00249 <span class="comment">        statements.)  This is likely only useful for measuring the impact</span>
+<a name="l00250"></a>00250 <span class="comment">        of coherent control flow. */</span>
+<a name="l00251"></a><a class="code" href="structOpt.html#a269b3d2789b821a74a7255b2fd308da4">00251</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a269b3d2789b821a74a7255b2fd308da4">disableCoherentControlFlow</a>;
+<a name="l00252"></a>00252 <span class="comment"></span>
+<a name="l00253"></a>00253 <span class="comment">    /** Disables uniform control flow optimizations (e.g. this changes an</span>
+<a name="l00254"></a>00254 <span class="comment">        &quot;if&quot; statement with a uniform condition to have a varying</span>
+<a name="l00255"></a>00255 <span class="comment">        condition).  This is likely only useful for measuring the impact of</span>
+<a name="l00256"></a>00256 <span class="comment">        uniform control flow. */</span>
+<a name="l00257"></a><a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">00257</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">disableUniformControlFlow</a>;
+<a name="l00258"></a>00258 <span class="comment"></span>
+<a name="l00259"></a>00259 <span class="comment">    /** Disables the backend optimizations related to gather/scatter</span>
+<a name="l00260"></a>00260 <span class="comment">        (e.g. transforming gather from sequential locations to an unaligned</span>
+<a name="l00261"></a>00261 <span class="comment">        load, etc.)  This is likely only useful for measuring the impact of</span>
+<a name="l00262"></a>00262 <span class="comment">        these optimizations. */</span>
+<a name="l00263"></a><a class="code" href="structOpt.html#a515b1fed805b43f36ec51403c8d4f3bf">00263</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a515b1fed805b43f36ec51403c8d4f3bf">disableGatherScatterOptimizations</a>;
+<a name="l00264"></a>00264 <span class="comment"></span>
+<a name="l00265"></a>00265 <span class="comment">    /** Disables the optimization that demotes masked stores to regular</span>
+<a name="l00266"></a>00266 <span class="comment">        stores when the store is happening at the same control flow level</span>
+<a name="l00267"></a>00267 <span class="comment">        where the variable was declared.  This is likely only useful for</span>
+<a name="l00268"></a>00268 <span class="comment">        measuring the impact of this optimization. */</span>
+<a name="l00269"></a><a class="code" href="structOpt.html#a4922c058dd40b20fcda0022be7a7d6ea">00269</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a4922c058dd40b20fcda0022be7a7d6ea">disableMaskedStoreToStore</a>;
 <a name="l00270"></a>00270 <span class="comment"></span>
-<a name="l00271"></a>00271 <span class="comment">    /** Optimization option settings */</span>
-<a name="l00272"></a><a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">00272</a>     <a class="code" href="structOpt.html" title="Structure that collects optimization options.">Opt</a> <a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>;<span class="comment"></span>
-<a name="l00273"></a>00273 <span class="comment">    /** Compilation target information */</span>
-<a name="l00274"></a><a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">00274</a>     <a class="code" href="structTarget.html" title="Structure that defines a compilation target.">Target</a> <a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>;
-<a name="l00275"></a>00275 <span class="comment"></span>
-<a name="l00276"></a>00276 <span class="comment">    /** There are a number of math libraries that can be used for</span>
-<a name="l00277"></a>00277 <span class="comment">        transcendentals and the like during program compilation. */</span>
-<a name="l00278"></a><a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45">00278</a>     <span class="keyword">enum</span> <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45">MathLib</a> { <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3f9d7b36c46f10ce2e7246c587fdb284">Math_ISPC</a>, <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a8c7eff35ae130e97be933e1bf32cc35b">Math_ISPCFast</a>, <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45af2767474d6d68689e5438e5885d3600b">Math_SVML</a>, <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3e401778bb86ff534f0f59d55d61a6ac">Math_System</a> };
-<a name="l00279"></a><a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">00279</a>     <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45">MathLib</a> <a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a>;
-<a name="l00280"></a>00280 <span class="comment"></span>
-<a name="l00281"></a>00281 <span class="comment">    /** Records whether the ispc standard library should be made available</span>
-<a name="l00282"></a>00282 <span class="comment">        to the program during compilations. (Default is true.) */</span>
-<a name="l00283"></a><a class="code" href="structGlobals.html#a65b6c565d6264e535d48a27f89de3329">00283</a>     <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a65b6c565d6264e535d48a27f89de3329">includeStdlib</a>;
-<a name="l00284"></a>00284 <span class="comment"></span>
-<a name="l00285"></a>00285 <span class="comment">    /** Indicates whether the C pre-processor should be run over the</span>
-<a name="l00286"></a>00286 <span class="comment">        program source before compiling it.  (Default is true.) */</span>
-<a name="l00287"></a><a class="code" href="structGlobals.html#aa150c22538b58a8a390466ce996d9a6f">00287</a>     <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#aa150c22538b58a8a390466ce996d9a6f">runCPP</a>;
-<a name="l00288"></a>00288 <span class="comment"></span>
-<a name="l00289"></a>00289 <span class="comment">    /** When \c true, voluminous debugging output will be printed during</span>
-<a name="l00290"></a>00290 <span class="comment">        ispc&#39;s execution. */</span>
-<a name="l00291"></a><a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">00291</a>     <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a>;
-<a name="l00292"></a>00292 <span class="comment"></span>
-<a name="l00293"></a>00293 <span class="comment">    /** Indicates whether all warning messages should be surpressed. */</span>
-<a name="l00294"></a><a class="code" href="structGlobals.html#a59396e4fc487ea16b659d6e370bcb624">00294</a>     <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a59396e4fc487ea16b659d6e370bcb624">disableWarnings</a>;
-<a name="l00295"></a>00295 <span class="comment"></span>
-<a name="l00296"></a>00296 <span class="comment">    /** Indicates whether additional warnings should be issued about</span>
-<a name="l00297"></a>00297 <span class="comment">        possible performance pitfalls. */</span>
-<a name="l00298"></a><a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">00298</a>     <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">emitPerfWarnings</a>;
-<a name="l00299"></a>00299 <span class="comment"></span>
-<a name="l00300"></a>00300 <span class="comment">    /** Indicates whether calls should be emitted in the program to an</span>
-<a name="l00301"></a>00301 <span class="comment">        externally-defined program instrumentation function. (See the</span>
-<a name="l00302"></a>00302 <span class="comment">        &quot;Instrumenting your ispc programs&quot; section in the user&#39;s</span>
-<a name="l00303"></a>00303 <span class="comment">        manual.) */</span>
-<a name="l00304"></a><a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">00304</a>     <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">emitInstrumentation</a>; 
-<a name="l00305"></a>00305 <span class="comment"></span>
-<a name="l00306"></a>00306 <span class="comment">    /** Indicates whether ispc should generate debugging symbols for the</span>
-<a name="l00307"></a>00307 <span class="comment">        program in its output. */</span>
-<a name="l00308"></a><a class="code" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">00308</a>     <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">generateDebuggingSymbols</a>;
-<a name="l00309"></a>00309 <span class="comment"></span>
-<a name="l00310"></a>00310 <span class="comment">    /** Global LLVMContext object */</span>
-<a name="l00311"></a><a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">00311</a>     llvm::LLVMContext *<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>;
+<a name="l00271"></a>00271 <span class="comment">    /** Disables the optimization that detects when the execution mask is</span>
+<a name="l00272"></a>00272 <span class="comment">        all on and emits code for gathers and scatters that doesn&#39;t loop</span>
+<a name="l00273"></a>00273 <span class="comment">        over the SIMD lanes but just does the scalar loads and stores</span>
+<a name="l00274"></a>00274 <span class="comment">        directly. */</span>
+<a name="l00275"></a><a class="code" href="structOpt.html#a6e55373ff211bb3ea9d98d731d074c92">00275</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a6e55373ff211bb3ea9d98d731d074c92">disableGatherScatterFlattening</a>;
+<a name="l00276"></a>00276 <span class="comment"></span>
+<a name="l00277"></a>00277 <span class="comment">    /** Disables the optimizations that detect when arrays are being</span>
+<a name="l00278"></a>00278 <span class="comment">        indexed with &#39;uniform&#39; values and issue scalar loads/stores rather</span>
+<a name="l00279"></a>00279 <span class="comment">        than gathers/scatters.  This is likely only useful for measuring</span>
+<a name="l00280"></a>00280 <span class="comment">        the impact of this optimization. */</span>
+<a name="l00281"></a><a class="code" href="structOpt.html#ade00ce91375beef743b1dc773a526d12">00281</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#ade00ce91375beef743b1dc773a526d12">disableUniformMemoryOptimizations</a>;
+<a name="l00282"></a>00282 <span class="comment"></span>
+<a name="l00283"></a>00283 <span class="comment">    /** Disables optimizations for masked stores: masked stores with the</span>
+<a name="l00284"></a>00284 <span class="comment">        mask all on are transformed to regular stores, and masked stores</span>
+<a name="l00285"></a>00285 <span class="comment">        with the mask are all off are removed (which in turn can allow</span>
+<a name="l00286"></a>00286 <span class="comment">        eliminating additional dead code related to computing the value</span>
+<a name="l00287"></a>00287 <span class="comment">        stored).  This is likely only useful for measuring the impact of</span>
+<a name="l00288"></a>00288 <span class="comment">        this optimization. */</span>
+<a name="l00289"></a><a class="code" href="structOpt.html#a2c9adc53ac4a504bf41f84aa68b1d471">00289</a>     <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a2c9adc53ac4a504bf41f84aa68b1d471">disableMaskedStoreOptimizations</a>;
+<a name="l00290"></a>00290 };
+<a name="l00291"></a>00291 <span class="comment"></span>
+<a name="l00292"></a>00292 <span class="comment">/** @brief This structure collects together a number of global variables. </span>
+<a name="l00293"></a>00293 <span class="comment"></span>
+<a name="l00294"></a>00294 <span class="comment">    This structure collects a number of global variables that mostly</span>
+<a name="l00295"></a>00295 <span class="comment">    represent parameter settings for this compilation run.  In particular,</span>
+<a name="l00296"></a>00296 <span class="comment">    none of these values should change after compilation befins; their</span>
+<a name="l00297"></a>00297 <span class="comment">    values are all set during command-line argument processing or very</span>
+<a name="l00298"></a>00298 <span class="comment">    early during the compiler&#39;s execution, before any files are parsed.</span>
+<a name="l00299"></a>00299 <span class="comment">  */</span>
+<a name="l00300"></a><a class="code" href="structGlobals.html">00300</a> <span class="keyword">struct </span><a class="code" href="structGlobals.html" title="This structure collects together a number of global variables.">Globals</a> {
+<a name="l00301"></a>00301     <a class="code" href="structGlobals.html#a3b78cfdbe2809ad8b6b722969dda4425">Globals</a>();
+<a name="l00302"></a>00302 <span class="comment"></span>
+<a name="l00303"></a>00303 <span class="comment">    /** Optimization option settings */</span>
+<a name="l00304"></a><a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">00304</a>     <a class="code" href="structOpt.html" title="Structure that collects optimization options.">Opt</a> <a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>;<span class="comment"></span>
+<a name="l00305"></a>00305 <span class="comment">    /** Compilation target information */</span>
+<a name="l00306"></a><a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">00306</a>     <a class="code" href="structTarget.html" title="Structure that defines a compilation target.">Target</a> <a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>;
+<a name="l00307"></a>00307 <span class="comment"></span>
+<a name="l00308"></a>00308 <span class="comment">    /** There are a number of math libraries that can be used for</span>
+<a name="l00309"></a>00309 <span class="comment">        transcendentals and the like during program compilation. */</span>
+<a name="l00310"></a><a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45">00310</a>     <span class="keyword">enum</span> <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45">MathLib</a> { <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3f9d7b36c46f10ce2e7246c587fdb284">Math_ISPC</a>, <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a8c7eff35ae130e97be933e1bf32cc35b">Math_ISPCFast</a>, <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45af2767474d6d68689e5438e5885d3600b">Math_SVML</a>, <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3e401778bb86ff534f0f59d55d61a6ac">Math_System</a> };
+<a name="l00311"></a><a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">00311</a>     <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45">MathLib</a> <a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a>;
 <a name="l00312"></a>00312 <span class="comment"></span>
-<a name="l00313"></a>00313 <span class="comment">    /** Current working directory when the ispc compiler starts</span>
-<a name="l00314"></a>00314 <span class="comment">        execution. */</span>
-<a name="l00315"></a><a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">00315</a>     <span class="keywordtype">char</span> <a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>[1024];
+<a name="l00313"></a>00313 <span class="comment">    /** Records whether the ispc standard library should be made available</span>
+<a name="l00314"></a>00314 <span class="comment">        to the program during compilations. (Default is true.) */</span>
+<a name="l00315"></a><a class="code" href="structGlobals.html#a65b6c565d6264e535d48a27f89de3329">00315</a>     <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a65b6c565d6264e535d48a27f89de3329">includeStdlib</a>;
 <a name="l00316"></a>00316 <span class="comment"></span>
-<a name="l00317"></a>00317 <span class="comment">    /** Arguments to pass along to the C pre-processor, if it is run on the</span>
-<a name="l00318"></a>00318 <span class="comment">        program before compilation. */</span>
-<a name="l00319"></a><a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">00319</a>     std::vector&lt;std::string&gt; <a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">cppArgs</a>;
-<a name="l00320"></a>00320 };
-<a name="l00321"></a>00321 
-<a name="l00322"></a>00322 <span class="keyword">extern</span> <a class="code" href="structGlobals.html" title="This structure collects together a number of global variables.">Globals</a> *<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>;
-<a name="l00323"></a>00323 <span class="keyword">extern</span> <a class="code" href="classModule.html">Module</a> *<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>;
-<a name="l00324"></a>00324 
-<a name="l00325"></a>00325 <span class="preprocessor">#endif // ISPC_H</span>
+<a name="l00317"></a>00317 <span class="comment">    /** Indicates whether the C pre-processor should be run over the</span>
+<a name="l00318"></a>00318 <span class="comment">        program source before compiling it.  (Default is true.) */</span>
+<a name="l00319"></a><a class="code" href="structGlobals.html#aa150c22538b58a8a390466ce996d9a6f">00319</a>     <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#aa150c22538b58a8a390466ce996d9a6f">runCPP</a>;
+<a name="l00320"></a>00320 <span class="comment"></span>
+<a name="l00321"></a>00321 <span class="comment">    /** When \c true, voluminous debugging output will be printed during</span>
+<a name="l00322"></a>00322 <span class="comment">        ispc&#39;s execution. */</span>
+<a name="l00323"></a><a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">00323</a>     <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a>;
+<a name="l00324"></a>00324 <span class="comment"></span>
+<a name="l00325"></a>00325 <span class="comment">    /** Indicates whether all warning messages should be surpressed. */</span>
+<a name="l00326"></a><a class="code" href="structGlobals.html#a59396e4fc487ea16b659d6e370bcb624">00326</a>     <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a59396e4fc487ea16b659d6e370bcb624">disableWarnings</a>;
+<a name="l00327"></a>00327 <span class="comment"></span>
+<a name="l00328"></a>00328 <span class="comment">    /** Indicates whether additional warnings should be issued about</span>
+<a name="l00329"></a>00329 <span class="comment">        possible performance pitfalls. */</span>
+<a name="l00330"></a><a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">00330</a>     <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">emitPerfWarnings</a>;
+<a name="l00331"></a>00331 <span class="comment"></span>
+<a name="l00332"></a>00332 <span class="comment">    /** Indicates whether calls should be emitted in the program to an</span>
+<a name="l00333"></a>00333 <span class="comment">        externally-defined program instrumentation function. (See the</span>
+<a name="l00334"></a>00334 <span class="comment">        &quot;Instrumenting your ispc programs&quot; section in the user&#39;s</span>
+<a name="l00335"></a>00335 <span class="comment">        manual.) */</span>
+<a name="l00336"></a><a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">00336</a>     <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">emitInstrumentation</a>; 
+<a name="l00337"></a>00337 <span class="comment"></span>
+<a name="l00338"></a>00338 <span class="comment">    /** Indicates whether ispc should generate debugging symbols for the</span>
+<a name="l00339"></a>00339 <span class="comment">        program in its output. */</span>
+<a name="l00340"></a><a class="code" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">00340</a>     <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">generateDebuggingSymbols</a>;
+<a name="l00341"></a>00341 <span class="comment"></span>
+<a name="l00342"></a>00342 <span class="comment">    /** Global LLVMContext object */</span>
+<a name="l00343"></a><a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">00343</a>     llvm::LLVMContext *<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>;
+<a name="l00344"></a>00344 <span class="comment"></span>
+<a name="l00345"></a>00345 <span class="comment">    /** Current working directory when the ispc compiler starts</span>
+<a name="l00346"></a>00346 <span class="comment">        execution. */</span>
+<a name="l00347"></a><a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">00347</a>     <span class="keywordtype">char</span> <a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>[1024];
+<a name="l00348"></a>00348 <span class="comment"></span>
+<a name="l00349"></a>00349 <span class="comment">    /** Arguments to pass along to the C pre-processor, if it is run on the</span>
+<a name="l00350"></a>00350 <span class="comment">        program before compilation. */</span>
+<a name="l00351"></a><a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">00351</a>     std::vector&lt;std::string&gt; <a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">cppArgs</a>;
+<a name="l00352"></a>00352 };
+<a name="l00353"></a>00353 
+<a name="l00354"></a>00354 <span class="keyword">extern</span> <a class="code" href="structGlobals.html" title="This structure collects together a number of global variables.">Globals</a> *<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>;
+<a name="l00355"></a>00355 <span class="keyword">extern</span> <a class="code" href="classModule.html">Module</a> *<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>;
+<a name="l00356"></a>00356 
+<a name="l00357"></a>00357 <span class="preprocessor">#endif // ISPC_H</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Wed Aug 17 2011 15:15:00 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Sep 3 2011 07:15:46 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

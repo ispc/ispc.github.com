@@ -1793,6 +1793,16 @@ uniform float half_to_float(uniform unsigned int16 h)
 int16 float_to_half(float f)
 uniform int16 float_to_half(uniform float f)
 </pre>
+<p>There are also faster versions of these functions that don't worry about
+handling floating point infinity, &quot;not a number&quot; and denormalized numbers
+correctly.  These are faster than the above functions, but are less
+precise.</p>
+<pre class="literal-block">
+float half_to_float_fast(unsigned int16 h)
+uniform float half_to_float_fast(uniform unsigned int16 h)
+int16 float_to_half_fast(float f)
+uniform int16 float_to_half_fast(uniform float f)
+</pre>
 </div>
 <div class="section" id="atomic-operations-and-memory-fences">
 <h2>Atomic Operations and Memory Fences</h2>
