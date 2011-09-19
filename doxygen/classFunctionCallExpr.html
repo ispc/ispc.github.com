@@ -30,8 +30,8 @@
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a>  </div>
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a>  </div>
   <div class="headertitle">
 <h1>FunctionCallExpr Class Reference</h1>  </div>
 </div>
@@ -66,20 +66,21 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionCallExpr.html#a0cae5ed0975f86d698e63dd164940961">Print</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExpr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionCallExpr.html#a0daf3c50beaf41b0e00ba6bbd9e40290">Optimize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExpr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionCallExpr.html#a64b54547c7a84c245197fd6c94bccbef">TypeCheck</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionCallExpr.html#a8dc8285ec7b28ed1b0770dde0da5965c">EstimateCost</a> () const </td></tr>
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExpr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionCallExpr.html#a96c712c3358aa3cc6241de1b31d94c33">func</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExprList.html">ExprList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionCallExpr.html#a6efde7be3cd2d9d00dc56e77f82b0ed2">args</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionCallExpr.html#a65977190d50b009c400133cae808ff73">isLaunch</a></td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionCallExpr.html#a59488d032b464a29d715a101804dc05f">resolveFunctionOverloads</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionCallExpr.html#ae421b491c20dfc8d79f1406151b65d0e">tryResolve</a> (bool(*matchFunc)(<a class="el" href="classExpr.html">Expr</a> *, const <a class="el" href="classType.html">Type</a> *))</td></tr>
-<tr><td colspan="2"><h2><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExpr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionCallExpr.html#a96c712c3358aa3cc6241de1b31d94c33">func</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExprList.html">ExprList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionCallExpr.html#a6efde7be3cd2d9d00dc56e77f82b0ed2">args</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionCallExpr.html#a65977190d50b009c400133cae808ff73">isLaunch</a></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Expression representing a function call. </p>
 
-<p>Definition at line <a class="el" href="expr_8h_source.html#l00250">250</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p>Definition at line <a class="el" href="expr_8h_source.html#l00251">251</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ad5be268b8f5b5422b98cb3faf52d9741"></a><!-- doxytag: member="FunctionCallExpr::FunctionCallExpr" ref="ad5be268b8f5b5422b98cb3faf52d9741" args="(Expr *func, ExprList *args, SourcePos p, bool isLaunch)" -->
 <div class="memitem">
@@ -118,13 +119,35 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02215">2215</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02250">2250</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="expr_8h_source.html#l00263">args</a>, <a class="el" href="expr_8h_source.html#l00262">func</a>, <a class="el" href="expr_8h_source.html#l00264">isLaunch</a>, and <a class="el" href="expr_8cpp_source.html#l02170">resolveFunctionOverloads()</a>.</p>
+<p>References <a class="el" href="expr_8h_source.html#l00264">args</a>, <a class="el" href="expr_8h_source.html#l00263">func</a>, <a class="el" href="expr_8h_source.html#l00265">isLaunch</a>, and <a class="el" href="expr_8cpp_source.html#l02205">resolveFunctionOverloads()</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a8dc8285ec7b28ed1b0770dde0da5965c"></a><!-- doxytag: member="FunctionCallExpr::EstimateCost" ref="a8dc8285ec7b28ed1b0770dde0da5965c" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int FunctionCallExpr::EstimateCost </td>
+          <td>(</td>
+          <td class="paramname">&#160;)</td>
+          <td> const<code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Implements <a class="el" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">ASTNode</a>.</p>
+
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02479">2479</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+
+<p>References <a class="el" href="expr_8h_source.html#l00264">args</a>, <a class="el" href="ispc_8h_source.html#l00375">COST_FUNCALL</a>, <a class="el" href="ispc_8h_source.html#l00383">COST_TASK_LAUNCH</a>, <a class="el" href="expr_8cpp_source.html#l02597">ExprList::EstimateCost()</a>, and <a class="el" href="expr_8h_source.html#l00265">isLaunch</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a895bf78acf9ace26dfadc3d3a5f0b72f"></a><!-- doxytag: member="FunctionCallExpr::GetType" ref="a895bf78acf9ace26dfadc3d3a5f0b72f" args="() const " -->
 <div class="memitem">
 <div class="memproto">
@@ -142,11 +165,11 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02481">2481</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02422">2422</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="expr_8h_source.html#l00262">func</a>, <a class="el" href="type_8h_source.html#l00669">FunctionType::GetReturnType()</a>, <a class="el" href="expr_8h_source.html#l00585">FunctionSymbolExpr::matchingFunc</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="expr_8h_source.html#l00263">func</a>, <a class="el" href="type_8h_source.html#l00669">FunctionType::GetReturnType()</a>, <a class="el" href="expr_8h_source.html#l00591">FunctionSymbolExpr::matchingFunc</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02538">Print()</a>, and <a class="el" href="expr_8cpp_source.html#l02075">tryResolve()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02486">Print()</a>, and <a class="el" href="expr_8cpp_source.html#l02110">tryResolve()</a>.</p>
 
 </div>
 </div>
@@ -168,9 +191,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02275">2275</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02261">2261</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l01530">FunctionEmitContext::AllocaInst()</a>, <a class="el" href="expr_8h_source.html#l00263">args</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8cpp_source.html#l00279">FunctionEmitContext::BranchIfMaskAny()</a>, <a class="el" href="ctx_8cpp_source.html#l01777">FunctionEmitContext::BranchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01867">FunctionEmitContext::CallInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00730">FunctionEmitContext::CreateBasicBlock()</a>, <a class="el" href="ispc_8h_source.html#l00343">Globals::ctx</a>, <a class="el" href="util_8cpp_source.html#l00270">Debug()</a>, <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="expr_8h_source.html#l00244">ExprList::exprs</a>, <a class="el" href="expr_8h_source.html#l00262">func</a>, <a class="el" href="sym_8h_source.html#l00081">Symbol::function</a>, <a class="el" href="ispc_8cpp_source.html#l00066">g</a>, <a class="el" href="type_8h_source.html#l00680">FunctionType::GetArgumentName()</a>, <a class="el" href="type_8h_source.html#l00678">FunctionType::GetArgumentTypes()</a>, <a class="el" href="ctx_8cpp_source.html#l00224">FunctionEmitContext::GetCurrentBasicBlock()</a>, <a class="el" href="expr_8cpp_source.html#l00065">Expr::GetLValue()</a>, <a class="el" href="ctx_8cpp_source.html#l00236">FunctionEmitContext::GetMask()</a>, <a class="el" href="type_8cpp_source.html#l01585">ReferenceType::GetReferenceTarget()</a>, <a class="el" href="type_8h_source.html#l00669">FunctionType::GetReturnType()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="type_8h_source.html#l00689">FunctionType::isTask</a>, <a class="el" href="ctx_8cpp_source.html#l01966">FunctionEmitContext::LaunchInst()</a>, <a class="el" href="ispc_8h_source.html#l00082">LLVM_TYPE_CONST</a>, <a class="el" href="classType.html#aa7b08bf258938faa7e12b580b623621a">Type::LLVMType()</a>, <a class="el" href="expr_8cpp_source.html#l02231">lMayBeRecursiveCall()</a>, <a class="el" href="ctx_8cpp_source.html#l01366">FunctionEmitContext::LoadInst()</a>, <a class="el" href="expr_8h_source.html#l00585">FunctionSymbolExpr::matchingFunc</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l01838">FunctionEmitContext::PhiNode()</a>, <a class="el" href="ispc_8h_source.html#l00153">ASTNode::pos</a>, <a class="el" href="ctx_8cpp_source.html#l00230">FunctionEmitContext::SetCurrentBasicBlock()</a>, <a class="el" href="ctx_8cpp_source.html#l00839">FunctionEmitContext::SetDebugPos()</a>, <a class="el" href="ctx_8cpp_source.html#l01724">FunctionEmitContext::StoreInst()</a>, <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>, <a class="el" href="expr_8cpp_source.html#l00128">Expr::TypeConv()</a>, and <a class="el" href="type_8h_source.html#l00249">AtomicType::Void</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l01509">FunctionEmitContext::AllocaInst()</a>, <a class="el" href="expr_8h_source.html#l00264">args</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ctx_8cpp_source.html#l01846">FunctionEmitContext::CallInst()</a>, <a class="el" href="ispc_8h_source.html#l00359">Globals::ctx</a>, <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="expr_8h_source.html#l00245">ExprList::exprs</a>, <a class="el" href="expr_8h_source.html#l00263">func</a>, <a class="el" href="sym_8h_source.html#l00081">Symbol::function</a>, <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="type_8h_source.html#l00680">FunctionType::GetArgumentName()</a>, <a class="el" href="type_8h_source.html#l00678">FunctionType::GetArgumentTypes()</a>, <a class="el" href="expr_8cpp_source.html#l00065">Expr::GetLValue()</a>, <a class="el" href="ctx_8cpp_source.html#l00230">FunctionEmitContext::GetMask()</a>, <a class="el" href="type_8cpp_source.html#l01553">ReferenceType::GetReferenceTarget()</a>, <a class="el" href="type_8h_source.html#l00669">FunctionType::GetReturnType()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="type_8h_source.html#l00689">FunctionType::isTask</a>, <a class="el" href="ctx_8cpp_source.html#l01945">FunctionEmitContext::LaunchInst()</a>, <a class="el" href="classType.html#aa7b08bf258938faa7e12b580b623621a">Type::LLVMType()</a>, <a class="el" href="ctx_8cpp_source.html#l01357">FunctionEmitContext::LoadInst()</a>, <a class="el" href="expr_8h_source.html#l00591">FunctionSymbolExpr::matchingFunc</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00155">ASTNode::pos</a>, <a class="el" href="ctx_8cpp_source.html#l00840">FunctionEmitContext::SetDebugPos()</a>, <a class="el" href="ctx_8cpp_source.html#l01703">FunctionEmitContext::StoreInst()</a>, <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>, <a class="el" href="expr_8cpp_source.html#l00128">Expr::TypeConv()</a>, and <a class="el" href="type_8h_source.html#l00249">AtomicType::Void</a>.</p>
 
 </div>
 </div>
@@ -191,9 +214,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02495">2495</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02436">2436</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="expr_8h_source.html#l00263">args</a>, <a class="el" href="expr_8h_source.html#l00262">func</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="expr_8cpp_source.html#l02570">ExprList::Optimize()</a>, and <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr::Optimize()</a>.</p>
+<p>References <a class="el" href="expr_8h_source.html#l00264">args</a>, <a class="el" href="expr_8h_source.html#l00263">func</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="expr_8cpp_source.html#l02518">ExprList::Optimize()</a>, and <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr::Optimize()</a>.</p>
 
 </div>
 </div>
@@ -214,9 +237,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02538">2538</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02486">2486</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="expr_8h_source.html#l00263">args</a>, <a class="el" href="expr_8h_source.html#l00262">func</a>, <a class="el" href="expr_8cpp_source.html#l02481">GetType()</a>, <a class="el" href="expr_8h_source.html#l00264">isLaunch</a>, <a class="el" href="ispc_8h_source.html#l00153">ASTNode::pos</a>, <a class="el" href="ispc_8cpp_source.html#l00312">SourcePos::Print()</a>, <a class="el" href="expr_8cpp_source.html#l02649">ExprList::Print()</a>, and <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr::Print()</a>.</p>
+<p>References <a class="el" href="expr_8h_source.html#l00264">args</a>, <a class="el" href="expr_8h_source.html#l00263">func</a>, <a class="el" href="expr_8cpp_source.html#l02422">GetType()</a>, <a class="el" href="expr_8h_source.html#l00265">isLaunch</a>, <a class="el" href="ispc_8h_source.html#l00155">ASTNode::pos</a>, <a class="el" href="ispc_8cpp_source.html#l00317">SourcePos::Print()</a>, <a class="el" href="expr_8cpp_source.html#l02608">ExprList::Print()</a>, and <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr::Print()</a>.</p>
 
 </div>
 </div>
@@ -234,11 +257,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02170">2170</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02205">2205</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="expr_8h_source.html#l00263">args</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="expr_8h_source.html#l00581">FunctionSymbolExpr::candidateFunctions</a>, <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="expr_8h_source.html#l00244">ExprList::exprs</a>, <a class="el" href="expr_8h_source.html#l00262">func</a>, <a class="el" href="expr_8cpp_source.html#l01996">lExactMatch()</a>, <a class="el" href="expr_8cpp_source.html#l02013">lMatchIgnoringReferences()</a>, <a class="el" href="expr_8cpp_source.html#l02029">lMatchIgnoringUniform()</a>, <a class="el" href="expr_8cpp_source.html#l02061">lMatchWithTypeConv()</a>, <a class="el" href="expr_8cpp_source.html#l02048">lMatchWithTypeConvSameVariability()</a>, <a class="el" href="expr_8cpp_source.html#l01967">lPrintFunctionOverloads()</a>, <a class="el" href="expr_8cpp_source.html#l01977">lPrintPassedTypes()</a>, <a class="el" href="ispc_8h_source.html#l00153">ASTNode::pos</a>, <a class="el" href="parse_8yy.html">stderr</a>, and <a class="el" href="expr_8cpp_source.html#l02075">tryResolve()</a>.</p>
+<p>References <a class="el" href="expr_8h_source.html#l00264">args</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="expr_8h_source.html#l00587">FunctionSymbolExpr::candidateFunctions</a>, <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="expr_8h_source.html#l00245">ExprList::exprs</a>, <a class="el" href="expr_8h_source.html#l00263">func</a>, <a class="el" href="expr_8cpp_source.html#l02031">lExactMatch()</a>, <a class="el" href="expr_8cpp_source.html#l02048">lMatchIgnoringReferences()</a>, <a class="el" href="expr_8cpp_source.html#l02064">lMatchIgnoringUniform()</a>, <a class="el" href="expr_8cpp_source.html#l02096">lMatchWithTypeConv()</a>, <a class="el" href="expr_8cpp_source.html#l02083">lMatchWithTypeConvSameVariability()</a>, <a class="el" href="expr_8cpp_source.html#l02002">lPrintFunctionOverloads()</a>, <a class="el" href="expr_8cpp_source.html#l02012">lPrintPassedTypes()</a>, <a class="el" href="ispc_8h_source.html#l00155">ASTNode::pos</a>, <a class="el" href="parse_8yy.html">stderr</a>, and <a class="el" href="expr_8cpp_source.html#l02110">tryResolve()</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02215">FunctionCallExpr()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02250">FunctionCallExpr()</a>.</p>
 
 </div>
 </div>
@@ -258,11 +281,11 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>See if we can find a single function from the set of overload options based on the predicate function passed in. Returns true if no more tries should be made to find a match, either due to success from finding a single overloaded function that matches or failure due to finding multiple ambiguous matches. </p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02075">2075</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02110">2110</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="expr_8h_source.html#l00263">args</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="expr_8h_source.html#l00581">FunctionSymbolExpr::candidateFunctions</a>, <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="expr_8h_source.html#l00244">ExprList::exprs</a>, <a class="el" href="expr_8h_source.html#l00262">func</a>, <a class="el" href="type_8h_source.html#l00679">FunctionType::GetArgumentDefaults()</a>, <a class="el" href="type_8h_source.html#l00678">FunctionType::GetArgumentTypes()</a>, <a class="el" href="expr_8cpp_source.html#l02481">GetType()</a>, <a class="el" href="expr_8cpp_source.html#l01967">lPrintFunctionOverloads()</a>, <a class="el" href="expr_8cpp_source.html#l01977">lPrintPassedTypes()</a>, <a class="el" href="expr_8h_source.html#l00585">FunctionSymbolExpr::matchingFunc</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00153">ASTNode::pos</a>, and <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>.</p>
+<p>References <a class="el" href="expr_8h_source.html#l00264">args</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="expr_8h_source.html#l00587">FunctionSymbolExpr::candidateFunctions</a>, <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="expr_8h_source.html#l00245">ExprList::exprs</a>, <a class="el" href="expr_8h_source.html#l00263">func</a>, <a class="el" href="type_8h_source.html#l00679">FunctionType::GetArgumentDefaults()</a>, <a class="el" href="type_8h_source.html#l00678">FunctionType::GetArgumentTypes()</a>, <a class="el" href="expr_8cpp_source.html#l02422">GetType()</a>, <a class="el" href="expr_8cpp_source.html#l02002">lPrintFunctionOverloads()</a>, <a class="el" href="expr_8cpp_source.html#l02012">lPrintPassedTypes()</a>, <a class="el" href="expr_8h_source.html#l00591">FunctionSymbolExpr::matchingFunc</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00155">ASTNode::pos</a>, and <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02170">resolveFunctionOverloads()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02205">resolveFunctionOverloads()</a>.</p>
 
 </div>
 </div>
@@ -283,9 +306,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02508">2508</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l02449">2449</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="expr_8h_source.html#l00263">args</a>, <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="expr_8h_source.html#l00262">func</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="expr_8h_source.html#l00264">isLaunch</a>, <a class="el" href="type_8h_source.html#l00689">FunctionType::isTask</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00153">ASTNode::pos</a>, <a class="el" href="expr_8cpp_source.html#l02579">ExprList::TypeCheck()</a>, and <a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">Expr::TypeCheck()</a>.</p>
+<p>References <a class="el" href="expr_8h_source.html#l00264">args</a>, <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="expr_8h_source.html#l00263">func</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="expr_8h_source.html#l00265">isLaunch</a>, <a class="el" href="type_8h_source.html#l00689">FunctionType::isTask</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00155">ASTNode::pos</a>, <a class="el" href="expr_8cpp_source.html#l02527">ExprList::TypeCheck()</a>, and <a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">Expr::TypeCheck()</a>.</p>
 
 </div>
 </div>
@@ -295,15 +318,15 @@ Private Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classExprList.html">ExprList</a>* <a class="el" href="classFunctionCallExpr.html#a6efde7be3cd2d9d00dc56e77f82b0ed2">FunctionCallExpr::args</a><code> [private]</code></td>
+          <td class="memname"><a class="el" href="classExprList.html">ExprList</a>* <a class="el" href="classFunctionCallExpr.html#a6efde7be3cd2d9d00dc56e77f82b0ed2">FunctionCallExpr::args</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="expr_8h_source.html#l00263">263</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p>Definition at line <a class="el" href="expr_8h_source.html#l00264">264</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02215">FunctionCallExpr()</a>, <a class="el" href="expr_8cpp_source.html#l02275">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02495">Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l02538">Print()</a>, <a class="el" href="expr_8cpp_source.html#l02170">resolveFunctionOverloads()</a>, <a class="el" href="expr_8cpp_source.html#l02075">tryResolve()</a>, and <a class="el" href="expr_8cpp_source.html#l02508">TypeCheck()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02479">EstimateCost()</a>, <a class="el" href="expr_8cpp_source.html#l02250">FunctionCallExpr()</a>, <a class="el" href="expr_8cpp_source.html#l02261">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02436">Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l02486">Print()</a>, <a class="el" href="expr_8cpp_source.html#l02205">resolveFunctionOverloads()</a>, <a class="el" href="expr_8cpp_source.html#l02110">tryResolve()</a>, and <a class="el" href="expr_8cpp_source.html#l02449">TypeCheck()</a>.</p>
 
 </div>
 </div>
@@ -312,15 +335,15 @@ Private Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classExpr.html">Expr</a>* <a class="el" href="classFunctionCallExpr.html#a96c712c3358aa3cc6241de1b31d94c33">FunctionCallExpr::func</a><code> [private]</code></td>
+          <td class="memname"><a class="el" href="classExpr.html">Expr</a>* <a class="el" href="classFunctionCallExpr.html#a96c712c3358aa3cc6241de1b31d94c33">FunctionCallExpr::func</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="expr_8h_source.html#l00262">262</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p>Definition at line <a class="el" href="expr_8h_source.html#l00263">263</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02215">FunctionCallExpr()</a>, <a class="el" href="expr_8cpp_source.html#l02481">GetType()</a>, <a class="el" href="expr_8cpp_source.html#l02275">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02495">Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l02538">Print()</a>, <a class="el" href="expr_8cpp_source.html#l02170">resolveFunctionOverloads()</a>, <a class="el" href="expr_8cpp_source.html#l02075">tryResolve()</a>, and <a class="el" href="expr_8cpp_source.html#l02508">TypeCheck()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02250">FunctionCallExpr()</a>, <a class="el" href="expr_8cpp_source.html#l02422">GetType()</a>, <a class="el" href="expr_8cpp_source.html#l02261">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02436">Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l02486">Print()</a>, <a class="el" href="expr_8cpp_source.html#l02205">resolveFunctionOverloads()</a>, <a class="el" href="expr_8cpp_source.html#l02110">tryResolve()</a>, and <a class="el" href="expr_8cpp_source.html#l02449">TypeCheck()</a>.</p>
 
 </div>
 </div>
@@ -329,15 +352,15 @@ Private Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classFunctionCallExpr.html#a65977190d50b009c400133cae808ff73">FunctionCallExpr::isLaunch</a><code> [private]</code></td>
+          <td class="memname">bool <a class="el" href="classFunctionCallExpr.html#a65977190d50b009c400133cae808ff73">FunctionCallExpr::isLaunch</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="expr_8h_source.html#l00264">264</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p>Definition at line <a class="el" href="expr_8h_source.html#l00265">265</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02215">FunctionCallExpr()</a>, <a class="el" href="expr_8cpp_source.html#l02538">Print()</a>, and <a class="el" href="expr_8cpp_source.html#l02508">TypeCheck()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l02479">EstimateCost()</a>, <a class="el" href="expr_8cpp_source.html#l02250">FunctionCallExpr()</a>, <a class="el" href="expr_8cpp_source.html#l02486">Print()</a>, and <a class="el" href="expr_8cpp_source.html#l02449">TypeCheck()</a>.</p>
 
 </div>
 </div>
@@ -346,7 +369,7 @@ Private Attributes</h2></td></tr>
 <li><a class="el" href="expr_8cpp_source.html">expr.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Sep 3 2011 07:15:48 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 15:25:35 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

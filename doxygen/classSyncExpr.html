@@ -64,11 +64,12 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExpr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSyncExpr.html#af411fe3062afc649c104ed877bd5fd41">TypeCheck</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExpr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSyncExpr.html#a12b8c56aa2ae34936242b449932e467f">Optimize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSyncExpr.html#ad3a4bff2fbe2b44429b3765dfdf3e1bb">Print</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSyncExpr.html#a98c9e183d66f659cdfed37e332c0de44">EstimateCost</a> () const </td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>A sync statement in the program (waits for all launched tasks before proceeding). </p>
 
-<p>Definition at line <a class="el" href="expr_8h_source.html#l00591">591</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p>Definition at line <a class="el" href="expr_8h_source.html#l00597">597</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a61a97214bbee52ad2499fcadf892709e"></a><!-- doxytag: member="SyncExpr::SyncExpr" ref="a61a97214bbee52ad2499fcadf892709e" args="(SourcePos p)" -->
 <div class="memitem">
@@ -85,11 +86,33 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="expr_8h_source.html#l00593">593</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p>Definition at line <a class="el" href="expr_8h_source.html#l00599">599</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a98c9e183d66f659cdfed37e332c0de44"></a><!-- doxytag: member="SyncExpr::EstimateCost" ref="a98c9e183d66f659cdfed37e332c0de44" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SyncExpr::EstimateCost </td>
+          <td>(</td>
+          <td class="paramname">&#160;)</td>
+          <td> const<code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Implements <a class="el" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">ASTNode</a>.</p>
+
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05276">5276</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+
+<p>References <a class="el" href="ispc_8h_source.html#l00382">COST_SYNC</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a9279f70fda2e643d34972bdff71b0a47"></a><!-- doxytag: member="SyncExpr::GetType" ref="a9279f70fda2e643d34972bdff71b0a47" args="() const " -->
 <div class="memitem">
 <div class="memproto">
@@ -107,7 +130,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05222">5222</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05256">5256</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
 <p>References <a class="el" href="type_8h_source.html#l00249">AtomicType::Void</a>.</p>
 
@@ -131,9 +154,9 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05228">5228</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05262">5262</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l01867">FunctionEmitContext::CallInst()</a>, <a class="el" href="util_8h_source.html#l00104">FATAL</a>, <a class="el" href="ispc_8cpp_source.html#l00067">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00153">ASTNode::pos</a>, and <a class="el" href="ctx_8cpp_source.html#l00839">FunctionEmitContext::SetDebugPos()</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l01846">FunctionEmitContext::CallInst()</a>, <a class="el" href="util_8h_source.html#l00104">FATAL</a>, <a class="el" href="ispc_8cpp_source.html#l00066">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00155">ASTNode::pos</a>, and <a class="el" href="ctx_8cpp_source.html#l00840">FunctionEmitContext::SetDebugPos()</a>.</p>
 
 </div>
 </div>
@@ -154,7 +177,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05255">5255</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05295">5295</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
 </div>
 </div>
@@ -175,9 +198,9 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05242">5242</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05282">5282</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00153">ASTNode::pos</a>, and <a class="el" href="ispc_8cpp_source.html#l00312">SourcePos::Print()</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00155">ASTNode::pos</a>, and <a class="el" href="ispc_8cpp_source.html#l00317">SourcePos::Print()</a>.</p>
 
 </div>
 </div>
@@ -198,7 +221,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05249">5249</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05289">5289</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
 </div>
 </div>
@@ -207,7 +230,7 @@ Public Member Functions</h2></td></tr>
 <li><a class="el" href="expr_8cpp_source.html">expr.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Sep 3 2011 07:15:48 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 15:25:35 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

@@ -34,14 +34,16 @@
 <div class="contents">
 This is the complete list of members for <a class="el" href="classIfStmt.html">IfStmt</a>, including all inherited members.<table>
   <tr class="memlist"><td><a class="el" href="classASTNode.html#adacd1e72bdef50169988993850670db5">ASTNode</a>(SourcePos p)</td><td><a class="el" href="classASTNode.html">ASTNode</a></td><td><code> [inline]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="classIfStmt.html#af469a2c5f6b2886a5628cfc2adbbf15a">doCoherentCheck</a></td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classIfStmt.html#a659224717c14699474259652bbca4ebf">doAllCheck</a></td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classIfStmt.html#ad5ce2cde3c24cba4e67a0c5a2c912b9d">doAnyCheck</a></td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classIfStmt.html#a2a2e55759749756f4ec1e5d89577d5a0">EmitCode</a>(FunctionEmitContext *ctx) const </td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td><code> [virtual]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="classIfStmt.html#a372da8013ba291b94b5ad334fe357fce">emitCoherentTests</a>(FunctionEmitContext *ctx, llvm::Value *test) const </td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classIfStmt.html#a27aa1ffab7349d42bbbca094bc58eee7">emitMaskAllOn</a>(FunctionEmitContext *ctx, llvm::Value *test, llvm::BasicBlock *bDone) const </td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classIfStmt.html#a647acfd9b0957808e4a3a08577e95331">emitMaskedTrueAndFalse</a>(FunctionEmitContext *ctx, llvm::Value *oldMask, llvm::Value *test) const </td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classIfStmt.html#a6260d93c26afd3e0f9387ed410bc70db">emitMaskMixed</a>(FunctionEmitContext *ctx, llvm::Value *oldMask, llvm::Value *test, llvm::BasicBlock *bDone) const </td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classIfStmt.html#a2ce42ea1aae2372c7188d02f9420234a">emitVaryingIf</a>(FunctionEmitContext *ctx, llvm::Value *test) const </td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classIfStmt.html#a0a4c3a4371442483ff4e7bf589983dd1">EstimateCost</a>() const </td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classIfStmt.html#ad5c2af56f680c12fb23ff487558c23a7">falseStmts</a></td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classIfStmt.html#a8ebb38b357fa0414f5c0f7079ed735b0">IfStmt</a>(Expr *testExpr, Stmt *trueStmts, Stmt *falseStmts, bool doCoherentCheck, SourcePos pos)</td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classIfStmt.html#a02f455b0af3f291a89ef971e1b5c1244">IfStmt</a>(Expr *testExpr, Stmt *trueStmts, Stmt *falseStmts, bool doAllCheck, SourcePos pos)</td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classIfStmt.html#a3a55854b835d9db75038f00f9271efa5">Optimize</a>()</td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a></td><td><a class="el" href="classASTNode.html">ASTNode</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classIfStmt.html#afd4428803898e70d5ba257052ea6fe4e">Print</a>(int indent) const </td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td><code> [virtual]</code></td></tr>
@@ -51,7 +53,7 @@ This is the complete list of members for <a class="el" href="classIfStmt.html">I
   <tr class="memlist"><td><a class="el" href="classIfStmt.html#a720d1048ad2c15dfad1462964b327799">TypeCheck</a>()</td><td><a class="el" href="classIfStmt.html">IfStmt</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classASTNode.html#a41a691f37fa038eb183280effeb8ba4e">~ASTNode</a>()</td><td><a class="el" href="classASTNode.html">ASTNode</a></td><td><code> [virtual]</code></td></tr>
 </table></div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Sep 3 2011 07:15:48 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 15:25:35 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

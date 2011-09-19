@@ -77,6 +77,7 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="builtins_8cpp.html#af9f3fc9a00628d1e0c363f749d081546">lCheckModuleIntrinsics</a> (llvm::Module *module)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="builtins_8cpp.html#a012eaa60308288ebf6f8f48d50250b5d">lAddBitcode</a> (const unsigned char *bitcode, int length, llvm::Module *module, <a class="el" href="classSymbolTable.html">SymbolTable</a> *symbolTable)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="builtins_8cpp.html#ac856ea2f0d194438ddf3b45476a32ed6">lDefineConstantInt</a> (const char *name, int val, llvm::Module *module, <a class="el" href="classSymbolTable.html">SymbolTable</a> *symbolTable)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="builtins_8cpp.html#abb212cbf480db6c2edde04fcb5cfef57">lDefineConstantIntFunc</a> (const char *name, int val, llvm::Module *module, <a class="el" href="classSymbolTable.html">SymbolTable</a> *symbolTable)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="builtins_8cpp.html#af3cb7d2a18e821d2d1cac65334f55e45">lDefineProgramIndex</a> (llvm::Module *module, <a class="el" href="classSymbolTable.html">SymbolTable</a> *symbolTable)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="builtins_8cpp.html#a356bc9bc8aebc682d51966e145f82b70">DefineStdlib</a> (<a class="el" href="classSymbolTable.html">SymbolTable</a> *symbolTable, llvm::LLVMContext *ctx, llvm::Module *module, bool includeStdlibISPC)</td></tr>
 </table>
@@ -132,11 +133,11 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="builtins_8cpp_source.html#l00413">413</a> of file <a class="el" href="builtins_8cpp_source.html">builtins.cpp</a>.</p>
+<p>Definition at line <a class="el" href="builtins_8cpp_source.html#l00434">434</a> of file <a class="el" href="builtins_8cpp_source.html">builtins.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00192">Target::AVX</a>, <a class="el" href="ispc_8h_source.html#l00330">Globals::emitPerfWarnings</a>, <a class="el" href="util_8h_source.html#l00104">FATAL</a>, <a class="el" href="ispc_8cpp_source.html#l00066">g</a>, <a class="el" href="ispc_8h_source.html#l00201">Target::is32bit</a>, <a class="el" href="ispc_8h_source.html#l00195">Target::isa</a>, <a class="el" href="builtins_8cpp_source.html#l00340">lAddBitcode()</a>, <a class="el" href="builtins_8cpp_source.html#l00378">lDefineConstantInt()</a>, <a class="el" href="builtins_8cpp_source.html#l00393">lDefineProgramIndex()</a>, <a class="el" href="ispc_8h_source.html#l00310">Globals::Math_ISPC</a>, <a class="el" href="ispc_8h_source.html#l00310">Globals::Math_ISPCFast</a>, <a class="el" href="ispc_8h_source.html#l00310">Globals::Math_SVML</a>, <a class="el" href="ispc_8h_source.html#l00310">Globals::Math_System</a>, <a class="el" href="ispc_8h_source.html#l00311">Globals::mathLib</a>, <a class="el" href="ispc_8h_source.html#l00192">Target::SSE2</a>, <a class="el" href="ispc_8h_source.html#l00192">Target::SSE4</a>, <a class="el" href="ispc_8h_source.html#l00306">Globals::target</a>, <a class="el" href="ispc_8h_source.html#l00217">Target::vectorWidth</a>, <a class="el" href="builtins_8cpp.html#a14866839501f9788fa33614be98acd4f">yy_scan_string()</a>, and <a class="el" href="builtins_8cpp.html#acd8617a8f2ac0de8bc1cc032cf449e19">yyparse()</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00194">Target::AVX</a>, <a class="el" href="ispc_8h_source.html#l00346">Globals::emitPerfWarnings</a>, <a class="el" href="ispc_8h_source.html#l00247">Opt::fastMaskedVload</a>, <a class="el" href="util_8h_source.html#l00104">FATAL</a>, <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="ispc_8h_source.html#l00203">Target::is32bit</a>, <a class="el" href="ispc_8h_source.html#l00197">Target::isa</a>, <a class="el" href="builtins_8cpp_source.html#l00340">lAddBitcode()</a>, <a class="el" href="builtins_8cpp_source.html#l00378">lDefineConstantInt()</a>, <a class="el" href="builtins_8cpp_source.html#l00394">lDefineConstantIntFunc()</a>, <a class="el" href="builtins_8cpp_source.html#l00414">lDefineProgramIndex()</a>, <a class="el" href="ispc_8h_source.html#l00326">Globals::Math_ISPC</a>, <a class="el" href="ispc_8h_source.html#l00326">Globals::Math_ISPCFast</a>, <a class="el" href="ispc_8h_source.html#l00326">Globals::Math_SVML</a>, <a class="el" href="ispc_8h_source.html#l00326">Globals::Math_System</a>, <a class="el" href="ispc_8h_source.html#l00327">Globals::mathLib</a>, <a class="el" href="ispc_8h_source.html#l00320">Globals::opt</a>, <a class="el" href="ispc_8h_source.html#l00194">Target::SSE2</a>, <a class="el" href="ispc_8h_source.html#l00194">Target::SSE4</a>, <a class="el" href="ispc_8h_source.html#l00322">Globals::target</a>, <a class="el" href="ispc_8h_source.html#l00219">Target::vectorWidth</a>, <a class="el" href="builtins_8cpp.html#a14866839501f9788fa33614be98acd4f">yy_scan_string()</a>, and <a class="el" href="builtins_8cpp.html#acd8617a8f2ac0de8bc1cc032cf449e19">yyparse()</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00155">Module::CompileFile()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00147">Module::CompileFile()</a>.</p>
 
 </div>
 </div>
@@ -189,9 +190,9 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="builtins_8cpp_source.html#l00340">340</a> of file <a class="el" href="builtins_8cpp_source.html">builtins.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ispc_8h_source.html#l00343">Globals::ctx</a>, <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="ispc_8cpp_source.html#l00066">g</a>, <a class="el" href="builtins_8cpp_source.html#l00287">lAddModuleSymbols()</a>, <a class="el" href="builtins_8cpp_source.html#l00308">lCheckModuleIntrinsics()</a>, <a class="el" href="ispc_8cpp_source.html#l00067">m</a>, and <a class="el" href="module_8h_source.html#l00092">Module::module</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ispc_8h_source.html#l00359">Globals::ctx</a>, <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="builtins_8cpp_source.html#l00287">lAddModuleSymbols()</a>, <a class="el" href="builtins_8cpp_source.html#l00308">lCheckModuleIntrinsics()</a>, <a class="el" href="ispc_8cpp_source.html#l00066">m</a>, and <a class="el" href="module_8h_source.html#l00092">Module::module</a>.</p>
 
-<p>Referenced by <a class="el" href="builtins_8cpp_source.html#l00413">DefineStdlib()</a>.</p>
+<p>Referenced by <a class="el" href="builtins_8cpp_source.html#l00434">DefineStdlib()</a>.</p>
 
 </div>
 </div>
@@ -247,7 +248,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="builtins_8cpp_source.html#l00308">308</a> of file <a class="el" href="builtins_8cpp_source.html">builtins.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ispc_8h_source.html#l00343">Globals::ctx</a>, <a class="el" href="ispc_8cpp_source.html#l00066">g</a>, and <a class="el" href="ispc_8h_source.html#l00082">LLVM_TYPE_CONST</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ispc_8h_source.html#l00359">Globals::ctx</a>, <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, and <a class="el" href="ispc_8h_source.html#l00082">LLVM_TYPE_CONST</a>.</p>
 
 <p>Referenced by <a class="el" href="builtins_8cpp_source.html#l00340">lAddBitcode()</a>.</p>
 
@@ -281,7 +282,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="builtins_8cpp_source.html#l00201">201</a> of file <a class="el" href="builtins_8cpp_source.html">builtins.cpp</a>.</p>
 
-<p>References <a class="el" href="sym_8cpp_source.html#l00150">SymbolTable::AddFunction()</a>, <a class="el" href="type_8cpp_source.html#l02090">Type::Equal()</a>, <a class="el" href="sym_8h_source.html#l00081">Symbol::function</a>, <a class="el" href="builtins_8cpp_source.html#l00176">lCreateSymbol()</a>, <a class="el" href="builtins_8cpp_source.html#l00081">lLLVMTypeToISPCType()</a>, <a class="el" href="ispc_8h_source.html#l00111">SourcePos::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="type_8cpp_source.html#l01905">FunctionType::SetArgumentDefaults()</a>, <a class="el" href="type_8h_source.html#l00227">AtomicType::VaryingBool</a>, and <a class="el" href="type_8h_source.html#l00230">AtomicType::VaryingInt32</a>.</p>
+<p>References <a class="el" href="sym_8cpp_source.html#l00150">SymbolTable::AddFunction()</a>, <a class="el" href="type_8cpp_source.html#l02053">Type::Equal()</a>, <a class="el" href="sym_8h_source.html#l00081">Symbol::function</a>, <a class="el" href="builtins_8cpp_source.html#l00176">lCreateSymbol()</a>, <a class="el" href="builtins_8cpp_source.html#l00081">lLLVMTypeToISPCType()</a>, <a class="el" href="ispc_8h_source.html#l00111">SourcePos::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="type_8cpp_source.html#l01868">FunctionType::SetArgumentDefaults()</a>, <a class="el" href="type_8h_source.html#l00227">AtomicType::VaryingBool</a>, and <a class="el" href="type_8h_source.html#l00230">AtomicType::VaryingInt32</a>.</p>
 
 <p>Referenced by <a class="el" href="builtins_8cpp_source.html#l00287">lAddModuleSymbols()</a>.</p>
 
@@ -338,7 +339,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="builtins_8cpp_source.html#l00176">176</a> of file <a class="el" href="builtins_8cpp_source.html">builtins.cpp</a>.</p>
 
-<p>References <a class="el" href="sym_8cpp_source.html#l00150">SymbolTable::AddFunction()</a>, <a class="el" href="sym_8h_source.html#l00081">Symbol::function</a>, <a class="el" href="ispc_8h_source.html#l00111">SourcePos::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="type_8cpp_source.html#l01905">FunctionType::SetArgumentDefaults()</a>.</p>
+<p>References <a class="el" href="sym_8cpp_source.html#l00150">SymbolTable::AddFunction()</a>, <a class="el" href="sym_8h_source.html#l00081">Symbol::function</a>, <a class="el" href="ispc_8h_source.html#l00111">SourcePos::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="type_8cpp_source.html#l01868">FunctionType::SetArgumentDefaults()</a>.</p>
 
 <p>Referenced by <a class="el" href="builtins_8cpp_source.html#l00201">lCreateISPCSymbol()</a>.</p>
 
@@ -386,7 +387,52 @@ Functions</h2></td></tr>
 
 <p>References <a class="el" href="sym_8cpp_source.html#l00097">SymbolTable::AddVariable()</a>, <a class="el" href="sym_8h_source.html#l00087">Symbol::constValue</a>, <a class="el" href="llvmutil_8h_source.html#l00059">LLVMTypes::Int32Type</a>, <a class="el" href="sym_8h_source.html#l00096">Symbol::isStatic</a>, <a class="el" href="ispc_8h_source.html#l00082">LLVM_TYPE_CONST</a>, <a class="el" href="llvmutil_8cpp_source.html#l00188">LLVMInt32()</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="sym_8h_source.html#l00077">Symbol::storagePtr</a>, <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>, and <a class="el" href="type_8h_source.html#l00241">AtomicType::UniformConstInt32</a>.</p>
 
-<p>Referenced by <a class="el" href="builtins_8cpp_source.html#l00413">DefineStdlib()</a>.</p>
+<p>Referenced by <a class="el" href="builtins_8cpp_source.html#l00434">DefineStdlib()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abb212cbf480db6c2edde04fcb5cfef57"></a><!-- doxytag: member="builtins.cpp::lDefineConstantIntFunc" ref="abb212cbf480db6c2edde04fcb5cfef57" args="(const char *name, int val, llvm::Module *module, SymbolTable *symbolTable)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void lDefineConstantIntFunc </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"> <em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"> <em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::Module *&#160;</td>
+          <td class="paramname"> <em>module</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSymbolTable.html">SymbolTable</a> *&#160;</td>
+          <td class="paramname"> <em>symbolTable</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="builtins_8cpp_source.html#l00394">394</a> of file <a class="el" href="builtins_8cpp_source.html">builtins.cpp</a>.</p>
+
+<p>References <a class="el" href="sym_8cpp_source.html#l00097">SymbolTable::AddVariable()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ispc_8h_source.html#l00359">Globals::ctx</a>, <a class="el" href="sym_8h_source.html#l00081">Symbol::function</a>, <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="sym_8h_source.html#l00096">Symbol::isStatic</a>, <a class="el" href="llvmutil_8cpp_source.html#l00188">LLVMInt32()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="type_8h_source.html#l00230">AtomicType::UniformInt32</a>.</p>
+
+<p>Referenced by <a class="el" href="builtins_8cpp_source.html#l00434">DefineStdlib()</a>.</p>
 
 </div>
 </div>
@@ -415,11 +461,11 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="builtins_8cpp_source.html#l00393">393</a> of file <a class="el" href="builtins_8cpp_source.html">builtins.cpp</a>.</p>
+<p>Definition at line <a class="el" href="builtins_8cpp_source.html#l00414">414</a> of file <a class="el" href="builtins_8cpp_source.html">builtins.cpp</a>.</p>
 
-<p>References <a class="el" href="sym_8cpp_source.html#l00097">SymbolTable::AddVariable()</a>, <a class="el" href="sym_8h_source.html#l00087">Symbol::constValue</a>, <a class="el" href="ispc_8cpp_source.html#l00066">g</a>, <a class="el" href="llvmutil_8h_source.html#l00077">LLVMTypes::Int32VectorType</a>, <a class="el" href="ispc_8h_source.html#l00057">ISPC_MAX_NVEC</a>, <a class="el" href="sym_8h_source.html#l00096">Symbol::isStatic</a>, <a class="el" href="ispc_8h_source.html#l00082">LLVM_TYPE_CONST</a>, <a class="el" href="llvmutil_8cpp_source.html#l00304">LLVMInt32Vector()</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="sym_8h_source.html#l00077">Symbol::storagePtr</a>, <a class="el" href="ispc_8h_source.html#l00306">Globals::target</a>, <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>, <a class="el" href="type_8h_source.html#l00241">AtomicType::VaryingConstInt32</a>, and <a class="el" href="ispc_8h_source.html#l00217">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="sym_8cpp_source.html#l00097">SymbolTable::AddVariable()</a>, <a class="el" href="sym_8h_source.html#l00087">Symbol::constValue</a>, <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="llvmutil_8h_source.html#l00077">LLVMTypes::Int32VectorType</a>, <a class="el" href="ispc_8h_source.html#l00057">ISPC_MAX_NVEC</a>, <a class="el" href="sym_8h_source.html#l00096">Symbol::isStatic</a>, <a class="el" href="ispc_8h_source.html#l00082">LLVM_TYPE_CONST</a>, <a class="el" href="llvmutil_8cpp_source.html#l00304">LLVMInt32Vector()</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="sym_8h_source.html#l00077">Symbol::storagePtr</a>, <a class="el" href="ispc_8h_source.html#l00322">Globals::target</a>, <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>, <a class="el" href="type_8h_source.html#l00241">AtomicType::VaryingConstInt32</a>, and <a class="el" href="ispc_8h_source.html#l00219">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="builtins_8cpp_source.html#l00413">DefineStdlib()</a>.</p>
+<p>Referenced by <a class="el" href="builtins_8cpp_source.html#l00434">DefineStdlib()</a>.</p>
 
 </div>
 </div>
@@ -473,7 +519,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00155">Module::CompileFile()</a>, and <a class="el" href="builtins_8cpp_source.html#l00413">DefineStdlib()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00147">Module::CompileFile()</a>, and <a class="el" href="builtins_8cpp_source.html#l00434">DefineStdlib()</a>.</p>
 
 </div>
 </div>
@@ -491,12 +537,12 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00155">Module::CompileFile()</a>, and <a class="el" href="builtins_8cpp_source.html#l00413">DefineStdlib()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00147">Module::CompileFile()</a>, and <a class="el" href="builtins_8cpp_source.html#l00434">DefineStdlib()</a>.</p>
 
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Sep 3 2011 07:15:46 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 15:25:34 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

@@ -30,7 +30,7 @@
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a>  </div>
+<a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
 <h1>DereferenceExpr Class Reference</h1>  </div>
 </div>
@@ -67,14 +67,15 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDereferenceExpr.html#ad58326a890f65136750afa7d59480daa">Print</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExpr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDereferenceExpr.html#ada95d76cb0f7e1092489e74f4a711d3d">TypeCheck</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExpr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDereferenceExpr.html#a2e849db576e69418b2ce7558353862c8">Optimize</a> ()</td></tr>
-<tr><td colspan="2"><h2><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDereferenceExpr.html#a5d46cd7f6b6dfa32d5022bf0286f76dc">EstimateCost</a> () const </td></tr>
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExpr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDereferenceExpr.html#a599c7da86dc18370783574aa30f20a5b">expr</a></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Expression that represents dereferencing a reference to get its value. </p>
 
-<p>Definition at line <a class="el" href="expr_8h_source.html#l00525">525</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p>Definition at line <a class="el" href="expr_8h_source.html#l00529">529</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a755a1377b8ec219fa04aac796676b5fa"></a><!-- doxytag: member="DereferenceExpr::DereferenceExpr" ref="a755a1377b8ec219fa04aac796676b5fa" args="(Expr *e, SourcePos p)" -->
 <div class="memitem">
@@ -101,13 +102,35 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05020">5020</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05033">5033</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="expr_8h_source.html#l00538">expr</a>.</p>
+<p>References <a class="el" href="expr_8h_source.html#l00542">expr</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a5d46cd7f6b6dfa32d5022bf0286f76dc"></a><!-- doxytag: member="DereferenceExpr::EstimateCost" ref="a5d46cd7f6b6dfa32d5022bf0286f76dc" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int DereferenceExpr::EstimateCost </td>
+          <td>(</td>
+          <td class="paramname">&#160;)</td>
+          <td> const<code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Implements <a class="el" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">ASTNode</a>.</p>
+
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05097">5097</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+
+<p>References <a class="el" href="ispc_8h_source.html#l00374">COST_DEREF</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="aa9118499c8a10e27ec6ff1c821a7ee13"></a><!-- doxytag: member="DereferenceExpr::GetBaseSymbol" ref="aa9118499c8a10e27ec6ff1c821a7ee13" args="() const " -->
 <div class="memitem">
 <div class="memproto">
@@ -125,9 +148,9 @@ Private Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classExpr.html#a4219def5afcedd6551acf0954d2fa2de">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05051">5051</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05064">5064</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="expr_8h_source.html#l00538">expr</a>, <a class="el" href="expr_8cpp_source.html#l00079">Expr::GetBaseSymbol()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="expr_8h_source.html#l00542">expr</a>, <a class="el" href="expr_8cpp_source.html#l00079">Expr::GetBaseSymbol()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
 </div>
 </div>
@@ -149,9 +172,9 @@ Private Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classExpr.html#a9d3baf6e5f52fff8e916f3c0b5139c2e">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05043">5043</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05056">5056</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="expr_8h_source.html#l00538">expr</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="expr_8h_source.html#l00542">expr</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
 </div>
 </div>
@@ -172,11 +195,11 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05057">5057</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05070">5070</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="expr_8h_source.html#l00538">expr</a>, <a class="el" href="type_8cpp_source.html#l01916">Type::GetReferenceTarget()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="expr_8h_source.html#l00542">expr</a>, <a class="el" href="type_8cpp_source.html#l01879">Type::GetReferenceTarget()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05027">GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l05084">Print()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05040">GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l05103">Print()</a>.</p>
 
 </div>
 </div>
@@ -198,9 +221,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05027">5027</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05040">5040</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="expr_8h_source.html#l00538">expr</a>, <a class="el" href="expr_8cpp_source.html#l05057">GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l01366">FunctionEmitContext::LoadInst()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00153">ASTNode::pos</a>, and <a class="el" href="ctx_8cpp_source.html#l00839">FunctionEmitContext::SetDebugPos()</a>.</p>
+<p>References <a class="el" href="expr_8h_source.html#l00542">expr</a>, <a class="el" href="expr_8cpp_source.html#l05070">GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l01357">FunctionEmitContext::LoadInst()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00155">ASTNode::pos</a>, and <a class="el" href="ctx_8cpp_source.html#l00840">FunctionEmitContext::SetDebugPos()</a>.</p>
 
 </div>
 </div>
@@ -221,9 +244,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05074">5074</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05087">5087</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="expr_8h_source.html#l00538">expr</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr::Optimize()</a>.</p>
+<p>References <a class="el" href="expr_8h_source.html#l00542">expr</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr::Optimize()</a>.</p>
 
 </div>
 </div>
@@ -244,9 +267,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05084">5084</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05103">5103</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="expr_8h_source.html#l00538">expr</a>, <a class="el" href="expr_8cpp_source.html#l05057">GetType()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00153">ASTNode::pos</a>, <a class="el" href="ispc_8cpp_source.html#l00312">SourcePos::Print()</a>, and <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr::Print()</a>.</p>
+<p>References <a class="el" href="expr_8h_source.html#l00542">expr</a>, <a class="el" href="expr_8cpp_source.html#l05070">GetType()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00155">ASTNode::pos</a>, <a class="el" href="ispc_8cpp_source.html#l00317">SourcePos::Print()</a>, and <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr::Print()</a>.</p>
 
 </div>
 </div>
@@ -267,9 +290,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">Expr</a>.</p>
 
-<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05064">5064</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l05077">5077</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="expr_8h_source.html#l00538">expr</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">Expr::TypeCheck()</a>.</p>
+<p>References <a class="el" href="expr_8h_source.html#l00542">expr</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">Expr::TypeCheck()</a>.</p>
 
 </div>
 </div>
@@ -279,15 +302,15 @@ Private Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classExpr.html">Expr</a>* <a class="el" href="classDereferenceExpr.html#a599c7da86dc18370783574aa30f20a5b">DereferenceExpr::expr</a><code> [private]</code></td>
+          <td class="memname"><a class="el" href="classExpr.html">Expr</a>* <a class="el" href="classDereferenceExpr.html#a599c7da86dc18370783574aa30f20a5b">DereferenceExpr::expr</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="expr_8h_source.html#l00538">538</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p>Definition at line <a class="el" href="expr_8h_source.html#l00542">542</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05020">DereferenceExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05051">GetBaseSymbol()</a>, <a class="el" href="expr_8cpp_source.html#l05043">GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l05057">GetType()</a>, <a class="el" href="expr_8cpp_source.html#l05027">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05074">Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l05084">Print()</a>, and <a class="el" href="expr_8cpp_source.html#l05064">TypeCheck()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05033">DereferenceExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05064">GetBaseSymbol()</a>, <a class="el" href="expr_8cpp_source.html#l05056">GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l05070">GetType()</a>, <a class="el" href="expr_8cpp_source.html#l05040">GetValue()</a>, <a class="el" href="stmt_8cpp_source.html#l00593">lSafeToRunWithAllLanesOff()</a>, <a class="el" href="expr_8cpp_source.html#l05087">Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l05103">Print()</a>, and <a class="el" href="expr_8cpp_source.html#l05077">TypeCheck()</a>.</p>
 
 </div>
 </div>
@@ -296,7 +319,7 @@ Private Attributes</h2></td></tr>
 <li><a class="el" href="expr_8cpp_source.html">expr.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Sep 3 2011 07:15:47 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 15:25:34 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

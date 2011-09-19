@@ -64,6 +64,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStmtList.html#a07546eeef3066307d379d165dcdf97e6">Print</a> (int indent) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classStmt.html">Stmt</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStmtList.html#a14575404420903c8566d2eecd96bf2e3">Optimize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classStmt.html">Stmt</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStmtList.html#aa3fa1d1f1f45156f78afeab362c7a877">TypeCheck</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStmtList.html#a8faf9e29292e5f40d11aadedbc402c8b">EstimateCost</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStmtList.html#acebf64c96072fba4b606f8d30c790428">Add</a> (<a class="el" href="classStmt.html">Stmt</a> *<a class="el" href="parse_8yy.html#a670da3e561356241efb8054bd91b88a8">s</a>)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="classStmt.html">Stmt</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStmtList.html#a07bdd203b7b40adca4e1ca9b571c2401">GetStatements</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
@@ -73,7 +74,7 @@ Private Attributes</h2></td></tr>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Representation of a list of statements in the program. </p>
 
-<p>Definition at line <a class="el" href="stmt_8h_source.html#l00256">256</a> of file <a class="el" href="stmt_8h_source.html">stmt.h</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8h_source.html#l00260">260</a> of file <a class="el" href="stmt_8h_source.html">stmt.h</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a0f73135cadf0ca25ed22defd56c6f750"></a><!-- doxytag: member="StmtList::StmtList" ref="a0f73135cadf0ca25ed22defd56c6f750" args="(SourcePos p)" -->
 <div class="memitem">
@@ -90,7 +91,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="stmt_8h_source.html#l00258">258</a> of file <a class="el" href="stmt_8h_source.html">stmt.h</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8h_source.html#l00262">262</a> of file <a class="el" href="stmt_8h_source.html">stmt.h</a>.</p>
 
 </div>
 </div>
@@ -110,9 +111,9 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="stmt_8h_source.html#l00266">266</a> of file <a class="el" href="stmt_8h_source.html">stmt.h</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8h_source.html#l00271">271</a> of file <a class="el" href="stmt_8h_source.html">stmt.h</a>.</p>
 
-<p>References <a class="el" href="stmt_8h_source.html#l00270">stmts</a>.</p>
+<p>References <a class="el" href="stmt_8h_source.html#l00275">stmts</a>.</p>
 
 </div>
 </div>
@@ -134,9 +135,31 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classStmt.html#a018a0d7fc9a5db8a319bda3d87a9c15f">Stmt</a>.</p>
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01317">1317</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01561">1561</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00889">FunctionEmitContext::EndScope()</a>, <a class="el" href="ctx_8cpp_source.html#l00224">FunctionEmitContext::GetCurrentBasicBlock()</a>, <a class="el" href="ispc_8h_source.html#l00153">ASTNode::pos</a>, <a class="el" href="ctx_8cpp_source.html#l00839">FunctionEmitContext::SetDebugPos()</a>, <a class="el" href="ctx_8cpp_source.html#l00869">FunctionEmitContext::StartScope()</a>, and <a class="el" href="stmt_8h_source.html#l00270">stmts</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00886">FunctionEmitContext::EndScope()</a>, <a class="el" href="ctx_8cpp_source.html#l00218">FunctionEmitContext::GetCurrentBasicBlock()</a>, <a class="el" href="ispc_8h_source.html#l00155">ASTNode::pos</a>, <a class="el" href="ctx_8cpp_source.html#l00840">FunctionEmitContext::SetDebugPos()</a>, <a class="el" href="ctx_8cpp_source.html#l00868">FunctionEmitContext::StartScope()</a>, and <a class="el" href="stmt_8h_source.html#l00275">stmts</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8faf9e29292e5f40d11aadedbc402c8b"></a><!-- doxytag: member="StmtList::EstimateCost" ref="a8faf9e29292e5f40d11aadedbc402c8b" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int StmtList::EstimateCost </td>
+          <td>(</td>
+          <td class="paramname">&#160;)</td>
+          <td> const<code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Implements <a class="el" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">ASTNode</a>.</p>
+
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01593">1593</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+
+<p>References <a class="el" href="stmt_8h_source.html#l00275">stmts</a>.</p>
 
 </div>
 </div>
@@ -154,11 +177,11 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="stmt_8h_source.html#l00267">267</a> of file <a class="el" href="stmt_8h_source.html">stmt.h</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8h_source.html#l00272">272</a> of file <a class="el" href="stmt_8h_source.html">stmt.h</a>.</p>
 
-<p>References <a class="el" href="stmt_8h_source.html#l00270">stmts</a>.</p>
+<p>References <a class="el" href="stmt_8h_source.html#l00275">stmts</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00749">Module::AddFunction()</a>, and <a class="el" href="stmt_8cpp_source.html#l00756">lHasVaryingBreakOrContinue()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00761">Module::AddFunction()</a>, <a class="el" href="stmt_8cpp_source.html#l00959">lHasVaryingBreakOrContinue()</a>, and <a class="el" href="stmt_8cpp_source.html#l00702">lSafeToRunWithAllLanesOff()</a>.</p>
 
 </div>
 </div>
@@ -179,9 +202,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classStmt.html#a1d8d67291a2164d04b268403b3d334b3">Stmt</a>.</p>
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01331">1331</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01575">1575</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
-<p>References <a class="el" href="stmt_8h_source.html#l00270">stmts</a>.</p>
+<p>References <a class="el" href="stmt_8h_source.html#l00275">stmts</a>.</p>
 
 </div>
 </div>
@@ -203,9 +226,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classStmt.html#a7b6b1da806030d303eaaf3ca4b09df61">Stmt</a>.</p>
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01349">1349</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01603">1603</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00153">ASTNode::pos</a>, <a class="el" href="ispc_8cpp_source.html#l00312">SourcePos::Print()</a>, and <a class="el" href="stmt_8h_source.html#l00270">stmts</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00155">ASTNode::pos</a>, <a class="el" href="ispc_8cpp_source.html#l00317">SourcePos::Print()</a>, and <a class="el" href="stmt_8h_source.html#l00275">stmts</a>.</p>
 
 </div>
 </div>
@@ -226,9 +249,9 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classStmt.html#ac5c4a3c76cff2fc30edd78a63043faf3">Stmt</a>.</p>
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01340">1340</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01584">1584</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
-<p>References <a class="el" href="stmt_8h_source.html#l00270">stmts</a>.</p>
+<p>References <a class="el" href="stmt_8h_source.html#l00275">stmts</a>.</p>
 
 </div>
 </div>
@@ -244,9 +267,9 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="stmt_8h_source.html#l00270">270</a> of file <a class="el" href="stmt_8h_source.html">stmt.h</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8h_source.html#l00275">275</a> of file <a class="el" href="stmt_8h_source.html">stmt.h</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8h_source.html#l00266">Add()</a>, <a class="el" href="stmt_8cpp_source.html#l01317">EmitCode()</a>, <a class="el" href="stmt_8h_source.html#l00267">GetStatements()</a>, <a class="el" href="stmt_8cpp_source.html#l01331">Optimize()</a>, <a class="el" href="stmt_8cpp_source.html#l01349">Print()</a>, and <a class="el" href="stmt_8cpp_source.html#l01340">TypeCheck()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8h_source.html#l00271">Add()</a>, <a class="el" href="stmt_8cpp_source.html#l01561">EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01593">EstimateCost()</a>, <a class="el" href="stmt_8h_source.html#l00272">GetStatements()</a>, <a class="el" href="stmt_8cpp_source.html#l01575">Optimize()</a>, <a class="el" href="stmt_8cpp_source.html#l01603">Print()</a>, and <a class="el" href="stmt_8cpp_source.html#l01584">TypeCheck()</a>.</p>
 
 </div>
 </div>
@@ -255,7 +278,7 @@ Private Attributes</h2></td></tr>
 <li><a class="el" href="stmt_8cpp_source.html">stmt.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Sat Sep 3 2011 07:15:48 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 15:25:35 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

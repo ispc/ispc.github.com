@@ -103,6 +103,12 @@ copying or reformating, etc.</li>
 <p><tt class="docutils literal">ispc</tt> has already successfully delivered significant speedups for a
 number of non-trivial workloads that aren't handled well by other
 compilation approaches (e.g. loop auto-vectorization.)</p>
+<p><strong>We are very interested in your feedback and comments about ispc and
+in hearing your experiences using the system.  We are especially interested
+in hearing if you try using ispc but see results that are not as you
+were expecting or hoping for.</strong> We encourage you to send a note with your
+experiences or comments to the <a class="reference external" href="http://groups.google.com/group/ispc-users">ispc-users</a> mailing list or to file bug or
+feature requests with the <tt class="docutils literal">ispc</tt> <a class="reference external" href="https://github.com/ispc/ispc/issues?state=open">bug tracker</a>. (Thanks!)</p>
 <p>Contents:</p>
 <ul class="simple">
 <li><a class="reference internal" href="#recent-changes-to-ispc">Recent Changes to ISPC</a></li>
@@ -170,6 +176,8 @@ compilation approaches (e.g. loop auto-vectorization.)</p>
 <li><a class="reference internal" href="#small-performance-tricks">Small Performance Tricks</a></li>
 <li><a class="reference internal" href="#instrumenting-your-ispc-programs">Instrumenting Your ISPC Programs</a></li>
 <li><a class="reference internal" href="#using-scan-operations-for-variable-output">Using Scan Operations For Variable Output</a></li>
+<li><a class="reference internal" href="#application-supplied-execution-masks">Application-Supplied Execution Masks</a></li>
+<li><a class="reference internal" href="#explicit-vector-programming-with-uniform-short-vector-types">Explicit Vector Programming With Uniform Short Vector Types</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#disclaimer-and-legal-information">Disclaimer and Legal Information</a></li>
@@ -1968,12 +1976,12 @@ float bar[10];
 <p>Both the <tt class="docutils literal">foo</tt> and <tt class="docutils literal">bar</tt> global variables can be accessed on each
 side.</p>
 <p><tt class="docutils literal">ispc</tt> code can also call back to C/C++.  On the <tt class="docutils literal">ispc</tt> side, any
-application functions to be called must be declared with the <tt class="docutils literal">export &quot;C&quot;</tt>
+application functions to be called must be declared with the <tt class="docutils literal">extern &quot;C&quot;</tt>
 qualifier.</p>
 <pre class="literal-block">
 extern &quot;C&quot; void foo(uniform float f, uniform float g);
 </pre>
-<p>Unlike in C++, <tt class="docutils literal">export &quot;C&quot;</tt> doesn't take braces to delineate
+<p>Unlike in C++, <tt class="docutils literal">extern &quot;C&quot;</tt> doesn't take braces to delineate
 multiple functions to be declared; thus, multiple C functions to be called
 from <tt class="docutils literal">ispc</tt> must be declared as follows:</p>
 <pre class="literal-block">
@@ -2493,6 +2501,81 @@ will write its one result to <tt class="docutils literal">outArray[0]</tt>, the 
 values to <tt class="docutils literal">outArray[1]</tt> and <tt class="docutils literal">outArray[2]</tt>, and so forth.  The
 <tt class="docutils literal">reduce_add</tt> call at the end returns the total number of values that the
 program instances have written to the array.</p>
+</div>
+<div class="section" id="application-supplied-execution-masks">
+<h2>Application-Supplied Execution Masks</h2>
+<p>Recall that when execution transitions from the application code to an
+<tt class="docutils literal">ispc</tt> function, all of the program instances are initially executing.
+In some cases, it may desired that only some of them are running, based on
+a data-dependent condition computed in the application program.  This
+situation can easily be handled via an additional parameter from the
+application.</p>
+<p>As a simple example, consider a case where the application code has an
+array of <tt class="docutils literal">float</tt> values and we'd like the <tt class="docutils literal">ispc</tt> code to update
+just specific values in that array, where which of those values to be
+updated has been determined by the application.  In C++ code, we might
+have:</p>
+<pre class="literal-block">
+int count = ...;
+float *array = new float[count];
+bool *shouldUpdate = new bool[count];
+// initialize array and shouldUpdate
+ispc_func(array, shouldUpdate, count);
+</pre>
+<p>Then, the <tt class="docutils literal">ispc</tt> code could process this update as:</p>
+<pre class="literal-block">
+export void ispc_func(uniform float array[], uniform bool update[],
+                      uniform int count) {
+    for (uniform int i = 0; i &lt; count; i += programCount) {
+        cif (update[i+programIndex] == true)
+            // update array[i+programIndex]...
+    }
+}
+</pre>
+<p>(In this case a &quot;coherent&quot; if statement is likely to be worthwhile if the
+<tt class="docutils literal">update</tt> array will tend to have sections that are either all-true or
+all-false.)</p>
+</div>
+<div class="section" id="explicit-vector-programming-with-uniform-short-vector-types">
+<h2>Explicit Vector Programming With Uniform Short Vector Types</h2>
+<p>The typical model for programming in <tt class="docutils literal">ispc</tt> is an <em>implicit</em> parallel
+model, where one writes a program that is apparently doing scalar
+computation on values and the program is then vectorized to run in parallel
+across the SIMD lanes of a processor.  However, <tt class="docutils literal">ispc</tt> also has some
+support for explicit vector unit programming, where the vectorization is
+explicit.  Some computations may be more effectively described in the
+explicit model rather than the implicit model.</p>
+<p>This support is provided via <tt class="docutils literal">uniform</tt> instances of short vectors
+(as were introduced in the <a class="reference internal" href="#short-vector-types">Short Vector Types</a> section).  Specifically,
+if this short program</p>
+<pre class="literal-block">
+export uniform float&lt;8&gt; madd(uniform float&lt;8&gt; a,
+                             uniform float&lt;8&gt; b, uniform float&lt;8&gt; c) {
+    return a + b * c;
+}
+</pre>
+<p>is compiled with the AVX target, <tt class="docutils literal">ispc</tt> generates the following assembly:</p>
+<dl class="docutils">
+<dt>::</dt>
+<dd><dl class="first last docutils">
+<dt>_madd:</dt>
+<dd>vmulps  %ymm2, %ymm1, %ymm1
+vaddps  %ymm0, %ymm1, %ymm0
+ret</dd>
+</dl>
+</dd>
+</dl>
+<p>(And similarly, if compiled with a 4-wide SSE target, two <tt class="docutils literal">mulps</tt> and two
+<tt class="docutils literal">addps</tt> instructions are generated, and so forth.)</p>
+<p>Note that <tt class="docutils literal">ispc</tt> doesn't currently support control-flow based on
+<tt class="docutils literal">uniform</tt> short vector types; it is thus not possible to write code like:</p>
+<pre class="literal-block">
+export uniform int&lt;8&gt; count(uniform float&lt;8&gt; a, uniform float&lt;8&gt; b) {
+    uniform int&lt;8&gt; sum = 0;
+    while (a++ &lt; b)
+        ++sum;
+}
+</pre>
 </div>
 </div>
 <div class="section" id="disclaimer-and-legal-information">
