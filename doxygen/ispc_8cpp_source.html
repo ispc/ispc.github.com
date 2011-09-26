@@ -272,97 +272,99 @@
 <a name="l00241"></a>00241 <span class="preprocessor"></span>    std::string featuresString = <a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">cpu</a> + std::string(<span class="stringliteral">&quot;,&quot;</span>) + <a class="code" href="structTarget.html#a01424094b1354481c1d6b200c8889fe5">attributes</a>;
 <a name="l00242"></a>00242     llvm::TargetMachine *targetMachine = 
 <a name="l00243"></a>00243         <a class="code" href="structTarget.html#a55890a8b4d0f386f67b0e3497da6c238">target</a>-&gt;createTargetMachine(triple, featuresString);
-<a name="l00244"></a>00244     targetMachine-&gt;setRelocationModel(relocModel);
-<a name="l00245"></a>00245 <span class="preprocessor">#endif</span>
-<a name="l00246"></a>00246 <span class="preprocessor"></span>    <a class="code" href="parse_8yy.html">assert</a>(targetMachine != <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00247"></a>00247 
-<a name="l00248"></a>00248     targetMachine-&gt;setAsmVerbosityDefault(<span class="keyword">true</span>);
-<a name="l00249"></a>00249     <span class="keywordflow">return</span> targetMachine;
-<a name="l00250"></a>00250 }
-<a name="l00251"></a>00251 
-<a name="l00252"></a>00252 <span class="comment"></span>
-<a name="l00253"></a>00253 <span class="comment">///////////////////////////////////////////////////////////////////////////</span>
-<a name="l00254"></a>00254 <span class="comment"></span><span class="comment">// Opt</span>
-<a name="l00255"></a>00255 
-<a name="l00256"></a><a class="code" href="structOpt.html#ae1ec631e0d039be80e5182b5d79ec0dd">00256</a> <a class="code" href="structOpt.html#ae1ec631e0d039be80e5182b5d79ec0dd">Opt::Opt</a>() {
-<a name="l00257"></a>00257     <a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a> = 1;
-<a name="l00258"></a>00258     <a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">fastMath</a> = <span class="keyword">false</span>;
-<a name="l00259"></a>00259     <a class="code" href="structOpt.html#a751580c259f1ee6f7ecf82d025651b54">fastMaskedVload</a> = <span class="keyword">false</span>;
-<a name="l00260"></a>00260     <a class="code" href="structOpt.html#a93ab457610c75c76b82b35bdbee5e18a">unrollLoops</a> = <span class="keyword">true</span>;
-<a name="l00261"></a>00261     <a class="code" href="structOpt.html#a441c78a679b7bc088d879ade8d20845f">disableBlendedMaskedStores</a> = <span class="keyword">false</span>;
-<a name="l00262"></a>00262     <a class="code" href="structOpt.html#a269b3d2789b821a74a7255b2fd308da4">disableCoherentControlFlow</a> = <span class="keyword">false</span>;
-<a name="l00263"></a>00263     <a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">disableUniformControlFlow</a> = <span class="keyword">false</span>;
-<a name="l00264"></a>00264     <a class="code" href="structOpt.html#a515b1fed805b43f36ec51403c8d4f3bf">disableGatherScatterOptimizations</a> = <span class="keyword">false</span>;
-<a name="l00265"></a>00265     <a class="code" href="structOpt.html#a4922c058dd40b20fcda0022be7a7d6ea">disableMaskedStoreToStore</a> = <span class="keyword">false</span>;
-<a name="l00266"></a>00266     <a class="code" href="structOpt.html#a6e55373ff211bb3ea9d98d731d074c92">disableGatherScatterFlattening</a> = <span class="keyword">false</span>;
-<a name="l00267"></a>00267     <a class="code" href="structOpt.html#ade00ce91375beef743b1dc773a526d12">disableUniformMemoryOptimizations</a> = <span class="keyword">false</span>;
-<a name="l00268"></a>00268     <a class="code" href="structOpt.html#a2c9adc53ac4a504bf41f84aa68b1d471">disableMaskedStoreOptimizations</a> = <span class="keyword">false</span>;
-<a name="l00269"></a>00269 }
-<a name="l00270"></a>00270 <span class="comment"></span>
-<a name="l00271"></a>00271 <span class="comment">///////////////////////////////////////////////////////////////////////////</span>
-<a name="l00272"></a>00272 <span class="comment"></span><span class="comment">// Globals</span>
-<a name="l00273"></a>00273 
-<a name="l00274"></a><a class="code" href="structGlobals.html#a3b78cfdbe2809ad8b6b722969dda4425">00274</a> <a class="code" href="structGlobals.html#a3b78cfdbe2809ad8b6b722969dda4425">Globals::Globals</a>() {
-<a name="l00275"></a>00275     <a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a> = <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3f9d7b36c46f10ce2e7246c587fdb284">Globals::Math_ISPC</a>;
-<a name="l00276"></a>00276 
-<a name="l00277"></a>00277     <a class="code" href="structGlobals.html#a65b6c565d6264e535d48a27f89de3329">includeStdlib</a> = <span class="keyword">true</span>;
-<a name="l00278"></a>00278     <a class="code" href="structGlobals.html#aa150c22538b58a8a390466ce996d9a6f">runCPP</a> = <span class="keyword">true</span>;
-<a name="l00279"></a>00279     <a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a> = <span class="keyword">false</span>;
-<a name="l00280"></a>00280     <a class="code" href="structGlobals.html#a59396e4fc487ea16b659d6e370bcb624">disableWarnings</a> = <span class="keyword">false</span>;
-<a name="l00281"></a>00281     <a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">emitPerfWarnings</a> = <span class="keyword">true</span>;
-<a name="l00282"></a>00282     <a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">emitInstrumentation</a> = <span class="keyword">false</span>;
-<a name="l00283"></a>00283     <a class="code" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">generateDebuggingSymbols</a> = <span class="keyword">false</span>;
-<a name="l00284"></a>00284 
-<a name="l00285"></a>00285     <a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a> = <span class="keyword">new</span> llvm::LLVMContext;
+<a name="l00244"></a>00244 <span class="preprocessor">#ifndef ISPC_IS_WINDOWS</span>
+<a name="l00245"></a>00245 <span class="preprocessor"></span>    targetMachine-&gt;setRelocationModel(relocModel);
+<a name="l00246"></a>00246 <span class="preprocessor">#endif // !ISPC_IS_WINDOWS</span>
+<a name="l00247"></a>00247 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00248"></a>00248 <span class="preprocessor"></span>    <a class="code" href="parse_8yy.html">assert</a>(targetMachine != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00249"></a>00249 
+<a name="l00250"></a>00250     targetMachine-&gt;setAsmVerbosityDefault(<span class="keyword">true</span>);
+<a name="l00251"></a>00251     <span class="keywordflow">return</span> targetMachine;
+<a name="l00252"></a>00252 }
+<a name="l00253"></a>00253 
+<a name="l00254"></a>00254 <span class="comment"></span>
+<a name="l00255"></a>00255 <span class="comment">///////////////////////////////////////////////////////////////////////////</span>
+<a name="l00256"></a>00256 <span class="comment"></span><span class="comment">// Opt</span>
+<a name="l00257"></a>00257 
+<a name="l00258"></a><a class="code" href="structOpt.html#ae1ec631e0d039be80e5182b5d79ec0dd">00258</a> <a class="code" href="structOpt.html#ae1ec631e0d039be80e5182b5d79ec0dd">Opt::Opt</a>() {
+<a name="l00259"></a>00259     <a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a> = 1;
+<a name="l00260"></a>00260     <a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">fastMath</a> = <span class="keyword">false</span>;
+<a name="l00261"></a>00261     <a class="code" href="structOpt.html#a751580c259f1ee6f7ecf82d025651b54">fastMaskedVload</a> = <span class="keyword">false</span>;
+<a name="l00262"></a>00262     <a class="code" href="structOpt.html#a93ab457610c75c76b82b35bdbee5e18a">unrollLoops</a> = <span class="keyword">true</span>;
+<a name="l00263"></a>00263     <a class="code" href="structOpt.html#a441c78a679b7bc088d879ade8d20845f">disableBlendedMaskedStores</a> = <span class="keyword">false</span>;
+<a name="l00264"></a>00264     <a class="code" href="structOpt.html#a269b3d2789b821a74a7255b2fd308da4">disableCoherentControlFlow</a> = <span class="keyword">false</span>;
+<a name="l00265"></a>00265     <a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">disableUniformControlFlow</a> = <span class="keyword">false</span>;
+<a name="l00266"></a>00266     <a class="code" href="structOpt.html#a515b1fed805b43f36ec51403c8d4f3bf">disableGatherScatterOptimizations</a> = <span class="keyword">false</span>;
+<a name="l00267"></a>00267     <a class="code" href="structOpt.html#a4922c058dd40b20fcda0022be7a7d6ea">disableMaskedStoreToStore</a> = <span class="keyword">false</span>;
+<a name="l00268"></a>00268     <a class="code" href="structOpt.html#a6e55373ff211bb3ea9d98d731d074c92">disableGatherScatterFlattening</a> = <span class="keyword">false</span>;
+<a name="l00269"></a>00269     <a class="code" href="structOpt.html#ade00ce91375beef743b1dc773a526d12">disableUniformMemoryOptimizations</a> = <span class="keyword">false</span>;
+<a name="l00270"></a>00270     <a class="code" href="structOpt.html#a2c9adc53ac4a504bf41f84aa68b1d471">disableMaskedStoreOptimizations</a> = <span class="keyword">false</span>;
+<a name="l00271"></a>00271 }
+<a name="l00272"></a>00272 <span class="comment"></span>
+<a name="l00273"></a>00273 <span class="comment">///////////////////////////////////////////////////////////////////////////</span>
+<a name="l00274"></a>00274 <span class="comment"></span><span class="comment">// Globals</span>
+<a name="l00275"></a>00275 
+<a name="l00276"></a><a class="code" href="structGlobals.html#a3b78cfdbe2809ad8b6b722969dda4425">00276</a> <a class="code" href="structGlobals.html#a3b78cfdbe2809ad8b6b722969dda4425">Globals::Globals</a>() {
+<a name="l00277"></a>00277     <a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a> = <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3f9d7b36c46f10ce2e7246c587fdb284">Globals::Math_ISPC</a>;
+<a name="l00278"></a>00278 
+<a name="l00279"></a>00279     <a class="code" href="structGlobals.html#a65b6c565d6264e535d48a27f89de3329">includeStdlib</a> = <span class="keyword">true</span>;
+<a name="l00280"></a>00280     <a class="code" href="structGlobals.html#aa150c22538b58a8a390466ce996d9a6f">runCPP</a> = <span class="keyword">true</span>;
+<a name="l00281"></a>00281     <a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a> = <span class="keyword">false</span>;
+<a name="l00282"></a>00282     <a class="code" href="structGlobals.html#a59396e4fc487ea16b659d6e370bcb624">disableWarnings</a> = <span class="keyword">false</span>;
+<a name="l00283"></a>00283     <a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">emitPerfWarnings</a> = <span class="keyword">true</span>;
+<a name="l00284"></a>00284     <a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">emitInstrumentation</a> = <span class="keyword">false</span>;
+<a name="l00285"></a>00285     <a class="code" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">generateDebuggingSymbols</a> = <span class="keyword">false</span>;
 <a name="l00286"></a>00286 
-<a name="l00287"></a>00287 <span class="preprocessor">#ifdef ISPC_IS_WINDOWS</span>
-<a name="l00288"></a>00288 <span class="preprocessor"></span>    _getcwd(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>, <span class="keyword">sizeof</span>(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>));
-<a name="l00289"></a>00289 <span class="preprocessor">#else</span>
-<a name="l00290"></a>00290 <span class="preprocessor"></span>    getcwd(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>, <span class="keyword">sizeof</span>(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>));
-<a name="l00291"></a>00291 <span class="preprocessor">#endif</span>
-<a name="l00292"></a>00292 <span class="preprocessor"></span>}
-<a name="l00293"></a>00293 <span class="comment"></span>
-<a name="l00294"></a>00294 <span class="comment">///////////////////////////////////////////////////////////////////////////</span>
-<a name="l00295"></a>00295 <span class="comment"></span><span class="comment">// ASTNode</span>
-<a name="l00296"></a>00296 
-<a name="l00297"></a><a class="code" href="classASTNode.html#a41a691f37fa038eb183280effeb8ba4e">00297</a> <a class="code" href="classASTNode.html#a41a691f37fa038eb183280effeb8ba4e">ASTNode::~ASTNode</a>() {
-<a name="l00298"></a>00298 }
-<a name="l00299"></a>00299 <span class="comment"></span>
-<a name="l00300"></a>00300 <span class="comment">///////////////////////////////////////////////////////////////////////////</span>
-<a name="l00301"></a>00301 <span class="comment"></span><span class="comment">// SourcePos</span>
-<a name="l00302"></a>00302 
-<a name="l00303"></a><a class="code" href="structSourcePos.html#a25c0ccc23c043b77941675fb33eb78b4">00303</a> <a class="code" href="structSourcePos.html#a25c0ccc23c043b77941675fb33eb78b4">SourcePos::SourcePos</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *n, <span class="keywordtype">int</span> l, <span class="keywordtype">int</span> c) {
-<a name="l00304"></a>00304     <a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a> = n ? n : m-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getModuleIdentifier().c_str();
-<a name="l00305"></a>00305     <a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a> = <a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a> = l;
-<a name="l00306"></a>00306     <a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a> = <a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a> = c;
-<a name="l00307"></a>00307 }
-<a name="l00308"></a>00308 
-<a name="l00309"></a><a class="code" href="structSourcePos.html#a57433eabbd210646542327733061bc3a">00309</a> llvm::DIFile <a class="code" href="structSourcePos.html#a57433eabbd210646542327733061bc3a">SourcePos::GetDIFile</a>()<span class="keyword"> const </span>{
-<a name="l00310"></a>00310     std::string directory, <a class="code" href="lex_8ll.html#ae80f820219e45772366a2a68de6a54c4">filename</a>;
-<a name="l00311"></a>00311     <a class="code" href="util_8h.html#a523e79710c3f66bf78e5f752589dfc41">GetDirectoryAndFileName</a>(g-&gt;<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>, <a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>, &amp;directory, &amp;filename);
-<a name="l00312"></a>00312     <span class="keywordflow">return</span> m-&gt;<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>-&gt;createFile(filename, directory);
-<a name="l00313"></a>00313 }
-<a name="l00314"></a>00314 
-<a name="l00315"></a>00315 
-<a name="l00316"></a>00316 <span class="keywordtype">void</span>
-<a name="l00317"></a><a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">00317</a> <a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">SourcePos::Print</a>()<span class="keyword"> const </span>{ 
-<a name="l00318"></a>00318     printf(<span class="stringliteral">&quot; @ [%s:%d.%d - %d.%d] &quot;</span>, <a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>, <a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>, <a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a>,
-<a name="l00319"></a>00319            <a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a>, <a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a>); 
-<a name="l00320"></a>00320 }
-<a name="l00321"></a>00321 
-<a name="l00322"></a>00322 
-<a name="l00323"></a>00323 <span class="keywordtype">bool</span>
-<a name="l00324"></a><a class="code" href="structSourcePos.html#ae0f1fca8c871e86a0e4eb0475132e777">00324</a> <a class="code" href="structSourcePos.html#ae0f1fca8c871e86a0e4eb0475132e777">SourcePos::operator==</a>(<span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> &amp;p2)<span class="keyword"> const </span>{
-<a name="l00325"></a>00325     <span class="keywordflow">return</span> (!strcmp(<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>, p2.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>) &amp;&amp; 
-<a name="l00326"></a>00326             <a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a> == p2.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a> &amp;&amp;
-<a name="l00327"></a>00327             <a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a> == p2.<a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a> &amp;&amp;
-<a name="l00328"></a>00328             <a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a> == p2.<a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a> &amp;&amp;
-<a name="l00329"></a>00329             <a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a> == p2.<a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a>);
-<a name="l00330"></a>00330 }
-<a name="l00331"></a>00331 
+<a name="l00287"></a>00287     <a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a> = <span class="keyword">new</span> llvm::LLVMContext;
+<a name="l00288"></a>00288 
+<a name="l00289"></a>00289 <span class="preprocessor">#ifdef ISPC_IS_WINDOWS</span>
+<a name="l00290"></a>00290 <span class="preprocessor"></span>    _getcwd(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>, <span class="keyword">sizeof</span>(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>));
+<a name="l00291"></a>00291 <span class="preprocessor">#else</span>
+<a name="l00292"></a>00292 <span class="preprocessor"></span>    getcwd(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>, <span class="keyword">sizeof</span>(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>));
+<a name="l00293"></a>00293 <span class="preprocessor">#endif</span>
+<a name="l00294"></a>00294 <span class="preprocessor"></span>}
+<a name="l00295"></a>00295 <span class="comment"></span>
+<a name="l00296"></a>00296 <span class="comment">///////////////////////////////////////////////////////////////////////////</span>
+<a name="l00297"></a>00297 <span class="comment"></span><span class="comment">// ASTNode</span>
+<a name="l00298"></a>00298 
+<a name="l00299"></a><a class="code" href="classASTNode.html#a41a691f37fa038eb183280effeb8ba4e">00299</a> <a class="code" href="classASTNode.html#a41a691f37fa038eb183280effeb8ba4e">ASTNode::~ASTNode</a>() {
+<a name="l00300"></a>00300 }
+<a name="l00301"></a>00301 <span class="comment"></span>
+<a name="l00302"></a>00302 <span class="comment">///////////////////////////////////////////////////////////////////////////</span>
+<a name="l00303"></a>00303 <span class="comment"></span><span class="comment">// SourcePos</span>
+<a name="l00304"></a>00304 
+<a name="l00305"></a><a class="code" href="structSourcePos.html#a25c0ccc23c043b77941675fb33eb78b4">00305</a> <a class="code" href="structSourcePos.html#a25c0ccc23c043b77941675fb33eb78b4">SourcePos::SourcePos</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *n, <span class="keywordtype">int</span> l, <span class="keywordtype">int</span> c) {
+<a name="l00306"></a>00306     <a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a> = n ? n : m-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getModuleIdentifier().c_str();
+<a name="l00307"></a>00307     <a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a> = <a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a> = l;
+<a name="l00308"></a>00308     <a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a> = <a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a> = c;
+<a name="l00309"></a>00309 }
+<a name="l00310"></a>00310 
+<a name="l00311"></a><a class="code" href="structSourcePos.html#a57433eabbd210646542327733061bc3a">00311</a> llvm::DIFile <a class="code" href="structSourcePos.html#a57433eabbd210646542327733061bc3a">SourcePos::GetDIFile</a>()<span class="keyword"> const </span>{
+<a name="l00312"></a>00312     std::string directory, <a class="code" href="lex_8ll.html#ae80f820219e45772366a2a68de6a54c4">filename</a>;
+<a name="l00313"></a>00313     <a class="code" href="util_8h.html#a523e79710c3f66bf78e5f752589dfc41">GetDirectoryAndFileName</a>(g-&gt;<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>, <a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>, &amp;directory, &amp;filename);
+<a name="l00314"></a>00314     <span class="keywordflow">return</span> m-&gt;<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>-&gt;createFile(filename, directory);
+<a name="l00315"></a>00315 }
+<a name="l00316"></a>00316 
+<a name="l00317"></a>00317 
+<a name="l00318"></a>00318 <span class="keywordtype">void</span>
+<a name="l00319"></a><a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">00319</a> <a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">SourcePos::Print</a>()<span class="keyword"> const </span>{ 
+<a name="l00320"></a>00320     printf(<span class="stringliteral">&quot; @ [%s:%d.%d - %d.%d] &quot;</span>, <a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>, <a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>, <a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a>,
+<a name="l00321"></a>00321            <a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a>, <a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a>); 
+<a name="l00322"></a>00322 }
+<a name="l00323"></a>00323 
+<a name="l00324"></a>00324 
+<a name="l00325"></a>00325 <span class="keywordtype">bool</span>
+<a name="l00326"></a><a class="code" href="structSourcePos.html#ae0f1fca8c871e86a0e4eb0475132e777">00326</a> <a class="code" href="structSourcePos.html#ae0f1fca8c871e86a0e4eb0475132e777">SourcePos::operator==</a>(<span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> &amp;p2)<span class="keyword"> const </span>{
+<a name="l00327"></a>00327     <span class="keywordflow">return</span> (!strcmp(<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>, p2.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>) &amp;&amp; 
+<a name="l00328"></a>00328             <a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a> == p2.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a> &amp;&amp;
+<a name="l00329"></a>00329             <a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a> == p2.<a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a> &amp;&amp;
+<a name="l00330"></a>00330             <a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a> == p2.<a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a> &amp;&amp;
+<a name="l00331"></a>00331             <a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a> == p2.<a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a>);
+<a name="l00332"></a>00332 }
+<a name="l00333"></a>00333 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 15:25:33 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 16:25:19 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

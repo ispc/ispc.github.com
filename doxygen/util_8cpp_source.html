@@ -375,68 +375,72 @@
 <a name="l00344"></a>00344 
 <a name="l00345"></a>00345 std::vector&lt;std::string&gt; 
 <a name="l00346"></a><a class="code" href="util_8cpp.html#a3051f23d5a0438c2fdcfb9b916797fa4">00346</a> <a class="code" href="util_8h.html#a3051f23d5a0438c2fdcfb9b916797fa4">MatchStrings</a>(<span class="keyword">const</span> std::string &amp;str, <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;options) {
-<a name="l00347"></a>00347     <span class="keyword">const</span> <span class="keywordtype">int</span> maxDelta = 2;
-<a name="l00348"></a>00348     std::vector&lt;std::string&gt; matches[maxDelta+1];
-<a name="l00349"></a>00349 
-<a name="l00350"></a>00350     <span class="comment">// For all of the options that are up to maxDelta edit distance, store</span>
-<a name="l00351"></a>00351     <span class="comment">// them in the element of matches[] that corresponds to their edit</span>
-<a name="l00352"></a>00352     <span class="comment">// distance.</span>
-<a name="l00353"></a>00353     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int)options.size(); ++i) {
-<a name="l00354"></a>00354         <span class="keywordtype">int</span> dist = <a class="code" href="util_8h.html#acb5ab8e22924ec15ddd21cdf098e87bd">StringEditDistance</a>(str, options[i], maxDelta+1);
-<a name="l00355"></a>00355         <span class="keywordflow">if</span> (dist &lt;= maxDelta)
-<a name="l00356"></a>00356             matches[dist].push_back(options[i]);
-<a name="l00357"></a>00357     }
-<a name="l00358"></a>00358 
-<a name="l00359"></a>00359     <span class="comment">// And return the first one of them, if any, that has at least one</span>
-<a name="l00360"></a>00360     <span class="comment">// match.</span>
-<a name="l00361"></a>00361     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt;= maxDelta; ++i) {
-<a name="l00362"></a>00362         <span class="keywordflow">if</span> (matches[i].size())
-<a name="l00363"></a>00363             <span class="keywordflow">return</span> matches[i];
-<a name="l00364"></a>00364     }
-<a name="l00365"></a>00365     <span class="keywordflow">return</span> std::vector&lt;std::string&gt;();
-<a name="l00366"></a>00366 }
-<a name="l00367"></a>00367 
-<a name="l00368"></a>00368 
-<a name="l00369"></a>00369 <span class="keywordtype">void</span>
-<a name="l00370"></a><a class="code" href="util_8cpp.html#a89eb54035eeea66b37f8e8fc15e9a95d">00370</a> <a class="code" href="util_8h.html#a523e79710c3f66bf78e5f752589dfc41">GetDirectoryAndFileName</a>(<span class="keyword">const</span> std::string &amp;currentDirectory, 
-<a name="l00371"></a>00371                         <span class="keyword">const</span> std::string &amp;relativeName,
-<a name="l00372"></a>00372                         std::string *directory, std::string *<a class="code" href="lex_8ll.html#ae80f820219e45772366a2a68de6a54c4">filename</a>) {
-<a name="l00373"></a>00373 <span class="preprocessor">#ifdef ISPC_IS_WINDOWS</span>
-<a name="l00374"></a>00374 <span class="preprocessor"></span>    <span class="keywordtype">char</span> path[MAX_PATH];
-<a name="l00375"></a>00375     <span class="keyword">const</span> <span class="keywordtype">char</span> *combPath = PathCombine(path, currentDirectory.c_str(),
-<a name="l00376"></a>00376                                        relativeName.c_str());
-<a name="l00377"></a>00377     <a class="code" href="parse_8yy.html">assert</a>(combPath != <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00378"></a>00378     <span class="keyword">const</span> <span class="keywordtype">char</span> *filenamePtr = PathFindFileName(combPath);
-<a name="l00379"></a>00379     *filename = filenamePtr;
-<a name="l00380"></a>00380     *directory = std::string(combPath, filenamePtr - combPath);
-<a name="l00381"></a>00381 <span class="preprocessor">#else</span>
-<a name="l00382"></a>00382 <span class="preprocessor"></span>    <span class="comment">// We need a fully qualified path.  First, see if the current file name</span>
-<a name="l00383"></a>00383     <span class="comment">// is fully qualified itself--in that case, the current working</span>
-<a name="l00384"></a>00384     <span class="comment">// directory isn&#39;t needed.  </span>
-<a name="l00385"></a>00385     <span class="comment">// @todo This probably needs to be smarter for Windows...</span>
-<a name="l00386"></a>00386     std::string fullPath;
-<a name="l00387"></a>00387     <span class="keywordflow">if</span> (relativeName[0] == <span class="charliteral">&#39;/&#39;</span>)
-<a name="l00388"></a>00388         fullPath = relativeName;
-<a name="l00389"></a>00389     <span class="keywordflow">else</span> {
-<a name="l00390"></a>00390         fullPath = <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>;
-<a name="l00391"></a>00391         <span class="keywordflow">if</span> (fullPath[fullPath.size()-1] != <span class="charliteral">&#39;/&#39;</span>)
-<a name="l00392"></a>00392             fullPath.push_back(<span class="charliteral">&#39;/&#39;</span>);
-<a name="l00393"></a>00393         fullPath += relativeName;
-<a name="l00394"></a>00394     }
-<a name="l00395"></a>00395 
-<a name="l00396"></a>00396     <span class="comment">// now, we need to separate it into the base name and the directory</span>
-<a name="l00397"></a>00397     <span class="keyword">const</span> <span class="keywordtype">char</span> *fp = fullPath.c_str();
-<a name="l00398"></a>00398     <span class="keyword">const</span> <span class="keywordtype">char</span> *basenameStart = strrchr(fp, <span class="charliteral">&#39;/&#39;</span>);
-<a name="l00399"></a>00399     assert(basenameStart != <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00400"></a>00400     ++basenameStart;
-<a name="l00401"></a>00401     assert(basenameStart != <span class="charliteral">&#39;\0&#39;</span>);
-<a name="l00402"></a>00402     *filename = basenameStart;
-<a name="l00403"></a>00403     *directory = std::string(fp, basenameStart - fp);
-<a name="l00404"></a>00404 <span class="preprocessor">#endif // ISPC_IS_WINDOWS</span>
-<a name="l00405"></a>00405 <span class="preprocessor"></span>}
+<a name="l00347"></a>00347     <span class="keywordflow">if</span> (str.size() == 0 || (str.size() == 1 &amp;&amp; !isalpha(str[0])))
+<a name="l00348"></a>00348         <span class="comment">// don&#39;t even try...</span>
+<a name="l00349"></a>00349         <span class="keywordflow">return</span> std::vector&lt;std::string&gt;();
+<a name="l00350"></a>00350 
+<a name="l00351"></a>00351     <span class="keyword">const</span> <span class="keywordtype">int</span> maxDelta = 2;
+<a name="l00352"></a>00352     std::vector&lt;std::string&gt; matches[maxDelta+1];
+<a name="l00353"></a>00353 
+<a name="l00354"></a>00354     <span class="comment">// For all of the options that are up to maxDelta edit distance, store</span>
+<a name="l00355"></a>00355     <span class="comment">// them in the element of matches[] that corresponds to their edit</span>
+<a name="l00356"></a>00356     <span class="comment">// distance.</span>
+<a name="l00357"></a>00357     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int)options.size(); ++i) {
+<a name="l00358"></a>00358         <span class="keywordtype">int</span> dist = <a class="code" href="util_8h.html#acb5ab8e22924ec15ddd21cdf098e87bd">StringEditDistance</a>(str, options[i], maxDelta+1);
+<a name="l00359"></a>00359         <span class="keywordflow">if</span> (dist &lt;= maxDelta)
+<a name="l00360"></a>00360             matches[dist].push_back(options[i]);
+<a name="l00361"></a>00361     }
+<a name="l00362"></a>00362 
+<a name="l00363"></a>00363     <span class="comment">// And return the first one of them, if any, that has at least one</span>
+<a name="l00364"></a>00364     <span class="comment">// match.</span>
+<a name="l00365"></a>00365     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt;= maxDelta; ++i) {
+<a name="l00366"></a>00366         <span class="keywordflow">if</span> (matches[i].size())
+<a name="l00367"></a>00367             <span class="keywordflow">return</span> matches[i];
+<a name="l00368"></a>00368     }
+<a name="l00369"></a>00369     <span class="keywordflow">return</span> std::vector&lt;std::string&gt;();
+<a name="l00370"></a>00370 }
+<a name="l00371"></a>00371 
+<a name="l00372"></a>00372 
+<a name="l00373"></a>00373 <span class="keywordtype">void</span>
+<a name="l00374"></a><a class="code" href="util_8cpp.html#a89eb54035eeea66b37f8e8fc15e9a95d">00374</a> <a class="code" href="util_8h.html#a523e79710c3f66bf78e5f752589dfc41">GetDirectoryAndFileName</a>(<span class="keyword">const</span> std::string &amp;currentDirectory, 
+<a name="l00375"></a>00375                         <span class="keyword">const</span> std::string &amp;relativeName,
+<a name="l00376"></a>00376                         std::string *directory, std::string *<a class="code" href="lex_8ll.html#ae80f820219e45772366a2a68de6a54c4">filename</a>) {
+<a name="l00377"></a>00377 <span class="preprocessor">#ifdef ISPC_IS_WINDOWS</span>
+<a name="l00378"></a>00378 <span class="preprocessor"></span>    <span class="keywordtype">char</span> path[MAX_PATH];
+<a name="l00379"></a>00379     <span class="keyword">const</span> <span class="keywordtype">char</span> *combPath = PathCombine(path, currentDirectory.c_str(),
+<a name="l00380"></a>00380                                        relativeName.c_str());
+<a name="l00381"></a>00381     <a class="code" href="parse_8yy.html">assert</a>(combPath != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00382"></a>00382     <span class="keyword">const</span> <span class="keywordtype">char</span> *filenamePtr = PathFindFileName(combPath);
+<a name="l00383"></a>00383     *filename = filenamePtr;
+<a name="l00384"></a>00384     *directory = std::string(combPath, filenamePtr - combPath);
+<a name="l00385"></a>00385 <span class="preprocessor">#else</span>
+<a name="l00386"></a>00386 <span class="preprocessor"></span>    <span class="comment">// We need a fully qualified path.  First, see if the current file name</span>
+<a name="l00387"></a>00387     <span class="comment">// is fully qualified itself--in that case, the current working</span>
+<a name="l00388"></a>00388     <span class="comment">// directory isn&#39;t needed.  </span>
+<a name="l00389"></a>00389     <span class="comment">// @todo This probably needs to be smarter for Windows...</span>
+<a name="l00390"></a>00390     std::string fullPath;
+<a name="l00391"></a>00391     <span class="keywordflow">if</span> (relativeName[0] == <span class="charliteral">&#39;/&#39;</span>)
+<a name="l00392"></a>00392         fullPath = relativeName;
+<a name="l00393"></a>00393     <span class="keywordflow">else</span> {
+<a name="l00394"></a>00394         fullPath = <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>;
+<a name="l00395"></a>00395         <span class="keywordflow">if</span> (fullPath[fullPath.size()-1] != <span class="charliteral">&#39;/&#39;</span>)
+<a name="l00396"></a>00396             fullPath.push_back(<span class="charliteral">&#39;/&#39;</span>);
+<a name="l00397"></a>00397         fullPath += relativeName;
+<a name="l00398"></a>00398     }
+<a name="l00399"></a>00399 
+<a name="l00400"></a>00400     <span class="comment">// now, we need to separate it into the base name and the directory</span>
+<a name="l00401"></a>00401     <span class="keyword">const</span> <span class="keywordtype">char</span> *fp = fullPath.c_str();
+<a name="l00402"></a>00402     <span class="keyword">const</span> <span class="keywordtype">char</span> *basenameStart = strrchr(fp, <span class="charliteral">&#39;/&#39;</span>);
+<a name="l00403"></a>00403     assert(basenameStart != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00404"></a>00404     ++basenameStart;
+<a name="l00405"></a>00405     assert(basenameStart != <span class="charliteral">&#39;\0&#39;</span>);
+<a name="l00406"></a>00406     *filename = basenameStart;
+<a name="l00407"></a>00407     *directory = std::string(fp, basenameStart - fp);
+<a name="l00408"></a>00408 <span class="preprocessor">#endif // ISPC_IS_WINDOWS</span>
+<a name="l00409"></a>00409 <span class="preprocessor"></span>}
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 19 2011 15:25:34 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 16:25:21 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>
