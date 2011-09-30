@@ -241,305 +241,306 @@
 <a name="l00210"></a>00210 <span class="comment">        i32. */</span>
 <a name="l00211"></a>00211     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a0981fb1866ff3fce6c7db436f957c1c1">I1VecToBoolVec</a>(llvm::Value *b);
 <a name="l00212"></a>00212 <span class="comment"></span>
-<a name="l00213"></a>00213 <span class="comment">    /** Emit code to call the user-supplied ISPCMalloc function to</span>
-<a name="l00214"></a>00214 <span class="comment">        allocate space for an object of thee given type.  Returns the</span>
-<a name="l00215"></a>00215 <span class="comment">        pointer value returned by the ISPCMalloc call. */</span>
-<a name="l00216"></a>00216     llvm::Value *<a class="code" href="classFunctionEmitContext.html#afc1007667dc5e5e62eb12d2c27ddd93e">EmitMalloc</a>(<a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *ty, <span class="keywordtype">int</span> align = 0);
-<a name="l00217"></a>00217 <span class="comment"></span>
-<a name="l00218"></a>00218 <span class="comment">    /** Emit code to call the user-supplied ISPCFree function, passing it</span>
-<a name="l00219"></a>00219 <span class="comment">        the given pointer to storage previously allocated by an</span>
-<a name="l00220"></a>00220 <span class="comment">        EmitMalloc() call. */</span>
-<a name="l00221"></a>00221     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a1e3604b731da7c5c96ee1b2b386c997c">EmitFree</a>(llvm::Value *ptr);
-<a name="l00222"></a>00222 <span class="comment"></span>
-<a name="l00223"></a>00223 <span class="comment">    /** If the user has asked to compile the program with instrumentation,</span>
-<a name="l00224"></a>00224 <span class="comment">        this inserts a callback to the user-supplied instrumentation</span>
-<a name="l00225"></a>00225 <span class="comment">        function at the current point in the code. */</span>
-<a name="l00226"></a>00226     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#afd18e81376746987a23a7b93792e784a">AddInstrumentationPoint</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *note);<span class="comment"></span>
-<a name="l00227"></a>00227 <span class="comment">    /** @} */</span>
-<a name="l00228"></a>00228 <span class="comment"></span>
-<a name="l00229"></a>00229 <span class="comment">    /** @name Debugging support</span>
-<a name="l00230"></a>00230 <span class="comment">        @{</span>
-<a name="l00231"></a>00231 <span class="comment">    */</span><span class="comment"></span>
-<a name="l00232"></a>00232 <span class="comment">    /** Set the current source file position; subsequent emitted</span>
-<a name="l00233"></a>00233 <span class="comment">        instructions will have this position associated with them if</span>
-<a name="l00234"></a>00234 <span class="comment">        debugging information is being generated. */</span>
-<a name="l00235"></a>00235     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(<a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos);
-<a name="l00236"></a>00236 
-<a name="l00237"></a>00237     <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> <a class="code" href="classFunctionEmitContext.html#a05b789f752b81aa5102ba4815e665363">GetDebugPos</a>() <span class="keyword">const</span>;
-<a name="l00238"></a>00238 <span class="comment"></span>
-<a name="l00239"></a>00239 <span class="comment">    /** Adds debugging metadata to the given instruction.  If pos == NULL,</span>
-<a name="l00240"></a>00240 <span class="comment">        use FunctionEmitContext::currentPos as the source file position for</span>
-<a name="l00241"></a>00241 <span class="comment">        the instruction.  Similarly, if a DIScope is provided, it&#39;s used</span>
-<a name="l00242"></a>00242 <span class="comment">        and otherwise the scope is found from a GetDIScope() call.  This</span>
-<a name="l00243"></a>00243 <span class="comment">        takes a llvm::Value for the instruction rather than an</span>
-<a name="l00244"></a>00244 <span class="comment">        llvm::Instruction for convenience; in calling code we often have</span>
-<a name="l00245"></a>00245 <span class="comment">        Instructions stored using Value pointers; the code here returns</span>
-<a name="l00246"></a>00246 <span class="comment">        silently if it&#39;s not actually given an instruction. */</span>
-<a name="l00247"></a>00247     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(llvm::Value *instruction, <span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> *pos = <a class="code" href="parse_8yy.html">NULL</a>, 
-<a name="l00248"></a>00248                      llvm::DIScope *scope = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00249"></a>00249 <span class="comment"></span>
-<a name="l00250"></a>00250 <span class="comment">    /** Inform the debugging information generation code that a new scope</span>
-<a name="l00251"></a>00251 <span class="comment">        is starting in the source program. */</span>
-<a name="l00252"></a>00252     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#ad96c8e341180ab4eb3226a48b5a1f42b">StartScope</a>();
-<a name="l00253"></a>00253 <span class="comment"></span>
-<a name="l00254"></a>00254 <span class="comment">    /** Inform the debugging information generation code that the current</span>
-<a name="l00255"></a>00255 <span class="comment">        scope is ending in the source program. */</span>
-<a name="l00256"></a>00256     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#acad2d5fb50a781a1c281b0cc82436d6b">EndScope</a>();
-<a name="l00257"></a>00257 <span class="comment"></span>
-<a name="l00258"></a>00258 <span class="comment">    /** Returns the llvm::DIScope corresponding to the current program</span>
-<a name="l00259"></a>00259 <span class="comment">        scope. */</span>
-<a name="l00260"></a>00260     llvm::DIScope <a class="code" href="classFunctionEmitContext.html#a7208b4f5782af355e07417770e076920">GetDIScope</a>() <span class="keyword">const</span>;
-<a name="l00261"></a>00261 <span class="comment"></span>
-<a name="l00262"></a>00262 <span class="comment">    /** Emits debugging information for the variable represented by</span>
-<a name="l00263"></a>00263 <span class="comment">        sym.  */</span>
-<a name="l00264"></a>00264     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a77bb3ec58ee6b665615911cebee4491a">EmitVariableDebugInfo</a>(<a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *sym);
-<a name="l00265"></a>00265 <span class="comment"></span>
-<a name="l00266"></a>00266 <span class="comment">    /** Emits debugging information for the function parameter represented</span>
-<a name="l00267"></a>00267 <span class="comment">        by sym.  */</span>
-<a name="l00268"></a>00268     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a4758909832611e120590ada34ef65c34">EmitFunctionParameterDebugInfo</a>(<a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *sym);<span class="comment"></span>
-<a name="l00269"></a>00269 <span class="comment">    /** @} */</span>
-<a name="l00270"></a>00270 <span class="comment"></span>
-<a name="l00271"></a>00271 <span class="comment">    /** @name IR instruction emission</span>
-<a name="l00272"></a>00272 <span class="comment">        @brief These methods generally closely correspond to LLVM IR</span>
-<a name="l00273"></a>00273 <span class="comment">        instructions.  See the LLVM assembly language reference manual</span>
-<a name="l00274"></a>00274 <span class="comment">        (http://llvm.org/docs/LangRef.html) and the LLVM doxygen documentaion</span>
-<a name="l00275"></a>00275 <span class="comment">        (http://llvm.org/doxygen) for more information.  Here we will only</span>
-<a name="l00276"></a>00276 <span class="comment">        document significant generalizations to the functionality of the </span>
-<a name="l00277"></a>00277 <span class="comment">        corresponding basic LLVM instructions.</span>
-<a name="l00278"></a>00278 <span class="comment"></span>
-<a name="l00279"></a>00279 <span class="comment">        Beyond actually emitting the instruction, the implementations of</span>
-<a name="l00280"></a>00280 <span class="comment">        these methods in FunctionEmitContext also handle adding debugging</span>
-<a name="l00281"></a>00281 <span class="comment">        metadata if debugging symbols are enabled, adding the instructions</span>
-<a name="l00282"></a>00282 <span class="comment">        to the current basic block, and handling generalizations like</span>
-<a name="l00283"></a>00283 <span class="comment">        &#39;varying&#39; lvalues, arithmetic operations with VectorType operands,</span>
-<a name="l00284"></a>00284 <span class="comment">        etc.</span>
-<a name="l00285"></a>00285 <span class="comment">        @{</span>
-<a name="l00286"></a>00286 <span class="comment">    */</span><span class="comment"></span>
-<a name="l00287"></a>00287 <span class="comment">    /** Emit the binary operator given by the inst parameter.  If</span>
-<a name="l00288"></a>00288 <span class="comment">        llvm::Values corresponding to VectorTypes are given as operands,</span>
-<a name="l00289"></a>00289 <span class="comment">        this also handles applying the given operation to the vector</span>
-<a name="l00290"></a>00290 <span class="comment">        elements. */</span>
-<a name="l00291"></a>00291     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a0e1ad1750c0ef24b8b390ece464cb0e2">BinaryOperator</a>(llvm::Instruction::BinaryOps inst,
-<a name="l00292"></a>00292                                 llvm::Value *v0, llvm::Value *v1, 
-<a name="l00293"></a>00293                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00294"></a>00294 <span class="comment"></span>
-<a name="l00295"></a>00295 <span class="comment">    /** Emit the &quot;not&quot; operator.  Like BinaryOperator(), this also handles</span>
-<a name="l00296"></a>00296 <span class="comment">        a VectorType-based operand. */</span>
-<a name="l00297"></a>00297     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a0afc746cb2bc1dd2f5246428193de4c1">NotOperator</a>(llvm::Value *v, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00298"></a>00298 <span class="comment"></span>
-<a name="l00299"></a>00299 <span class="comment">    /** Emit a comparison instruction.  If the operands are VectorTypes,</span>
-<a name="l00300"></a>00300 <span class="comment">        then a value for the corresponding boolean VectorType is</span>
-<a name="l00301"></a>00301 <span class="comment">        returned. */</span>
-<a name="l00302"></a>00302     llvm::Value *<a class="code" href="classFunctionEmitContext.html#afb6ea3769585934a7652e7a91218b71c">CmpInst</a>(llvm::Instruction::OtherOps inst, 
-<a name="l00303"></a>00303                          llvm::CmpInst::Predicate pred,
-<a name="l00304"></a>00304                          llvm::Value *v0, llvm::Value *v1, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00305"></a>00305 
-<a name="l00306"></a>00306     llvm::Value *<a class="code" href="classFunctionEmitContext.html#aae63d1b9a48bab086bf7b2ed3a3e72a2">BitCastInst</a>(llvm::Value *value, <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type,
-<a name="l00307"></a>00307                              <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00308"></a>00308     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a6c823c25b7cf411ad75b923671bd0116">PtrToIntInst</a>(llvm::Value *value, <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type,
-<a name="l00309"></a>00309                               <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00310"></a>00310     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a3442f3ac37c166fb28108fa9fc8dbe32">IntToPtrInst</a>(llvm::Value *value, <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type,
-<a name="l00311"></a>00311                               <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00312"></a>00312     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#a5a9d55ca5f5c54fc207837c5fbc477b5">TruncInst</a>(llvm::Value *value, <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type,
-<a name="l00313"></a>00313                                  <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00314"></a>00314     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#a3dae470519089d75e0eb3c48ab562b17">CastInst</a>(llvm::Instruction::CastOps op, llvm::Value *value,
-<a name="l00315"></a>00315                                 <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00316"></a>00316     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#ac91915d4cefb17d64ff6e005e1988567">FPCastInst</a>(llvm::Value *value, <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type, 
-<a name="l00317"></a>00317                                   <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00318"></a>00318     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#aa90857a1d16cbeb51596f704bc1edfd2">SExtInst</a>(llvm::Value *value, <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type, 
-<a name="l00319"></a>00319                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00320"></a>00320     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#abc9285fe1c5c9bc01c7769bca769e948">ZExtInst</a>(llvm::Value *value, <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type, 
-<a name="l00321"></a>00321                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00213"></a>00213 <span class="comment">    /** Returns the size of the given type. */</span>
+<a name="l00214"></a>00214     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a6b00162767bb2032e9ac99ad2e723518">SizeOf</a>(<a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *ty);
+<a name="l00215"></a>00215 <span class="comment"></span>
+<a name="l00216"></a>00216 <span class="comment">    /** If the user has asked to compile the program with instrumentation,</span>
+<a name="l00217"></a>00217 <span class="comment">        this inserts a callback to the user-supplied instrumentation</span>
+<a name="l00218"></a>00218 <span class="comment">        function at the current point in the code. */</span>
+<a name="l00219"></a>00219     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#afd18e81376746987a23a7b93792e784a">AddInstrumentationPoint</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *note);<span class="comment"></span>
+<a name="l00220"></a>00220 <span class="comment">    /** @} */</span>
+<a name="l00221"></a>00221 <span class="comment"></span>
+<a name="l00222"></a>00222 <span class="comment">    /** @name Debugging support</span>
+<a name="l00223"></a>00223 <span class="comment">        @{</span>
+<a name="l00224"></a>00224 <span class="comment">    */</span><span class="comment"></span>
+<a name="l00225"></a>00225 <span class="comment">    /** Set the current source file position; subsequent emitted</span>
+<a name="l00226"></a>00226 <span class="comment">        instructions will have this position associated with them if</span>
+<a name="l00227"></a>00227 <span class="comment">        debugging information is being generated. */</span>
+<a name="l00228"></a>00228     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(<a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos);
+<a name="l00229"></a>00229 
+<a name="l00230"></a>00230     <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> <a class="code" href="classFunctionEmitContext.html#a05b789f752b81aa5102ba4815e665363">GetDebugPos</a>() <span class="keyword">const</span>;
+<a name="l00231"></a>00231 <span class="comment"></span>
+<a name="l00232"></a>00232 <span class="comment">    /** Adds debugging metadata to the given instruction.  If pos == NULL,</span>
+<a name="l00233"></a>00233 <span class="comment">        use FunctionEmitContext::currentPos as the source file position for</span>
+<a name="l00234"></a>00234 <span class="comment">        the instruction.  Similarly, if a DIScope is provided, it&#39;s used</span>
+<a name="l00235"></a>00235 <span class="comment">        and otherwise the scope is found from a GetDIScope() call.  This</span>
+<a name="l00236"></a>00236 <span class="comment">        takes a llvm::Value for the instruction rather than an</span>
+<a name="l00237"></a>00237 <span class="comment">        llvm::Instruction for convenience; in calling code we often have</span>
+<a name="l00238"></a>00238 <span class="comment">        Instructions stored using Value pointers; the code here returns</span>
+<a name="l00239"></a>00239 <span class="comment">        silently if it&#39;s not actually given an instruction. */</span>
+<a name="l00240"></a>00240     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a046c0d0c4f0a1c40a59af1a727a58f2f">AddDebugPos</a>(llvm::Value *instruction, <span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> *pos = <a class="code" href="parse_8yy.html">NULL</a>, 
+<a name="l00241"></a>00241                      llvm::DIScope *scope = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00242"></a>00242 <span class="comment"></span>
+<a name="l00243"></a>00243 <span class="comment">    /** Inform the debugging information generation code that a new scope</span>
+<a name="l00244"></a>00244 <span class="comment">        is starting in the source program. */</span>
+<a name="l00245"></a>00245     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#ad96c8e341180ab4eb3226a48b5a1f42b">StartScope</a>();
+<a name="l00246"></a>00246 <span class="comment"></span>
+<a name="l00247"></a>00247 <span class="comment">    /** Inform the debugging information generation code that the current</span>
+<a name="l00248"></a>00248 <span class="comment">        scope is ending in the source program. */</span>
+<a name="l00249"></a>00249     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#acad2d5fb50a781a1c281b0cc82436d6b">EndScope</a>();
+<a name="l00250"></a>00250 <span class="comment"></span>
+<a name="l00251"></a>00251 <span class="comment">    /** Returns the llvm::DIScope corresponding to the current program</span>
+<a name="l00252"></a>00252 <span class="comment">        scope. */</span>
+<a name="l00253"></a>00253     llvm::DIScope <a class="code" href="classFunctionEmitContext.html#a7208b4f5782af355e07417770e076920">GetDIScope</a>() <span class="keyword">const</span>;
+<a name="l00254"></a>00254 <span class="comment"></span>
+<a name="l00255"></a>00255 <span class="comment">    /** Emits debugging information for the variable represented by</span>
+<a name="l00256"></a>00256 <span class="comment">        sym.  */</span>
+<a name="l00257"></a>00257     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a77bb3ec58ee6b665615911cebee4491a">EmitVariableDebugInfo</a>(<a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *sym);
+<a name="l00258"></a>00258 <span class="comment"></span>
+<a name="l00259"></a>00259 <span class="comment">    /** Emits debugging information for the function parameter represented</span>
+<a name="l00260"></a>00260 <span class="comment">        by sym.  */</span>
+<a name="l00261"></a>00261     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a4758909832611e120590ada34ef65c34">EmitFunctionParameterDebugInfo</a>(<a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *sym);<span class="comment"></span>
+<a name="l00262"></a>00262 <span class="comment">    /** @} */</span>
+<a name="l00263"></a>00263 <span class="comment"></span>
+<a name="l00264"></a>00264 <span class="comment">    /** @name IR instruction emission</span>
+<a name="l00265"></a>00265 <span class="comment">        @brief These methods generally closely correspond to LLVM IR</span>
+<a name="l00266"></a>00266 <span class="comment">        instructions.  See the LLVM assembly language reference manual</span>
+<a name="l00267"></a>00267 <span class="comment">        (http://llvm.org/docs/LangRef.html) and the LLVM doxygen documentaion</span>
+<a name="l00268"></a>00268 <span class="comment">        (http://llvm.org/doxygen) for more information.  Here we will only</span>
+<a name="l00269"></a>00269 <span class="comment">        document significant generalizations to the functionality of the </span>
+<a name="l00270"></a>00270 <span class="comment">        corresponding basic LLVM instructions.</span>
+<a name="l00271"></a>00271 <span class="comment"></span>
+<a name="l00272"></a>00272 <span class="comment">        Beyond actually emitting the instruction, the implementations of</span>
+<a name="l00273"></a>00273 <span class="comment">        these methods in FunctionEmitContext also handle adding debugging</span>
+<a name="l00274"></a>00274 <span class="comment">        metadata if debugging symbols are enabled, adding the instructions</span>
+<a name="l00275"></a>00275 <span class="comment">        to the current basic block, and handling generalizations like</span>
+<a name="l00276"></a>00276 <span class="comment">        &#39;varying&#39; lvalues, arithmetic operations with VectorType operands,</span>
+<a name="l00277"></a>00277 <span class="comment">        etc.</span>
+<a name="l00278"></a>00278 <span class="comment">        @{</span>
+<a name="l00279"></a>00279 <span class="comment">    */</span><span class="comment"></span>
+<a name="l00280"></a>00280 <span class="comment">    /** Emit the binary operator given by the inst parameter.  If</span>
+<a name="l00281"></a>00281 <span class="comment">        llvm::Values corresponding to VectorTypes are given as operands,</span>
+<a name="l00282"></a>00282 <span class="comment">        this also handles applying the given operation to the vector</span>
+<a name="l00283"></a>00283 <span class="comment">        elements. */</span>
+<a name="l00284"></a>00284     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a0e1ad1750c0ef24b8b390ece464cb0e2">BinaryOperator</a>(llvm::Instruction::BinaryOps inst,
+<a name="l00285"></a>00285                                 llvm::Value *v0, llvm::Value *v1, 
+<a name="l00286"></a>00286                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00287"></a>00287 <span class="comment"></span>
+<a name="l00288"></a>00288 <span class="comment">    /** Emit the &quot;not&quot; operator.  Like BinaryOperator(), this also handles</span>
+<a name="l00289"></a>00289 <span class="comment">        a VectorType-based operand. */</span>
+<a name="l00290"></a>00290     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a0afc746cb2bc1dd2f5246428193de4c1">NotOperator</a>(llvm::Value *v, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00291"></a>00291 <span class="comment"></span>
+<a name="l00292"></a>00292 <span class="comment">    /** Emit a comparison instruction.  If the operands are VectorTypes,</span>
+<a name="l00293"></a>00293 <span class="comment">        then a value for the corresponding boolean VectorType is</span>
+<a name="l00294"></a>00294 <span class="comment">        returned. */</span>
+<a name="l00295"></a>00295     llvm::Value *<a class="code" href="classFunctionEmitContext.html#afb6ea3769585934a7652e7a91218b71c">CmpInst</a>(llvm::Instruction::OtherOps inst, 
+<a name="l00296"></a>00296                          llvm::CmpInst::Predicate pred,
+<a name="l00297"></a>00297                          llvm::Value *v0, llvm::Value *v1, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00298"></a>00298 
+<a name="l00299"></a>00299     llvm::Value *<a class="code" href="classFunctionEmitContext.html#aae63d1b9a48bab086bf7b2ed3a3e72a2">BitCastInst</a>(llvm::Value *value, <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type,
+<a name="l00300"></a>00300                              <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00301"></a>00301     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a6c823c25b7cf411ad75b923671bd0116">PtrToIntInst</a>(llvm::Value *value, <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type,
+<a name="l00302"></a>00302                               <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00303"></a>00303     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a3442f3ac37c166fb28108fa9fc8dbe32">IntToPtrInst</a>(llvm::Value *value, <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type,
+<a name="l00304"></a>00304                               <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00305"></a>00305     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#a5a9d55ca5f5c54fc207837c5fbc477b5">TruncInst</a>(llvm::Value *value, <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type,
+<a name="l00306"></a>00306                                  <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00307"></a>00307     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#a3dae470519089d75e0eb3c48ab562b17">CastInst</a>(llvm::Instruction::CastOps op, llvm::Value *value,
+<a name="l00308"></a>00308                                 <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00309"></a>00309     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#ac91915d4cefb17d64ff6e005e1988567">FPCastInst</a>(llvm::Value *value, <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type, 
+<a name="l00310"></a>00310                                   <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00311"></a>00311     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#aa90857a1d16cbeb51596f704bc1edfd2">SExtInst</a>(llvm::Value *value, <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type, 
+<a name="l00312"></a>00312                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00313"></a>00313     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#abc9285fe1c5c9bc01c7769bca769e948">ZExtInst</a>(llvm::Value *value, <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type, 
+<a name="l00314"></a>00314                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00315"></a>00315 <span class="comment"></span>
+<a name="l00316"></a>00316 <span class="comment">    /** This GEP method is a generalization of the standard one in LLVM; it</span>
+<a name="l00317"></a>00317 <span class="comment">        supports both uniform and varying basePtr values (an array of</span>
+<a name="l00318"></a>00318 <span class="comment">        pointers) as well as uniform and varying index values (arrays of</span>
+<a name="l00319"></a>00319 <span class="comment">        indices). */</span>
+<a name="l00320"></a>00320     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(llvm::Value *basePtr, llvm::Value *index0,
+<a name="l00321"></a>00321                                    llvm::Value *index1, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
 <a name="l00322"></a>00322 <span class="comment"></span>
-<a name="l00323"></a>00323 <span class="comment">    /** This GEP method is a generalization of the standard one in LLVM; it</span>
-<a name="l00324"></a>00324 <span class="comment">        supports both uniform and varying basePtr values (an array of</span>
-<a name="l00325"></a>00325 <span class="comment">        pointers) as well as uniform and varying index values (arrays of</span>
-<a name="l00326"></a>00326 <span class="comment">        indices). */</span>
-<a name="l00327"></a>00327     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(llvm::Value *basePtr, llvm::Value *index0,
-<a name="l00328"></a>00328                                    llvm::Value *index1, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00329"></a>00329 <span class="comment"></span>
-<a name="l00330"></a>00330 <span class="comment">    /** This is a convenience method to generate a GEP instruction with</span>
-<a name="l00331"></a>00331 <span class="comment">        indices with values with known constant values as the ispc program</span>
-<a name="l00332"></a>00332 <span class="comment">        is being compiled. */</span>
-<a name="l00333"></a>00333     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(llvm::Value *basePtr, <span class="keywordtype">int</span> v0, <span class="keywordtype">int</span> v1,
-<a name="l00334"></a>00334                                    <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00335"></a>00335 <span class="comment"></span>
-<a name="l00336"></a>00336 <span class="comment">    /** Load from the memory location(s) given by lvalue.  The lvalue may</span>
-<a name="l00337"></a>00337 <span class="comment">        be varying, in which case this corresponds to a gather from the</span>
-<a name="l00338"></a>00338 <span class="comment">        multiple memory locations given by the array of pointer values</span>
-<a name="l00339"></a>00339 <span class="comment">        given by the lvalue.  If the lvalue is not varying, then the type</span>
-<a name="l00340"></a>00340 <span class="comment">        parameter may be NULL. */</span>
-<a name="l00341"></a>00341     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a5912b4abd4eae25a074cd8c2c86f505d">LoadInst</a>(llvm::Value *lvalue, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type,
-<a name="l00342"></a>00342                           <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00343"></a>00343 <span class="comment"></span>
-<a name="l00344"></a>00344 <span class="comment">    /** Emits an alloca instruction to allocate stack storage for the given</span>
-<a name="l00345"></a>00345 <span class="comment">        type.  If a non-zero alignment is specified, the object is also</span>
-<a name="l00346"></a>00346 <span class="comment">        allocated at the given alignment.  By default, the alloca</span>
-<a name="l00347"></a>00347 <span class="comment">        instruction is added at the start of the function in the entry</span>
-<a name="l00348"></a>00348 <span class="comment">        basic block; if it should be added to the current basic block, then</span>
-<a name="l00349"></a>00349 <span class="comment">        the atEntryBlock parameter should be false. */</span> 
-<a name="l00350"></a>00350     llvm::Value *<a class="code" href="classFunctionEmitContext.html#aa21be6e3fb27438472f5f153bbec75b9">AllocaInst</a>(<a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *llvmType, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>,
-<a name="l00351"></a>00351                             <span class="keywordtype">int</span> align = 0, <span class="keywordtype">bool</span> atEntryBlock = <span class="keyword">true</span>);
-<a name="l00352"></a>00352 <span class="comment"></span>
-<a name="l00353"></a>00353 <span class="comment">    /** Standard store instruction; for this variant, the lvalue must be a</span>
-<a name="l00354"></a>00354 <span class="comment">        single pointer, not a varying lvalue. */</span>
-<a name="l00355"></a>00355     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(llvm::Value *rvalue, llvm::Value *lvalue, 
-<a name="l00356"></a>00356                    <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00357"></a>00357 <span class="comment"></span>
-<a name="l00358"></a>00358 <span class="comment">    /** In this variant of StoreInst(), the lvalue may be varying.  If so,</span>
-<a name="l00359"></a>00359 <span class="comment">        this corresponds to a scatter.  Whether the lvalue is uniform of</span>
-<a name="l00360"></a>00360 <span class="comment">        varying, the given storeMask is used to mask the stores so that</span>
-<a name="l00361"></a>00361 <span class="comment">        they only execute for the active program instances. */</span>
-<a name="l00362"></a>00362     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(llvm::Value *rvalue, llvm::Value *lvalue,
-<a name="l00363"></a>00363                    llvm::Value *storeMask, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *rvalueType,
-<a name="l00364"></a>00364                    <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00365"></a>00365 
-<a name="l00366"></a>00366     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a7bc697a10788fbc50dc03ba9cd9a384f">BranchInst</a>(llvm::BasicBlock *block);
-<a name="l00367"></a>00367     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a7bc697a10788fbc50dc03ba9cd9a384f">BranchInst</a>(llvm::BasicBlock *trueBlock, llvm::BasicBlock *falseBlock,
-<a name="l00368"></a>00368                     llvm::Value *test);
-<a name="l00369"></a>00369 <span class="comment"></span>
-<a name="l00370"></a>00370 <span class="comment">    /** This convenience method maps to an llvm::ExtractElementInst if the</span>
-<a name="l00371"></a>00371 <span class="comment">        given value is a llvm::VectorType, and to an llvm::ExtractValueInst</span>
-<a name="l00372"></a>00372 <span class="comment">        otherwise. */</span>
-<a name="l00373"></a>00373     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a371302ab96cfb2a4f03c372259a4654b">ExtractInst</a>(llvm::Value *v, <span class="keywordtype">int</span> elt, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00374"></a>00374 <span class="comment"></span>
-<a name="l00375"></a>00375 <span class="comment">    /** This convenience method maps to an llvm::InsertElementInst if the</span>
-<a name="l00376"></a>00376 <span class="comment">        given value is a llvm::VectorType, and to an llvm::InsertValueInst</span>
-<a name="l00377"></a>00377 <span class="comment">        otherwise. */</span>
-<a name="l00378"></a>00378     llvm::Value *<a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">InsertInst</a>(llvm::Value *v, llvm::Value *eltVal, <span class="keywordtype">int</span> elt, 
-<a name="l00379"></a>00379                             <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00380"></a>00380 
-<a name="l00381"></a>00381     llvm::PHINode *<a class="code" href="classFunctionEmitContext.html#a36a40482e06bc37fab82d2b3b0639006">PhiNode</a>(<a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type, <span class="keywordtype">int</span> count, 
-<a name="l00382"></a>00382                            <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00383"></a>00383     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#a6ee68401d7f16bc5f386cec0b3e217e9">SelectInst</a>(llvm::Value *test, llvm::Value *val0,
-<a name="l00384"></a>00384                                   llvm::Value *val1, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00385"></a>00385 
-<a name="l00386"></a>00386     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(llvm::Function *func, 
-<a name="l00387"></a>00387                                 <span class="keyword">const</span> std::vector&lt;llvm::Value *&gt; &amp;args,
-<a name="l00388"></a>00388                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);<span class="comment"></span>
-<a name="l00389"></a>00389 <span class="comment">    /** This is a convenience method that issues a call instruction to a</span>
-<a name="l00390"></a>00390 <span class="comment">        function that takes just a single argument. */</span>
-<a name="l00391"></a>00391     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(llvm::Function *func, llvm::Value *arg,
-<a name="l00392"></a>00392                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00393"></a>00393 <span class="comment"></span>
-<a name="l00394"></a>00394 <span class="comment">    /** This is a convenience method that issues a call instruction to a</span>
-<a name="l00395"></a>00395 <span class="comment">        function that takes two arguments. */</span>
-<a name="l00396"></a>00396     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(llvm::Function *func, llvm::Value *arg0,
-<a name="l00397"></a>00397                                 llvm::Value *arg1, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00398"></a>00398 <span class="comment"></span>
-<a name="l00399"></a>00399 <span class="comment">    /** Launch an asynchronous task to run the given function, passing it</span>
-<a name="l00400"></a>00400 <span class="comment">        he given argument values. */</span>
-<a name="l00401"></a>00401     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#a7da1698b7dc0b6210d0f1fc7953d580e">LaunchInst</a>(llvm::Function *callee, 
-<a name="l00402"></a>00402                                   std::vector&lt;llvm::Value *&gt; &amp;argVals);
-<a name="l00403"></a>00403 
-<a name="l00404"></a>00404     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#a3a8db168dd56251d3a82819c551d519a">ReturnInst</a>();<span class="comment"></span>
-<a name="l00405"></a>00405 <span class="comment">    /** @} */</span>
-<a name="l00406"></a>00406 
-<a name="l00407"></a>00407 <span class="keyword">private</span>:<span class="comment"></span>
-<a name="l00408"></a>00408 <span class="comment">    /** The basic block into which we add any alloca instructions that need</span>
-<a name="l00409"></a>00409 <span class="comment">        to go at the very start of the function. */</span>
-<a name="l00410"></a><a class="code" href="classFunctionEmitContext.html#a43fb87d454ebf2e2646e1cab19215b77">00410</a>     llvm::BasicBlock *<a class="code" href="classFunctionEmitContext.html#a43fb87d454ebf2e2646e1cab19215b77">allocaBlock</a>;
+<a name="l00323"></a>00323 <span class="comment">    /** This is a convenience method to generate a GEP instruction with</span>
+<a name="l00324"></a>00324 <span class="comment">        indices with values with known constant values as the ispc program</span>
+<a name="l00325"></a>00325 <span class="comment">        is being compiled. */</span>
+<a name="l00326"></a>00326     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a34dbc27e51aa3e1fae00ef99d827cbc1">GetElementPtrInst</a>(llvm::Value *basePtr, <span class="keywordtype">int</span> v0, <span class="keywordtype">int</span> v1,
+<a name="l00327"></a>00327                                    <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00328"></a>00328 <span class="comment"></span>
+<a name="l00329"></a>00329 <span class="comment">    /** Load from the memory location(s) given by lvalue.  The lvalue may</span>
+<a name="l00330"></a>00330 <span class="comment">        be varying, in which case this corresponds to a gather from the</span>
+<a name="l00331"></a>00331 <span class="comment">        multiple memory locations given by the array of pointer values</span>
+<a name="l00332"></a>00332 <span class="comment">        given by the lvalue.  If the lvalue is not varying, then the type</span>
+<a name="l00333"></a>00333 <span class="comment">        parameter may be NULL. */</span>
+<a name="l00334"></a>00334     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a5912b4abd4eae25a074cd8c2c86f505d">LoadInst</a>(llvm::Value *lvalue, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type,
+<a name="l00335"></a>00335                           <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00336"></a>00336 <span class="comment"></span>
+<a name="l00337"></a>00337 <span class="comment">    /** Emits an alloca instruction to allocate stack storage for the given</span>
+<a name="l00338"></a>00338 <span class="comment">        type.  If a non-zero alignment is specified, the object is also</span>
+<a name="l00339"></a>00339 <span class="comment">        allocated at the given alignment.  By default, the alloca</span>
+<a name="l00340"></a>00340 <span class="comment">        instruction is added at the start of the function in the entry</span>
+<a name="l00341"></a>00341 <span class="comment">        basic block; if it should be added to the current basic block, then</span>
+<a name="l00342"></a>00342 <span class="comment">        the atEntryBlock parameter should be false. */</span> 
+<a name="l00343"></a>00343     llvm::Value *<a class="code" href="classFunctionEmitContext.html#aa21be6e3fb27438472f5f153bbec75b9">AllocaInst</a>(<a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *llvmType, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>,
+<a name="l00344"></a>00344                             <span class="keywordtype">int</span> align = 0, <span class="keywordtype">bool</span> atEntryBlock = <span class="keyword">true</span>);
+<a name="l00345"></a>00345 <span class="comment"></span>
+<a name="l00346"></a>00346 <span class="comment">    /** Standard store instruction; for this variant, the lvalue must be a</span>
+<a name="l00347"></a>00347 <span class="comment">        single pointer, not a varying lvalue. */</span>
+<a name="l00348"></a>00348     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(llvm::Value *rvalue, llvm::Value *lvalue, 
+<a name="l00349"></a>00349                    <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00350"></a>00350 <span class="comment"></span>
+<a name="l00351"></a>00351 <span class="comment">    /** In this variant of StoreInst(), the lvalue may be varying.  If so,</span>
+<a name="l00352"></a>00352 <span class="comment">        this corresponds to a scatter.  Whether the lvalue is uniform of</span>
+<a name="l00353"></a>00353 <span class="comment">        varying, the given storeMask is used to mask the stores so that</span>
+<a name="l00354"></a>00354 <span class="comment">        they only execute for the active program instances. */</span>
+<a name="l00355"></a>00355     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#af046d8afad96671b2cd772fb952c3560">StoreInst</a>(llvm::Value *rvalue, llvm::Value *lvalue,
+<a name="l00356"></a>00356                    llvm::Value *storeMask, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *rvalueType,
+<a name="l00357"></a>00357                    <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00358"></a>00358 
+<a name="l00359"></a>00359     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a7bc697a10788fbc50dc03ba9cd9a384f">BranchInst</a>(llvm::BasicBlock *block);
+<a name="l00360"></a>00360     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a7bc697a10788fbc50dc03ba9cd9a384f">BranchInst</a>(llvm::BasicBlock *trueBlock, llvm::BasicBlock *falseBlock,
+<a name="l00361"></a>00361                     llvm::Value *test);
+<a name="l00362"></a>00362 <span class="comment"></span>
+<a name="l00363"></a>00363 <span class="comment">    /** This convenience method maps to an llvm::ExtractElementInst if the</span>
+<a name="l00364"></a>00364 <span class="comment">        given value is a llvm::VectorType, and to an llvm::ExtractValueInst</span>
+<a name="l00365"></a>00365 <span class="comment">        otherwise. */</span>
+<a name="l00366"></a>00366     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a371302ab96cfb2a4f03c372259a4654b">ExtractInst</a>(llvm::Value *v, <span class="keywordtype">int</span> elt, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00367"></a>00367 <span class="comment"></span>
+<a name="l00368"></a>00368 <span class="comment">    /** This convenience method maps to an llvm::InsertElementInst if the</span>
+<a name="l00369"></a>00369 <span class="comment">        given value is a llvm::VectorType, and to an llvm::InsertValueInst</span>
+<a name="l00370"></a>00370 <span class="comment">        otherwise. */</span>
+<a name="l00371"></a>00371     llvm::Value *<a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">InsertInst</a>(llvm::Value *v, llvm::Value *eltVal, <span class="keywordtype">int</span> elt, 
+<a name="l00372"></a>00372                             <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00373"></a>00373 
+<a name="l00374"></a>00374     llvm::PHINode *<a class="code" href="classFunctionEmitContext.html#a36a40482e06bc37fab82d2b3b0639006">PhiNode</a>(<a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type, <span class="keywordtype">int</span> count, 
+<a name="l00375"></a>00375                            <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00376"></a>00376     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#a6ee68401d7f16bc5f386cec0b3e217e9">SelectInst</a>(llvm::Value *test, llvm::Value *val0,
+<a name="l00377"></a>00377                                   llvm::Value *val1, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00378"></a>00378 
+<a name="l00379"></a>00379     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(llvm::Function *func, 
+<a name="l00380"></a>00380                                 <span class="keyword">const</span> std::vector&lt;llvm::Value *&gt; &amp;args,
+<a name="l00381"></a>00381                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);<span class="comment"></span>
+<a name="l00382"></a>00382 <span class="comment">    /** This is a convenience method that issues a call instruction to a</span>
+<a name="l00383"></a>00383 <span class="comment">        function that takes just a single argument. */</span>
+<a name="l00384"></a>00384     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(llvm::Function *func, llvm::Value *arg,
+<a name="l00385"></a>00385                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00386"></a>00386 <span class="comment"></span>
+<a name="l00387"></a>00387 <span class="comment">    /** This is a convenience method that issues a call instruction to a</span>
+<a name="l00388"></a>00388 <span class="comment">        function that takes two arguments. */</span>
+<a name="l00389"></a>00389     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#aaf639fba0f1915df0a6eb36d8a4e1054">CallInst</a>(llvm::Function *func, llvm::Value *arg0,
+<a name="l00390"></a>00390                                 llvm::Value *arg1, <span class="keyword">const</span> <span class="keywordtype">char</span> *name = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00391"></a>00391 <span class="comment"></span>
+<a name="l00392"></a>00392 <span class="comment">    /** Launch an asynchronous task to run the given function, passing it</span>
+<a name="l00393"></a>00393 <span class="comment">        he given argument values. */</span>
+<a name="l00394"></a>00394     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#a7a55ae08e57e9da2ca31e0b3d357f8a8">LaunchInst</a>(llvm::Function *callee, 
+<a name="l00395"></a>00395                                   std::vector&lt;llvm::Value *&gt; &amp;argVals,
+<a name="l00396"></a>00396                                   llvm::Value *launchCount);
+<a name="l00397"></a>00397 
+<a name="l00398"></a>00398     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a1bee488502f17ad7b049ecc728b01d9f">SyncInst</a>();
+<a name="l00399"></a>00399 
+<a name="l00400"></a>00400     llvm::Instruction *<a class="code" href="classFunctionEmitContext.html#a3a8db168dd56251d3a82819c551d519a">ReturnInst</a>();<span class="comment"></span>
+<a name="l00401"></a>00401 <span class="comment">    /** @} */</span>
+<a name="l00402"></a>00402 
+<a name="l00403"></a>00403 <span class="keyword">private</span>:<span class="comment"></span>
+<a name="l00404"></a>00404 <span class="comment">    /** The basic block into which we add any alloca instructions that need</span>
+<a name="l00405"></a>00405 <span class="comment">        to go at the very start of the function. */</span>
+<a name="l00406"></a><a class="code" href="classFunctionEmitContext.html#a43fb87d454ebf2e2646e1cab19215b77">00406</a>     llvm::BasicBlock *<a class="code" href="classFunctionEmitContext.html#a43fb87d454ebf2e2646e1cab19215b77">allocaBlock</a>;
+<a name="l00407"></a>00407 <span class="comment"></span>
+<a name="l00408"></a>00408 <span class="comment">    /** The current basic block into which we&#39;re emitting new</span>
+<a name="l00409"></a>00409 <span class="comment">        instructions */</span>
+<a name="l00410"></a><a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">00410</a>     llvm::BasicBlock *<a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>;
 <a name="l00411"></a>00411 <span class="comment"></span>
-<a name="l00412"></a>00412 <span class="comment">    /** The current basic block into which we&#39;re emitting new</span>
-<a name="l00413"></a>00413 <span class="comment">        instructions */</span>
-<a name="l00414"></a><a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">00414</a>     llvm::BasicBlock *<a class="code" href="classFunctionEmitContext.html#a502ad43f0f2d2769909a6b3073dd8576">bblock</a>;
+<a name="l00412"></a>00412 <span class="comment">    /** Pointer to stack-allocated memory that stores the current value of</span>
+<a name="l00413"></a>00413 <span class="comment">        the program mask. */</span>
+<a name="l00414"></a><a class="code" href="classFunctionEmitContext.html#a0bafa9baf8ad255b8a81e1e479d18069">00414</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a0bafa9baf8ad255b8a81e1e479d18069">maskPtr</a>;
 <a name="l00415"></a>00415 <span class="comment"></span>
-<a name="l00416"></a>00416 <span class="comment">    /** Pointer to stack-allocated memory that stores the current value of</span>
-<a name="l00417"></a>00417 <span class="comment">        the program mask. */</span>
-<a name="l00418"></a><a class="code" href="classFunctionEmitContext.html#a0bafa9baf8ad255b8a81e1e479d18069">00418</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a0bafa9baf8ad255b8a81e1e479d18069">maskPtr</a>;
-<a name="l00419"></a>00419 <span class="comment"></span>
-<a name="l00420"></a>00420 <span class="comment">    /** Current source file position; if debugging information is being</span>
-<a name="l00421"></a>00421 <span class="comment">        generated, this position is used to set file/line information for</span>
-<a name="l00422"></a>00422 <span class="comment">        instructions. */</span>
-<a name="l00423"></a><a class="code" href="classFunctionEmitContext.html#a9fdefd08729bad7b92bb5a863a8ab1d3">00423</a>     <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> <a class="code" href="classFunctionEmitContext.html#a9fdefd08729bad7b92bb5a863a8ab1d3">currentPos</a>;
+<a name="l00416"></a>00416 <span class="comment">    /** Current source file position; if debugging information is being</span>
+<a name="l00417"></a>00417 <span class="comment">        generated, this position is used to set file/line information for</span>
+<a name="l00418"></a>00418 <span class="comment">        instructions. */</span>
+<a name="l00419"></a><a class="code" href="classFunctionEmitContext.html#a9fdefd08729bad7b92bb5a863a8ab1d3">00419</a>     <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> <a class="code" href="classFunctionEmitContext.html#a9fdefd08729bad7b92bb5a863a8ab1d3">currentPos</a>;
+<a name="l00420"></a>00420 <span class="comment"></span>
+<a name="l00421"></a>00421 <span class="comment">    /** Source file position where the function definition started.  Used</span>
+<a name="l00422"></a>00422 <span class="comment">        for error messages and debugging symbols. */</span>
+<a name="l00423"></a><a class="code" href="classFunctionEmitContext.html#a38e62fbe39f859de6af6850b7c25ceb7">00423</a>     <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> <a class="code" href="classFunctionEmitContext.html#a38e62fbe39f859de6af6850b7c25ceb7">funcStartPos</a>;
 <a name="l00424"></a>00424 <span class="comment"></span>
-<a name="l00425"></a>00425 <span class="comment">    /** Source file position where the function definition started.  Used</span>
-<a name="l00426"></a>00426 <span class="comment">        for error messages and debugging symbols. */</span>
-<a name="l00427"></a><a class="code" href="classFunctionEmitContext.html#a38e62fbe39f859de6af6850b7c25ceb7">00427</a>     <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> <a class="code" href="classFunctionEmitContext.html#a38e62fbe39f859de6af6850b7c25ceb7">funcStartPos</a>;
-<a name="l00428"></a>00428 <span class="comment"></span>
-<a name="l00429"></a>00429 <span class="comment">    /** Type of result that the current function returns. */</span>
-<a name="l00430"></a><a class="code" href="classFunctionEmitContext.html#a34e0ff7deddeb163fd9bd5b872d415e5">00430</a>     <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *<a class="code" href="classFunctionEmitContext.html#a34e0ff7deddeb163fd9bd5b872d415e5">returnType</a>;
-<a name="l00431"></a>00431 <span class="comment"></span>
-<a name="l00432"></a>00432 <span class="comment">    /** Value of the program mask when the function starts execution.  */</span>
-<a name="l00433"></a><a class="code" href="classFunctionEmitContext.html#a39136f8b6a80dfe066ab999580443354">00433</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a39136f8b6a80dfe066ab999580443354">entryMask</a>;
+<a name="l00425"></a>00425 <span class="comment">    /** Type of result that the current function returns. */</span>
+<a name="l00426"></a><a class="code" href="classFunctionEmitContext.html#a34e0ff7deddeb163fd9bd5b872d415e5">00426</a>     <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *<a class="code" href="classFunctionEmitContext.html#a34e0ff7deddeb163fd9bd5b872d415e5">returnType</a>;
+<a name="l00427"></a>00427 <span class="comment"></span>
+<a name="l00428"></a>00428 <span class="comment">    /** Value of the program mask when the function starts execution.  */</span>
+<a name="l00429"></a><a class="code" href="classFunctionEmitContext.html#a39136f8b6a80dfe066ab999580443354">00429</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a39136f8b6a80dfe066ab999580443354">entryMask</a>;
+<a name="l00430"></a>00430 <span class="comment"></span>
+<a name="l00431"></a>00431 <span class="comment">    /** If currently in a loop body, the value of the mask at the start of</span>
+<a name="l00432"></a>00432 <span class="comment">        the loop. */</span>
+<a name="l00433"></a><a class="code" href="classFunctionEmitContext.html#a46c7ad184896863ef0182f056c3073cc">00433</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a46c7ad184896863ef0182f056c3073cc">loopMask</a>;
 <a name="l00434"></a>00434 <span class="comment"></span>
-<a name="l00435"></a>00435 <span class="comment">    /** If currently in a loop body, the value of the mask at the start of</span>
-<a name="l00436"></a>00436 <span class="comment">        the loop. */</span>
-<a name="l00437"></a><a class="code" href="classFunctionEmitContext.html#a46c7ad184896863ef0182f056c3073cc">00437</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a46c7ad184896863ef0182f056c3073cc">loopMask</a>;
-<a name="l00438"></a>00438 <span class="comment"></span>
-<a name="l00439"></a>00439 <span class="comment">    /** If currently in a loop body, this is a pointer to memory to store a</span>
-<a name="l00440"></a>00440 <span class="comment">        mask value that represents which of the lanes have executed a</span>
-<a name="l00441"></a>00441 <span class="comment">        &#39;break&#39; statement.  If we&#39;re not in a loop body, this should be</span>
-<a name="l00442"></a>00442 <span class="comment">        NULL. */</span>
-<a name="l00443"></a><a class="code" href="classFunctionEmitContext.html#a56832c436bff30560157ce7c33bb7ccc">00443</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a56832c436bff30560157ce7c33bb7ccc">breakLanesPtr</a>;
-<a name="l00444"></a>00444 <span class="comment"></span>
-<a name="l00445"></a>00445 <span class="comment">    /** Similar to breakLanesPtr, if we&#39;re inside a loop, this is a pointer</span>
-<a name="l00446"></a>00446 <span class="comment">        to memory to record which of the program instances have executed a</span>
-<a name="l00447"></a>00447 <span class="comment">        &#39;continue&#39; statement. */</span>
-<a name="l00448"></a><a class="code" href="classFunctionEmitContext.html#af42a2e67e11b1428c58512022ea3ab22">00448</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#af42a2e67e11b1428c58512022ea3ab22">continueLanesPtr</a>;
-<a name="l00449"></a>00449 <span class="comment"></span>
-<a name="l00450"></a>00450 <span class="comment">    /** If we&#39;re inside a loop, this gives the basic block immediately</span>
-<a name="l00451"></a>00451 <span class="comment">        after the current loop, which we will jump to if all of the lanes</span>
-<a name="l00452"></a>00452 <span class="comment">        have executed a break statement or are otherwise done with the</span>
-<a name="l00453"></a>00453 <span class="comment">        loop. */</span>
-<a name="l00454"></a><a class="code" href="classFunctionEmitContext.html#ad766a2e5011ee512afe116a5fb410616">00454</a>     llvm::BasicBlock *<a class="code" href="classFunctionEmitContext.html#ad766a2e5011ee512afe116a5fb410616">breakTarget</a>;
+<a name="l00435"></a>00435 <span class="comment">    /** If currently in a loop body, this is a pointer to memory to store a</span>
+<a name="l00436"></a>00436 <span class="comment">        mask value that represents which of the lanes have executed a</span>
+<a name="l00437"></a>00437 <span class="comment">        &#39;break&#39; statement.  If we&#39;re not in a loop body, this should be</span>
+<a name="l00438"></a>00438 <span class="comment">        NULL. */</span>
+<a name="l00439"></a><a class="code" href="classFunctionEmitContext.html#a56832c436bff30560157ce7c33bb7ccc">00439</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a56832c436bff30560157ce7c33bb7ccc">breakLanesPtr</a>;
+<a name="l00440"></a>00440 <span class="comment"></span>
+<a name="l00441"></a>00441 <span class="comment">    /** Similar to breakLanesPtr, if we&#39;re inside a loop, this is a pointer</span>
+<a name="l00442"></a>00442 <span class="comment">        to memory to record which of the program instances have executed a</span>
+<a name="l00443"></a>00443 <span class="comment">        &#39;continue&#39; statement. */</span>
+<a name="l00444"></a><a class="code" href="classFunctionEmitContext.html#af42a2e67e11b1428c58512022ea3ab22">00444</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#af42a2e67e11b1428c58512022ea3ab22">continueLanesPtr</a>;
+<a name="l00445"></a>00445 <span class="comment"></span>
+<a name="l00446"></a>00446 <span class="comment">    /** If we&#39;re inside a loop, this gives the basic block immediately</span>
+<a name="l00447"></a>00447 <span class="comment">        after the current loop, which we will jump to if all of the lanes</span>
+<a name="l00448"></a>00448 <span class="comment">        have executed a break statement or are otherwise done with the</span>
+<a name="l00449"></a>00449 <span class="comment">        loop. */</span>
+<a name="l00450"></a><a class="code" href="classFunctionEmitContext.html#ad766a2e5011ee512afe116a5fb410616">00450</a>     llvm::BasicBlock *<a class="code" href="classFunctionEmitContext.html#ad766a2e5011ee512afe116a5fb410616">breakTarget</a>;
+<a name="l00451"></a>00451 <span class="comment"></span>
+<a name="l00452"></a>00452 <span class="comment">    /** If we&#39;re inside a loop, this gives the block to jump to if all of</span>
+<a name="l00453"></a>00453 <span class="comment">        the running lanes have executed a &#39;continue&#39; statement. */</span>
+<a name="l00454"></a><a class="code" href="classFunctionEmitContext.html#a878b1e9104aca1964a9dab00fb9c9a0c">00454</a>     llvm::BasicBlock *<a class="code" href="classFunctionEmitContext.html#a878b1e9104aca1964a9dab00fb9c9a0c">continueTarget</a>;
 <a name="l00455"></a>00455 <span class="comment"></span>
-<a name="l00456"></a>00456 <span class="comment">    /** If we&#39;re inside a loop, this gives the block to jump to if all of</span>
-<a name="l00457"></a>00457 <span class="comment">        the running lanes have executed a &#39;continue&#39; statement. */</span>
-<a name="l00458"></a><a class="code" href="classFunctionEmitContext.html#a878b1e9104aca1964a9dab00fb9c9a0c">00458</a>     llvm::BasicBlock *<a class="code" href="classFunctionEmitContext.html#a878b1e9104aca1964a9dab00fb9c9a0c">continueTarget</a>;
-<a name="l00459"></a>00459 <span class="comment"></span>
-<a name="l00460"></a>00460 <span class="comment">    /** A pointer to memory that records which of the program instances</span>
-<a name="l00461"></a>00461 <span class="comment">        have executed a &#39;return&#39; statement (and are thus really truly done</span>
-<a name="l00462"></a>00462 <span class="comment">        running any more instructions in this functions. */</span>
-<a name="l00463"></a><a class="code" href="classFunctionEmitContext.html#ab9349c4bee756ec5c431250b874cabb4">00463</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#ab9349c4bee756ec5c431250b874cabb4">returnedLanesPtr</a>;
-<a name="l00464"></a>00464 <span class="comment"></span>
-<a name="l00465"></a>00465 <span class="comment">    /** A pointer to memory to store the return value for the function.</span>
-<a name="l00466"></a>00466 <span class="comment">        Since difference program instances may execute &#39;return&#39; statements</span>
-<a name="l00467"></a>00467 <span class="comment">        at different times, we need to accumulate the return values as they</span>
-<a name="l00468"></a>00468 <span class="comment">        come in until we return for real. */</span>
-<a name="l00469"></a><a class="code" href="classFunctionEmitContext.html#a70d3b0bcdece0038c841143f2e9c2470">00469</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a70d3b0bcdece0038c841143f2e9c2470">returnValuePtr</a>;
-<a name="l00470"></a>00470 <span class="comment"></span>
-<a name="l00471"></a>00471 <span class="comment">    /** The CFInfo structure records information about a nesting level of</span>
-<a name="l00472"></a>00472 <span class="comment">        control flow.  This vector lets us see what control flow is going</span>
-<a name="l00473"></a>00473 <span class="comment">        around outside the current position in the function being</span>
-<a name="l00474"></a>00474 <span class="comment">        emitted. */</span>
-<a name="l00475"></a><a class="code" href="classFunctionEmitContext.html#a131b9486a073cd7d230e44f1ba705856">00475</a>     std::vector&lt;CFInfo *&gt; <a class="code" href="classFunctionEmitContext.html#a131b9486a073cd7d230e44f1ba705856">controlFlowInfo</a>;
+<a name="l00456"></a>00456 <span class="comment">    /** A pointer to memory that records which of the program instances</span>
+<a name="l00457"></a>00457 <span class="comment">        have executed a &#39;return&#39; statement (and are thus really truly done</span>
+<a name="l00458"></a>00458 <span class="comment">        running any more instructions in this functions. */</span>
+<a name="l00459"></a><a class="code" href="classFunctionEmitContext.html#ab9349c4bee756ec5c431250b874cabb4">00459</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#ab9349c4bee756ec5c431250b874cabb4">returnedLanesPtr</a>;
+<a name="l00460"></a>00460 <span class="comment"></span>
+<a name="l00461"></a>00461 <span class="comment">    /** A pointer to memory to store the return value for the function.</span>
+<a name="l00462"></a>00462 <span class="comment">        Since difference program instances may execute &#39;return&#39; statements</span>
+<a name="l00463"></a>00463 <span class="comment">        at different times, we need to accumulate the return values as they</span>
+<a name="l00464"></a>00464 <span class="comment">        come in until we return for real. */</span>
+<a name="l00465"></a><a class="code" href="classFunctionEmitContext.html#a70d3b0bcdece0038c841143f2e9c2470">00465</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a70d3b0bcdece0038c841143f2e9c2470">returnValuePtr</a>;
+<a name="l00466"></a>00466 <span class="comment"></span>
+<a name="l00467"></a>00467 <span class="comment">    /** The CFInfo structure records information about a nesting level of</span>
+<a name="l00468"></a>00468 <span class="comment">        control flow.  This vector lets us see what control flow is going</span>
+<a name="l00469"></a>00469 <span class="comment">        around outside the current position in the function being</span>
+<a name="l00470"></a>00470 <span class="comment">        emitted. */</span>
+<a name="l00471"></a><a class="code" href="classFunctionEmitContext.html#a131b9486a073cd7d230e44f1ba705856">00471</a>     std::vector&lt;CFInfo *&gt; <a class="code" href="classFunctionEmitContext.html#a131b9486a073cd7d230e44f1ba705856">controlFlowInfo</a>;
+<a name="l00472"></a>00472 <span class="comment"></span>
+<a name="l00473"></a>00473 <span class="comment">    /** DIFile object corresponding to the source file where the current</span>
+<a name="l00474"></a>00474 <span class="comment">        function was defined (used for debugging info0. */</span>
+<a name="l00475"></a><a class="code" href="classFunctionEmitContext.html#a6b538b64e366e5f8b1cd2b337bb3e58e">00475</a>     llvm::DIFile <a class="code" href="classFunctionEmitContext.html#a6b538b64e366e5f8b1cd2b337bb3e58e">diFile</a>;
 <a name="l00476"></a>00476 <span class="comment"></span>
-<a name="l00477"></a>00477 <span class="comment">    /** DIFile object corresponding to the source file where the current</span>
-<a name="l00478"></a>00478 <span class="comment">        function was defined (used for debugging info0. */</span>
-<a name="l00479"></a><a class="code" href="classFunctionEmitContext.html#a6b538b64e366e5f8b1cd2b337bb3e58e">00479</a>     llvm::DIFile <a class="code" href="classFunctionEmitContext.html#a6b538b64e366e5f8b1cd2b337bb3e58e">diFile</a>;
+<a name="l00477"></a>00477 <span class="comment">    /** DISubprogram corresponding to this function (used for debugging</span>
+<a name="l00478"></a>00478 <span class="comment">        info). */</span>
+<a name="l00479"></a><a class="code" href="classFunctionEmitContext.html#ae16dadc4bdea63ee392db443df9bc498">00479</a>     llvm::DISubprogram <a class="code" href="classFunctionEmitContext.html#ae16dadc4bdea63ee392db443df9bc498">diFunction</a>;
 <a name="l00480"></a>00480 <span class="comment"></span>
-<a name="l00481"></a>00481 <span class="comment">    /** DISubprogram corresponding to this function (used for debugging</span>
-<a name="l00482"></a>00482 <span class="comment">        info). */</span>
-<a name="l00483"></a><a class="code" href="classFunctionEmitContext.html#ae16dadc4bdea63ee392db443df9bc498">00483</a>     llvm::DISubprogram <a class="code" href="classFunctionEmitContext.html#ae16dadc4bdea63ee392db443df9bc498">diFunction</a>;
+<a name="l00481"></a>00481 <span class="comment">    /** These correspond to the current set of nested scopes in the</span>
+<a name="l00482"></a>00482 <span class="comment">        function. */</span>
+<a name="l00483"></a><a class="code" href="classFunctionEmitContext.html#a33de7363ee49bf96deef05348e69d9e5">00483</a>     std::vector&lt;llvm::DILexicalBlock&gt; <a class="code" href="classFunctionEmitContext.html#a33de7363ee49bf96deef05348e69d9e5">debugScopes</a>;
 <a name="l00484"></a>00484 <span class="comment"></span>
-<a name="l00485"></a>00485 <span class="comment">    /** These correspond to the current set of nested scopes in the</span>
-<a name="l00486"></a>00486 <span class="comment">        function. */</span>
-<a name="l00487"></a><a class="code" href="classFunctionEmitContext.html#a33de7363ee49bf96deef05348e69d9e5">00487</a>     std::vector&lt;llvm::DILexicalBlock&gt; <a class="code" href="classFunctionEmitContext.html#a33de7363ee49bf96deef05348e69d9e5">debugScopes</a>;
-<a name="l00488"></a>00488 <span class="comment"></span>
-<a name="l00489"></a>00489 <span class="comment">    /** True if a &#39;launch&#39; statement has been encountered in the function. */</span>
-<a name="l00490"></a><a class="code" href="classFunctionEmitContext.html#a3f63b1d45380c0e3d4779b30b8a4e6bc">00490</a>     <span class="keywordtype">bool</span> <a class="code" href="classFunctionEmitContext.html#a3f63b1d45380c0e3d4779b30b8a4e6bc">launchedTasks</a>;
-<a name="l00491"></a>00491 
-<a name="l00492"></a>00492     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a59ab6bbd178043ac032609c5e2cdd6ea">pointerVectorToVoidPointers</a>(llvm::Value *value);
-<a name="l00493"></a>00493     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#ac734fd6600297126709e557d58ea993b">addGSMetadata</a>(llvm::Instruction *inst, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos);
-<a name="l00494"></a>00494     <span class="keywordtype">bool</span> <a class="code" href="classFunctionEmitContext.html#a8b466b825cc31cb642bd51dc07162de0">ifsInLoopAllUniform</a>() <span class="keyword">const</span>;
-<a name="l00495"></a>00495     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#aaaf71fed85908fa347468ef34fa2a643">jumpIfAllLoopLanesAreDone</a>(llvm::BasicBlock *target);
-<a name="l00496"></a>00496     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a9dee674dca41bf363bf5ad4841b133ec">emitGatherCallback</a>(llvm::Value *lvalue, llvm::Value *retPtr);
-<a name="l00497"></a>00497 
-<a name="l00498"></a>00498     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#ac7803deb9fe2df2f9310320b6e16141f">restoreMaskGivenReturns</a>(llvm::Value *oldMask);
-<a name="l00499"></a>00499 
-<a name="l00500"></a>00500     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a73e8d7862627b47a8591309666555ed4">scatter</a>(llvm::Value *rvalue, llvm::Value *lvalue, 
-<a name="l00501"></a>00501                  llvm::Value *<a class="code" href="classFunctionEmitContext.html#a0bafa9baf8ad255b8a81e1e479d18069">maskPtr</a>, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *rvalueType);
-<a name="l00502"></a>00502     llvm::Value *<a class="code" href="classFunctionEmitContext.html#aa50154a905e04929fb7b0c4a32907d30">gather</a>(llvm::Value *lvalue, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type,
-<a name="l00503"></a>00503                         <span class="keyword">const</span> <span class="keywordtype">char</span> *name);
-<a name="l00504"></a>00504     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a49e3027e4cfe9f8c91b76200ab4f952d">maskedStore</a>(llvm::Value *rvalue, llvm::Value *lvalue,
-<a name="l00505"></a>00505                      <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *rvalueType, llvm::Value *<a class="code" href="classFunctionEmitContext.html#a0bafa9baf8ad255b8a81e1e479d18069">maskPtr</a>);
-<a name="l00506"></a>00506 };
-<a name="l00507"></a>00507 
-<a name="l00508"></a>00508 <span class="preprocessor">#endif // ISPC_CTX_H</span>
+<a name="l00485"></a>00485 <span class="comment">    /** True if a &#39;launch&#39; statement has been encountered in the function. */</span>
+<a name="l00486"></a><a class="code" href="classFunctionEmitContext.html#a3f63b1d45380c0e3d4779b30b8a4e6bc">00486</a>     <span class="keywordtype">bool</span> <a class="code" href="classFunctionEmitContext.html#a3f63b1d45380c0e3d4779b30b8a4e6bc">launchedTasks</a>;
+<a name="l00487"></a>00487 <span class="comment"></span>
+<a name="l00488"></a>00488 <span class="comment">    /** This is a pointer to a void * that is passed to the ISPCLaunch(),</span>
+<a name="l00489"></a>00489 <span class="comment">        ISPCAlloc(), and ISPCSync() routines as a handle to the group ot</span>
+<a name="l00490"></a>00490 <span class="comment">        tasks launched from the current function. */</span>
+<a name="l00491"></a><a class="code" href="classFunctionEmitContext.html#ad022d37a4e7151614328aae0760849b1">00491</a>     llvm::Value *<a class="code" href="classFunctionEmitContext.html#ad022d37a4e7151614328aae0760849b1">launchGroupHandlePtr</a>;
+<a name="l00492"></a>00492 
+<a name="l00493"></a>00493     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a59ab6bbd178043ac032609c5e2cdd6ea">pointerVectorToVoidPointers</a>(llvm::Value *value);
+<a name="l00494"></a>00494     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#ac734fd6600297126709e557d58ea993b">addGSMetadata</a>(llvm::Instruction *inst, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos);
+<a name="l00495"></a>00495     <span class="keywordtype">bool</span> <a class="code" href="classFunctionEmitContext.html#a8b466b825cc31cb642bd51dc07162de0">ifsInLoopAllUniform</a>() <span class="keyword">const</span>;
+<a name="l00496"></a>00496     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#aaaf71fed85908fa347468ef34fa2a643">jumpIfAllLoopLanesAreDone</a>(llvm::BasicBlock *target);
+<a name="l00497"></a>00497     llvm::Value *<a class="code" href="classFunctionEmitContext.html#a9dee674dca41bf363bf5ad4841b133ec">emitGatherCallback</a>(llvm::Value *lvalue, llvm::Value *retPtr);
+<a name="l00498"></a>00498 
+<a name="l00499"></a>00499     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#ac7803deb9fe2df2f9310320b6e16141f">restoreMaskGivenReturns</a>(llvm::Value *oldMask);
+<a name="l00500"></a>00500 
+<a name="l00501"></a>00501     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a73e8d7862627b47a8591309666555ed4">scatter</a>(llvm::Value *rvalue, llvm::Value *lvalue, 
+<a name="l00502"></a>00502                  llvm::Value *<a class="code" href="classFunctionEmitContext.html#a0bafa9baf8ad255b8a81e1e479d18069">maskPtr</a>, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *rvalueType);
+<a name="l00503"></a>00503     llvm::Value *<a class="code" href="classFunctionEmitContext.html#aa50154a905e04929fb7b0c4a32907d30">gather</a>(llvm::Value *lvalue, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type,
+<a name="l00504"></a>00504                         <span class="keyword">const</span> <span class="keywordtype">char</span> *name);
+<a name="l00505"></a>00505     <span class="keywordtype">void</span> <a class="code" href="classFunctionEmitContext.html#a49e3027e4cfe9f8c91b76200ab4f952d">maskedStore</a>(llvm::Value *rvalue, llvm::Value *lvalue,
+<a name="l00506"></a>00506                      <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *rvalueType, llvm::Value *<a class="code" href="classFunctionEmitContext.html#a0bafa9baf8ad255b8a81e1e479d18069">maskPtr</a>);
+<a name="l00507"></a>00507 };
+<a name="l00508"></a>00508 
+<a name="l00509"></a>00509 <span class="preprocessor">#endif // ISPC_CTX_H</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 16:25:18 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Sep 30 2011 14:55:36 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

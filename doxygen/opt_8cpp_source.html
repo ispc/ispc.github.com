@@ -882,7 +882,7 @@
 <a name="l00851"></a>00851     <a class="code" href="parse_8yy.html">assert</a>(llvm::isa&lt;const llvm::StructType&gt;(type));
 <a name="l00852"></a>00852     <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *ptrType = llvm::PointerType::get(type, 0);
 <a name="l00853"></a>00853     llvm::Value *nullPtr = llvm::Constant::getNullValue(ptrType);
-<a name="l00854"></a>00854     llvm::Value *index[2] = { <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(0), <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>((int32_t)member) };
+<a name="l00854"></a>00854     llvm::Value *index[2] = { <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(0), <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>((<a class="code" href="parse_8yy.html#a10e8b2d266b06d06f972396bf71af292">int32_t</a>)member) };
 <a name="l00855"></a>00855 <span class="preprocessor">#if defined(LLVM_3_0) || defined(LLVM_3_0svn)</span>
 <a name="l00856"></a>00856 <span class="preprocessor"></span>    llvm::ArrayRef&lt;llvm::Value *&gt; arrayRef(&amp;index[0], &amp;index[2]);
 <a name="l00857"></a>00857     llvm::Value *poffset = llvm::GetElementPtrInst::Create(nullPtr, arrayRef,
@@ -2599,7 +2599,7 @@
 <a name="l02568"></a>02568 <span class="keywordtype">bool</span>
 <a name="l02569"></a><a class="code" href="classMakeInternalFuncsStaticPass.html#a04447eed71b984143fee98cc25d5ac34">02569</a> <a class="code" href="classMakeInternalFuncsStaticPass.html#a04447eed71b984143fee98cc25d5ac34">MakeInternalFuncsStaticPass::runOnModule</a>(llvm::Module &amp;module) {
 <a name="l02570"></a>02570     <span class="keyword">const</span> <span class="keywordtype">char</span> *names[] = {
-<a name="l02571"></a>02571         <span class="stringliteral">&quot;__do_print&quot;</span>, <span class="stringliteral">&quot;__fast_masked_vload&quot;</span>,
+<a name="l02571"></a>02571         <span class="stringliteral">&quot;__do_print&quot;</span>, <span class="stringliteral">&quot;__fast_masked_vload&quot;</span>, <span class="stringliteral">&quot;__num_cores&quot;</span>,
 <a name="l02572"></a>02572         <span class="stringliteral">&quot;__gather_base_offsets_i8&quot;</span>, <span class="stringliteral">&quot;__gather_base_offsets_i16&quot;</span>,
 <a name="l02573"></a>02573         <span class="stringliteral">&quot;__gather_base_offsets_i32&quot;</span>, <span class="stringliteral">&quot;__gather_base_offsets_i64&quot;</span>,
 <a name="l02574"></a>02574         <span class="stringliteral">&quot;__gather_elt_8&quot;</span>, <span class="stringliteral">&quot;__gather_elt_16&quot;</span>, 
@@ -2639,7 +2639,7 @@
 <a name="l02608"></a>02608 }
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 26 2011 16:25:20 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Sep 30 2011 14:55:37 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>
