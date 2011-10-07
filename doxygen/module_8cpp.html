@@ -41,6 +41,7 @@
 <code>#include &quot;<a class="el" href="module_8h_source.html">module.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="util_8h_source.html">util.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="ctx_8h_source.html">ctx.h</a>&quot;</code><br/>
+<code>#include &quot;func.h&quot;</code><br/>
 <code>#include &quot;<a class="el" href="builtins_8h_source.html">builtins.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="decl_8h_source.html">decl.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="type_8h_source.html">type.h</a>&quot;</code><br/>
@@ -64,12 +65,14 @@
 <code>#include &lt;llvm/DerivedTypes.h&gt;</code><br/>
 <code>#include &lt;llvm/Instructions.h&gt;</code><br/>
 <code>#include &lt;llvm/Intrinsics.h&gt;</code><br/>
+<code>#include &lt;llvm/PassManager.h&gt;</code><br/>
+<code>#include &lt;llvm/PassRegistry.h&gt;</code><br/>
+<code>#include &lt;llvm/Transforms/IPO.h&gt;</code><br/>
 <code>#include &lt;llvm/Support/FormattedStream.h&gt;</code><br/>
 <code>#include &lt;llvm/Support/FileUtilities.h&gt;</code><br/>
 <code>#include &lt;llvm/Target/TargetMachine.h&gt;</code><br/>
 <code>#include &lt;llvm/Target/TargetOptions.h&gt;</code><br/>
 <code>#include &lt;llvm/Target/TargetData.h&gt;</code><br/>
-<code>#include &lt;llvm/PassManager.h&gt;</code><br/>
 <code>#include &lt;llvm/Analysis/Verifier.h&gt;</code><br/>
 <code>#include &lt;llvm/Support/CFG.h&gt;</code><br/>
 <code>#include &lt;clang/Frontend/CompilerInstance.h&gt;</code><br/>
@@ -86,7 +89,7 @@ Include dependency graph for module.cpp:<!-- endSectionHeader --></div>
 <!-- startSectionSummary --><!-- endSectionSummary --><!-- startSectionContent --><div class="dyncontent">
 <div class="center"><img src="module_8cpp__incl.png" border="0" usemap="#module_8cpp" alt=""/></div>
 <map name="module_8cpp" id="module_8cpp">
-<area shape="rect" id="node3" href="module_8h.html" title="Declaration of the Module class, which is the ispc&#45;side representation of the results of compiling a ..." alt="" coords="1319,161,1404,189"/><area shape="rect" id="node9" href="util_8h.html" title="util.h" alt="" coords="231,161,287,189"/><area shape="rect" id="node12" href="ctx_8h.html" title="Declaration of the FunctionEmitContext class." alt="" coords="888,83,944,111"/><area shape="rect" id="node23" href="builtins_8h.html" title="Declarations of functions related to builtins and the standard library." alt="" coords="311,161,393,189"/><area shape="rect" id="node26" href="decl_8h.html" title="Declarations related to type declarations; the parser basically creates instances of these classes..." alt="" coords="417,161,479,189"/><area shape="rect" id="node29" href="type_8h.html" title="File with declarations for classes related to type representation." alt="" coords="1567,161,1631,189"/><area shape="rect" id="node36" href="expr_8h.html" title="Expr abstract base class and expression implementations." alt="" coords="1516,83,1580,111"/><area shape="rect" id="node40" href="sym_8h.html" title="header file with declarations for symbol and symbol table classes." alt="" coords="151,83,212,111"/><area shape="rect" id="node45" href="stmt_8h.html" title="File with declarations for classes related to statements in the language." alt="" coords="1428,161,1492,189"/><area shape="rect" id="node48" href="opt_8h.html" title="Declarations related to optimization passes." alt="" coords="25,161,81,189"/><area shape="rect" id="node51" href="llvmutil_8h.html" title="Header file with declarations for various LLVM utility stuff." alt="" coords="1705,161,1791,189"/><area shape="rect" id="node65" href="ctype_8h.html" title="ctype.h" alt="" coords="2049,83,2121,111"/><area shape="rect" id="node67" href="types_8h.html" title="sys/types.h" alt="" coords="2145,83,2244,111"/><area shape="rect" id="node69" href="stat_8h.html" title="sys/stat.h" alt="" coords="2268,83,2353,111"/><area shape="rect" id="node71" href="fcntl_8h.html" title="fcntl.h" alt="" coords="2377,83,2441,111"/><area shape="rect" id="node5" href="ispc_8h.html" title="Main ispc.header file." alt="" coords="451,238,512,266"/></map>
+<area shape="rect" id="node3" href="module_8h.html" title="Declaration of the Module class, which is the ispc&#45;side representation of the results of compiling a ..." alt="" coords="885,83,971,111"/><area shape="rect" id="node11" href="util_8h.html" title="util.h" alt="" coords="29,161,85,189"/><area shape="rect" id="node14" href="ctx_8h.html" title="Declaration of the FunctionEmitContext class." alt="" coords="360,83,416,111"/><area shape="rect" id="node23" href="builtins_8h.html" title="Declarations of functions related to builtins and the standard library." alt="" coords="707,161,789,189"/><area shape="rect" id="node26" href="decl_8h.html" title="Declarations related to type declarations; the parser basically creates instances of these classes..." alt="" coords="621,161,683,189"/><area shape="rect" id="node29" href="type_8h.html" title="File with declarations for classes related to type representation." alt="" coords="1045,161,1109,189"/><area shape="rect" id="node36" href="expr_8h.html" title="Expr abstract base class and expression implementations." alt="" coords="995,83,1059,111"/><area shape="rect" id="node41" href="sym_8h.html" title="header file with declarations for symbol and symbol table classes." alt="" coords="611,83,672,111"/><area shape="rect" id="node45" href="stmt_8h.html" title="File with declarations for classes related to statements in the language." alt="" coords="797,83,861,111"/><area shape="rect" id="node49" href="opt_8h.html" title="Declarations related to optimization passes." alt="" coords="109,161,165,189"/><area shape="rect" id="node52" href="llvmutil_8h.html" title="Header file with declarations for various LLVM utility stuff." alt="" coords="1184,161,1269,189"/><area shape="rect" id="node64" href="ctype_8h.html" title="ctype.h" alt="" coords="1528,83,1600,111"/><area shape="rect" id="node66" href="types_8h.html" title="sys/types.h" alt="" coords="1624,83,1723,111"/><area shape="rect" id="node68" href="stat_8h.html" title="sys/stat.h" alt="" coords="1747,83,1832,111"/><area shape="rect" id="node70" href="fcntl_8h.html" title="fcntl.h" alt="" coords="1856,83,1920,111"/><area shape="rect" id="node5" href="ispc_8h.html" title="Main ispc.header file." alt="" coords="669,238,731,266"/></map>
 <!-- endSectionContent --></div>
 
 <p><a href="module_8cpp_source.html">Go to the source code of this file.</a></p>
@@ -104,12 +107,6 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="module_8cpp.html#a4e5bd2d129903df83f3d13effaf8f3e4">YY_BUFFER_STATE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a8e73de13bb3d001e1a70c22c1fe3a561">yy_scan_string</a> (const char *)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="module_8cpp.html#a4e5bd2d129903df83f3d13effaf8f3e4">YY_BUFFER_STATE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#acf718042795f3687be7a5d8646b506a7">yy_create_buffer</a> (FILE *, int)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a30f751982057cd4e20725340a1392665">yy_delete_buffer</a> (<a class="el" href="module_8cpp.html#a4e5bd2d129903df83f3d13effaf8f3e4">YY_BUFFER_STATE</a>)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a43472c1315bc80d4cd53c0a95bdb5f2f">lRecursiveCheckVarying</a> (const <a class="el" href="classType.html">Type</a> *t)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a6d0e82ba95ffcd012d3fabada61b780c">lCheckForVaryingParameter</a> (<a class="el" href="classSymbol.html">Symbol</a> *sym)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a7ff434f7260de3cc9b6bf5b32dcfcb4b">lCheckForStructParameters</a> (const <a class="el" href="classFunctionType.html">FunctionType</a> *ftype, <a class="el" href="structSourcePos.html">SourcePos</a> pos)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#aab241dd47711af4eb8ff641df902a85f">lInitFunSymDecl</a> (<a class="el" href="classDeclSpecs.html">DeclSpecs</a> *ds, <a class="el" href="classDeclarator.html">Declarator</a> *decl)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#ab85e9e35858c627862bbd77ed4fb4211">lCopyInTaskParameter</a> (int i, llvm::Value *structArgPtr, <a class="el" href="classDeclarator.html">Declarator</a> *decl, <a class="el" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a96e0dac81067856106007be2885f1082">lEmitFunctionCode</a> (<a class="el" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx, llvm::Function *function, const <a class="el" href="classFunctionType.html">FunctionType</a> *ft, <a class="el" href="classSymbol.html">Symbol</a> *funSym, <a class="el" href="classDeclarator.html">Declarator</a> *decl, <a class="el" href="classStmt.html">Stmt</a> *code)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a386de17580835c19eb9a3609ac6e03cf">lVisitNode</a> (const <a class="el" href="classStructType.html">StructType</a> *structType, std::map&lt; const <a class="el" href="classStructType.html">StructType</a> *, <a class="el" href="structStructDAGNode.html">StructDAGNode</a> * &gt; &amp;structToNode, std::vector&lt; const <a class="el" href="classStructType.html">StructType</a> * &gt; &amp;sortedTypes)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#ab0720aabde1ab2e75d9c4f1b4a3dcaed">lEmitStructDecls</a> (std::vector&lt; const <a class="el" href="classStructType.html">StructType</a> * &gt; &amp;structTypes, FILE *file)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a4cd0f93a97d39c554ca2891466cfae92">lEmitEnumDecls</a> (const std::vector&lt; const <a class="el" href="classEnumType.html">EnumType</a> * &gt; &amp;enumTypes, FILE *file)</td></tr>
@@ -119,9 +116,11 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a5187794c5c4476a266b3dcbc930c1fd2">lGetExportedTypes</a> (const <a class="el" href="classType.html">Type</a> *type, std::vector&lt; const <a class="el" href="classStructType.html">StructType</a> * &gt; *exportedStructTypes, std::vector&lt; const <a class="el" href="classEnumType.html">EnumType</a> * &gt; *exportedEnumTypes, std::vector&lt; const <a class="el" href="classVectorType.html">VectorType</a> * &gt; *exportedVectorTypes)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#adf642336622d2314295e223099102c7d">lGetExportedParamTypes</a> (const std::vector&lt; <a class="el" href="classSymbol.html">Symbol</a> * &gt; &amp;funcs, std::vector&lt; const <a class="el" href="classStructType.html">StructType</a> * &gt; *exportedStructTypes, std::vector&lt; const <a class="el" href="classEnumType.html">EnumType</a> * &gt; *exportedEnumTypes, std::vector&lt; const <a class="el" href="classVectorType.html">VectorType</a> * &gt; *exportedVectorTypes)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a714c0a3a98d7afc6765cbde1a70ac67a">lPrintFunctionDeclarations</a> (FILE *file, const std::vector&lt; <a class="el" href="classSymbol.html">Symbol</a> * &gt; &amp;funcs)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a43472c1315bc80d4cd53c0a95bdb5f2f">lRecursiveCheckVarying</a> (const <a class="el" href="classType.html">Type</a> *t)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#ab37f1d2a15b440024190f018f174c190">lPrintExternGlobals</a> (FILE *file, const std::vector&lt; <a class="el" href="classSymbol.html">Symbol</a> * &gt; &amp;externGlobals)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a065a007555ce68e2a452b8bb88da0748">lIsExported</a> (const <a class="el" href="classSymbol.html">Symbol</a> *sym)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a17baea1878ee1fd83bc0222ef5a0c3dc">lIsExternC</a> (const <a class="el" href="classSymbol.html">Symbol</a> *sym)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a9d272a5eb24986a85b8be0a413973c8e">lIsExternGlobal</a> (const <a class="el" href="classSymbol.html">Symbol</a> *sym)</td></tr>
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="module_8cpp.html#a46af646807e0797e72b6e8945e7ea88b">yyin</a></td></tr>
@@ -142,7 +141,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l00141">141</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
+<p>Definition at line <a class="el" href="module_8cpp_source.html#l00146">146</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
 
 </div>
 </div>
@@ -175,116 +174,11 @@ template&lt;typename T &gt; </div>
 <div class="memdoc">
 <p>Add the given type to the vector, if that type isn't already in there. </p>
 
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l01157">1157</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
+<p>Definition at line <a class="el" href="module_8cpp_source.html#l00644">644</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
 
 <p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="type_8cpp_source.html#l02056">Type::Equal()</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l01177">lGetExportedTypes()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7ff434f7260de3cc9b6bf5b32dcfcb4b"></a><!-- doxytag: member="module.cpp::lCheckForStructParameters" ref="a7ff434f7260de3cc9b6bf5b32dcfcb4b" args="(const FunctionType *ftype, SourcePos pos)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void lCheckForStructParameters </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classFunctionType.html">FunctionType</a> *&#160;</td>
-          <td class="paramname"> <em>ftype</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structSourcePos.html">SourcePos</a>&#160;</td>
-          <td class="paramname"> <em>pos</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Given a function type, loop through the function parameters and see if any are StructTypes. If so, issue an error (this seems to be broken currently).</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Fix passing structs from C/C++ to ispc functions. </dd></dl>
-
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l00249">249</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
-
-<p>References <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="type_8h_source.html#l00678">FunctionType::GetArgumentTypes()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
-
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00269">lInitFunSymDecl()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a6d0e82ba95ffcd012d3fabada61b780c"></a><!-- doxytag: member="module.cpp::lCheckForVaryingParameter" ref="a6d0e82ba95ffcd012d3fabada61b780c" args="(Symbol *sym)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void lCheckForVaryingParameter </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classSymbol.html">Symbol</a> *&#160;</td>
-          <td class="paramname"> <em>sym</em>&#160;)</td>
-          <td><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Given a <a class="el" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> representing a function parameter, see if it or any contained types are varying. If so, issue an error. (This function should only be called for parameters to 'export'ed functions, where varying parameters is illegal. </p>
-
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l00228">228</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
-
-<p>References <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="classType.html#a51af28faf17eb05982547d9b340429eb">Type::GetBaseType()</a>, <a class="el" href="module_8cpp_source.html#l00208">lRecursiveCheckVarying()</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="sym_8h_source.html#l00075">Symbol::pos</a>, and <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>.</p>
-
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00269">lInitFunSymDecl()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab85e9e35858c627862bbd77ed4fb4211"></a><!-- doxytag: member="module.cpp::lCopyInTaskParameter" ref="ab85e9e35858c627862bbd77ed4fb4211" args="(int i, llvm::Value *structArgPtr, Declarator *decl, FunctionEmitContext *ctx)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void lCopyInTaskParameter </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"> <em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">llvm::Value *&#160;</td>
-          <td class="paramname"> <em>structArgPtr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classDeclarator.html">Declarator</a> *&#160;</td>
-          <td class="paramname"> <em>decl</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classFunctionEmitContext.html">FunctionEmitContext</a> *&#160;</td>
-          <td class="paramname"> <em>ctx</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Parameters for tasks are stored in a big structure; this utility function emits code to copy those values out of the task structure into local stack-allocated variables. (Which we expect that LLVM's 'mem2reg' pass will in turn promote to SSA registers.. </p>
-
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l00579">579</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
-
-<p>References <a class="el" href="ctx_8cpp_source.html#l01495">FunctionEmitContext::AllocaInst()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="decl_8h_source.html#l00182">Declaration::declarators</a>, <a class="el" href="ctx_8cpp_source.html#l00908">FunctionEmitContext::EmitFunctionParameterDebugInfo()</a>, <a class="el" href="decl_8h_source.html#l00151">Declarator::functionArgs</a>, <a class="el" href="ctx_8cpp_source.html#l01257">FunctionEmitContext::GetElementPtrInst()</a>, <a class="el" href="ispc_8h_source.html#l00082">LLVM_TYPE_CONST</a>, <a class="el" href="ctx_8cpp_source.html#l01343">FunctionEmitContext::LoadInst()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ctx_8cpp_source.html#l01689">FunctionEmitContext::StoreInst()</a>.</p>
-
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00616">lEmitFunctionCode()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00664">lGetExportedTypes()</a>.</p>
 
 </div>
 </div>
@@ -314,69 +208,11 @@ template&lt;typename T &gt; </div>
 <div class="memdoc">
 <p>Emit C declarations of enumerator types to the generated header file. </p>
 
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l01083">1083</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
+<p>Definition at line <a class="el" href="module_8cpp_source.html#l00570">570</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="expr_8cpp_source.html#l03907">ConstExpr::AsUInt32()</a>, <a class="el" href="sym_8h_source.html#l00087">Symbol::constValue</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="expr_8cpp_source.html#l03907">ConstExpr::AsUInt32()</a>, <a class="el" href="sym_8h_source.html#l00094">Symbol::constValue</a>, <a class="el" href="sym_8h_source.html#l00078">Symbol::name</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l01272">Module::writeHeader()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a96e0dac81067856106007be2885f1082"></a><!-- doxytag: member="module.cpp::lEmitFunctionCode" ref="a96e0dac81067856106007be2885f1082" args="(FunctionEmitContext *ctx, llvm::Function *function, const FunctionType *ft, Symbol *funSym, Declarator *decl, Stmt *code)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void lEmitFunctionCode </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classFunctionEmitContext.html">FunctionEmitContext</a> *&#160;</td>
-          <td class="paramname"> <em>ctx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">llvm::Function *&#160;</td>
-          <td class="paramname"> <em>function</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classFunctionType.html">FunctionType</a> *&#160;</td>
-          <td class="paramname"> <em>ft</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSymbol.html">Symbol</a> *&#160;</td>
-          <td class="paramname"> <em>funSym</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classDeclarator.html">Declarator</a> *&#160;</td>
-          <td class="paramname"> <em>decl</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classStmt.html">Stmt</a> *&#160;</td>
-          <td class="paramname"> <em>code</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Given the statements implementing a function, emit the code that implements the function. Most of the work do be done here just involves wiring up the function parameter values to be available in the function body code. </p>
-
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l00616">616</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
-
-<p>References <a class="el" href="ctx_8cpp_source.html#l00805">FunctionEmitContext::AddInstrumentationPoint()</a>, <a class="el" href="ctx_8cpp_source.html#l01495">FunctionEmitContext::AllocaInst()</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ispc_8h_source.html#l00389">CHECK_MASK_AT_FUNCTION_START_COST</a>, <a class="el" href="util_8cpp_source.html#l00270">Debug()</a>, <a class="el" href="decl_8h_source.html#l00182">Declaration::declarators</a>, <a class="el" href="classStmt.html#a018a0d7fc9a5db8a319bda3d87a9c15f">Stmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00908">FunctionEmitContext::EmitFunctionParameterDebugInfo()</a>, <a class="el" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">ASTNode::EstimateCost()</a>, <a class="el" href="decl_8h_source.html#l00151">Declarator::functionArgs</a>, <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="ctx_8cpp_source.html#l00221">FunctionEmitContext::GetCurrentBasicBlock()</a>, <a class="el" href="ctx_8cpp_source.html#l01257">FunctionEmitContext::GetElementPtrInst()</a>, <a class="el" href="type_8h_source.html#l00669">FunctionType::GetReturnType()</a>, <a class="el" href="type_8cpp_source.html#l01765">FunctionType::GetString()</a>, <a class="el" href="llvmutil_8h_source.html#l00059">LLVMTypes::Int32Type</a>, <a class="el" href="ispc_8h_source.html#l00057">ISPC_MAX_NVEC</a>, <a class="el" href="type_8h_source.html#l00689">FunctionType::isTask</a>, <a class="el" href="module_8cpp_source.html#l00579">lCopyInTaskParameter()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00081">LLVMMaskAllOn</a>, <a class="el" href="ctx_8cpp_source.html#l01343">FunctionEmitContext::LoadInst()</a>, <a class="el" href="sym_8cpp_source.html#l00132">SymbolTable::LookupVariable()</a>, <a class="el" href="ispc_8cpp_source.html#l00066">m</a>, <a class="el" href="llvmutil_8h_source.html#l00071">LLVMTypes::MaskType</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="sym_8h_source.html#l00075">Symbol::pos</a>, <a class="el" href="ispc_8h_source.html#l00155">ASTNode::pos</a>, <a class="el" href="ctx_8cpp_source.html#l01900">FunctionEmitContext::ReturnInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00826">FunctionEmitContext::SetDebugPos()</a>, <a class="el" href="ctx_8cpp_source.html#l00239">FunctionEmitContext::SetEntryMask()</a>, <a class="el" href="sym_8h_source.html#l00077">Symbol::storagePtr</a>, <a class="el" href="ctx_8cpp_source.html#l01689">FunctionEmitContext::StoreInst()</a>, <a class="el" href="module_8h_source.html#l00089">Module::symbolTable</a>, <a class="el" href="ispc_8h_source.html#l00322">Globals::target</a>, <a class="el" href="type_8h_source.html#l00227">AtomicType::VaryingBool</a>, <a class="el" href="ispc_8h_source.html#l00219">Target::vectorWidth</a>, <a class="el" href="type_8h_source.html#l00249">AtomicType::Void</a>, and <a class="el" href="util_8cpp_source.html#l00282">Warning()</a>.</p>
-
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00763">Module::AddFunction()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00783">Module::writeHeader()</a>.</p>
 
 </div>
 </div>
@@ -406,11 +242,11 @@ template&lt;typename T &gt; </div>
 <div class="memdoc">
 <p>Given a set of structures that we want to print C declarations of in a header file, order them so that any struct that is used as a member variable in another struct is printed before the struct that uses it and then print them to the given file. </p>
 
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l01021">1021</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
+<p>Definition at line <a class="el" href="module_8cpp_source.html#l00508">508</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="module_8cpp_source.html#l00989">StructDAGNode::dependents</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, <a class="el" href="classType.html#a7e35141766bbc63333953263cd85d883">Type::GetCDeclaration()</a>, <a class="el" href="type_8h_source.html#l00567">StructType::GetElementCount()</a>, <a class="el" href="type_8h_source.html#l00564">StructType::GetElementName()</a>, <a class="el" href="type_8cpp_source.html#l01488">StructType::GetElementType()</a>, <a class="el" href="type_8h_source.html#l00570">StructType::GetStructName()</a>, <a class="el" href="module_8cpp_source.html#l00996">lVisitNode()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="module_8cpp_source.html#l00476">StructDAGNode::dependents</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, <a class="el" href="classType.html#a7e35141766bbc63333953263cd85d883">Type::GetCDeclaration()</a>, <a class="el" href="type_8h_source.html#l00567">StructType::GetElementCount()</a>, <a class="el" href="type_8h_source.html#l00564">StructType::GetElementName()</a>, <a class="el" href="type_8cpp_source.html#l01488">StructType::GetElementType()</a>, <a class="el" href="type_8h_source.html#l00570">StructType::GetStructName()</a>, <a class="el" href="module_8cpp_source.html#l00483">lVisitNode()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l01272">Module::writeHeader()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00783">Module::writeHeader()</a>.</p>
 
 </div>
 </div>
@@ -440,11 +276,11 @@ template&lt;typename T &gt; </div>
 <div class="memdoc">
 <p>Print declarations of VectorTypes used in 'export'ed parts of the program in the header file. </p>
 
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l01120">1120</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
+<p>Definition at line <a class="el" href="module_8cpp_source.html#l00607">607</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="type_8cpp_source.html#l01131">VectorType::GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l01100">VectorType::GetBaseType()</a>, <a class="el" href="classType.html#a7e35141766bbc63333953263cd85d883">Type::GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l01164">VectorType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l01064">VectorType::IsUniformType()</a>, <a class="el" href="ispc_8h_source.html#l00214">Target::nativeVectorWidth</a>, and <a class="el" href="ispc_8h_source.html#l00322">Globals::target</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="type_8cpp_source.html#l01131">VectorType::GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l01100">VectorType::GetBaseType()</a>, <a class="el" href="classType.html#a7e35141766bbc63333953263cd85d883">Type::GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l01164">VectorType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l01064">VectorType::IsUniformType()</a>, <a class="el" href="ispc_8h_source.html#l00190">Target::nativeVectorWidth</a>, and <a class="el" href="ispc_8h_source.html#l00298">Globals::target</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l01272">Module::writeHeader()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00783">Module::writeHeader()</a>.</p>
 
 </div>
 </div>
@@ -486,11 +322,11 @@ template&lt;typename T &gt; </div>
 <div class="memdoc">
 <p>Given a set of functions, return the set of structure and vector types present in the parameters to them. </p>
 
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l01209">1209</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
+<p>Definition at line <a class="el" href="module_8cpp_source.html#l00696">696</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00678">FunctionType::GetArgumentTypes()</a>, <a class="el" href="type_8h_source.html#l00669">FunctionType::GetReturnType()</a>, and <a class="el" href="module_8cpp_source.html#l01177">lGetExportedTypes()</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00678">FunctionType::GetArgumentTypes()</a>, <a class="el" href="type_8h_source.html#l00669">FunctionType::GetReturnType()</a>, and <a class="el" href="module_8cpp_source.html#l00664">lGetExportedTypes()</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l01272">Module::writeHeader()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00783">Module::writeHeader()</a>.</p>
 
 </div>
 </div>
@@ -532,45 +368,11 @@ template&lt;typename T &gt; </div>
 <div class="memdoc">
 <p>Given an arbitrary type that appears in the app/ispc interface, add it to an appropriate vector if it is a struct, enum, or short vector type. Then, if it's a struct, recursively process its members to do the same. </p>
 
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l01177">1177</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
+<p>Definition at line <a class="el" href="module_8cpp_source.html#l00664">664</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="type_8h_source.html#l00567">StructType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l01488">StructType::GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l00817">ArrayType::GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l01882">Type::GetReferenceTarget()</a>, <a class="el" href="module_8cpp_source.html#l01157">lAddTypeIfNew()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="type_8h_source.html#l00567">StructType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l01488">StructType::GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l00817">ArrayType::GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l01882">Type::GetReferenceTarget()</a>, <a class="el" href="module_8cpp_source.html#l00644">lAddTypeIfNew()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l01209">lGetExportedParamTypes()</a>, and <a class="el" href="module_8cpp_source.html#l01272">Module::writeHeader()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aab241dd47711af4eb8ff641df902a85f"></a><!-- doxytag: member="module.cpp::lInitFunSymDecl" ref="aab241dd47711af4eb8ff641df902a85f" args="(DeclSpecs *ds, Declarator *decl)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool lInitFunSymDecl </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classDeclSpecs.html">DeclSpecs</a> *&#160;</td>
-          <td class="paramname"> <em>ds</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classDeclarator.html">Declarator</a> *&#160;</td>
-          <td class="paramname"> <em>decl</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>We've got a declaration for a function to process. This function does all the work of creating the corresponding llvm::Function instance, adding the symbol for the function to the symbol table and doing various sanity checks. This function returns true upon success and false if any errors were encountered. </p>
-
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l00269">269</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
-
-<p>References <a class="el" href="sym_8cpp_source.html#l00150">SymbolTable::AddFunction()</a>, <a class="el" href="decl_8h_source.html#l00147">Declarator::arraySize</a>, <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ispc_8h_source.html#l00359">Globals::ctx</a>, <a class="el" href="decl_8h_source.html#l00182">Declaration::declarators</a>, <a class="el" href="type_8cpp_source.html#l02056">Type::Equal()</a>, <a class="el" href="util_8cpp_source.html#l00260">Error()</a>, <a class="el" href="sym_8h_source.html#l00081">Symbol::function</a>, <a class="el" href="decl_8h_source.html#l00151">Declarator::functionArgs</a>, <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="ispc_8h_source.html#l00356">Globals::generateDebuggingSymbols</a>, <a class="el" href="type_8h_source.html#l00669">FunctionType::GetReturnType()</a>, <a class="el" href="decl_8cpp_source.html#l00213">Declarator::GetType()</a>, <a class="el" href="type_8h_source.html#l00693">FunctionType::isExported</a>, <a class="el" href="type_8h_source.html#l00697">FunctionType::isExternC</a>, <a class="el" href="decl_8h_source.html#l00150">Declarator::isFunction</a>, <a class="el" href="type_8h_source.html#l00689">FunctionType::isTask</a>, <a class="el" href="module_8cpp_source.html#l00249">lCheckForStructParameters()</a>, <a class="el" href="module_8cpp_source.html#l00228">lCheckForVaryingParameter()</a>, <a class="el" href="ispc_8h_source.html#l00082">LLVM_TYPE_CONST</a>, <a class="el" href="type_8cpp_source.html#l01825">FunctionType::LLVMFunctionType()</a>, <a class="el" href="sym_8cpp_source.html#l00164">SymbolTable::LookupFunction()</a>, <a class="el" href="sym_8cpp_source.html#l00132">SymbolTable::LookupVariable()</a>, <a class="el" href="module_8cpp_source.html#l00208">lRecursiveCheckVarying()</a>, <a class="el" href="ispc_8cpp_source.html#l00066">m</a>, <a class="el" href="sym_8cpp_source.html#l00058">Symbol::MangledName()</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="ispc_8h_source.html#l00214">Target::nativeVectorWidth</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="sym_8h_source.html#l00075">Symbol::pos</a>, <a class="el" href="decl_8h_source.html#l00142">Declarator::pos</a>, <a class="el" href="util_8h_source.html#l00048">RoundUpPow2()</a>, <a class="el" href="decl_8h_source.html#l00062">SC_EXPORT</a>, <a class="el" href="decl_8h_source.html#l00065">SC_EXTERN_C</a>, <a class="el" href="decl_8h_source.html#l00063">SC_STATIC</a>, <a class="el" href="type_8cpp_source.html#l01871">FunctionType::SetArgumentDefaults()</a>, <a class="el" href="decl_8h_source.html#l00092">DeclSpecs::storageClass</a>, <a class="el" href="decl_8h_source.html#l00143">Declarator::sym</a>, <a class="el" href="module_8h_source.html#l00089">Module::symbolTable</a>, <a class="el" href="ispc_8h_source.html#l00322">Globals::target</a>, <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>, <a class="el" href="decl_8h_source.html#l00079">TYPEQUAL_INLINE</a>, <a class="el" href="decl_8h_source.html#l00076">TYPEQUAL_TASK</a>, <a class="el" href="decl_8h_source.html#l00095">DeclSpecs::typeQualifier</a>, <a class="el" href="type_8h_source.html#l00249">AtomicType::Void</a>, and <a class="el" href="util_8cpp_source.html#l00282">Warning()</a>.</p>
-
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00451">Module::AddGlobal()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00696">lGetExportedParamTypes()</a>, and <a class="el" href="module_8cpp_source.html#l00783">Module::writeHeader()</a>.</p>
 
 </div>
 </div>
@@ -589,11 +391,11 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l01256">1256</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
+<p>Definition at line <a class="el" href="module_8cpp_source.html#l00761">761</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="type_8h_source.html#l00693">FunctionType::isExported</a>, and <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="type_8h_source.html#l00693">FunctionType::isExported</a>, and <a class="el" href="sym_8h_source.html#l00091">Symbol::type</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l01272">Module::writeHeader()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00783">Module::writeHeader()</a>.</p>
 
 </div>
 </div>
@@ -612,11 +414,34 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l01264">1264</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
+<p>Definition at line <a class="el" href="module_8cpp_source.html#l00769">769</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="type_8h_source.html#l00697">FunctionType::isExternC</a>, and <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="type_8h_source.html#l00697">FunctionType::isExternC</a>, and <a class="el" href="sym_8h_source.html#l00091">Symbol::type</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l01272">Module::writeHeader()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00783">Module::writeHeader()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9d272a5eb24986a85b8be0a413973c8e"></a><!-- doxytag: member="module.cpp::lIsExternGlobal" ref="a9d272a5eb24986a85b8be0a413973c8e" args="(const Symbol *sym)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool lIsExternGlobal </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSymbol.html">Symbol</a> *&#160;</td>
+          <td class="paramname"> <em>sym</em>&#160;)</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="module_8cpp_source.html#l00777">777</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
+
+<p>References <a class="el" href="decl_8h_source.html#l00061">SC_EXTERN</a>, <a class="el" href="decl_8h_source.html#l00065">SC_EXTERN_C</a>, and <a class="el" href="sym_8h_source.html#l00103">Symbol::storageClass</a>.</p>
+
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00783">Module::writeHeader()</a>.</p>
 
 </div>
 </div>
@@ -645,11 +470,11 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l01242">1242</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
+<p>Definition at line <a class="el" href="module_8cpp_source.html#l00747">747</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
 
-<p>References <a class="el" href="classType.html#a7e35141766bbc63333953263cd85d883">Type::GetCDeclaration()</a>, <a class="el" href="module_8cpp_source.html#l00208">lRecursiveCheckVarying()</a>, <a class="el" href="sym_8h_source.html#l00076">Symbol::name</a>, <a class="el" href="sym_8h_source.html#l00075">Symbol::pos</a>, <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>, and <a class="el" href="util_8cpp_source.html#l00282">Warning()</a>.</p>
+<p>References <a class="el" href="classType.html#a7e35141766bbc63333953263cd85d883">Type::GetCDeclaration()</a>, <a class="el" href="module_8cpp_source.html#l00732">lRecursiveCheckVarying()</a>, <a class="el" href="sym_8h_source.html#l00078">Symbol::name</a>, <a class="el" href="sym_8h_source.html#l00077">Symbol::pos</a>, <a class="el" href="sym_8h_source.html#l00091">Symbol::type</a>, and <a class="el" href="util_8cpp_source.html#l00285">Warning()</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l01272">Module::writeHeader()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00783">Module::writeHeader()</a>.</p>
 
 </div>
 </div>
@@ -678,11 +503,11 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l01229">1229</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
+<p>Definition at line <a class="el" href="module_8cpp_source.html#l00716">716</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
 
 <p>References <a class="el" href="parse_8yy.html">assert</a>, and <a class="el" href="type_8cpp_source.html#l01790">FunctionType::GetCDeclaration()</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l01272">Module::writeHeader()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00783">Module::writeHeader()</a>.</p>
 
 </div>
 </div>
@@ -702,11 +527,11 @@ template&lt;typename T &gt; </div>
 <div class="memdoc">
 <p>Given an arbitrary type, see if it or any of the types contained in it are varying. Returns true if so, false otherwise. </p>
 
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l00208">208</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
+<p>Definition at line <a class="el" href="module_8cpp_source.html#l00732">732</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
 
 <p>References <a class="el" href="classType.html#a51af28faf17eb05982547d9b340429eb">Type::GetBaseType()</a>, <a class="el" href="type_8h_source.html#l00567">StructType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l01488">StructType::GetElementType()</a>, and <a class="el" href="type_8h_source.html#l00085">Type::IsVaryingType()</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00228">lCheckForVaryingParameter()</a>, <a class="el" href="module_8cpp_source.html#l00269">lInitFunSymDecl()</a>, and <a class="el" href="module_8cpp_source.html#l01242">lPrintExternGlobals()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00747">lPrintExternGlobals()</a>.</p>
 
 </div>
 </div>
@@ -742,11 +567,11 @@ template&lt;typename T &gt; </div>
 <div class="memdoc">
 <p>Visit a node for the topological sort. </p>
 
-<p>Definition at line <a class="el" href="module_8cpp_source.html#l00996">996</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
+<p>Definition at line <a class="el" href="module_8cpp_source.html#l00483">483</a> of file <a class="el" href="module_8cpp_source.html">module.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, and <a class="el" href="module_8cpp_source.html#l00988">StructDAGNode::visited</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, and <a class="el" href="module_8cpp_source.html#l00475">StructDAGNode::visited</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l01021">lEmitStructDecls()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00508">lEmitStructDecls()</a>.</p>
 
 </div>
 </div>
@@ -775,7 +600,7 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00148">Module::CompileFile()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00153">Module::CompileFile()</a>.</p>
 
 </div>
 </div>
@@ -794,7 +619,7 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00148">Module::CompileFile()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00153">Module::CompileFile()</a>.</p>
 
 </div>
 </div>
@@ -830,7 +655,7 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00148">Module::CompileFile()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00153">Module::CompileFile()</a>.</p>
 
 </div>
 </div>
@@ -862,12 +687,12 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00148">Module::CompileFile()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00153">Module::CompileFile()</a>.</p>
 
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Sep 30 2011 14:55:37 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Oct 6 2011 19:44:52 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

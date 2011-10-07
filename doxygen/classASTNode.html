@@ -28,173 +28,24 @@
   </div>
 </div>
 <div class="header">
-  <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
 <h1>ASTNode Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="ASTNode" -->
-<p>Abstract base class for nodes in the abstract syntax tree (AST).  
-<a href="#_details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="ispc_8h_source.html">ispc.h</a>&gt;</code></p>
-<!-- startSectionHeader --><div class="dynheader">
+<!-- doxytag: class="ASTNode" --><!-- startSectionHeader --><div class="dynheader">
 Inheritance diagram for ASTNode:<!-- endSectionHeader --></div>
 <!-- startSectionSummary --><!-- endSectionSummary --><!-- startSectionContent --><div class="dyncontent">
 <div class="center"><img src="classASTNode__inherit__graph.png" border="0" usemap="#ASTNode_inherit__map" alt="Inheritance graph"/></div>
 <map name="ASTNode_inherit__map" id="ASTNode_inherit__map">
 <area shape="rect" id="node3" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement..." alt="" coords="140,385,193,413"/><area shape="rect" id="node41" href="classStmt.html" title="Interface class for statements in the ispc language." alt="" coords="140,967,193,995"/><area shape="rect" id="node5" href="classAssignExpr.html" title="Assignment expression." alt="" coords="275,5,373,33"/><area shape="rect" id="node7" href="classBinaryExpr.html" title="Binary expression." alt="" coords="276,55,372,83"/><area shape="rect" id="node9" href="classConstExpr.html" title="Expression representing a compile&#45;time constant value." alt="" coords="279,106,369,134"/><area shape="rect" id="node11" href="classDereferenceExpr.html" title="Expression that represents dereferencing a reference to get its value." alt="" coords="256,157,392,185"/><area shape="rect" id="node13" href="classExprList.html" title="A list of expressions." alt="" coords="287,207,361,235"/><area shape="rect" id="node15" href="classFunctionCallExpr.html" title="Expression representing a function call." alt="" coords="256,258,392,286"/><area shape="rect" id="node17" href="classFunctionSymbolExpr.html" title="Expression representing a function symbol in the program (generally used for a function call)..." alt="" coords="244,309,404,337"/><area shape="rect" id="node19" href="classIndexExpr.html" title="Expression representing indexing into something with an integer offset." alt="" coords="279,359,369,387"/><area shape="rect" id="node21" href="classMemberExpr.html" title="Expression representing member selection (&quot;foo.bar&quot;)." alt="" coords="271,410,377,438"/><area shape="rect" id="node29" href="classReferenceExpr.html" title="Expression that represents taking a reference of a (non&#45;reference) variable." alt="" coords="264,461,384,489"/><area shape="rect" id="node31" href="classSelectExpr.html" title="Selection expression, corresponding to &quot;test ? a : b&quot;." alt="" coords="277,511,371,539"/><area shape="rect" id="node33" href="classSymbolExpr.html" title="Expression representing a symbol reference in the program." alt="" coords="272,562,376,590"/><area shape="rect" id="node35" href="classSyncExpr.html" title="A sync statement in the program (waits for all launched tasks before proceeding)." alt="" coords="281,613,367,641"/><area shape="rect" id="node37" href="classTypeCastExpr.html" title="Expression representing a type cast of the given expression to a probably&#45;different type..." alt="" coords="267,663,381,691"/><area shape="rect" id="node39" href="classUnaryExpr.html" title="Unary expression." alt="" coords="277,714,371,742"/><area shape="rect" id="node23" href="classReferenceMemberExpr.html" title="ReferenceMemberExpr" alt="" coords="453,359,629,387"/><area shape="rect" id="node25" href="classStructMemberExpr.html" title="StructMemberExpr" alt="" coords="468,410,615,438"/><area shape="rect" id="node27" href="classVectorMemberExpr.html" title="VectorMemberExpr" alt="" coords="465,461,617,489"/><area shape="rect" id="node43" href="classBreakStmt.html" title="Statement implementation for a break or &#39;coherent&#39; break statement in the program..." alt="" coords="277,765,371,793"/><area shape="rect" id="node45" href="classContinueStmt.html" title="Statement implementation for a continue or &#39;coherent&#39; continue statement in the program..." alt="" coords="267,815,381,843"/><area shape="rect" id="node47" href="classDeclStmt.html" title="Statement representing a single declaration (which in turn may declare a number of variables..." alt="" coords="283,866,365,894"/><area shape="rect" id="node49" href="classDoStmt.html" title="Statement implementation representing a &#39;do&#39; statement in the program." alt="" coords="288,917,360,945"/><area shape="rect" id="node51" href="classExprStmt.html" title="Statement representing a single expression." alt="" coords="281,967,367,995"/><area shape="rect" id="node53" href="classForStmt.html" title="Statement implementation for &#39;for&#39; loops (as well as for &#39;while&#39; loops)." alt="" coords="287,1018,361,1046"/><area shape="rect" id="node55" href="classIfStmt.html" title="Statement representing a single if statement, possibly with an else clause." alt="" coords="293,1069,355,1097"/><area shape="rect" id="node57" href="classPrintStmt.html" title="Representation of a print() statement in the program." alt="" coords="281,1119,367,1147"/><area shape="rect" id="node59" href="classReturnStmt.html" title="Statement implementation for a &#39;return&#39; or &#39;coherent&#39; return statement in the program..." alt="" coords="275,1170,373,1198"/><area shape="rect" id="node61" href="classStmtList.html" title="Representation of a list of statements in the program." alt="" coords="285,1221,363,1249"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center><!-- endSectionContent --></div>
-<!-- startSectionHeader --><div class="dynheader">
-Collaboration diagram for ASTNode:<!-- endSectionHeader --></div>
-<!-- startSectionSummary --><!-- endSectionSummary --><!-- startSectionContent --><div class="dyncontent">
-<div class="center"><img src="classASTNode__coll__graph.png" border="0" usemap="#ASTNode_coll__map" alt="Collaboration graph"/></div>
-<map name="ASTNode_coll__map" id="ASTNode_coll__map">
-<area shape="rect" id="node2" href="structSourcePos.html" title="Representation of a range of positions in a source file." alt="" coords="37,147,128,175"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center><!-- endSectionContent --></div>
-
-<p><a href="classASTNode-members.html">List of all members.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classASTNode.html#adacd1e72bdef50169988993850670db5">ASTNode</a> (<a class="el" href="structSourcePos.html">SourcePos</a> p)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classASTNode.html#a41a691f37fa038eb183280effeb8ba4e">~ASTNode</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classASTNode.html">ASTNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classASTNode.html#aebe510bd406956a389354e1123eaccb2">Optimize</a> ()=0</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classASTNode.html">ASTNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classASTNode.html#add9e93eefd1dad4d9108971d39a28870">TypeCheck</a> ()=0</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a> () const =0</td></tr>
-<tr><td colspan="2"><h2><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structSourcePos.html">SourcePos</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a></td></tr>
 </table>
-<hr/><a name="_details"></a><h2>Detailed Description</h2>
-<p>Abstract base class for nodes in the abstract syntax tree (AST). </p>
-<p>This class defines a basic interface that all abstract syntax tree (AST) nodes must implement. The base classes for both expressions (<a class="el" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a>) and statements (<a class="el" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a>) inherit from this class. </p>
-
-<p>Definition at line <a class="el" href="ispc_8h_source.html#l00133">133</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
-<hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="adacd1e72bdef50169988993850670db5"></a><!-- doxytag: member="ASTNode::ASTNode" ref="adacd1e72bdef50169988993850670db5" args="(SourcePos p)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ASTNode::ASTNode </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSourcePos.html">SourcePos</a>&#160;</td>
-          <td class="paramname"> <em>p</em>&#160;)</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="ispc_8h_source.html#l00135">135</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a41a691f37fa038eb183280effeb8ba4e"></a><!-- doxytag: member="ASTNode::~ASTNode" ref="a41a691f37fa038eb183280effeb8ba4e" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ASTNode::~ASTNode </td>
-          <td>(</td>
-          <td class="paramname">&#160;)</td>
-          <td><code> [virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="ispc_8cpp_source.html#l00299">299</a> of file <a class="el" href="ispc_8cpp_source.html">ispc.cpp</a>.</p>
-
-</div>
-</div>
-<hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="add2ef84b57f0cda15ae3c7ad983ff909"></a><!-- doxytag: member="ASTNode::EstimateCost" ref="add2ef84b57f0cda15ae3c7ad983ff909" args="() const =0" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual int ASTNode::EstimateCost </td>
-          <td>(</td>
-          <td class="paramname">&#160;)</td>
-          <td> const<code> [pure virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Implemented in <a class="el" href="classUnaryExpr.html#a09ffadd5ecca89f8579932c3a949db38">UnaryExpr</a>, <a class="el" href="classBinaryExpr.html#a5b6541c2d840ca2c741ade6cfb948642">BinaryExpr</a>, <a class="el" href="classAssignExpr.html#af1cecb2f836fd9c607b51e18af214b5d">AssignExpr</a>, <a class="el" href="classSelectExpr.html#add075184fbef1f53da066c2bc08dd4cb">SelectExpr</a>, <a class="el" href="classExprList.html#acb97b512c61c17fa3413378f4cd30ef9">ExprList</a>, <a class="el" href="classFunctionCallExpr.html#a8dc8285ec7b28ed1b0770dde0da5965c">FunctionCallExpr</a>, <a class="el" href="classIndexExpr.html#a52015acb426e8358dffe9b2e9ddfec07">IndexExpr</a>, <a class="el" href="classMemberExpr.html#acf15d8e397cd8fe113cfb9d0e560d6a7">MemberExpr</a>, <a class="el" href="classConstExpr.html#a10d09def76d6bf1b5f965c919c8c940c">ConstExpr</a>, <a class="el" href="classTypeCastExpr.html#a8b4f6a58d98ff96148a8d03fb2592081">TypeCastExpr</a>, <a class="el" href="classReferenceExpr.html#a83f588792255826de8cd963637871fe5">ReferenceExpr</a>, <a class="el" href="classDereferenceExpr.html#a5d46cd7f6b6dfa32d5022bf0286f76dc">DereferenceExpr</a>, <a class="el" href="classSymbolExpr.html#a846cb5a74470843194481112ee3b9fa7">SymbolExpr</a>, <a class="el" href="classFunctionSymbolExpr.html#a7a69453705486679ffa3e991a748733b">FunctionSymbolExpr</a>, <a class="el" href="classSyncExpr.html#a98c9e183d66f659cdfed37e332c0de44">SyncExpr</a>, <a class="el" href="classExprStmt.html#abaafdd732dd7443d88bad844b6c746c7">ExprStmt</a>, <a class="el" href="classDeclStmt.html#af6a0253117df37e1602fe9729ef3900f">DeclStmt</a>, <a class="el" href="classIfStmt.html#a0a4c3a4371442483ff4e7bf589983dd1">IfStmt</a>, <a class="el" href="classDoStmt.html#a5205fb45888e8929ae4ab283c084c19a">DoStmt</a>, <a class="el" href="classForStmt.html#a884601f9875342b6c51ab3c74fafef44">ForStmt</a>, <a class="el" href="classBreakStmt.html#a079d198f795b854c260a7f0b718c0ff5">BreakStmt</a>, <a class="el" href="classContinueStmt.html#abca6165e1b5250f50e2b0adb028f66f4">ContinueStmt</a>, <a class="el" href="classReturnStmt.html#a75d5ff847bc4250b436ed14e81c92151">ReturnStmt</a>, <a class="el" href="classStmtList.html#a8faf9e29292e5f40d11aadedbc402c8b">StmtList</a>, and <a class="el" href="classPrintStmt.html#a87f340f7cb64b7f8d03d6109d0ffd6ab">PrintStmt</a>.</p>
-
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00766">IfStmt::emitVaryingIf()</a>, <a class="el" href="stmt_8cpp_source.html#l01805">PrintStmt::EstimateCost()</a>, <a class="el" href="stmt_8cpp_source.html#l01542">ReturnStmt::EstimateCost()</a>, <a class="el" href="stmt_8cpp_source.html#l01376">ForStmt::EstimateCost()</a>, <a class="el" href="stmt_8cpp_source.html#l01162">DoStmt::EstimateCost()</a>, <a class="el" href="stmt_8cpp_source.html#l00542">IfStmt::EstimateCost()</a>, <a class="el" href="stmt_8cpp_source.html#l00111">ExprStmt::EstimateCost()</a>, <a class="el" href="expr_8cpp_source.html#l01726">AssignExpr::EstimateCost()</a>, <a class="el" href="expr_8cpp_source.html#l01466">BinaryExpr::EstimateCost()</a>, <a class="el" href="expr_8cpp_source.html#l00745">UnaryExpr::EstimateCost()</a>, and <a class="el" href="module_8cpp_source.html#l00616">lEmitFunctionCode()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aebe510bd406956a389354e1123eaccb2"></a><!-- doxytag: member="ASTNode::Optimize" ref="aebe510bd406956a389354e1123eaccb2" args="()=0" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="classASTNode.html">ASTNode</a>* ASTNode::Optimize </td>
-          <td>(</td>
-          <td class="paramname">&#160;)</td>
-          <td><code> [pure virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>The <a class="el" href="classASTNode.html#aebe510bd406956a389354e1123eaccb2">Optimize()</a> method should perform any appropriate early-stage optimizations on the node (e.g. constant folding). The caller should use the returned <a class="el" href="classASTNode.html" title="Abstract base class for nodes in the abstract syntax tree (AST).">ASTNode</a> * in place of the original node. This method may return NULL if an error is encountered during optimization. </p>
-
-<p>Implemented in <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr</a>, <a class="el" href="classUnaryExpr.html#aa4b660df9ce888e9cdbb675dbd44b300">UnaryExpr</a>, <a class="el" href="classBinaryExpr.html#afa938a1d4e8651bdd5eb833971258549">BinaryExpr</a>, <a class="el" href="classAssignExpr.html#a95ce9f096271957877412af17694a8ab">AssignExpr</a>, <a class="el" href="classSelectExpr.html#a29a19cbf6bff81b79c90fe8c5fc5c2f2">SelectExpr</a>, <a class="el" href="classExprList.html#a6b2b90afd6a278bdf8e1b865fb7354bc">ExprList</a>, <a class="el" href="classFunctionCallExpr.html#a0daf3c50beaf41b0e00ba6bbd9e40290">FunctionCallExpr</a>, <a class="el" href="classIndexExpr.html#a2b3e70bbdb74839fd1e53c8000b7440a">IndexExpr</a>, <a class="el" href="classMemberExpr.html#a5295ee2a6a6afdce1fe3a1d05d54836b">MemberExpr</a>, <a class="el" href="classConstExpr.html#ac7c0dbc645dd375fe3a843e040201651">ConstExpr</a>, <a class="el" href="classTypeCastExpr.html#a8c1ffa77dffbfd6a039da548a65796ad">TypeCastExpr</a>, <a class="el" href="classReferenceExpr.html#a373bb9e573b56125c1b441bcfdb7d07f">ReferenceExpr</a>, <a class="el" href="classDereferenceExpr.html#a2e849db576e69418b2ce7558353862c8">DereferenceExpr</a>, <a class="el" href="classSymbolExpr.html#a09610f84e65c3062016d30642b09cf20">SymbolExpr</a>, <a class="el" href="classFunctionSymbolExpr.html#a16727f6e846c7a554f823c397a1a6149">FunctionSymbolExpr</a>, <a class="el" href="classSyncExpr.html#a12b8c56aa2ae34936242b449932e467f">SyncExpr</a>, <a class="el" href="classStmt.html#a1d8d67291a2164d04b268403b3d334b3">Stmt</a>, <a class="el" href="classExprStmt.html#a0277fdc1ea0abc2b396688580a3d8eea">ExprStmt</a>, <a class="el" href="classDeclStmt.html#abffcbf048066961ef860cf95f689dbf3">DeclStmt</a>, <a class="el" href="classIfStmt.html#a3a55854b835d9db75038f00f9271efa5">IfStmt</a>, <a class="el" href="classDoStmt.html#a9a1563de02163c3c8f9c61bd15ba17de">DoStmt</a>, <a class="el" href="classForStmt.html#a77f253424a11b0a952bd65ad52453475">ForStmt</a>, <a class="el" href="classBreakStmt.html#a79f6799331949f2c6840580278114a9a">BreakStmt</a>, <a class="el" href="classContinueStmt.html#a0e09b88a8d262f5ac4cb4195bd879516">ContinueStmt</a>, <a class="el" href="classReturnStmt.html#ae4c526b3f497b1f44265556e29565007">ReturnStmt</a>, <a class="el" href="classStmtList.html#a14575404420903c8566d2eecd96bf2e3">StmtList</a>, and <a class="el" href="classPrintStmt.html#a14178fdddde1291a31def11a05cff18e">PrintStmt</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="add9e93eefd1dad4d9108971d39a28870"></a><!-- doxytag: member="ASTNode::TypeCheck" ref="add9e93eefd1dad4d9108971d39a28870" args="()=0" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="classASTNode.html">ASTNode</a>* ASTNode::TypeCheck </td>
-          <td>(</td>
-          <td class="paramname">&#160;)</td>
-          <td><code> [pure virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p><a class="el" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> checking should be performed by the node when this method is called. In the event of an error, a NULL value may be returned. As with <a class="el" href="classASTNode.html#aebe510bd406956a389354e1123eaccb2">ASTNode::Optimize()</a>, the caller should store the returned pointer in place of the original <a class="el" href="classASTNode.html" title="Abstract base class for nodes in the abstract syntax tree (AST).">ASTNode</a> *. </p>
-
-<p>Implemented in <a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">Expr</a>, <a class="el" href="classUnaryExpr.html#a4115b641cf51f20e4d0ae221c107ac88">UnaryExpr</a>, <a class="el" href="classBinaryExpr.html#a7dd0352a3b80f1fd4d50475b1722dffb">BinaryExpr</a>, <a class="el" href="classAssignExpr.html#a7e964f6043f50c1d9c52a1a1f7fd2189">AssignExpr</a>, <a class="el" href="classSelectExpr.html#a64f9e0c37a4d553908fa0564aeaafd51">SelectExpr</a>, <a class="el" href="classExprList.html#a46530e3ccea4a4b3f742cd892795adc1">ExprList</a>, <a class="el" href="classFunctionCallExpr.html#a64b54547c7a84c245197fd6c94bccbef">FunctionCallExpr</a>, <a class="el" href="classIndexExpr.html#ac5d495e5df9cff4bbcbc9b580ea67fb7">IndexExpr</a>, <a class="el" href="classMemberExpr.html#a118f925d1f975296a0083097196a20d5">MemberExpr</a>, <a class="el" href="classConstExpr.html#a749ca36fc17440ef545f1c3bf728b24a">ConstExpr</a>, <a class="el" href="classTypeCastExpr.html#a1ec58815a5e4bdb9be7eace2db9d8bf0">TypeCastExpr</a>, <a class="el" href="classReferenceExpr.html#ab636a6871c0269295e98d731337beeb7">ReferenceExpr</a>, <a class="el" href="classDereferenceExpr.html#ada95d76cb0f7e1092489e74f4a711d3d">DereferenceExpr</a>, <a class="el" href="classSymbolExpr.html#ab8ba46274b1e56244baab9e3fd9d169f">SymbolExpr</a>, <a class="el" href="classFunctionSymbolExpr.html#ad44e613dd2071288a93a8487aacbcdf8">FunctionSymbolExpr</a>, <a class="el" href="classSyncExpr.html#af411fe3062afc649c104ed877bd5fd41">SyncExpr</a>, <a class="el" href="classStmt.html#ac5c4a3c76cff2fc30edd78a63043faf3">Stmt</a>, <a class="el" href="classExprStmt.html#a76a32edacb1e7194b54502dcbc6cdc82">ExprStmt</a>, <a class="el" href="classDeclStmt.html#ab3e5a85c15bbc96263cc5151762faa2c">DeclStmt</a>, <a class="el" href="classIfStmt.html#a720d1048ad2c15dfad1462964b327799">IfStmt</a>, <a class="el" href="classDoStmt.html#a54148aca0eee54ad066d1cd3d4c15853">DoStmt</a>, <a class="el" href="classForStmt.html#aa73d91076c7b0c40b25d76f48fed18a6">ForStmt</a>, <a class="el" href="classBreakStmt.html#a2ed9369a8fc0f4aeab1b2817a155bad5">BreakStmt</a>, <a class="el" href="classContinueStmt.html#aa7121ba57aaced2dbe15eeec2857a376">ContinueStmt</a>, <a class="el" href="classReturnStmt.html#a6d5dcd5d56cb94cdb1898eb3e590882d">ReturnStmt</a>, <a class="el" href="classStmtList.html#aa3fa1d1f1f45156f78afeab362c7a877">StmtList</a>, and <a class="el" href="classPrintStmt.html#aa025a579a6a07556a8da4dd8760e81bb">PrintStmt</a>.</p>
-
-</div>
-</div>
-<hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a072d617ed4e5b53d3dedf39334597d0e"></a><!-- doxytag: member="ASTNode::pos" ref="a072d617ed4e5b53d3dedf39334597d0e" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="structSourcePos.html">SourcePos</a> <a class="el" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">ASTNode::pos</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>All AST nodes must track the file position where they are defined. </p>
-
-<p>Definition at line <a class="el" href="ispc_8h_source.html#l00155">155</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
-
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00763">Module::AddFunction()</a>, <a class="el" href="ctx_8cpp_source.html#l00610">FunctionEmitContext::CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l01705">PrintStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01561">StmtList::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01513">ReturnStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01467">ContinueStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01422">BreakStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01193">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01006">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00444">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00071">ExprStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l02573">ExprList::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l03040">VectorMemberExpr::getElementNumber()</a>, <a class="el" href="expr_8cpp_source.html#l05168">SymbolExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l03210">MemberExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l03107">ReferenceMemberExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l02755">IndexExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l03085">ReferenceMemberExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l01891">SelectExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l00983">BinaryExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l05298">SyncExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05158">SymbolExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05074">DereferenceExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05000">ReferenceExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04675">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03595">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03160">MemberExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02998">VectorMemberExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02693">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l02283">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01793">SelectExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01592">AssignExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00933">BinaryExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00546">UnaryExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l01099">lConstFoldBinArithOp()</a>, <a class="el" href="expr_8cpp_source.html#l01051">lConstFoldBinIntOp()</a>, <a class="el" href="expr_8cpp_source.html#l01073">lConstFoldBinLogicalOp()</a>, <a class="el" href="expr_8cpp_source.html#l01119">lConstFoldBoolBinOp()</a>, <a class="el" href="module_8cpp_source.html#l00616">lEmitFunctionCode()</a>, <a class="el" href="expr_8cpp_source.html#l00460">lEmitPrePostIncDec()</a>, <a class="el" href="stmt_8cpp_source.html#l00136">lInitSymbol()</a>, <a class="el" href="stmt_8cpp_source.html#l01652">lProcessPrintArg()</a>, <a class="el" href="expr_8cpp_source.html#l04884">TypeCastExpr::Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l01145">BinaryExpr::Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l00605">UnaryExpr::Optimize()</a>, <a class="el" href="stmt_8cpp_source.html#l01603">StmtList::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l01548">ReturnStmt::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l01496">ContinueStmt::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l01451">BreakStmt::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l01390">ForStmt::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l01169">DoStmt::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l00550">IfStmt::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l00399">DeclStmt::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l00098">ExprStmt::Print()</a>, <a class="el" href="expr_8cpp_source.html#l05312">SyncExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l05278">FunctionSymbolExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l05217">SymbolExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l05137">DereferenceExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l05053">ReferenceExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l04982">TypeCastExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l04058">ConstExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l03257">MemberExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l02853">IndexExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l02645">ExprList::Print()</a>, <a class="el" href="expr_8cpp_source.html#l02523">FunctionCallExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l01994">SelectExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l01740">AssignExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l01475">BinaryExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l00751">UnaryExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l02216">FunctionCallExpr::resolveFunctionOverloads()</a>, <a class="el" href="expr_8cpp_source.html#l02121">FunctionCallExpr::tryResolve()</a>, <a class="el" href="stmt_8cpp_source.html#l01341">ForStmt::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l01119">DoStmt::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l00513">IfStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l04812">TypeCastExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l02811">IndexExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l02475">FunctionCallExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l01937">SelectExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l01694">AssignExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l01295">BinaryExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l00694">UnaryExpr::TypeCheck()</a>, and <a class="el" href="expr_8cpp_source.html#l00128">Expr::TypeConv()</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li><a class="el" href="ispc_8h_source.html">ispc.h</a></li>
-<li><a class="el" href="ispc_8cpp_source.html">ispc.cpp</a></li>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li><a class="el" href="stmt_8h_source.html">stmt.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Sep 30 2011 14:55:38 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Oct 6 2011 19:44:52 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

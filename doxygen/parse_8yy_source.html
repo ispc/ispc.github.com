@@ -732,15 +732,15 @@
 <a name="l00701"></a>00701     | type_qualifier specifier_qualifier_list 
 <a name="l00702"></a>00702     {
 <a name="l00703"></a>00703         <span class="keywordflow">if</span> ($2 != NULL) {
-<a name="l00704"></a>00704             <span class="keywordflow">if</span> ($1 == TYPEQUAL_UNIFORM)
+<a name="l00704"></a>00704             <span class="keywordflow">if</span> ($1 == <a class="code" href="decl_8h.html#a4e1d46f163dbd13f9fe27a6b5074b8ea">TYPEQUAL_UNIFORM</a>)
 <a name="l00705"></a>00705                 $$ = $2-&gt;GetAsUniformType();
-<a name="l00706"></a>00706             <span class="keywordflow">else</span> <span class="keywordflow">if</span> ($1 == TYPEQUAL_VARYING)
+<a name="l00706"></a>00706             <span class="keywordflow">else</span> <span class="keywordflow">if</span> ($1 == <a class="code" href="decl_8h.html#a1b7c547c3ec2c68546466f0ea2312224">TYPEQUAL_VARYING</a>)
 <a name="l00707"></a>00707                 $$ = $2-&gt;GetAsVaryingType();
-<a name="l00708"></a>00708             <span class="keywordflow">else</span> <span class="keywordflow">if</span> ($1 == TYPEQUAL_REFERENCE)
+<a name="l00708"></a>00708             <span class="keywordflow">else</span> <span class="keywordflow">if</span> ($1 == <a class="code" href="decl_8h.html#a79d1d87eced9ce7b34e064e953107a7f">TYPEQUAL_REFERENCE</a>)
 <a name="l00709"></a>00709                 $$ = <span class="keyword">new</span> <a class="code" href="classReferenceType.html" title="Type representing a reference to another (non-reference) type.">ReferenceType</a>($2, <span class="keyword">false</span>);
-<a name="l00710"></a>00710             <span class="keywordflow">else</span> <span class="keywordflow">if</span> ($1 == TYPEQUAL_CONST)
+<a name="l00710"></a>00710             <span class="keywordflow">else</span> <span class="keywordflow">if</span> ($1 == <a class="code" href="decl_8h.html#ac13a98aa2d38017496b910137c57deaf">TYPEQUAL_CONST</a>)
 <a name="l00711"></a>00711                 $$ = $2-&gt;GetAsConstType();
-<a name="l00712"></a>00712             <span class="keywordflow">else</span> <span class="keywordflow">if</span> ($1 == TYPEQUAL_UNSIGNED) {
+<a name="l00712"></a>00712             <span class="keywordflow">else</span> <span class="keywordflow">if</span> ($1 == <a class="code" href="decl_8h.html#a2fbc33f7f56450a1b16955ce0f276162">TYPEQUAL_UNSIGNED</a>) {
 <a name="l00713"></a>00713                 <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *t = $2-&gt;<a class="code" href="classType.html#a127bfce35f03cb94bd25fbe07efb941a">GetAsUnsignedType</a>();
 <a name="l00714"></a>00714                 <span class="keywordflow">if</span> (t)
 <a name="l00715"></a>00715                     $$ = t;
@@ -977,7 +977,7 @@
 <a name="l00946"></a>00946         <span class="keywordflow">else</span> {
 <a name="l00947"></a>00947             std::vector&lt;std::string&gt; alternates = <a class="code" href="util_8h.html#a3051f23d5a0438c2fdcfb9b916797fa4">MatchStrings</a>(yytext, builtinTokens);
 <a name="l00948"></a>00948             std::string alts = lGetAlternates(alternates);
-<a name="l00949"></a>00949             <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(@1, <span class="stringliteral">&quot;Syntax error--token \&quot;%s\&quot; unknown.%s&quot;</span>, yytext, alts.c_str());
+<a name="l00949"></a>00949             <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(@1, <span class="stringliteral">&quot;Syntax error--token \&quot;%s\&quot; unexpected.%s&quot;</span>, yytext, alts.c_str());
 <a name="l00950"></a>00950         }
 <a name="l00951"></a>00951         $$ = <a class="code" href="parse_8yy.html">NULL</a>;
 <a name="l00952"></a>00952     }
@@ -1081,7 +1081,7 @@
 <a name="l01050"></a>01050         <span class="keywordflow">else</span> {
 <a name="l01051"></a>01051             std::vector&lt;std::string&gt; alternates = <a class="code" href="util_8h.html#a3051f23d5a0438c2fdcfb9b916797fa4">MatchStrings</a>(yytext, builtinTokens);
 <a name="l01052"></a>01052             std::string alts = lGetAlternates(alternates);
-<a name="l01053"></a>01053             <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(@1, <span class="stringliteral">&quot;Syntax error--token \&quot;%s\&quot; unknown.%s&quot;</span>, yytext, alts.c_str());
+<a name="l01053"></a>01053             <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(@1, <span class="stringliteral">&quot;Syntax error--token \&quot;%s\&quot; unexpected.%s&quot;</span>, yytext, alts.c_str());
 <a name="l01054"></a>01054         }
 <a name="l01055"></a>01055         $$ = <a class="code" href="parse_8yy.html">NULL</a>;
 <a name="l01056"></a>01056     }
@@ -1240,7 +1240,7 @@
 <a name="l01209"></a>01209         <span class="keywordflow">else</span> {
 <a name="l01210"></a>01210             std::vector&lt;std::string&gt; alternates = <a class="code" href="util_8h.html#a3051f23d5a0438c2fdcfb9b916797fa4">MatchStrings</a>(yytext, builtinTokens);
 <a name="l01211"></a>01211             std::string alts = lGetAlternates(alternates);
-<a name="l01212"></a>01212             <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(@1, <span class="stringliteral">&quot;Syntax error--token \&quot;%s\&quot; unknown.%s&quot;</span>, yytext, alts.c_str());
+<a name="l01212"></a>01212             <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(@1, <span class="stringliteral">&quot;Syntax error--token \&quot;%s\&quot; unexpected.%s&quot;</span>, yytext, alts.c_str());
 <a name="l01213"></a>01213         }
 <a name="l01214"></a>01214     }
 <a name="l01215"></a>01215     ;
@@ -1262,7 +1262,7 @@
 <a name="l01231"></a>01231         <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#ae43ab4f103f2adff5033d6112fc5f169">AddGlobal</a>($1, $2);
 <a name="l01232"></a>01232         lAddFunctionParams($2); 
 <a name="l01233"></a>01233         lAddMaskToSymbolTable(@2);
-<a name="l01234"></a>01234         <span class="keywordflow">if</span> ($1-&gt;typeQualifier &amp; TYPEQUAL_TASK)
+<a name="l01234"></a>01234         <span class="keywordflow">if</span> ($1-&gt;typeQualifier &amp; <a class="code" href="decl_8h.html#a840dd265ddc0d310fca5215d87c79bd5">TYPEQUAL_TASK</a>)
 <a name="l01235"></a>01235             lAddThreadIndexCountToSymbolTable(@2);
 <a name="l01236"></a>01236     } 
 <a name="l01237"></a>01237     compound_statement
@@ -1454,7 +1454,7 @@
 <a name="l01423"></a>01423 }
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Sep 30 2011 14:55:37 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Oct 6 2011 19:44:51 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

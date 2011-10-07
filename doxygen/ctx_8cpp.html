@@ -38,6 +38,7 @@
 <a href="#_details">More...</a></p>
 <code>#include &quot;<a class="el" href="ctx_8h_source.html">ctx.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="util_8h_source.html">util.h</a>&quot;</code><br/>
+<code>#include &quot;func.h&quot;</code><br/>
 <code>#include &quot;<a class="el" href="llvmutil_8h_source.html">llvmutil.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="type_8h_source.html">type.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="stmt_8h_source.html">stmt.h</a>&quot;</code><br/>
@@ -55,7 +56,7 @@ Include dependency graph for ctx.cpp:<!-- endSectionHeader --></div>
 <!-- startSectionSummary --><!-- endSectionSummary --><!-- startSectionContent --><div class="dyncontent">
 <div class="center"><img src="ctx_8cpp__incl.png" border="0" usemap="#ctx_8cpp" alt=""/></div>
 <map name="ctx_8cpp" id="ctx_8cpp">
-<area shape="rect" id="node3" href="ctx_8h.html" title="Declaration of the FunctionEmitContext class." alt="" coords="893,83,949,111"/><area shape="rect" id="node33" href="util_8h.html" title="util.h" alt="" coords="600,161,656,189"/><area shape="rect" id="node36" href="llvmutil_8h.html" title="Header file with declarations for various LLVM utility stuff." alt="" coords="301,161,387,189"/><area shape="rect" id="node47" href="type_8h.html" title="File with declarations for classes related to type representation." alt="" coords="461,161,525,189"/><area shape="rect" id="node52" href="stmt_8h.html" title="File with declarations for classes related to statements in the language." alt="" coords="805,83,869,111"/><area shape="rect" id="node55" href="expr_8h.html" title="Expr abstract base class and expression implementations." alt="" coords="531,83,595,111"/><area shape="rect" id="node59" href="module_8h.html" title="Declaration of the Module class, which is the ispc&#45;side representation of the results of compiling a ..." alt="" coords="1024,83,1109,111"/><area shape="rect" id="node62" href="sym_8h.html" title="header file with declarations for symbol and symbol table classes." alt="" coords="669,83,731,111"/><area shape="rect" id="node5" href="ispc_8h.html" title="Main ispc.header file." alt="" coords="656,238,717,266"/><area shape="rect" id="node7" href="assert_8h.html" title="assert.h" alt="" coords="416,315,491,343"/><area shape="rect" id="node15" href="stdint_8h.html" title="stdint.h" alt="" coords="515,315,587,343"/><area shape="rect" id="node9" href="cdefs_8h.html" title="sys/cdefs.h" alt="" coords="405,393,501,421"/><area shape="rect" id="node11" href="__symbol__aliasing_8h.html" title="sys/_symbol_aliasing.h" alt="" coords="264,470,440,498"/><area shape="rect" id="node13" href="__posix__availability_8h.html" title="sys/_posix_availability.h" alt="" coords="464,470,645,498"/></map>
+<area shape="rect" id="node3" href="ctx_8h.html" title="Declaration of the FunctionEmitContext class." alt="" coords="1051,83,1107,111"/><area shape="rect" id="node33" href="util_8h.html" title="util.h" alt="" coords="992,161,1048,189"/><area shape="rect" id="node38" href="llvmutil_8h.html" title="Header file with declarations for various LLVM utility stuff." alt="" coords="301,161,387,189"/><area shape="rect" id="node49" href="type_8h.html" title="File with declarations for classes related to type representation." alt="" coords="461,161,525,189"/><area shape="rect" id="node54" href="stmt_8h.html" title="File with declarations for classes related to statements in the language." alt="" coords="632,83,696,111"/><area shape="rect" id="node59" href="expr_8h.html" title="Expr abstract base class and expression implementations." alt="" coords="535,83,599,111"/><area shape="rect" id="node64" href="module_8h.html" title="Declaration of the Module class, which is the ispc&#45;side representation of the results of compiling a ..." alt="" coords="720,83,805,111"/><area shape="rect" id="node68" href="sym_8h.html" title="header file with declarations for symbol and symbol table classes." alt="" coords="837,83,899,111"/><area shape="rect" id="node5" href="ispc_8h.html" title="Main ispc.header file." alt="" coords="713,238,775,266"/><area shape="rect" id="node7" href="assert_8h.html" title="assert.h" alt="" coords="473,315,548,343"/><area shape="rect" id="node15" href="stdint_8h.html" title="stdint.h" alt="" coords="572,315,644,343"/><area shape="rect" id="node9" href="cdefs_8h.html" title="sys/cdefs.h" alt="" coords="463,393,559,421"/><area shape="rect" id="node11" href="__symbol__aliasing_8h.html" title="sys/_symbol_aliasing.h" alt="" coords="321,470,497,498"/><area shape="rect" id="node13" href="__posix__availability_8h.html" title="sys/_posix_availability.h" alt="" coords="521,470,703,498"/><area shape="rect" id="node71" href="decl_8h.html" title="Declarations related to type declarations; the parser basically creates instances of these classes..." alt="" coords="832,161,893,189"/></map>
 <!-- endSectionContent --></div>
 
 <p><a href="ctx_8cpp_source.html">Go to the source code of this file.</a></p>
@@ -90,11 +91,11 @@ Functions</h2></td></tr>
 <div class="memdoc">
 <p>If the given type is an array of vector types, then it's the representation of an ispc <a class="el" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> with varying elements. If it is one of these, return the array size (i.e. the VectorType's size). Otherwise return zero. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00933">933</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00930">930</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="ispc_8h_source.html#l00082">LLVM_TYPE_CONST</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00322">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00219">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="ispc_8h_source.html#l00082">LLVM_TYPE_CONST</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00298">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00195">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00950">FunctionEmitContext::BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01037">FunctionEmitContext::CmpInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l00984">FunctionEmitContext::NotOperator()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00947">FunctionEmitContext::BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01034">FunctionEmitContext::CmpInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l00981">FunctionEmitContext::NotOperator()</a>.</p>
 
 </div>
 </div>
@@ -113,11 +114,11 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01019">1019</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l01016">1016</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="llvmutil_8h_source.html#l00055">LLVMTypes::BoolType</a>, <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="ispc_8h_source.html#l00082">LLVM_TYPE_CONST</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00322">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00219">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="llvmutil_8h_source.html#l00055">LLVMTypes::BoolType</a>, <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="ispc_8h_source.html#l00082">LLVM_TYPE_CONST</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00298">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00195">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01037">FunctionEmitContext::CmpInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01034">FunctionEmitContext::CmpInst()</a>.</p>
 
 </div>
 </div>
@@ -146,16 +147,16 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00787">787</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00784">784</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00359">Globals::ctx</a>, <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00188">LLVMInt32()</a>, <a class="el" href="ispc_8cpp_source.html#l00066">m</a>, <a class="el" href="module_8h_source.html#l00092">Module::module</a>, and <a class="el" href="parse_8yy_source.html#l20866">s</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00339">Globals::ctx</a>, <a class="el" href="ispc_8cpp_source.html#l00065">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00188">LLVMInt32()</a>, <a class="el" href="ispc_8cpp_source.html#l00066">m</a>, <a class="el" href="module_8h_source.html#l00119">Module::module</a>, and <a class="el" href="parse_8yy_source.html#l27470">s</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00805">FunctionEmitContext::AddInstrumentationPoint()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00802">FunctionEmitContext::AddInstrumentationPoint()</a>.</p>
 
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Sep 30 2011 14:55:37 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Oct 6 2011 19:44:52 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

@@ -360,26 +360,12 @@
 <a name="l00329"></a>00329     <span class="keywordflow">if</span> (debugSet &amp;&amp; !optSet)
 <a name="l00330"></a>00330         <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a> = 0;
 <a name="l00331"></a>00331 
-<a name="l00332"></a>00332     <span class="keywordflow">if</span> (!<a class="code" href="structTarget.html#a75cbaebf05e64abb77f9876a62638a27">Target::GetTarget</a>(arch, cpu, target, generatePIC, &amp;<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>))
-<a name="l00333"></a>00333         <a class="code" href="main_8cpp.html#a4fdfc6823f51e72a0b6b23d177818526">usage</a>(1);
-<a name="l00334"></a>00334 
-<a name="l00335"></a>00335     <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a> = <span class="keyword">new</span> <a class="code" href="classModule.html">Module</a>(file);
-<a name="l00336"></a>00336     <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8b6e48b76bbbf940b5f05a2fe4a926f1">CompileFile</a>() == 0) {
-<a name="l00337"></a>00337         <span class="keywordflow">if</span> (outFileName != <a class="code" href="parse_8yy.html">NULL</a>)
-<a name="l00338"></a>00338             <span class="keywordflow">if</span> (!<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#aebb514e9617091b89c67364e7899e81e">WriteOutput</a>(ot, outFileName))
-<a name="l00339"></a>00339                 <span class="keywordflow">return</span> 1;
-<a name="l00340"></a>00340         <span class="keywordflow">if</span> (headerFileName != <a class="code" href="parse_8yy.html">NULL</a>)
-<a name="l00341"></a>00341             <span class="keywordflow">if</span> (!<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#aebb514e9617091b89c67364e7899e81e">WriteOutput</a>(<a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16aa363d09f10db3dba3593abbf5b0b38c6">Module::Header</a>, headerFileName))
-<a name="l00342"></a>00342                 <span class="keywordflow">return</span> 1;
-<a name="l00343"></a>00343     }
-<a name="l00344"></a>00344     <span class="keywordtype">int</span> errorCount = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a>;
-<a name="l00345"></a>00345     <span class="keyword">delete</span> <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>;
-<a name="l00346"></a>00346 
-<a name="l00347"></a>00347     <span class="keywordflow">return</span> errorCount &gt; 0;
-<a name="l00348"></a>00348 }
+<a name="l00332"></a>00332     <span class="keywordflow">return</span> <a class="code" href="classModule.html#aa27071674d425b5d41146596f6df1e8c">Module::CompileAndOutput</a>(file, arch, cpu, target, generatePIC,
+<a name="l00333"></a>00333                                     ot, outFileName, headerFileName);
+<a name="l00334"></a>00334 }
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Sep 30 2011 14:55:37 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Oct 6 2011 19:44:51 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

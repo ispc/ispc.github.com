@@ -56,12 +56,14 @@ Collaboration diagram for Target:<!-- endSectionHeader --></div>
 Public Types</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTarget.html#aa48340cc9786270d1ddcf046d577512f">ISA</a> { <a class="el" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa405a12bd45be878b6cc9c6d006e1dd76">SSE2</a>, 
 <a class="el" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa4ae729a3f9131ab5aa5d621fa6e24cc3">SSE4</a>, 
-<a class="el" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa0bb31e5429c5e5ae43b3ac3c76104ef7">AVX</a>
+<a class="el" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa0bb31e5429c5e5ae43b3ac3c76104ef7">AVX</a>, 
+<a class="el" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa1b395922d189ec3db9a5e1bb924e337f">NUM_ISAS</a>
  }</td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTarget.html#ab2ff7278411fa2284c11853ec218dad3">GetTripleString</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::TargetMachine *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTarget.html#a555a165ae94adf95dc5f6696dc636002">GetTargetMachine</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTarget.html#a30f10ac6e7be95c65a4808da30b62de3">GetISAString</a> () const </td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTarget.html#a75cbaebf05e64abb77f9876a62638a27">GetTarget</a> (const char *<a class="el" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">arch</a>, const char *<a class="el" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">cpu</a>, const char *<a class="el" href="structTarget.html#a3ca3d78d8240b68881e00af656df2951">isa</a>, bool pic, <a class="el" href="structTarget.html">Target</a> *)</td></tr>
@@ -84,7 +86,7 @@ Public Attributes</h2></td></tr>
 <p>Structure that defines a compilation target. </p>
 <p>This structure defines a compilation target for the ispc compiler. </p>
 
-<p>Definition at line <a class="el" href="ispc_8h_source.html#l00162">162</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p>Definition at line <a class="el" href="ispc_8h_source.html#l00131">131</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 <hr/><h2>Member Enumeration Documentation</h2>
 <a class="anchor" id="aa48340cc9786270d1ddcf046d577512f"></a><!-- doxytag: member="Target::ISA" ref="aa48340cc9786270d1ddcf046d577512f" args="" -->
 <div class="memitem">
@@ -96,7 +98,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Enumerator giving the instruction sets that the compiler can target. </p>
+<p>Enumerator giving the instruction sets that the compiler can target. These should be ordered from "worse" to "better" in that if a processor supports multiple target ISAs, then the most flexible/performant of them will apear last in the enumerant. Note also that __best_available_isa() needs to be updated if ISAs are added or the enumerant values are reordered. </p>
 <dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em><a class="anchor" id="aa48340cc9786270d1ddcf046d577512fa405a12bd45be878b6cc9c6d006e1dd76"></a><!-- doxytag: member="SSE2" ref="aa48340cc9786270d1ddcf046d577512fa405a12bd45be878b6cc9c6d006e1dd76" args="" -->SSE2</em>&nbsp;</td><td>
 </td></tr>
@@ -104,15 +106,38 @@ Public Attributes</h2></td></tr>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="aa48340cc9786270d1ddcf046d577512fa0bb31e5429c5e5ae43b3ac3c76104ef7"></a><!-- doxytag: member="AVX" ref="aa48340cc9786270d1ddcf046d577512fa0bb31e5429c5e5ae43b3ac3c76104ef7" args="" -->AVX</em>&nbsp;</td><td>
 </td></tr>
+<tr><td valign="top"><em><a class="anchor" id="aa48340cc9786270d1ddcf046d577512fa1b395922d189ec3db9a5e1bb924e337f"></a><!-- doxytag: member="NUM_ISAS" ref="aa48340cc9786270d1ddcf046d577512fa1b395922d189ec3db9a5e1bb924e337f" args="" -->NUM_ISAS</em>&nbsp;</td><td>
+</td></tr>
 </table>
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ispc_8h_source.html#l00194">194</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p>Definition at line <a class="el" href="ispc_8h_source.html#l00170">170</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a30f10ac6e7be95c65a4808da30b62de3"></a><!-- doxytag: member="Target::GetISAString" ref="a30f10ac6e7be95c65a4808da30b62de3" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * Target::GetISAString </td>
+          <td>(</td>
+          <td class="paramname">&#160;)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Returns a string like "avx" encoding the target. </p>
+
+<p>Definition at line <a class="el" href="ispc_8cpp_source.html#l00256">256</a> of file <a class="el" href="ispc_8cpp_source.html">ispc.cpp</a>.</p>
+
+<p>References <a class="el" href="ispc_8h_source.html#l00170">AVX</a>, <a class="el" href="util_8h_source.html#l00104">FATAL</a>, <a class="el" href="ispc_8h_source.html#l00173">isa</a>, <a class="el" href="ispc_8h_source.html#l00170">SSE2</a>, and <a class="el" href="ispc_8h_source.html#l00170">SSE4</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a75cbaebf05e64abb77f9876a62638a27"></a><!-- doxytag: member="Target::GetTarget" ref="a75cbaebf05e64abb77f9876a62638a27" args="(const char *arch, const char *cpu, const char *isa, bool pic, Target *)" -->
 <div class="memitem">
 <div class="memproto">
@@ -159,9 +184,7 @@ Public Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ispc_8cpp_source.html#l00072">72</a> of file <a class="el" href="ispc_8cpp_source.html">ispc.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00200">arch</a>, <a class="el" href="ispc_8h_source.html#l00209">attributes</a>, <a class="el" href="ispc_8h_source.html#l00194">AVX</a>, <a class="el" href="ispc_8h_source.html#l00206">cpu</a>, <a class="el" href="ispc_8h_source.html#l00222">generatePIC</a>, <a class="el" href="ispc_8cpp_source.html#l00228">GetTargetMachine()</a>, <a class="el" href="ispc_8h_source.html#l00203">is32bit</a>, <a class="el" href="ispc_8h_source.html#l00197">isa</a>, <a class="el" href="ispc_8h_source.html#l00214">nativeVectorWidth</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00194">SSE2</a>, <a class="el" href="ispc_8h_source.html#l00194">SSE4</a>, <a class="el" href="parse_8yy.html">stderr</a>, <a class="el" href="ispc_8cpp_source.html#l00195">SupportedTargetISAs()</a>, <a class="el" href="ispc_8h_source.html#l00190">target</a>, and <a class="el" href="ispc_8h_source.html#l00219">vectorWidth</a>.</p>
-
-<p>Referenced by <a class="el" href="main_8cpp_source.html#l00158">main()</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00176">arch</a>, <a class="el" href="ispc_8h_source.html#l00185">attributes</a>, <a class="el" href="ispc_8h_source.html#l00170">AVX</a>, <a class="el" href="ispc_8h_source.html#l00182">cpu</a>, <a class="el" href="ispc_8h_source.html#l00198">generatePIC</a>, <a class="el" href="ispc_8cpp_source.html#l00228">GetTargetMachine()</a>, <a class="el" href="ispc_8h_source.html#l00179">is32bit</a>, <a class="el" href="ispc_8h_source.html#l00173">isa</a>, <a class="el" href="ispc_8h_source.html#l00190">nativeVectorWidth</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00170">SSE2</a>, <a class="el" href="ispc_8h_source.html#l00170">SSE4</a>, <a class="el" href="parse_8yy.html">stderr</a>, <a class="el" href="ispc_8cpp_source.html#l00195">SupportedTargetISAs()</a>, <a class="el" href="ispc_8h_source.html#l00162">target</a>, and <a class="el" href="ispc_8h_source.html#l00195">vectorWidth</a>.</p>
 
 </div>
 </div>
@@ -182,9 +205,9 @@ Public Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ispc_8cpp_source.html#l00228">228</a> of file <a class="el" href="ispc_8cpp_source.html">ispc.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ispc_8h_source.html#l00209">attributes</a>, <a class="el" href="ispc_8h_source.html#l00206">cpu</a>, <a class="el" href="ispc_8h_source.html#l00222">generatePIC</a>, <a class="el" href="ispc_8cpp_source.html#l00205">GetTripleString()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ispc_8h_source.html#l00190">target</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="ispc_8h_source.html#l00185">attributes</a>, <a class="el" href="ispc_8h_source.html#l00182">cpu</a>, <a class="el" href="ispc_8h_source.html#l00198">generatePIC</a>, <a class="el" href="ispc_8cpp_source.html#l00205">GetTripleString()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ispc_8h_source.html#l00162">target</a>.</p>
 
-<p>Referenced by <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>, <a class="el" href="opt_8cpp_source.html#l00449">lGetMask()</a>, and <a class="el" href="module_8cpp_source.html#l00938">Module::writeObjectFileOrAssembly()</a>.</p>
+<p>Referenced by <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>, <a class="el" href="opt_8cpp_source.html#l00450">lGetMask()</a>, and <a class="el" href="module_8cpp_source.html#l00417">Module::writeObjectFileOrAssembly()</a>.</p>
 
 </div>
 </div>
@@ -205,9 +228,9 @@ Public Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ispc_8cpp_source.html#l00205">205</a> of file <a class="el" href="ispc_8cpp_source.html">ispc.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00200">arch</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00176">arch</a>.</p>
 
-<p>Referenced by <a class="el" href="ispc_8cpp_source.html#l00228">GetTargetMachine()</a>, and <a class="el" href="module_8cpp_source.html#l00093">Module::Module()</a>.</p>
+<p>Referenced by <a class="el" href="ispc_8cpp_source.html#l00228">GetTargetMachine()</a>, and <a class="el" href="module_8cpp_source.html#l00097">Module::Module()</a>.</p>
 
 </div>
 </div>
@@ -287,7 +310,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p><a class="el" href="structTarget.html" title="Structure that defines a compilation target.">Target</a> system architecture. (e.g. "x86-64", "x86"). </p>
 
-<p>Definition at line <a class="el" href="ispc_8h_source.html#l00200">200</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p>Definition at line <a class="el" href="ispc_8h_source.html#l00176">176</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
 <p>Referenced by <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>, and <a class="el" href="ispc_8cpp_source.html#l00205">GetTripleString()</a>.</p>
 
@@ -305,7 +328,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Target-specific attributes to pass along to the LLVM backend </p>
 
-<p>Definition at line <a class="el" href="ispc_8h_source.html#l00209">209</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p>Definition at line <a class="el" href="ispc_8h_source.html#l00185">185</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
 <p>Referenced by <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>, and <a class="el" href="ispc_8cpp_source.html#l00228">GetTargetMachine()</a>.</p>
 
@@ -323,7 +346,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p><a class="el" href="structTarget.html" title="Structure that defines a compilation target.">Target</a> CPU. (e.g. "corei7", "corei7-avx", ..) </p>
 
-<p>Definition at line <a class="el" href="ispc_8h_source.html#l00206">206</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p>Definition at line <a class="el" href="ispc_8h_source.html#l00182">182</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
 <p>Referenced by <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>, and <a class="el" href="ispc_8cpp_source.html#l00228">GetTargetMachine()</a>.</p>
 
@@ -341,7 +364,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Indicates whether position independent code should be generated. </p>
 
-<p>Definition at line <a class="el" href="ispc_8h_source.html#l00222">222</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p>Definition at line <a class="el" href="ispc_8h_source.html#l00198">198</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
 <p>Referenced by <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>, and <a class="el" href="ispc_8cpp_source.html#l00228">GetTargetMachine()</a>.</p>
 
@@ -359,9 +382,9 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Is the target architecture 32 or 64 bit </p>
 
-<p>Definition at line <a class="el" href="ispc_8h_source.html#l00203">203</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p>Definition at line <a class="el" href="ispc_8h_source.html#l00179">179</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p>Referenced by <a class="el" href="builtins_8cpp_source.html#l00434">DefineStdlib()</a>, and <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>.</p>
+<p>Referenced by <a class="el" href="builtins_8cpp_source.html#l00433">DefineStdlib()</a>, and <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>.</p>
 
 </div>
 </div>
@@ -377,9 +400,9 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Instruction set being compiled to. </p>
 
-<p>Definition at line <a class="el" href="ispc_8h_source.html#l00197">197</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p>Definition at line <a class="el" href="ispc_8h_source.html#l00173">173</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p>Referenced by <a class="el" href="builtins_8cpp_source.html#l00434">DefineStdlib()</a>, <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>, and <a class="el" href="module_8cpp_source.html#l01272">Module::writeHeader()</a>.</p>
+<p>Referenced by <a class="el" href="builtins_8cpp_source.html#l00433">DefineStdlib()</a>, <a class="el" href="ispc_8cpp_source.html#l00256">GetISAString()</a>, and <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>.</p>
 
 </div>
 </div>
@@ -395,9 +418,9 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Native vector width of the vector instruction set. Note that this value is directly derived from the ISA Being used (e.g. it's 4 for SSE, 8 for AVX, etc.) </p>
 
-<p>Definition at line <a class="el" href="ispc_8h_source.html#l00214">214</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p>Definition at line <a class="el" href="ispc_8h_source.html#l00190">190</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01495">FunctionEmitContext::AllocaInst()</a>, <a class="el" href="type_8cpp_source.html#l01197">VectorType::GetDIType()</a>, <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>, <a class="el" href="type_8cpp_source.html#l01221">VectorType::getVectorMemoryCount()</a>, <a class="el" href="ctx_8cpp_source.html#l01925">FunctionEmitContext::LaunchInst()</a>, <a class="el" href="module_8cpp_source.html#l01120">lEmitVectorTypedefs()</a>, and <a class="el" href="module_8cpp_source.html#l00269">lInitFunSymDecl()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01492">FunctionEmitContext::AllocaInst()</a>, <a class="el" href="type_8cpp_source.html#l01197">VectorType::GetDIType()</a>, <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>, <a class="el" href="type_8cpp_source.html#l01221">VectorType::getVectorMemoryCount()</a>, <a class="el" href="ctx_8cpp_source.html#l01922">FunctionEmitContext::LaunchInst()</a>, and <a class="el" href="module_8cpp_source.html#l00607">lEmitVectorTypedefs()</a>.</p>
 
 </div>
 </div>
@@ -413,7 +436,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p>llvm <a class="el" href="structTarget.html" title="Structure that defines a compilation target.">Target</a> object representing this target. </p>
 
-<p>Definition at line <a class="el" href="ispc_8h_source.html#l00190">190</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p>Definition at line <a class="el" href="ispc_8h_source.html#l00162">162</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
 <p>Referenced by <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>, and <a class="el" href="ispc_8cpp_source.html#l00228">GetTargetMachine()</a>.</p>
 
@@ -431,9 +454,9 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Actual vector width currently being compiled to. This may be an integer multiple of the native vector width, for example if we're "doubling up" and compiling 8-wide on a 4-wide SSE system. </p>
 
-<p>Definition at line <a class="el" href="ispc_8h_source.html#l00219">219</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p>Definition at line <a class="el" href="ispc_8h_source.html#l00195">195</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00683">FunctionEmitContext::All()</a>, <a class="el" href="ctx_8cpp_source.html#l01071">FunctionEmitContext::BitCastInst()</a>, <a class="el" href="expr_8cpp_source.html#l03928">ConstExpr::Count()</a>, <a class="el" href="builtins_8cpp_source.html#l00434">DefineStdlib()</a>, <a class="el" href="stmt_8cpp_source.html#l01705">PrintStmt::EmitCode()</a>, <a class="el" href="type_8cpp_source.html#l01391">StructType::GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00640">EnumType::GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00414">AtomicType::GetDIType()</a>, <a class="el" href="ctx_8cpp_source.html#l01257">FunctionEmitContext::GetElementPtrInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00086">InitLLVMUtil()</a>, <a class="el" href="ctx_8cpp_source.html#l01139">FunctionEmitContext::IntToPtrInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00933">lArrayVectorWidth()</a>, <a class="el" href="expr_8cpp_source.html#l03686">lConvert()</a>, <a class="el" href="builtins_8cpp_source.html#l00414">lDefineProgramIndex()</a>, <a class="el" href="module_8cpp_source.html#l00616">lEmitFunctionCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01019">lGetMatchingBoolVectorType()</a>, <a class="el" href="opt_8cpp_source.html#l01043">lGetPtrAndOffsets()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00418">LLVMBoolVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00361">LLVMDoubleVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00342">LLVMFloatVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00266">LLVMInt16Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00304">LLVMInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00380">LLVMInt64Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMInt8Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00457">LLVMPointerVectorType()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00285">LLVMUInt16Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00323">LLVMUInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00399">LLVMUInt64Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00247">LLVMUInt8Vector()</a>, <a class="el" href="opt_8cpp_source.html#l00759">lSizeOfIfKnown()</a>, <a class="el" href="opt_8cpp_source.html#l01029">lSmearScalar()</a>, <a class="el" href="expr_8cpp_source.html#l04129">lTypeConvAtomic()</a>, <a class="el" href="expr_8cpp_source.html#l04642">lUniformValueToVarying()</a>, <a class="el" href="opt_8cpp_source.html#l01872">lVectorIsLinear()</a>, <a class="el" href="opt_8cpp_source.html#l01836">lVectorIsLinearConstantInts()</a>, <a class="el" href="opt_8cpp_source.html#l01822">lVectorValuesAllEqual()</a>, <a class="el" href="ctx_8cpp_source.html#l01106">FunctionEmitContext::PtrToIntInst()</a>, <a class="el" href="opt_8cpp_source.html#l02119">GSImprovementsPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l01262">MaskedStoreOptPass::runOnBasicBlock()</a>, and <a class="el" href="module_8cpp_source.html#l01272">Module::writeHeader()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00680">FunctionEmitContext::All()</a>, <a class="el" href="ctx_8cpp_source.html#l01068">FunctionEmitContext::BitCastInst()</a>, <a class="el" href="expr_8cpp_source.html#l03928">ConstExpr::Count()</a>, <a class="el" href="builtins_8cpp_source.html#l00433">DefineStdlib()</a>, <a class="el" href="stmt_8cpp_source.html#l01705">PrintStmt::EmitCode()</a>, <a class="el" href="type_8cpp_source.html#l01391">StructType::GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00640">EnumType::GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00414">AtomicType::GetDIType()</a>, <a class="el" href="ctx_8cpp_source.html#l01254">FunctionEmitContext::GetElementPtrInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00072">GetTarget()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00086">InitLLVMUtil()</a>, <a class="el" href="ctx_8cpp_source.html#l01136">FunctionEmitContext::IntToPtrInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00930">lArrayVectorWidth()</a>, <a class="el" href="expr_8cpp_source.html#l03686">lConvert()</a>, <a class="el" href="builtins_8cpp_source.html#l00414">lDefineProgramIndex()</a>, <a class="el" href="ctx_8cpp_source.html#l01016">lGetMatchingBoolVectorType()</a>, <a class="el" href="opt_8cpp_source.html#l01046">lGetPtrAndOffsets()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00418">LLVMBoolVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00361">LLVMDoubleVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00342">LLVMFloatVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00266">LLVMInt16Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00304">LLVMInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00380">LLVMInt64Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMInt8Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00457">LLVMPointerVectorType()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00285">LLVMUInt16Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00323">LLVMUInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00399">LLVMUInt64Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00247">LLVMUInt8Vector()</a>, <a class="el" href="opt_8cpp_source.html#l00762">lSizeOfIfKnown()</a>, <a class="el" href="opt_8cpp_source.html#l01032">lSmearScalar()</a>, <a class="el" href="expr_8cpp_source.html#l04129">lTypeConvAtomic()</a>, <a class="el" href="expr_8cpp_source.html#l04642">lUniformValueToVarying()</a>, <a class="el" href="opt_8cpp_source.html#l01877">lVectorIsLinear()</a>, <a class="el" href="opt_8cpp_source.html#l01841">lVectorIsLinearConstantInts()</a>, <a class="el" href="opt_8cpp_source.html#l01827">lVectorValuesAllEqual()</a>, <a class="el" href="ctx_8cpp_source.html#l01103">FunctionEmitContext::PtrToIntInst()</a>, <a class="el" href="opt_8cpp_source.html#l02124">GSImprovementsPass::runOnBasicBlock()</a>, and <a class="el" href="opt_8cpp_source.html#l01266">MaskedStoreOptPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -442,7 +465,7 @@ Public Attributes</h2></td></tr>
 <li><a class="el" href="ispc_8cpp_source.html">ispc.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Sep 30 2011 14:55:39 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Oct 6 2011 19:44:54 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

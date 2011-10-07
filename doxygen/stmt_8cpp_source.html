@@ -103,7 +103,7 @@
 <a name="l00072"></a>00072     <span class="keywordflow">if</span> (!ctx-&gt;<a class="code" href="classFunctionEmitContext.html#ac30ef6a3359fd9c3dc3895fab96ea43d">GetCurrentBasicBlock</a>()) 
 <a name="l00073"></a>00073         <span class="keywordflow">return</span>;
 <a name="l00074"></a>00074 
-<a name="l00075"></a>00075     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>);
+<a name="l00075"></a>00075     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(pos);
 <a name="l00076"></a>00076     <span class="keywordflow">if</span> (<a class="code" href="classExprStmt.html#a7d984c4fc100f0ffc8a3b6b3cef2c85f">expr</a>) 
 <a name="l00077"></a>00077         <a class="code" href="classExprStmt.html#a7d984c4fc100f0ffc8a3b6b3cef2c85f">expr</a>-&gt;<a class="code" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">GetValue</a>(ctx);
 <a name="l00078"></a>00078 }
@@ -132,7 +132,7 @@
 <a name="l00101"></a>00101 
 <a name="l00102"></a>00102     printf(<span class="stringliteral">&quot;%*c&quot;</span>, indent, <span class="charliteral">&#39; &#39;</span>);
 <a name="l00103"></a>00103     printf(<span class="stringliteral">&quot;Expr stmt: &quot;</span>);
-<a name="l00104"></a>00104     <a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>.<a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">Print</a>();
+<a name="l00104"></a>00104     pos.Print();
 <a name="l00105"></a>00105     <a class="code" href="classExprStmt.html#a7d984c4fc100f0ffc8a3b6b3cef2c85f">expr</a>-&gt;<a class="code" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Print</a>();
 <a name="l00106"></a>00106     printf(<span class="stringliteral">&quot;\n&quot;</span>);
 <a name="l00107"></a>00107 }
@@ -140,7 +140,7 @@
 <a name="l00109"></a>00109 
 <a name="l00110"></a>00110 <span class="keywordtype">int</span>
 <a name="l00111"></a><a class="code" href="classExprStmt.html#abaafdd732dd7443d88bad844b6c746c7">00111</a> <a class="code" href="classExprStmt.html#abaafdd732dd7443d88bad844b6c746c7">ExprStmt::EstimateCost</a>()<span class="keyword"> const </span>{
-<a name="l00112"></a>00112     <span class="keywordflow">return</span> <a class="code" href="classExprStmt.html#a7d984c4fc100f0ffc8a3b6b3cef2c85f">expr</a> ? <a class="code" href="classExprStmt.html#a7d984c4fc100f0ffc8a3b6b3cef2c85f">expr</a>-&gt;<a class="code" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a>() : 0;
+<a name="l00112"></a>00112     <span class="keywordflow">return</span> <a class="code" href="classExprStmt.html#a7d984c4fc100f0ffc8a3b6b3cef2c85f">expr</a> ? <a class="code" href="classExprStmt.html#a7d984c4fc100f0ffc8a3b6b3cef2c85f">expr</a>-&gt;EstimateCost() : 0;
 <a name="l00113"></a>00113 }
 <a name="l00114"></a>00114 
 <a name="l00115"></a>00115 <span class="comment"></span>
@@ -195,7 +195,7 @@
 <a name="l00164"></a>00164     <span class="keywordflow">if</span> (dynamic_cast&lt;const AtomicType *&gt;(type) != <a class="code" href="parse_8yy.html">NULL</a> ||
 <a name="l00165"></a>00165         dynamic_cast&lt;const EnumType *&gt;(type) != <a class="code" href="parse_8yy.html">NULL</a>) {
 <a name="l00166"></a>00166         <span class="keywordflow">if</span> (dynamic_cast&lt;ExprList *&gt;(initExpr) != <a class="code" href="parse_8yy.html">NULL</a>)
-<a name="l00167"></a>00167             <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(initExpr-&gt;<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>, <span class="stringliteral">&quot;Expression list initializers can&#39;t be used for &quot;</span>
+<a name="l00167"></a>00167             <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(initExpr-&gt;pos, <span class="stringliteral">&quot;Expression list initializers can&#39;t be used for &quot;</span>
 <a name="l00168"></a>00168                   <span class="stringliteral">&quot;variable \&quot;%s\&#39; with type \&quot;%s\&quot;.&quot;</span>, symName,
 <a name="l00169"></a>00169                   type-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str());
 <a name="l00170"></a>00170         <span class="keywordflow">return</span>;
@@ -204,7 +204,7 @@
 <a name="l00173"></a>00173     <span class="keyword">const</span> <a class="code" href="classReferenceType.html" title="Type representing a reference to another (non-reference) type.">ReferenceType</a> *rt = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classReferenceType.html" title="Type representing a reference to another (non-reference) type.">ReferenceType</a> *<span class="keyword">&gt;</span>(type);
 <a name="l00174"></a>00174     <span class="keywordflow">if</span> (rt) {
 <a name="l00175"></a>00175         <span class="keywordflow">if</span> (!<a class="code" href="classType.html#a64dc632c4a2a352b75b16c7ece65ee5f">Type::Equal</a>(initExpr-&gt;<a class="code" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">GetType</a>(), rt)) {
-<a name="l00176"></a>00176             <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(initExpr-&gt;<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>, <span class="stringliteral">&quot;Initializer for reference type \&quot;%s\&quot; must have same &quot;</span>
+<a name="l00176"></a>00176             <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(initExpr-&gt;pos, <span class="stringliteral">&quot;Initializer for reference type \&quot;%s\&quot; must have same &quot;</span>
 <a name="l00177"></a>00177                   <span class="stringliteral">&quot;reference type itself. \&quot;%s\&quot; is incompatible.&quot;</span>, 
 <a name="l00178"></a>00178                   rt-&gt;<a class="code" href="classReferenceType.html#a7382c38465789b7f1b02ed283786190f">GetString</a>().c_str(), initExpr-&gt;<a class="code" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">GetType</a>()-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str());
 <a name="l00179"></a>00179             <span class="keywordflow">return</span>;
@@ -241,7 +241,7 @@
 <a name="l00210"></a>00210             <span class="comment">// expressions in the ExprList as we have struct members</span>
 <a name="l00211"></a>00211             <span class="keywordtype">int</span> nInits = exprList-&gt;<a class="code" href="classExprList.html#a701a2dc534fd40e2255bdb1b397daa5e">exprs</a>.size();
 <a name="l00212"></a>00212             <span class="keywordflow">if</span> (nInits != collectionType-&gt;<a class="code" href="classCollectionType.html#abc5eb48e176e4abb0fa405d41ae99381">GetElementCount</a>()) {
-<a name="l00213"></a>00213                 <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(initExpr-&gt;<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>, <span class="stringliteral">&quot;Initializer for %s \&quot;%s\&quot; requires &quot;</span>
+<a name="l00213"></a>00213                 <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(initExpr-&gt;pos, <span class="stringliteral">&quot;Initializer for %s \&quot;%s\&quot; requires &quot;</span>
 <a name="l00214"></a>00214                       <span class="stringliteral">&quot;%d values; %d provided.&quot;</span>, name.c_str(), symName, 
 <a name="l00215"></a>00215                       collectionType-&gt;<a class="code" href="classCollectionType.html#abc5eb48e176e4abb0fa405d41ae99381">GetElementCount</a>(), nInits);
 <a name="l00216"></a>00216                 <span class="keywordflow">return</span>;
@@ -256,7 +256,7 @@
 <a name="l00225"></a>00225             }
 <a name="l00226"></a>00226         }
 <a name="l00227"></a>00227         <span class="keywordflow">else</span>
-<a name="l00228"></a>00228             <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(initExpr-&gt;<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>, <span class="stringliteral">&quot;Can&#39;t assign type \&quot;%s\&quot; to \&quot;%s\&quot;.&quot;</span>,
+<a name="l00228"></a>00228             <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(initExpr-&gt;pos, <span class="stringliteral">&quot;Can&#39;t assign type \&quot;%s\&quot; to \&quot;%s\&quot;.&quot;</span>,
 <a name="l00229"></a>00229                   initExpr-&gt;<a class="code" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">GetType</a>()-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(),
 <a name="l00230"></a>00230                   collectionType-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str());
 <a name="l00231"></a>00231         <span class="keywordflow">return</span>;
@@ -429,7 +429,7 @@
 <a name="l00398"></a>00398 <span class="keywordtype">void</span>
 <a name="l00399"></a><a class="code" href="classDeclStmt.html#a40485b15ed77b29a1c4ea3aee650a80e">00399</a> <a class="code" href="classDeclStmt.html#a40485b15ed77b29a1c4ea3aee650a80e">DeclStmt::Print</a>(<span class="keywordtype">int</span> indent)<span class="keyword"> const </span>{
 <a name="l00400"></a>00400     printf(<span class="stringliteral">&quot;%*cDecl Stmt:&quot;</span>, indent, <span class="charliteral">&#39; &#39;</span>);
-<a name="l00401"></a>00401     <a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>.<a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">Print</a>();
+<a name="l00401"></a>00401     pos.Print();
 <a name="l00402"></a>00402     <span class="keywordflow">if</span> (<a class="code" href="classDeclStmt.html#a86b43b750560800f7e2059f0ba2c601a">declaration</a>) 
 <a name="l00403"></a>00403         <a class="code" href="classDeclStmt.html#a86b43b750560800f7e2059f0ba2c601a">declaration</a>-&gt;<a class="code" href="classDeclaration.html#a767d4759d38a2aff5bd282d2b99cf8b4">Print</a>();
 <a name="l00404"></a>00404     printf(<span class="stringliteral">&quot;\n&quot;</span>);
@@ -484,7 +484,7 @@
 <a name="l00453"></a>00453     <span class="keywordflow">if</span> (!testType)
 <a name="l00454"></a>00454         <span class="keywordflow">return</span>;
 <a name="l00455"></a>00455 
-<a name="l00456"></a>00456     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>);
+<a name="l00456"></a>00456     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(pos);
 <a name="l00457"></a>00457     <span class="keywordtype">bool</span> isUniform = testType-&gt;<a class="code" href="classType.html#a0a997c011addd186c7a45a9352fe0edb">IsUniformType</a>();
 <a name="l00458"></a>00458 
 <a name="l00459"></a>00459     llvm::Value *testValue = <a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a>-&gt;<a class="code" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">GetValue</a>(ctx);
@@ -494,7 +494,7 @@
 <a name="l00463"></a>00463     <span class="keywordflow">if</span> (isUniform) {
 <a name="l00464"></a>00464         ctx-&gt;<a class="code" href="classFunctionEmitContext.html#ae19fc1f48b4f162d3d081458ec287067">StartUniformIf</a>(ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa9861c694f2ac29e729b4d559016fdb5">GetMask</a>());
 <a name="l00465"></a>00465         <span class="keywordflow">if</span> (<a class="code" href="classIfStmt.html#a659224717c14699474259652bbca4ebf">doAllCheck</a>)
-<a name="l00466"></a>00466             <a class="code" href="util_8h.html#a275b270b25136f73009802382cf0e6f2">Warning</a>(<a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a>-&gt;<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>, <span class="stringliteral">&quot;Uniform condition supplied to \&quot;cif\&quot; statement.&quot;</span>);
+<a name="l00466"></a>00466             <a class="code" href="util_8h.html#a275b270b25136f73009802382cf0e6f2">Warning</a>(<a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a>-&gt;pos, <span class="stringliteral">&quot;Uniform condition supplied to \&quot;cif\&quot; statement.&quot;</span>);
 <a name="l00467"></a>00467 
 <a name="l00468"></a>00468         <span class="comment">// &#39;If&#39; statements with uniform conditions are relatively</span>
 <a name="l00469"></a>00469         <span class="comment">// straightforward.  We evaluate the condition and then jump to</span>
@@ -549,13 +549,13 @@
 <a name="l00518"></a>00518             <span class="keywordflow">if</span> (testType) {
 <a name="l00519"></a>00519                 <span class="keywordtype">bool</span> isUniform = testType-&gt;<a class="code" href="classType.html#a0a997c011addd186c7a45a9352fe0edb">IsUniformType</a>() &amp;&amp; !<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">disableUniformControlFlow</a>;
 <a name="l00520"></a>00520                 <span class="keywordflow">if</span> (!testType-&gt;<a class="code" href="classType.html#ada5fd0f3e4c8e91a147aafae1410081c">IsNumericType</a>() &amp;&amp; !testType-&gt;<a class="code" href="classType.html#a38ff6178597171c11f6e24566b251dea">IsBoolType</a>()) {
-<a name="l00521"></a>00521                     <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(<a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a>-&gt;<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>, <span class="stringliteral">&quot;Type \&quot;%s\&quot; can&#39;t be converted to boolean for \&quot;if\&quot; test.&quot;</span>,
+<a name="l00521"></a>00521                     <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(<a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a>-&gt;pos, <span class="stringliteral">&quot;Type \&quot;%s\&quot; can&#39;t be converted to boolean for \&quot;if\&quot; test.&quot;</span>,
 <a name="l00522"></a>00522                           testType-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str());
 <a name="l00523"></a>00523                     <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
 <a name="l00524"></a>00524                 }
 <a name="l00525"></a>00525                 <a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a> = <span class="keyword">new</span> <a class="code" href="classTypeCastExpr.html" title="Expression representing a type cast of the given expression to a probably-different type...">TypeCastExpr</a>(isUniform ? <a class="code" href="classAtomicType.html#a339096fdcc4f3f30dcd30bbc9b46e212">AtomicType::UniformBool</a> : 
 <a name="l00526"></a>00526                                         <a class="code" href="classAtomicType.html#a4ea6e749bdc28ad68823ca2edc3bd37d">AtomicType::VaryingBool</a>, 
-<a name="l00527"></a>00527                                         <a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a>, <a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a>-&gt;<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>);
+<a name="l00527"></a>00527                                         <a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a>, <a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a>-&gt;pos);
 <a name="l00528"></a>00528                 <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a>);
 <a name="l00529"></a>00529             }
 <a name="l00530"></a>00530         }
@@ -571,16 +571,16 @@
 <a name="l00540"></a>00540 
 <a name="l00541"></a>00541 <span class="keywordtype">int</span>
 <a name="l00542"></a><a class="code" href="classIfStmt.html#a0a4c3a4371442483ff4e7bf589983dd1">00542</a> <a class="code" href="classIfStmt.html#a0a4c3a4371442483ff4e7bf589983dd1">IfStmt::EstimateCost</a>()<span class="keyword"> const </span>{
-<a name="l00543"></a>00543     <span class="keywordflow">return</span> ((<a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a> ? <a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a>-&gt;<a class="code" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a>() : 0) +
-<a name="l00544"></a>00544             (<a class="code" href="classIfStmt.html#a2127e19eb6a99b23263308b20e6c5998">trueStmts</a> ? <a class="code" href="classIfStmt.html#a2127e19eb6a99b23263308b20e6c5998">trueStmts</a>-&gt;<a class="code" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a>() : 0) +
-<a name="l00545"></a>00545             (<a class="code" href="classIfStmt.html#ad5c2af56f680c12fb23ff487558c23a7">falseStmts</a> ? <a class="code" href="classIfStmt.html#ad5c2af56f680c12fb23ff487558c23a7">falseStmts</a>-&gt;<a class="code" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a>() : 0));
+<a name="l00543"></a>00543     <span class="keywordflow">return</span> ((<a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a> ? <a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a>-&gt;EstimateCost() : 0) +
+<a name="l00544"></a>00544             (<a class="code" href="classIfStmt.html#a2127e19eb6a99b23263308b20e6c5998">trueStmts</a> ? <a class="code" href="classIfStmt.html#a2127e19eb6a99b23263308b20e6c5998">trueStmts</a>-&gt;EstimateCost() : 0) +
+<a name="l00545"></a>00545             (<a class="code" href="classIfStmt.html#ad5c2af56f680c12fb23ff487558c23a7">falseStmts</a> ? <a class="code" href="classIfStmt.html#ad5c2af56f680c12fb23ff487558c23a7">falseStmts</a>-&gt;EstimateCost() : 0));
 <a name="l00546"></a>00546 }
 <a name="l00547"></a>00547 
 <a name="l00548"></a>00548 
 <a name="l00549"></a>00549 <span class="keywordtype">void</span>
 <a name="l00550"></a><a class="code" href="classIfStmt.html#afd4428803898e70d5ba257052ea6fe4e">00550</a> <a class="code" href="classIfStmt.html#afd4428803898e70d5ba257052ea6fe4e">IfStmt::Print</a>(<span class="keywordtype">int</span> indent)<span class="keyword"> const </span>{
 <a name="l00551"></a>00551     printf(<span class="stringliteral">&quot;%*cIf Stmt %s&quot;</span>, indent, <span class="charliteral">&#39; &#39;</span>, <a class="code" href="classIfStmt.html#a659224717c14699474259652bbca4ebf">doAllCheck</a> ? <span class="stringliteral">&quot;DO ALL CHECK&quot;</span> : <span class="stringliteral">&quot;&quot;</span>);
-<a name="l00552"></a>00552     <a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>.<a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">Print</a>();
+<a name="l00552"></a>00552     pos.Print();
 <a name="l00553"></a>00553     printf(<span class="stringliteral">&quot;\n%*cTest: &quot;</span>, indent+4, <span class="charliteral">&#39; &#39;</span>);
 <a name="l00554"></a>00554     <a class="code" href="classIfStmt.html#abe10b0b6f0feae37fd794db33f5bd12e">test</a>-&gt;<a class="code" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Print</a>();
 <a name="l00555"></a>00555     printf(<span class="stringliteral">&quot;\n&quot;</span>);
@@ -857,8 +857,8 @@
 <a name="l00826"></a>00826         <span class="comment">// for the &#39;all lanes&#39; off case.</span>
 <a name="l00827"></a>00827         <span class="keywordflow">if</span> (<a class="code" href="stmt_8cpp.html#a200aba2c15005309113df31c8855ef24">lSafeToRunWithAllLanesOff</a>(<a class="code" href="classIfStmt.html#a2127e19eb6a99b23263308b20e6c5998">trueStmts</a>) &amp;&amp;
 <a name="l00828"></a>00828             <a class="code" href="stmt_8cpp.html#a200aba2c15005309113df31c8855ef24">lSafeToRunWithAllLanesOff</a>(<a class="code" href="classIfStmt.html#ad5c2af56f680c12fb23ff487558c23a7">falseStmts</a>) &amp;&amp;
-<a name="l00829"></a>00829             (((<a class="code" href="classIfStmt.html#a2127e19eb6a99b23263308b20e6c5998">trueStmts</a> ? <a class="code" href="classIfStmt.html#a2127e19eb6a99b23263308b20e6c5998">trueStmts</a>-&gt;<a class="code" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a>() : 0) + 
-<a name="l00830"></a>00830               (<a class="code" href="classIfStmt.html#ad5c2af56f680c12fb23ff487558c23a7">falseStmts</a> ? <a class="code" href="classIfStmt.html#ad5c2af56f680c12fb23ff487558c23a7">falseStmts</a>-&gt;<a class="code" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a>() : 0)) &lt; 
+<a name="l00829"></a>00829             (((<a class="code" href="classIfStmt.html#a2127e19eb6a99b23263308b20e6c5998">trueStmts</a> ? <a class="code" href="classIfStmt.html#a2127e19eb6a99b23263308b20e6c5998">trueStmts</a>-&gt;EstimateCost() : 0) + 
+<a name="l00830"></a>00830               (<a class="code" href="classIfStmt.html#ad5c2af56f680c12fb23ff487558c23a7">falseStmts</a> ? <a class="code" href="classIfStmt.html#ad5c2af56f680c12fb23ff487558c23a7">falseStmts</a>-&gt;EstimateCost() : 0)) &lt; 
 <a name="l00831"></a>00831              <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a78d5af543670c975aabc86817edeb540">PREDICATE_SAFE_IF_STATEMENT_COST</a>)) {
 <a name="l00832"></a>00832             ctx-&gt;<a class="code" href="classFunctionEmitContext.html#ad17a755ea29213a51ac1302567443379">StartVaryingIf</a>(oldMask);
 <a name="l00833"></a>00833             <a class="code" href="classIfStmt.html#a647acfd9b0957808e4a3a08577e95331">emitMaskedTrueAndFalse</a>(ctx, oldMask, ltest);
@@ -1044,7 +1044,7 @@
 <a name="l01013"></a>01013 
 <a name="l01014"></a>01014     <span class="keywordtype">bool</span> uniformTest = <a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a>-&gt;<a class="code" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">GetType</a>()-&gt;<a class="code" href="classType.html#a0a997c011addd186c7a45a9352fe0edb">IsUniformType</a>();
 <a name="l01015"></a>01015     <span class="keywordflow">if</span> (uniformTest &amp;&amp; <a class="code" href="classDoStmt.html#a67dc55bf35bbe07c08bff4b57cdadacb">doCoherentCheck</a>)
-<a name="l01016"></a>01016         <a class="code" href="util_8h.html#a275b270b25136f73009802382cf0e6f2">Warning</a>(<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>, <span class="stringliteral">&quot;Uniform condition supplied to \&quot;cdo\&quot; statement.&quot;</span>);
+<a name="l01016"></a>01016         <a class="code" href="util_8h.html#a275b270b25136f73009802382cf0e6f2">Warning</a>(pos, <span class="stringliteral">&quot;Uniform condition supplied to \&quot;cdo\&quot; statement.&quot;</span>);
 <a name="l01017"></a>01017 
 <a name="l01018"></a>01018     llvm::BasicBlock *bloop = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a6e7755bf2175baf6c63eaf583e4d3fc0">CreateBasicBlock</a>(<span class="stringliteral">&quot;do_loop&quot;</span>);
 <a name="l01019"></a>01019     llvm::BasicBlock *bexit = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a6e7755bf2175baf6c63eaf583e4d3fc0">CreateBasicBlock</a>(<span class="stringliteral">&quot;do_exit&quot;</span>);
@@ -1058,7 +1058,7 @@
 <a name="l01027"></a>01027     <span class="comment">// And now emit code for the loop body</span>
 <a name="l01028"></a>01028     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#ad011bee1c33448a2e962ceb00a01d0c2">SetCurrentBasicBlock</a>(bloop);
 <a name="l01029"></a>01029     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a7d52bd625e6b51a969b949dc79d98d28">SetLoopMask</a>(ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa9861c694f2ac29e729b4d559016fdb5">GetMask</a>());
-<a name="l01030"></a>01030     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>);
+<a name="l01030"></a>01030     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(pos);
 <a name="l01031"></a>01031     <span class="comment">// FIXME: in the StmtList::EmitCode() method takes starts/stops a new</span>
 <a name="l01032"></a>01032     <span class="comment">// scope around the statements in the list.  So if the body is just a</span>
 <a name="l01033"></a>01033     <span class="comment">// single statement (and thus not a statement list), we need a new</span>
@@ -1154,7 +1154,7 @@
 <a name="l01123"></a>01123             <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *testType = <a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a>-&gt;<a class="code" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">GetType</a>();
 <a name="l01124"></a>01124             <span class="keywordflow">if</span> (testType) {
 <a name="l01125"></a>01125                 <span class="keywordflow">if</span> (!testType-&gt;<a class="code" href="classType.html#ada5fd0f3e4c8e91a147aafae1410081c">IsNumericType</a>() &amp;&amp; !testType-&gt;<a class="code" href="classType.html#a38ff6178597171c11f6e24566b251dea">IsBoolType</a>()) {
-<a name="l01126"></a>01126                     <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(<a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a>-&gt;<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>, <span class="stringliteral">&quot;Type \&quot;%s\&quot; can&#39;t be converted to boolean for \&quot;while\&quot; &quot;</span>
+<a name="l01126"></a>01126                     <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(<a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a>-&gt;pos, <span class="stringliteral">&quot;Type \&quot;%s\&quot; can&#39;t be converted to boolean for \&quot;while\&quot; &quot;</span>
 <a name="l01127"></a>01127                           <span class="stringliteral">&quot;test in \&quot;do\&quot; loop.&quot;</span>, <a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a>-&gt;<a class="code" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">GetType</a>()-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str());
 <a name="l01128"></a>01128                     <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
 <a name="l01129"></a>01129                 }
@@ -1178,7 +1178,7 @@
 <a name="l01147"></a>01147                                     !<a class="code" href="stmt_8cpp.html#a6c55124b66fa19b72b806f923a397bab">lHasVaryingBreakOrContinue</a>(<a class="code" href="classDoStmt.html#a56f525b52d6d3c0e320eda1ed036a02c">bodyStmts</a>));
 <a name="l01148"></a>01148                 <a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a> = <span class="keyword">new</span> <a class="code" href="classTypeCastExpr.html" title="Expression representing a type cast of the given expression to a probably-different type...">TypeCastExpr</a>(uniformTest ? <a class="code" href="classAtomicType.html#a339096fdcc4f3f30dcd30bbc9b46e212">AtomicType::UniformBool</a> :
 <a name="l01149"></a>01149                                                           <a class="code" href="classAtomicType.html#a4ea6e749bdc28ad68823ca2edc3bd37d">AtomicType::VaryingBool</a>,
-<a name="l01150"></a>01150                                             <a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a>, <a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a>-&gt;<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>);
+<a name="l01150"></a>01150                                             <a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a>, <a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a>-&gt;pos);
 <a name="l01151"></a>01151             }
 <a name="l01152"></a>01152         }
 <a name="l01153"></a>01153     }
@@ -1191,15 +1191,15 @@
 <a name="l01160"></a>01160 
 <a name="l01161"></a>01161 <span class="keywordtype">int</span>
 <a name="l01162"></a><a class="code" href="classDoStmt.html#a5205fb45888e8929ae4ab283c084c19a">01162</a> <a class="code" href="classDoStmt.html#a5205fb45888e8929ae4ab283c084c19a">DoStmt::EstimateCost</a>()<span class="keyword"> const </span>{
-<a name="l01163"></a>01163     <span class="keywordflow">return</span> ((<a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a> ? <a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a>-&gt;<a class="code" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a>() : 0) +
-<a name="l01164"></a>01164             (<a class="code" href="classDoStmt.html#a56f525b52d6d3c0e320eda1ed036a02c">bodyStmts</a> ? <a class="code" href="classDoStmt.html#a56f525b52d6d3c0e320eda1ed036a02c">bodyStmts</a>-&gt;<a class="code" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a>() : 0));
+<a name="l01163"></a>01163     <span class="keywordflow">return</span> ((<a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a> ? <a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a>-&gt;EstimateCost() : 0) +
+<a name="l01164"></a>01164             (<a class="code" href="classDoStmt.html#a56f525b52d6d3c0e320eda1ed036a02c">bodyStmts</a> ? <a class="code" href="classDoStmt.html#a56f525b52d6d3c0e320eda1ed036a02c">bodyStmts</a>-&gt;EstimateCost() : 0));
 <a name="l01165"></a>01165 }
 <a name="l01166"></a>01166 
 <a name="l01167"></a>01167 
 <a name="l01168"></a>01168 <span class="keywordtype">void</span>
 <a name="l01169"></a><a class="code" href="classDoStmt.html#a51d81d528d1f2fd0ce272aa8cfbc3eab">01169</a> <a class="code" href="classDoStmt.html#a51d81d528d1f2fd0ce272aa8cfbc3eab">DoStmt::Print</a>(<span class="keywordtype">int</span> indent)<span class="keyword"> const </span>{
 <a name="l01170"></a>01170     printf(<span class="stringliteral">&quot;%*cDo Stmt&quot;</span>, indent, <span class="charliteral">&#39; &#39;</span>);
-<a name="l01171"></a>01171     <a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>.<a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">Print</a>();
+<a name="l01171"></a>01171     pos.Print();
 <a name="l01172"></a>01172     printf(<span class="stringliteral">&quot;:\n&quot;</span>);
 <a name="l01173"></a>01173     printf(<span class="stringliteral">&quot;%*cTest: &quot;</span>, indent+4, <span class="charliteral">&#39; &#39;</span>);
 <a name="l01174"></a>01174     <span class="keywordflow">if</span> (<a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a>) <a class="code" href="classDoStmt.html#a26fb641c7fd11ab8ebb23e6972582542">testExpr</a>-&gt;<a class="code" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Print</a>();
@@ -1235,7 +1235,7 @@
 <a name="l01204"></a>01204          !<a class="code" href="stmt_8cpp.html#a6c55124b66fa19b72b806f923a397bab">lHasVaryingBreakOrContinue</a>(<a class="code" href="classForStmt.html#a41c6d63f8996bcc0ab0c4b61ce27ad10">stmts</a>));
 <a name="l01205"></a>01205 
 <a name="l01206"></a>01206     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a6976144dc2d16869a2641069ee9f8f3b">StartLoop</a>(bexit, bstep, uniformTest, ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa9861c694f2ac29e729b4d559016fdb5">GetMask</a>());
-<a name="l01207"></a>01207     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>);
+<a name="l01207"></a>01207     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(pos);
 <a name="l01208"></a>01208 
 <a name="l01209"></a>01209     <span class="comment">// If we have an initiailizer statement, start by emitting the code for</span>
 <a name="l01210"></a>01210     <span class="comment">// it and then jump into the loop test code.  (Also start a new scope</span>
@@ -1279,7 +1279,7 @@
 <a name="l01248"></a>01248     <span class="comment">// any of the mask values are true.</span>
 <a name="l01249"></a>01249     <span class="keywordflow">if</span> (uniformTest) {
 <a name="l01250"></a>01250         <span class="keywordflow">if</span> (<a class="code" href="classForStmt.html#a00927da2b4ecbafb5015942ce609b7f9">doCoherentCheck</a>)
-<a name="l01251"></a>01251             <a class="code" href="util_8h.html#a275b270b25136f73009802382cf0e6f2">Warning</a>(<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>, <span class="stringliteral">&quot;Uniform condition supplied to cfor/cwhile statement.&quot;</span>);
+<a name="l01251"></a>01251             <a class="code" href="util_8h.html#a275b270b25136f73009802382cf0e6f2">Warning</a>(pos, <span class="stringliteral">&quot;Uniform condition supplied to cfor/cwhile statement.&quot;</span>);
 <a name="l01252"></a>01252         <a class="code" href="parse_8yy.html">assert</a>(ltest-&gt;getType() == <a class="code" href="structLLVMTypes.html#a368aa87e3edcd8ea9ef0c820f429536b">LLVMTypes::BoolType</a>);
 <a name="l01253"></a>01253         ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a7bc697a10788fbc50dc03ba9cd9a384f">BranchInst</a>(bloop, bexit, ltest);
 <a name="l01254"></a>01254     }
@@ -1376,7 +1376,7 @@
 <a name="l01345"></a>01345             <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *testType = <a class="code" href="classForStmt.html#ac48abc8c66ad755e7b7dd30f48591777">test</a>-&gt;<a class="code" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">GetType</a>();
 <a name="l01346"></a>01346             <span class="keywordflow">if</span> (testType) {
 <a name="l01347"></a>01347                 <span class="keywordflow">if</span> (!testType-&gt;<a class="code" href="classType.html#ada5fd0f3e4c8e91a147aafae1410081c">IsNumericType</a>() &amp;&amp; !testType-&gt;<a class="code" href="classType.html#a38ff6178597171c11f6e24566b251dea">IsBoolType</a>()) {
-<a name="l01348"></a>01348                     <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(<a class="code" href="classForStmt.html#ac48abc8c66ad755e7b7dd30f48591777">test</a>-&gt;<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>, <span class="stringliteral">&quot;Type \&quot;%s\&quot; can&#39;t be converted to boolean for for loop test.&quot;</span>,
+<a name="l01348"></a>01348                     <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(<a class="code" href="classForStmt.html#ac48abc8c66ad755e7b7dd30f48591777">test</a>-&gt;pos, <span class="stringliteral">&quot;Type \&quot;%s\&quot; can&#39;t be converted to boolean for for loop test.&quot;</span>,
 <a name="l01349"></a>01349                           <a class="code" href="classForStmt.html#ac48abc8c66ad755e7b7dd30f48591777">test</a>-&gt;<a class="code" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">GetType</a>()-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str());
 <a name="l01350"></a>01350                     <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
 <a name="l01351"></a>01351                 }
@@ -1388,7 +1388,7 @@
 <a name="l01357"></a>01357                                     !<a class="code" href="stmt_8cpp.html#a6c55124b66fa19b72b806f923a397bab">lHasVaryingBreakOrContinue</a>(<a class="code" href="classForStmt.html#a41c6d63f8996bcc0ab0c4b61ce27ad10">stmts</a>));
 <a name="l01358"></a>01358                 <a class="code" href="classForStmt.html#ac48abc8c66ad755e7b7dd30f48591777">test</a> = <span class="keyword">new</span> <a class="code" href="classTypeCastExpr.html" title="Expression representing a type cast of the given expression to a probably-different type...">TypeCastExpr</a>(uniformTest ? <a class="code" href="classAtomicType.html#a339096fdcc4f3f30dcd30bbc9b46e212">AtomicType::UniformBool</a> :
 <a name="l01359"></a>01359                                                       <a class="code" href="classAtomicType.html#a4ea6e749bdc28ad68823ca2edc3bd37d">AtomicType::VaryingBool</a>,
-<a name="l01360"></a>01360                                         <a class="code" href="classForStmt.html#ac48abc8c66ad755e7b7dd30f48591777">test</a>, <a class="code" href="classForStmt.html#ac48abc8c66ad755e7b7dd30f48591777">test</a>-&gt;<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>);
+<a name="l01360"></a>01360                                         <a class="code" href="classForStmt.html#ac48abc8c66ad755e7b7dd30f48591777">test</a>, <a class="code" href="classForStmt.html#ac48abc8c66ad755e7b7dd30f48591777">test</a>-&gt;pos);
 <a name="l01361"></a>01361             }
 <a name="l01362"></a>01362         }
 <a name="l01363"></a>01363     }
@@ -1409,10 +1409,10 @@
 <a name="l01378"></a>01378         (!<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">disableUniformControlFlow</a> &amp;&amp;
 <a name="l01379"></a>01379          !<a class="code" href="stmt_8cpp.html#a6c55124b66fa19b72b806f923a397bab">lHasVaryingBreakOrContinue</a>(<a class="code" href="classForStmt.html#a41c6d63f8996bcc0ab0c4b61ce27ad10">stmts</a>));
 <a name="l01380"></a>01380 
-<a name="l01381"></a>01381     <span class="keywordflow">return</span> ((<a class="code" href="classForStmt.html#a1e527592d1c71042190a03c3ef0d3ebe">init</a> ? <a class="code" href="classForStmt.html#a1e527592d1c71042190a03c3ef0d3ebe">init</a>-&gt;<a class="code" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a>() : 0) +
-<a name="l01382"></a>01382             (<a class="code" href="classForStmt.html#ac48abc8c66ad755e7b7dd30f48591777">test</a> ? <a class="code" href="classForStmt.html#ac48abc8c66ad755e7b7dd30f48591777">test</a>-&gt;<a class="code" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a>() : 0) +
-<a name="l01383"></a>01383             (<a class="code" href="classForStmt.html#a477746a6dab58a778a5a89d3be267aaf">step</a> ? <a class="code" href="classForStmt.html#a477746a6dab58a778a5a89d3be267aaf">step</a>-&gt;<a class="code" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a>() : 0) +
-<a name="l01384"></a>01384             (<a class="code" href="classForStmt.html#a41c6d63f8996bcc0ab0c4b61ce27ad10">stmts</a> ? <a class="code" href="classForStmt.html#a41c6d63f8996bcc0ab0c4b61ce27ad10">stmts</a>-&gt;<a class="code" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a>() : 0) +
+<a name="l01381"></a>01381     <span class="keywordflow">return</span> ((<a class="code" href="classForStmt.html#a1e527592d1c71042190a03c3ef0d3ebe">init</a> ? <a class="code" href="classForStmt.html#a1e527592d1c71042190a03c3ef0d3ebe">init</a>-&gt;EstimateCost() : 0) +
+<a name="l01382"></a>01382             (<a class="code" href="classForStmt.html#ac48abc8c66ad755e7b7dd30f48591777">test</a> ? <a class="code" href="classForStmt.html#ac48abc8c66ad755e7b7dd30f48591777">test</a>-&gt;EstimateCost() : 0) +
+<a name="l01383"></a>01383             (<a class="code" href="classForStmt.html#a477746a6dab58a778a5a89d3be267aaf">step</a> ? <a class="code" href="classForStmt.html#a477746a6dab58a778a5a89d3be267aaf">step</a>-&gt;EstimateCost() : 0) +
+<a name="l01384"></a>01384             (<a class="code" href="classForStmt.html#a41c6d63f8996bcc0ab0c4b61ce27ad10">stmts</a> ? <a class="code" href="classForStmt.html#a41c6d63f8996bcc0ab0c4b61ce27ad10">stmts</a>-&gt;EstimateCost() : 0) +
 <a name="l01385"></a>01385             (uniformTest ? <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a74bb20208bb8744b06e5bf8b413c3387">COST_UNIFORM_LOOP</a> : <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a8471b4c1eb05355d348ac9ebf1d17ab1">COST_VARYING_LOOP</a>));
 <a name="l01386"></a>01386 }
 <a name="l01387"></a>01387 
@@ -1420,7 +1420,7 @@
 <a name="l01389"></a>01389 <span class="keywordtype">void</span>
 <a name="l01390"></a><a class="code" href="classForStmt.html#a3d9737503b5d2ae12f492846fec78204">01390</a> <a class="code" href="classForStmt.html#a3d9737503b5d2ae12f492846fec78204">ForStmt::Print</a>(<span class="keywordtype">int</span> indent)<span class="keyword"> const </span>{
 <a name="l01391"></a>01391     printf(<span class="stringliteral">&quot;%*cFor Stmt&quot;</span>, indent, <span class="charliteral">&#39; &#39;</span>);
-<a name="l01392"></a>01392     <a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>.<a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">Print</a>();
+<a name="l01392"></a>01392     pos.Print();
 <a name="l01393"></a>01393     printf(<span class="stringliteral">&quot;\n&quot;</span>);
 <a name="l01394"></a>01394     <span class="keywordflow">if</span> (<a class="code" href="classForStmt.html#a1e527592d1c71042190a03c3ef0d3ebe">init</a>) {
 <a name="l01395"></a>01395         printf(<span class="stringliteral">&quot;%*cInit:\n&quot;</span>, indent+4, <span class="charliteral">&#39; &#39;</span>);
@@ -1454,7 +1454,7 @@
 <a name="l01423"></a>01423     <span class="keywordflow">if</span> (!ctx-&gt;<a class="code" href="classFunctionEmitContext.html#ac30ef6a3359fd9c3dc3895fab96ea43d">GetCurrentBasicBlock</a>()) 
 <a name="l01424"></a>01424         <span class="keywordflow">return</span>;
 <a name="l01425"></a>01425 
-<a name="l01426"></a>01426     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>);
+<a name="l01426"></a>01426     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(pos);
 <a name="l01427"></a>01427     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#ac5e4a34b4e998c93e6ffb46dbf455106">Break</a>(<a class="code" href="classBreakStmt.html#a8db1857fc69a0b1c2304384c670d56a8">doCoherenceCheck</a>);
 <a name="l01428"></a>01428 }
 <a name="l01429"></a>01429 
@@ -1481,7 +1481,7 @@
 <a name="l01450"></a>01450 <span class="keywordtype">void</span>
 <a name="l01451"></a><a class="code" href="classBreakStmt.html#a872b1405ad35f9494cafe2614e40f559">01451</a> <a class="code" href="classBreakStmt.html#a872b1405ad35f9494cafe2614e40f559">BreakStmt::Print</a>(<span class="keywordtype">int</span> indent)<span class="keyword"> const </span>{
 <a name="l01452"></a>01452     printf(<span class="stringliteral">&quot;%*c%sBreak Stmt&quot;</span>, indent, <span class="charliteral">&#39; &#39;</span>, <a class="code" href="classBreakStmt.html#a8db1857fc69a0b1c2304384c670d56a8">doCoherenceCheck</a> ? <span class="stringliteral">&quot;Coherent &quot;</span> : <span class="stringliteral">&quot;&quot;</span>);
-<a name="l01453"></a>01453     <a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>.<a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">Print</a>();
+<a name="l01453"></a>01453     pos.Print();
 <a name="l01454"></a>01454     printf(<span class="stringliteral">&quot;\n&quot;</span>);
 <a name="l01455"></a>01455 }
 <a name="l01456"></a>01456 
@@ -1499,7 +1499,7 @@
 <a name="l01468"></a>01468     <span class="keywordflow">if</span> (!ctx-&gt;<a class="code" href="classFunctionEmitContext.html#ac30ef6a3359fd9c3dc3895fab96ea43d">GetCurrentBasicBlock</a>()) 
 <a name="l01469"></a>01469         <span class="keywordflow">return</span>;
 <a name="l01470"></a>01470 
-<a name="l01471"></a>01471     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>);
+<a name="l01471"></a>01471     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(pos);
 <a name="l01472"></a>01472     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a1191cf2dc4cecec7d0fc7a04f477e524">Continue</a>(<a class="code" href="classContinueStmt.html#a2793fe0d140497509f897b72b742e7c7">doCoherenceCheck</a>);
 <a name="l01473"></a>01473 }
 <a name="l01474"></a>01474 
@@ -1526,7 +1526,7 @@
 <a name="l01495"></a>01495 <span class="keywordtype">void</span>
 <a name="l01496"></a><a class="code" href="classContinueStmt.html#a06e54eeaa3638e832e3b13dc6301ac82">01496</a> <a class="code" href="classContinueStmt.html#a06e54eeaa3638e832e3b13dc6301ac82">ContinueStmt::Print</a>(<span class="keywordtype">int</span> indent)<span class="keyword"> const </span>{
 <a name="l01497"></a>01497     printf(<span class="stringliteral">&quot;%*c%sContinue Stmt&quot;</span>, indent, <span class="charliteral">&#39; &#39;</span>, <a class="code" href="classContinueStmt.html#a2793fe0d140497509f897b72b742e7c7">doCoherenceCheck</a> ? <span class="stringliteral">&quot;Coherent &quot;</span> : <span class="stringliteral">&quot;&quot;</span>);
-<a name="l01498"></a>01498     <a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>.<a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">Print</a>();
+<a name="l01498"></a>01498     pos.Print();
 <a name="l01499"></a>01499     printf(<span class="stringliteral">&quot;\n&quot;</span>);
 <a name="l01500"></a>01500 }
 <a name="l01501"></a>01501 
@@ -1545,7 +1545,7 @@
 <a name="l01514"></a>01514     <span class="keywordflow">if</span> (!ctx-&gt;<a class="code" href="classFunctionEmitContext.html#ac30ef6a3359fd9c3dc3895fab96ea43d">GetCurrentBasicBlock</a>()) 
 <a name="l01515"></a>01515         <span class="keywordflow">return</span>;
 <a name="l01516"></a>01516 
-<a name="l01517"></a>01517     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>);
+<a name="l01517"></a>01517     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(pos);
 <a name="l01518"></a>01518     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#ad78bdfad07d4e8634314e6d5a78789b4">CurrentLanesReturned</a>(<a class="code" href="classReturnStmt.html#a310e4537325bdab9dfb7937f6c966885">val</a>, <a class="code" href="classReturnStmt.html#a917fce74d4489b6d165f2eaceb42b47b">doCoherenceCheck</a>);
 <a name="l01519"></a>01519 }
 <a name="l01520"></a>01520 
@@ -1571,14 +1571,14 @@
 <a name="l01540"></a>01540 
 <a name="l01541"></a>01541 <span class="keywordtype">int</span>
 <a name="l01542"></a><a class="code" href="classReturnStmt.html#a75d5ff847bc4250b436ed14e81c92151">01542</a> <a class="code" href="classReturnStmt.html#a75d5ff847bc4250b436ed14e81c92151">ReturnStmt::EstimateCost</a>()<span class="keyword"> const </span>{
-<a name="l01543"></a>01543     <span class="keywordflow">return</span> <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a5957bd8ce116043e23f537c394edd3b9">COST_RETURN</a> + (<a class="code" href="classReturnStmt.html#a310e4537325bdab9dfb7937f6c966885">val</a> ? <a class="code" href="classReturnStmt.html#a310e4537325bdab9dfb7937f6c966885">val</a>-&gt;<a class="code" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a>() : 0);
+<a name="l01543"></a>01543     <span class="keywordflow">return</span> <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a5957bd8ce116043e23f537c394edd3b9">COST_RETURN</a> + (<a class="code" href="classReturnStmt.html#a310e4537325bdab9dfb7937f6c966885">val</a> ? <a class="code" href="classReturnStmt.html#a310e4537325bdab9dfb7937f6c966885">val</a>-&gt;EstimateCost() : 0);
 <a name="l01544"></a>01544 }
 <a name="l01545"></a>01545 
 <a name="l01546"></a>01546 
 <a name="l01547"></a>01547 <span class="keywordtype">void</span>
 <a name="l01548"></a><a class="code" href="classReturnStmt.html#a1e42d228e5ef2b03cf5736672ffc5cc9">01548</a> <a class="code" href="classReturnStmt.html#a1e42d228e5ef2b03cf5736672ffc5cc9">ReturnStmt::Print</a>(<span class="keywordtype">int</span> indent)<span class="keyword"> const </span>{
 <a name="l01549"></a>01549     printf(<span class="stringliteral">&quot;%*c%sReturn Stmt&quot;</span>, indent, <span class="charliteral">&#39; &#39;</span>, <a class="code" href="classReturnStmt.html#a917fce74d4489b6d165f2eaceb42b47b">doCoherenceCheck</a> ? <span class="stringliteral">&quot;Coherent &quot;</span> : <span class="stringliteral">&quot;&quot;</span>);
-<a name="l01550"></a>01550     <a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>.<a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">Print</a>();
+<a name="l01550"></a>01550     pos.Print();
 <a name="l01551"></a>01551     <span class="keywordflow">if</span> (<a class="code" href="classReturnStmt.html#a310e4537325bdab9dfb7937f6c966885">val</a>) <a class="code" href="classReturnStmt.html#a310e4537325bdab9dfb7937f6c966885">val</a>-&gt;<a class="code" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Print</a>();
 <a name="l01552"></a>01552     <span class="keywordflow">else</span> printf(<span class="stringliteral">&quot;(void)&quot;</span>);
 <a name="l01553"></a>01553     printf(<span class="stringliteral">&quot;\n&quot;</span>);
@@ -1594,7 +1594,7 @@
 <a name="l01563"></a>01563         <span class="keywordflow">return</span>;
 <a name="l01564"></a>01564 
 <a name="l01565"></a>01565     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#ad96c8e341180ab4eb3226a48b5a1f42b">StartScope</a>();
-<a name="l01566"></a>01566     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>);
+<a name="l01566"></a>01566     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(pos);
 <a name="l01567"></a>01567     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classStmtList.html#a853b289aad0fd7a217716e9c5d95154d">stmts</a>.size(); ++i)
 <a name="l01568"></a>01568         <span class="keywordflow">if</span> (<a class="code" href="classStmtList.html#a853b289aad0fd7a217716e9c5d95154d">stmts</a>[i])
 <a name="l01569"></a>01569             <a class="code" href="classStmtList.html#a853b289aad0fd7a217716e9c5d95154d">stmts</a>[i]-&gt;EmitCode(ctx);
@@ -1633,7 +1633,7 @@
 <a name="l01602"></a>01602 <span class="keywordtype">void</span>
 <a name="l01603"></a><a class="code" href="classStmtList.html#a07546eeef3066307d379d165dcdf97e6">01603</a> <a class="code" href="classStmtList.html#a07546eeef3066307d379d165dcdf97e6">StmtList::Print</a>(<span class="keywordtype">int</span> indent)<span class="keyword"> const </span>{
 <a name="l01604"></a>01604     printf(<span class="stringliteral">&quot;%*cStmt List&quot;</span>, indent, <span class="charliteral">&#39; &#39;</span>);
-<a name="l01605"></a>01605     <a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>.<a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">Print</a>();
+<a name="l01605"></a>01605     pos.Print();
 <a name="l01606"></a>01606     printf(<span class="stringliteral">&quot;:\n&quot;</span>);
 <a name="l01607"></a>01607     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classStmtList.html#a853b289aad0fd7a217716e9c5d95154d">stmts</a>.size(); ++i)
 <a name="l01608"></a>01608         <span class="keywordflow">if</span> (<a class="code" href="classStmtList.html#a853b289aad0fd7a217716e9c5d95154d">stmts</a>[i])
@@ -1686,7 +1686,7 @@
 <a name="l01655"></a>01655         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
 <a name="l01656"></a>01656 
 <a name="l01657"></a>01657     <span class="keywordflow">if</span> (dynamic_cast&lt;const ReferenceType *&gt;(type) != <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l01658"></a>01658         expr = <span class="keyword">new</span> <a class="code" href="classDereferenceExpr.html" title="Expression that represents dereferencing a reference to get its value.">DereferenceExpr</a>(expr, expr-&gt;<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>);
+<a name="l01658"></a>01658         expr = <span class="keyword">new</span> <a class="code" href="classDereferenceExpr.html" title="Expression that represents dereferencing a reference to get its value.">DereferenceExpr</a>(expr, expr-&gt;pos);
 <a name="l01659"></a>01659         type = expr-&gt;<a class="code" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">GetType</a>();
 <a name="l01660"></a>01660         <span class="keywordflow">if</span> (type == <a class="code" href="parse_8yy.html">NULL</a>)
 <a name="l01661"></a>01661             <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
@@ -1700,13 +1700,13 @@
 <a name="l01669"></a>01669         baseType == <a class="code" href="classAtomicType.html#a47e0db1dc1b295c845ff2b9a5c7bc1d3">AtomicType::UniformUInt16</a>) {
 <a name="l01670"></a>01670         expr = <span class="keyword">new</span> <a class="code" href="classTypeCastExpr.html" title="Expression representing a type cast of the given expression to a probably-different type...">TypeCastExpr</a>(type-&gt;<a class="code" href="classType.html#a0a997c011addd186c7a45a9352fe0edb">IsUniformType</a>() ? <a class="code" href="classAtomicType.html#aee17c4dda27ab050f60af3c6070f3ccb">AtomicType::UniformInt32</a> :
 <a name="l01671"></a>01671                                                         <a class="code" href="classAtomicType.html#ae112e2d3aaefd2a4035ce998e4c71ff3">AtomicType::VaryingInt32</a>, 
-<a name="l01672"></a>01672                                 expr, expr-&gt;<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>);
+<a name="l01672"></a>01672                                 expr, expr-&gt;pos);
 <a name="l01673"></a>01673         type = expr-&gt;GetType();
 <a name="l01674"></a>01674     }
 <a name="l01675"></a>01675         
 <a name="l01676"></a>01676     <span class="keywordtype">char</span> t = <a class="code" href="stmt_8cpp.html#ae1d482ecd1fc79ae86e93098b817baa1">lEncodeType</a>(type-&gt;<a class="code" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">GetAsNonConstType</a>());
 <a name="l01677"></a>01677     <span class="keywordflow">if</span> (t == <span class="charliteral">&#39;\0&#39;</span>) {
-<a name="l01678"></a>01678         <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(expr-&gt;<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>, <span class="stringliteral">&quot;Only atomic types are allowed in print statements; &quot;</span>
+<a name="l01678"></a>01678         <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(expr-&gt;pos, <span class="stringliteral">&quot;Only atomic types are allowed in print statements; &quot;</span>
 <a name="l01679"></a>01679               <span class="stringliteral">&quot;type \&quot;%s\&quot; is illegal.&quot;</span>, type-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str());
 <a name="l01680"></a>01680         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
 <a name="l01681"></a>01681     }
@@ -1734,7 +1734,7 @@
 <a name="l01703"></a>01703 <span class="comment"> */</span>
 <a name="l01704"></a>01704 <span class="keywordtype">void</span>
 <a name="l01705"></a><a class="code" href="classPrintStmt.html#aa725879589165c0caa9ca58bf341f8fb">01705</a> <a class="code" href="classPrintStmt.html#aa725879589165c0caa9ca58bf341f8fb">PrintStmt::EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx)<span class="keyword"> const </span>{
-<a name="l01706"></a>01706     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(<a class="code" href="classASTNode.html#a072d617ed4e5b53d3dedf39334597d0e">pos</a>);
+<a name="l01706"></a>01706     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#af711864599d017af62db20c6a4bdbe81">SetDebugPos</a>(pos);
 <a name="l01707"></a>01707 
 <a name="l01708"></a>01708     <span class="comment">// __do_print takes 5 arguments; we&#39;ll get them stored in the args[] array</span>
 <a name="l01709"></a>01709     <span class="comment">// in the code emitted below</span>
@@ -1834,13 +1834,13 @@
 <a name="l01803"></a>01803 
 <a name="l01804"></a>01804 <span class="keywordtype">int</span>
 <a name="l01805"></a><a class="code" href="classPrintStmt.html#a87f340f7cb64b7f8d03d6109d0ffd6ab">01805</a> <a class="code" href="classPrintStmt.html#a87f340f7cb64b7f8d03d6109d0ffd6ab">PrintStmt::EstimateCost</a>()<span class="keyword"> const </span>{
-<a name="l01806"></a>01806     <span class="keywordflow">return</span> <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a93db4e15460347adf2dd0eee01db4cef">COST_FUNCALL</a> + (<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a> ? <a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>-&gt;<a class="code" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">EstimateCost</a>() : 0);
+<a name="l01806"></a>01806     <span class="keywordflow">return</span> <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a93db4e15460347adf2dd0eee01db4cef">COST_FUNCALL</a> + (<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a> ? <a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>-&gt;EstimateCost() : 0);
 <a name="l01807"></a>01807 }
 <a name="l01808"></a>01808 
 <a name="l01809"></a>01809 
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Sep 30 2011 14:55:37 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Oct 6 2011 19:44:51 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

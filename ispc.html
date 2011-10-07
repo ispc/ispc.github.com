@@ -118,7 +118,8 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 </ul>
 </li>
 <li><a class="reference internal" href="#using-the-ispc-compiler">Using The ISPC Compiler</a><ul>
-<li><a class="reference internal" href="#command-line-options">Command-line Options</a></li>
+<li><a class="reference internal" href="#basic-command-line-options">Basic Command-line Options</a></li>
+<li><a class="reference internal" href="#selecting-the-compilation-target">Selecting The Compilation Target</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#the-ispc-language">The ISPC Language</a><ul>
@@ -180,6 +181,8 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#using-scan-operations-for-variable-output">Using Scan Operations For Variable Output</a></li>
 <li><a class="reference internal" href="#application-supplied-execution-masks">Application-Supplied Execution Masks</a></li>
 <li><a class="reference internal" href="#explicit-vector-programming-with-uniform-short-vector-types">Explicit Vector Programming With Uniform Short Vector Types</a></li>
+<li><a class="reference internal" href="#choosing-a-target-vector-width">Choosing A Target Vector Width</a></li>
+<li><a class="reference internal" href="#compiling-with-support-for-multiple-instruction-sets">Compiling With Support For Multiple Instruction Sets</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#disclaimer-and-legal-information">Disclaimer and Legal Information</a></li>
@@ -322,51 +325,72 @@ ispc foo.ispc -o foo.o
 <p><tt class="docutils literal">ispc</tt> automatically runs the C preprocessor on your input program before
 compiling it.  (This functionality can be disabled with the <tt class="docutils literal"><span class="pre">--nocpp</span></tt>
 command-line argument.)</p>
-<div class="section" id="command-line-options">
-<h2>Command-line Options</h2>
+<div class="section" id="basic-command-line-options">
+<h2>Basic Command-line Options</h2>
 <p>The <tt class="docutils literal">ispc</tt> executable can be run with <tt class="docutils literal"><span class="pre">--help</span></tt> to print a list of
 accepted command-line arguments.  By default, the compiler compiles the
 provided program (and issues warnings and errors), but doesn't
 generate any output.</p>
 <p>If the <tt class="docutils literal"><span class="pre">-o</span></tt> flag is given, it will generate an output file (a native
-object file by default).  To generate a text assembly file, pass
-<tt class="docutils literal"><span class="pre">--emit-asm</span></tt>:</p>
+object file by default).</p>
 <pre class="literal-block">
-ispc foo.ispc -o foo.s --emit-asm
+ispc foo.ispc -o foo.obj --emit-asm
+</pre>
+<p>To generate a text assembly file, pass <tt class="docutils literal"><span class="pre">--emit-asm</span></tt>:</p>
+<pre class="literal-block">
+ispc foo.ispc -o foo.asm --emit-asm
 </pre>
 <p>To generate LLVM bitcode, use the <tt class="docutils literal"><span class="pre">--emit-llvm</span></tt> flag.</p>
-<p>By default, an optimized x86-64 object file tuned for Intel® Core
-processors CPUs is built.  You can use the <tt class="docutils literal"><span class="pre">--arch</span></tt> command line flag to
-specify a 32-bit x86 target:</p>
-<pre class="literal-block">
-ispc foo.ispc -o foo.obj --arch=x86
-</pre>
-<p>Optimizations can be turned off with <tt class="docutils literal"><span class="pre">-O0</span></tt>:</p>
+<p>Optimizations are on by default; they can be turned off with <tt class="docutils literal"><span class="pre">-O0</span></tt>:</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.obj -O0
 </pre>
-<p>On Mac* and Linux*, there is early support for generating debugging
-symbols; this is enabled with the <tt class="docutils literal"><span class="pre">-g</span></tt> command-line flag.</p>
+<p>On Mac* and Linux*, there is basic support for generating debugging
+symbols; this is enabled with the <tt class="docutils literal"><span class="pre">-g</span></tt> command-line flag.  Using <tt class="docutils literal"><span class="pre">-g</span></tt>
+causes optimizations to be disabled; to compile with debugging symbols and
+optimizaion, <tt class="docutils literal"><span class="pre">-O1</span></tt> should be provided as well as the <tt class="docutils literal"><span class="pre">-g</span></tt> flag.</p>
 <p>The <tt class="docutils literal"><span class="pre">-h</span></tt> flag can also be used to direct <tt class="docutils literal">ispc</tt> to generate a C/C++
 header file that includes C/C++ declarations of the C-callable <tt class="docutils literal">ispc</tt>
 functions and the types passed to it.</p>
-<p>On Linux* and Mac OS*, <tt class="docutils literal"><span class="pre">-D</span></tt> can be used to specify definitions to be
-passed along to the C pre-prcessor, which runs over the program input
-before it's compiled.  On Windows®, pre-processor definitions should be
-provided to the <tt class="docutils literal">cl</tt> call.</p>
-<p>By default, the compiler generates x86-64 Intel® SSE4 code.  To generate
-32-bit code, you can use the <tt class="docutils literal"><span class="pre">--arch=x86</span></tt> command-line flag.  To
-select Intel® SSE2, use <tt class="docutils literal"><span class="pre">--target=sse2</span></tt>.</p>
-<p><tt class="docutils literal">ispc</tt> supports an alternative method for generating Intel® SSE4 code,
-where the program is &quot;doubled up&quot; and eight instances of it run in
-parallel, rather than just four.  For workloads that don't require large
-numbers of registers, this method can lead to significantly more efficient
-execution thanks to greater instruction level parallelism.  This option is
-selected with <tt class="docutils literal"><span class="pre">--target=sse4x2</span></tt>.</p>
+<p>The <tt class="docutils literal"><span class="pre">-D</span></tt> option can be used to specify definitions to be passed along to
+the pre-processor, which runs over the program input before it's compiled.
+For example, including <tt class="docutils literal"><span class="pre">-DTEST=1</span></tt> defines the pre-processor symbol
+<tt class="docutils literal">TEST</tt> to have the value <tt class="docutils literal">1</tt> when the program is compiled.</p>
 <p>The compiler issues a number of performance warnings for code constructs
 that compile to relatively inefficient code.  These warnings can be
 silenced with the <tt class="docutils literal"><span class="pre">--wno-perf</span></tt> flag (or by using <tt class="docutils literal"><span class="pre">--woff</span></tt>, which turns
-off all warnings.)</p>
+off all compiler warnings.)</p>
+</div>
+<div class="section" id="selecting-the-compilation-target">
+<h2>Selecting The Compilation Target</h2>
+<p>There are three options that affect the compilation target: <tt class="docutils literal"><span class="pre">--arch</span></tt>,
+which sets the target architecture, <tt class="docutils literal"><span class="pre">--cpu</span></tt>, which sets the target CPU,
+and <tt class="docutils literal"><span class="pre">--target</span></tt>, which sets the target instruction set.</p>
+<p>By default, the <tt class="docutils literal">ispc</tt> compiler generates code for the 64-bit x86-64
+architecture (i.e. <tt class="docutils literal"><span class="pre">--arch=x86-64`.)</span>&nbsp; To compile to a <span class="pre">32-bit</span> x86 target,
+supply <span class="pre">``-arch=x86</span></tt> on the command line:</p>
+<pre class="literal-block">
+ispc foo.ispc -o foo.obj --arch=x86
+</pre>
+<p>No other architectures are currently supported.</p>
+<p>The target CPU determines both the default instruction set used as well as
+which CPU architecture the code is tuned for.  <tt class="docutils literal">ispc <span class="pre">--help</span></tt> provides a
+list of a number of the supported CPUs.  By default, the CPU type of the
+system on which you're running <tt class="docutils literal">ispc</tt> is used to determine the target
+CPU.</p>
+<pre class="literal-block">
+ispc foo.ispc -o foo.obj --cpu=corei7-avx
+</pre>
+<p>Finally, <tt class="docutils literal"><span class="pre">--target</span></tt> selects between the SSE2, SSE4, and AVX instruction
+sets.  (As general context, SSE2 was first introduced in processors that
+shipped in 2001, SSE4 was introduced in 2007, and processors with AVX
+were introduced in 2010.  Consult your CPU's manual for specifics on which
+vector instruction set it supports.)</p>
+<p>By default, the target instruction set is chosen based on which ones are
+supported by the system on which you're running <tt class="docutils literal">ispc</tt>.  You can override
+this choice with the <tt class="docutils literal"><span class="pre">--target</span></tt> flag; for example, to select Intel® SSE2,
+use <tt class="docutils literal"><span class="pre">--target=sse2</span></tt>.  (As with the other options in this section, see the
+output of <tt class="docutils literal">ispc <span class="pre">--help</span></tt> for a full list of supported targets.)</p>
 </div>
 </div>
 <div class="section" id="the-ispc-language">
@@ -1724,12 +1748,19 @@ uniform unsigned int reduce_add(unsigned int x)
 <p>You can also use functions to compute the minimum and maximum value of the
 given value across all of the currently-executing vector lanes.</p>
 <pre class="literal-block">
-uniform float reduce_min(float a, float b)
-uniform int reduce_min(int a, int b)
-uniform unsigned int reduce_min(unsigned int a, unsigned int b)
-uniform float reduce_max(float a, float b)
-uniform int reduce_max(int a, int b)
-uniform unsigned int reduce_max(unsigned int a, unsigned int b)
+uniform float reduce_min(float a)
+uniform int32 reduce_min(int32 a)
+uniform unsigned int32 reduce_min(unsigned int32 a)
+uniform double reduce_min(double a)
+uniform int64 reduce_min(int64 a)
+uniform unsigned int64 reduce_min(unsigned int64 a)
+
+uniform float reduce_max(float a)
+uniform int32 reduce_max(int32 a)
+uniform unsigned int32 reduce_max(unsigned int32 a)
+uniform double reduce_max(double a)
+uniform int64 reduce_max(int64 a)
+uniform unsigned int64 reduce_max(unsigned int64 a)
 </pre>
 <p>Finally, you can check to see if a particular value has the same value in
 all of the currently-running program instances:</p>
@@ -2682,6 +2713,65 @@ export uniform int&lt;8&gt; count(uniform float&lt;8&gt; a, uniform float&lt;8&g
         ++sum;
 }
 </pre>
+</div>
+<div class="section" id="choosing-a-target-vector-width">
+<h2>Choosing A Target Vector Width</h2>
+<p>By default, <tt class="docutils literal">ispc</tt> compiles to the natural vector width of the target
+instruction set.  For example, for SSE2 and SSE4, it compiles four-wide,
+and for AVX, it complies 8-wide.  For some programs, higher performance may
+be seen if the program is compiled to a doubled vector width--8-wide for
+SSE and 16-wide for AVX.</p>
+<p>For workloads that don't require many of registers, this method can lead to
+significantly more efficient execution thanks to greater instruction level
+parallelism and amortization of various overhead over more program
+instances.  For other workloads, it may lead to a slowdown due to higher
+register pressure; trying both approaches for key kernels may be
+worthwhile.</p>
+<p>This option is currently only available for the SSE4 and AVX targets, and
+is selected with the <tt class="docutils literal"><span class="pre">--target=sse4-x2</span></tt> and <tt class="docutils literal"><span class="pre">--target=avx-x2</span></tt> options,
+respectively.</p>
+</div>
+<div class="section" id="compiling-with-support-for-multiple-instruction-sets">
+<h2>Compiling With Support For Multiple Instruction Sets</h2>
+<p><tt class="docutils literal">ispc</tt> can also generate output that supports multiple target instruction
+sets, choosing the most appropriate one at runtime.  For example, if you
+run the command:</p>
+<pre class="literal-block">
+ispc foo.ispc -o foo.o --target=sse2,sse4-x2,avx-x2
+</pre>
+<p>Then four object files will be generated: <tt class="docutils literal">foo_sse2.o</tt>, <tt class="docutils literal">foo_sse4.o</tt>,
+<tt class="docutils literal">foo_avx.o</tt>, and <tt class="docutils literal">foo.o</tt>.[#]_  Link all of these into your executable, and
+when you call a function in <tt class="docutils literal">foo.ispc</tt> from your application code,
+<tt class="docutils literal">ispc</tt> will determine which instruction sets are supported by the CPU the
+code is running on and will call the most appropraite version of the
+function available.</p>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[3]</td><td>Similarly, if you choose to generate assembly langauage output or
+LLVM bitcode output, multiple versions of those files will be created.</td></tr>
+</tbody>
+</table>
+<p>In general, the version of the function that runs will be the one in the
+most general instruction set that is supported by the system.  If you only
+compile SSE2 and SSE4 variants and run on a system that supports AVX, for
+example, then the SSE4 variant will be executed.  If the system doesn't
+is not able to run any of the available variants of the function (for
+example, trying to run a function that only has SSE4 and AVX variants on a
+system that only supports SSE2), then the standard library <tt class="docutils literal">abort()</tt>
+function will be called.</p>
+<p>One subtlety is that all non-static global variables (if any) must have the
+same size and layout with all of the targets used.  For example, if you
+have the global variables:</p>
+<pre class="literal-block">
+uniform int foo[2*programCount];
+int bar;
+</pre>
+<p>and compile to both SSE2 and AVX targets, both of these variables will have
+different sizes (the first due to program count having the value 4 for SSE2
+and 8 for AVX, and the second due to <tt class="docutils literal">varying</tt> types having different
+numbers of elements with the two targets--essentially the same issue as the
+first.)</p>
 </div>
 </div>
 <div class="section" id="disclaimer-and-legal-information">
