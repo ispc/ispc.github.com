@@ -65,9 +65,9 @@ Static Public Attributes</h2></td></tr>
 <p>When the front-end emits gathers and scatters, it generates an array of vector-width pointers to represent the set of addresses to read from or write to. However, because ispc doesn't support pointers, it turns out to be the case that scatters and gathers always end up indexing into an array with a common base pointer. Therefore, this optimization transforms the original arrays of general pointers into a single base pointer and an array of offsets.</p>
 <p>(Implementation seems to be easier with this approach versus having the front-end try to emit base pointer + offset stuff from the start, though arguably the latter approach would be a little more elegant.)</p>
 <p>See for example the comments discussing the __pseudo_gather functions in <a class="el" href="builtins_8cpp.html" title="Definitions of functions related to setting up the standard library and other builtins.">builtins.cpp</a> for more information about this.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>The implementation of this is pretty messy, and it sure would be nice to not have all the complexity of built-in assumptions of the structure of how the front end will have generated code, all of the instruction dyn_casts, etc. Can we do something simpler, e.g. an early pass to flatten out GEPs when the size is known, then do LLVM's constant folding, then flatten into an array, etc.? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>The implementation of this is pretty messy, and it sure would be nice to not have all the complexity of built-in assumptions of the structure of how the front end will have generated code, all of the instruction dyn_casts, etc. Can we do something simpler, e.g. an early pass to flatten out GEPs when the size is known, then do LLVM's constant folding, then flatten into an array, etc.? </dd></dl>
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l00730">730</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l00732">732</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ae8eea21bc733548fc2a2f975f71e85fa"></a><!-- doxytag: member="GatherScatterFlattenOpt::GatherScatterFlattenOpt" ref="ae8eea21bc733548fc2a2f975f71e85fa" args="()" -->
 <div class="memitem">
@@ -83,7 +83,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l00733">733</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l00735">735</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -102,7 +102,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l00735">735</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l00737">737</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -121,9 +121,9 @@ Static Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l01126">1126</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l01220">1220</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="opt_8cpp_source.html#l01119">GSInfo::baseOffsetsFunc</a>, <a class="el" href="opt_8cpp_source.html#l01121">GSInfo::elementSize</a>, <a class="el" href="opt_8cpp_source.html#l01118">GSInfo::func</a>, <a class="el" href="opt_8cpp_source.html#l01120">GSInfo::isGather</a>, <a class="el" href="opt_8cpp_source.html#l00107">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l01046">lGetPtrAndOffsets()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="llvmutil_8h_source.html#l00054">LLVMTypes::VoidPointerType</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">assert</a>, <a class="el" href="opt_8cpp_source.html#l01213">GSInfo::baseOffsetsFunc</a>, <a class="el" href="opt_8cpp_source.html#l01215">GSInfo::elementSize</a>, <a class="el" href="opt_8cpp_source.html#l01212">GSInfo::func</a>, <a class="el" href="opt_8cpp_source.html#l01214">GSInfo::isGather</a>, <a class="el" href="opt_8cpp_source.html#l00109">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l01140">lGetPtrAndOffsets()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="llvmutil_8h_source.html#l00054">LLVMTypes::VoidPointerType</a>.</p>
 
 </div>
 </div>
@@ -139,7 +139,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l00732">732</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l00734">734</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -147,7 +147,7 @@ Static Public Attributes</h2></td></tr>
 <li><a class="el" href="opt_8cpp_source.html">opt.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Thu Oct 6 2011 19:44:53 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Oct 20 2011 11:49:28 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>

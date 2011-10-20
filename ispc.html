@@ -120,6 +120,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#using-the-ispc-compiler">Using The ISPC Compiler</a><ul>
 <li><a class="reference internal" href="#basic-command-line-options">Basic Command-line Options</a></li>
 <li><a class="reference internal" href="#selecting-the-compilation-target">Selecting The Compilation Target</a></li>
+<li><a class="reference internal" href="#the-preprocessor">The Preprocessor</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#the-ispc-language">The ISPC Language</a><ul>
@@ -151,7 +152,9 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#the-ispc-standard-library">The ISPC Standard Library</a><ul>
 <li><a class="reference internal" href="#math-functions">Math Functions</a></li>
 <li><a class="reference internal" href="#output-functions">Output Functions</a></li>
+<li><a class="reference internal" href="#assertions">Assertions</a></li>
 <li><a class="reference internal" href="#cross-program-instance-operations">Cross-Program Instance Operations</a></li>
+<li><a class="reference internal" href="#converting-between-array-of-structures-and-structure-of-arrays-layout">Converting Between Array-of-Structures and Structure-of-Arrays Layout</a></li>
 <li><a class="reference internal" href="#packed-load-and-store-operations">Packed Load and Store Operations</a></li>
 <li><a class="reference internal" href="#conversions-to-and-from-half-precision-floats">Conversions To and From Half-Precision Floats</a></li>
 <li><a class="reference internal" href="#atomic-operations-and-memory-fences">Atomic Operations and Memory Fences</a></li>
@@ -183,6 +186,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#explicit-vector-programming-with-uniform-short-vector-types">Explicit Vector Programming With Uniform Short Vector Types</a></li>
 <li><a class="reference internal" href="#choosing-a-target-vector-width">Choosing A Target Vector Width</a></li>
 <li><a class="reference internal" href="#compiling-with-support-for-multiple-instruction-sets">Compiling With Support For Multiple Instruction Sets</a></li>
+<li><a class="reference internal" href="#implementing-reductions-efficiently">Implementing Reductions Efficiently</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#disclaimer-and-legal-information">Disclaimer and Legal Information</a></li>
@@ -322,9 +326,6 @@ with application code, enter the following command</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.o
 </pre>
-<p><tt class="docutils literal">ispc</tt> automatically runs the C preprocessor on your input program before
-compiling it.  (This functionality can be disabled with the <tt class="docutils literal"><span class="pre">--nocpp</span></tt>
-command-line argument.)</p>
 <div class="section" id="basic-command-line-options">
 <h2>Basic Command-line Options</h2>
 <p>The <tt class="docutils literal">ispc</tt> executable can be run with <tt class="docutils literal"><span class="pre">--help</span></tt> to print a list of
@@ -391,6 +392,20 @@ supported by the system on which you're running <tt class="docutils literal">isp
 this choice with the <tt class="docutils literal"><span class="pre">--target</span></tt> flag; for example, to select Intel® SSE2,
 use <tt class="docutils literal"><span class="pre">--target=sse2</span></tt>.  (As with the other options in this section, see the
 output of <tt class="docutils literal">ispc <span class="pre">--help</span></tt> for a full list of supported targets.)</p>
+</div>
+<div class="section" id="the-preprocessor">
+<h2>The Preprocessor</h2>
+<p><tt class="docutils literal">ispc</tt> automatically runs the C preprocessor on your input program before
+compiling it.  Thus, you can use <tt class="docutils literal">#ifdef</tt>, <tt class="docutils literal">#define</tt>', and so forth in
+your ispc programs (This functionality can be disabled with the <tt class="docutils literal"><span class="pre">--nocpp</span></tt>
+command-line argument.)</p>
+<p>Three preprocessor symbols are automatically defined before the
+preprocessor runs.  First, <tt class="docutils literal">ISPC</tt> is defined, so that it can be detected
+that the <tt class="docutils literal">ispc</tt> compiler is running over the program.  Next, a symbol
+indicating the target instruction set is defined.  With an SSE2 target,
+<tt class="docutils literal">ISPC_TARGET_SSE2</tt> is defined; <tt class="docutils literal">ISPC_TARGET_SSE4</tt> is defined for SSE4,
+and <tt class="docutils literal">ISPC_TARGET_AVX</tt> for AVX.  Finally, <tt class="docutils literal">PI</tt> is defined for
+convenience, having the value 3.1415926535.</p>
 </div>
 </div>
 <div class="section" id="the-ispc-language">
@@ -897,10 +912,16 @@ a given type are found, an error is issued.</p>
 <li>All parameter types match exactly.</li>
 <li>All parameter types match exactly, where any <tt class="docutils literal">reference</tt>-qualified
 parameters are considered equivalent to their underlying type.</li>
+<li>Parameters match with only type conversions that don't risk losing any
+information (for example, converting an <tt class="docutils literal">int16</tt> value to an <tt class="docutils literal">int32</tt>
+parameter value.)</li>
 <li>Parameters match with only promotions from <tt class="docutils literal">uniform</tt> to <tt class="docutils literal">varying</tt>
-type.</li>
-<li>Parameters match using standard type conversion (<tt class="docutils literal">int</tt> to <tt class="docutils literal">float</tt>,
+types.</li>
+<li>Parameters match using arbitrary type conversion, without changing
+variability from <tt class="docutils literal">uniform</tt> to <tt class="docutils literal">varying</tt> (e.g., <tt class="docutils literal">int</tt> to <tt class="docutils literal">float</tt>,
 <tt class="docutils literal">float</tt> to <tt class="docutils literal">int</tt>.)</li>
+<li>Parameters match using arbitrary type conversion, including also changing
+variability from <tt class="docutils literal">uniform</tt> to <tt class="docutils literal">varying</tt> as needed.</li>
 </ul>
 <p>Also like C, arrays are passed to functions by reference.</p>
 </div>
@@ -1654,6 +1675,29 @@ first two program instances entered the <tt class="docutils literal">if</tt> blo
 values for the inactive program instances aren't printed.  (In other cases,
 they may have garbage values or be otherwise undefined.)</p>
 </div>
+<div class="section" id="assertions">
+<h2>Assertions</h2>
+<p>The <tt class="docutils literal">ispc</tt> standard library includes a mechanism for adding <tt class="docutils literal">assert()</tt>
+statements to <tt class="docutils literal">ispc</tt> program code.  Like <tt class="docutils literal">assert()</tt> in C, the
+<tt class="docutils literal">assert()</tt> function takes a single boolean expression as an argument.  If
+the expression evaluates to true at runtime, then a diagnostic error
+message printed and the <tt class="docutils literal">abort()</tt> function is called.</p>
+<p>When called with a <tt class="docutils literal">varying</tt> quantity, an assertion triggers if the
+expression evaluates to true for any any of the executing program instances
+at the point where it is called.  Thus, given code like:</p>
+<pre class="literal-block">
+int x = programIndex - 2;  // (-2, -1, 0, ... )
+if (x &gt; 0)
+    assert(x &gt; 0);
+</pre>
+<p>The <tt class="docutils literal">assert()</tt> statement will not trigger, since the condition isn't true
+for any of the executing program instances at that point.  (If this
+<tt class="docutils literal">assert()</tt> statement was outside of this <tt class="docutils literal">if</tt>, then it would of course
+trigger.)</p>
+<p>To disable all of the assertions in a file that is being compiled (e.g.,
+for an optimized release build), use the <tt class="docutils literal"><span class="pre">--opt=disable-assertions</span></tt>
+command-line argument.</p>
+</div>
 <div class="section" id="cross-program-instance-operations">
 <h2>Cross-Program Instance Operations</h2>
 <p>Usually, <tt class="docutils literal">ispc</tt> code expresses independent programs performing
@@ -1818,6 +1862,81 @@ int32 exclusive_scan_or(int32 v)
 unsigned int32 exclusive_scan_or(unsigned int32 v)
 int64 exclusive_scan_or(int64 v)
 unsigned int64 exclusive_scan_or(unsigned int64 v)
+</pre>
+</div>
+<div class="section" id="converting-between-array-of-structures-and-structure-of-arrays-layout">
+<h2>Converting Between Array-of-Structures and Structure-of-Arrays Layout</h2>
+<p>Applications often lay data out in memory in &quot;array of structures&quot; form.
+Though convenient in C/C++ code, this layout can make <tt class="docutils literal">ispc</tt> programs
+less efficient than they would be if the data was laid out in &quot;structure of
+arrays&quot; form.  (See the section <a class="reference internal" href="#understanding-how-to-interoperate-with-the-application-s-data">Understanding How to Interoperate With the
+Application's Data</a> for extended discussion of this topic.)</p>
+<p>The standard library does provide a few functions that efficiently convert
+between these two formats, for cases where it's not possible to change the
+application to use &quot;structure of arrays layout&quot;.  Consider an array of 3D
+(x,y,z) position data laid out in a C array like:</p>
+<pre class="literal-block">
+// C++ code
+float pos[] = { x0, y0, z0, x1, y1, z1, x2, ... };
+</pre>
+<p>In an <tt class="docutils literal">ispc</tt> program, we might want to load a set of (x,y,z) values and
+do a computation based on them.  The natural expression of this:</p>
+<pre class="literal-block">
+extern uniform float pos[];
+uniform int base = ...;
+float x = pos[base + 3 * programIndex];     // x = { x0 x1 x2 ... }
+float y = pos[base + 1 + 3 * programIndex]; // y = { y0 y1 y2 ... }
+float z = pos[base + 2 + 3 * programIndex]; // z = { z0 z1 z2 ... }
+</pre>
+<p>leads to irregular memory accesses and reduced performance.  Alternatively,
+the aos_to_soa3 standard library function could be used:</p>
+<pre class="literal-block">
+extern uniform float pos[];
+uniform int base = ...;
+float x, y, z;
+aos_to_soa3(pos, base, x, y, z);
+</pre>
+<p>This routine loads <tt class="docutils literal">3*programCount</tt> values from the given array starting
+at the given offset, returning three <tt class="docutils literal">varying</tt> results.  There are both
+<tt class="docutils literal">int32</tt> and <tt class="docutils literal">float</tt> variants of this function:</p>
+<pre class="literal-block">
+void aos_to_soa3(uniform float a[], uniform int offset, reference float v0,
+                 reference float v1, reference float v2)
+void aos_to_soa3(uniform int32 a[], uniform int offset, reference int32 v0,
+                 reference int32 v1, reference int32 v2)
+</pre>
+<p>After computation is done, corresponding functions convert back from the
+SoA values in <tt class="docutils literal">ispc</tt> <tt class="docutils literal">varying</tt> variables and write the values back to
+the given array, starting at the given offset.</p>
+<pre class="literal-block">
+extern uniform float pos[];
+uniform int base = ...;
+float x, y, z;
+aos_to_soa3(pos, base, x, y, z);
+// do computation with x, y, z
+soa_to_aos3(x, y, z, pos, base);
+</pre>
+<pre class="literal-block">
+void soa_to_aos3(float v0, float v1, float v2, uniform float a[],
+                 uniform int offset)
+void soa_to_aos3(int32 v0, int32 v1, int32 v2, uniform int32 a[],
+                 uniform int offset)
+</pre>
+<p>There are also variants of these functions that convert 4-wide values
+between AoS and SoA layouts.  In other words, <tt class="docutils literal">aos_to_soa4</tt> converts AoS
+data in memory laid out like <tt class="docutils literal">r0 g0 b0 a0 r1 g1 b1 a1 ...</tt> to four <tt class="docutils literal">varying</tt>
+variables with values <tt class="docutils literal">r0 <span class="pre">r1...</span></tt>, <tt class="docutils literal">g0 <span class="pre">g1...</span></tt>, <tt class="docutils literal">b0 <span class="pre">b1...</span></tt>, and <tt class="docutils literal">a0
+<span class="pre">a1...`,</span> reading a total of ``4*programCount</tt> values from the given array,
+starting at the given offset.</p>
+<pre class="literal-block">
+void aos_to_soa4(uniform float a[], uniform int offset, reference float v0,
+                 reference float v1, reference float v2, reference float v3)
+void aos_to_soa4(uniform int32 a[], uniform int offset, reference int32 v0,
+                 reference int32 v1, reference int32 v2, reference int32 v3)
+void soa_to_aos4(float v0, float v1, float v2, float v3, uniform float a[],
+                 uniform int offset)
+void soa_to_aos4(int32 v0, int32 v1, int32 v2, int32 v3, uniform int32 a[],
+                 uniform int offset)
 </pre>
 </div>
 <div class="section" id="packed-load-and-store-operations">
@@ -2335,8 +2454,12 @@ then packed into a four-wide register corresponding to <tt class="docutils liter
 values are loaded into the local <tt class="docutils literal">x</tt>, <tt class="docutils literal">y</tt>, and <tt class="docutils literal">z</tt> variables,
 SIMD-efficient computation can proceed; getting to that point is
 relatively inefficient.</p>
-<p>An alternative would be the &quot;structure of arrays&quot; (SoA) layout.  In C, the
-data would be declared as:</p>
+<p>(As described previously in <a class="reference internal" href="#converting-between-array-of-structures-and-structure-of-arrays-layout">Converting Between Array-of-Structures and
+Structure-of-Arrays Layout</a>, this computation could be written more
+efficiently using standard library routines to convert from the AoS layout,
+if we were given a flat array of <tt class="docutils literal">float</tt> values.)</p>
+<p>An alternative data layout would be the &quot;structure of arrays&quot; (SoA).  In C,
+the data would be declared as:</p>
 <pre class="literal-block">
 float x[1024], y[1024], z[1024];
 </pre>
@@ -2727,9 +2850,9 @@ parallelism and amortization of various overhead over more program
 instances.  For other workloads, it may lead to a slowdown due to higher
 register pressure; trying both approaches for key kernels may be
 worthwhile.</p>
-<p>This option is currently only available for the SSE4 and AVX targets, and
-is selected with the <tt class="docutils literal"><span class="pre">--target=sse4-x2</span></tt> and <tt class="docutils literal"><span class="pre">--target=avx-x2</span></tt> options,
-respectively.</p>
+<p>This option is only available for each of the SSE2, SSE4 and AVX targets.
+It is selected with the <tt class="docutils literal"><span class="pre">--target=sse2-x2</span></tt>, <tt class="docutils literal"><span class="pre">--target=sse4-x2</span></tt> and
+<tt class="docutils literal"><span class="pre">--target=avx-x2</span></tt> options, respectively.</p>
 </div>
 <div class="section" id="compiling-with-support-for-multiple-instruction-sets">
 <h2>Compiling With Support For Multiple Instruction Sets</h2>
@@ -2772,6 +2895,75 @@ different sizes (the first due to program count having the value 4 for SSE2
 and 8 for AVX, and the second due to <tt class="docutils literal">varying</tt> types having different
 numbers of elements with the two targets--essentially the same issue as the
 first.)</p>
+</div>
+<div class="section" id="implementing-reductions-efficiently">
+<h2>Implementing Reductions Efficiently</h2>
+<p>It's often necessary to compute a &quot;reduction&quot; over a data set--for example,
+one might want to add all of the values in an array, compute their minimum,
+etc.  <tt class="docutils literal">ispc</tt> provides a few capabilities that make it easy to efficiently
+compute reductions like these.  However, it's important to use these
+capabilities appropriately for best results.</p>
+<p>As an example, consider the task of computing the sum of all of the values
+in an array.  In C code, we might have:</p>
+<pre class="literal-block">
+/* C implementation of a sum reduction */
+float sum(const float array[], int count) {
+    float sum = 0;
+    for (int i = 0; i &lt; count; ++i)
+        sum += array[i];
+    return sum;
+}
+</pre>
+<p>Of course, exactly this computation could also be expressed in <tt class="docutils literal">ispc</tt>,
+though without any benefit from vectorization:</p>
+<pre class="literal-block">
+/* inefficient ispc implementation of a sum reduction */
+uniform float sum(const uniform float array[], uniform int count) {
+    uniform float sum = 0;
+    for (uniform int i = 0; i &lt; count; ++i)
+        sum += array[i];
+    return sum;
+}
+</pre>
+<p>As a first try, one might try using the <tt class="docutils literal">reduce_add()</tt> function from the
+<tt class="docutils literal">ispc</tt> standard library; it takes a <tt class="docutils literal">varying</tt> value and returns the sum
+of that value across all of the active program instances (see
+<a class="reference internal" href="#cross-program-instance-operations">Cross-Program Instance Operations</a> for more details).</p>
+<pre class="literal-block">
+/* inefficient ispc implementation of a sum reduction */
+uniform float sum(const uniform float array[], uniform int count) {
+    uniform float sum = 0;
+    // Assumes programCount evenly divides count
+    for (uniform int i = 0; i &lt; count; i += programCount)
+        sum += reduce_add(array[i+programIndex]);
+    return sum;
+}
+</pre>
+<p>This implementation loads a set of <tt class="docutils literal">programCount</tt> values from the array,
+one for each of the program instances, and then uses <tt class="docutils literal">reduce_add</tt> to
+reduce across the program instances and then update the sum.  Unfortunately
+this approach loses most benefit from vectorization, as it does more work
+on the cross-program instance <tt class="docutils literal">reduce_add()</tt> call than it saves from the
+vector load of values.</p>
+<p>The most efficient approach is to do the reduction in two phases: rather
+than using a <tt class="docutils literal">uniform</tt> variable to store the sum, we maintain a varying
+value, such that each program instance is effectively computing a local
+partial sum on the subset of array values that it has loaded from the
+array.  When the loop over array elements concludes, a single call to
+<tt class="docutils literal">reduce_add()</tt> computes the final reduction across each of the program
+instances' elements of <tt class="docutils literal">sum</tt>.  This approach effectively compiles to a
+single vector load and a single vector add for each <tt class="docutils literal">programCount</tt> worth
+of values--very efficient code in the end.</p>
+<pre class="literal-block">
+/* good ispc implementation of a sum reduction */
+uniform float sum(const uniform float array[], uniform int count) {
+    float sum = 0;
+    // Assumes programCount evenly divides count
+    for (uniform int i = 0; i &lt; count; i += programCount)
+        sum += array[i+programIndex];
+    return reduce_add(sum);
+}
+</pre>
 </div>
 </div>
 <div class="section" id="disclaimer-and-legal-information">

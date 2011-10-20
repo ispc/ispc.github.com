@@ -139,193 +139,197 @@
 <a name="l00108"></a>00108 <span class="comment">                                   masked stores when modifying the symbol&#39;s value when the</span>
 <a name="l00109"></a>00109 <span class="comment">                                   store is done at the same &#39;varying&#39; control flow depth as </span>
 <a name="l00110"></a>00110 <span class="comment">                                   the one where the symbol was originally declared. */</span>
-<a name="l00111"></a>00111 };
-<a name="l00112"></a>00112 
-<a name="l00113"></a>00113 <span class="comment"></span>
-<a name="l00114"></a>00114 <span class="comment">/** @brief Symbol table that holds all known symbols during parsing and compilation.</span>
-<a name="l00115"></a>00115 <span class="comment"></span>
-<a name="l00116"></a>00116 <span class="comment">    A single instance of a SymbolTable is stored in the Module class</span>
-<a name="l00117"></a>00117 <span class="comment">    (Module::symbolTable); it is created in the Module::Module()</span>
-<a name="l00118"></a>00118 <span class="comment">    constructor.  It is then accessed via the global variable Module *\ref m</span>
-<a name="l00119"></a>00119 <span class="comment">    throughout the ispc implementation.</span>
-<a name="l00120"></a>00120 <span class="comment"> */</span>
-<a name="l00121"></a>00121 
-<a name="l00122"></a><a class="code" href="classSymbolTable.html">00122</a> <span class="keyword">class </span><a class="code" href="classSymbolTable.html" title="Symbol table that holds all known symbols during parsing and compilation.">SymbolTable</a> {
-<a name="l00123"></a>00123 <span class="keyword">public</span>:
-<a name="l00124"></a>00124     <a class="code" href="classSymbolTable.html#a1fbe6cec5594463b766db0ac58c9aa1d">SymbolTable</a>();
-<a name="l00125"></a>00125     <a class="code" href="classSymbolTable.html#a5d5ae9b5b22d87691cec9ec17cfff650">~SymbolTable</a>();
-<a name="l00126"></a>00126 <span class="comment"></span>
-<a name="l00127"></a>00127 <span class="comment">    /** The parser calls this method when it enters a new scope in the</span>
-<a name="l00128"></a>00128 <span class="comment">        program; this allows us to track variables that shadows others in</span>
-<a name="l00129"></a>00129 <span class="comment">        outer scopes with same name as well as to efficiently discard all</span>
-<a name="l00130"></a>00130 <span class="comment">        of the variables declared in a particular scope when we exit that</span>
-<a name="l00131"></a>00131 <span class="comment">        scope. */</span>
-<a name="l00132"></a>00132     <span class="keywordtype">void</span> <a class="code" href="classSymbolTable.html#ae8daa1cf8667258e065b8be95facb330">PushScope</a>();
-<a name="l00133"></a>00133 <span class="comment"></span>
-<a name="l00134"></a>00134 <span class="comment">    /** For each scope started by a call to SymbolTable::PushScope(), there</span>
-<a name="l00135"></a>00135 <span class="comment">        must be a matching call to SymbolTable::PopScope() at the end of</span>
-<a name="l00136"></a>00136 <span class="comment">        that scope. */</span> 
-<a name="l00137"></a>00137     <span class="keywordtype">void</span> <a class="code" href="classSymbolTable.html#aa79caf59c28df4805abaf2ce5df83198">PopScope</a>();
-<a name="l00138"></a>00138 <span class="comment"></span>
-<a name="l00139"></a>00139 <span class="comment">    /** Adds the given variable symbol to the symbol table.</span>
-<a name="l00140"></a>00140 <span class="comment">        @param symbol The symbol to be added</span>
-<a name="l00141"></a>00141 <span class="comment"></span>
-<a name="l00142"></a>00142 <span class="comment">        @return true if successful; false if the provided symbol clashes</span>
-<a name="l00143"></a>00143 <span class="comment">        with a symbol defined at the same scope.  (Symbols may shaodow</span>
-<a name="l00144"></a>00144 <span class="comment">        symbols in outer scopes; a warning is issued in this case, but this</span>
-<a name="l00145"></a>00145 <span class="comment">        method still returns true.) */</span>
-<a name="l00146"></a>00146     <span class="keywordtype">bool</span> <a class="code" href="classSymbolTable.html#a2d5e4d85d5e1ede45b7fd155741628ff">AddVariable</a>(<a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *symbol);
-<a name="l00147"></a>00147 <span class="comment"></span>
-<a name="l00148"></a>00148 <span class="comment">    /** Looks for a variable with the given name in the symbol table.  This</span>
-<a name="l00149"></a>00149 <span class="comment">        method searches outward from the innermost scope to the outermost,</span>
-<a name="l00150"></a>00150 <span class="comment">        returning the first match found.</span>
+<a name="l00111"></a>00111     <span class="keyword">const</span> Function *<a class="code" href="classSymbol.html#a0a08533fe6d296796a2299427cd9e13a">parentFunction</a>; <span class="comment"></span>
+<a name="l00112"></a><a class="code" href="classSymbol.html#a0a08533fe6d296796a2299427cd9e13a">00112</a> <span class="comment">                              /*!&lt; For symbols that are parameters to functions or are </span>
+<a name="l00113"></a>00113 <span class="comment">                                   variables declared inside functions, this gives the</span>
+<a name="l00114"></a>00114 <span class="comment">                                   function they&#39;re in. */</span>
+<a name="l00115"></a>00115 };
+<a name="l00116"></a>00116 
+<a name="l00117"></a>00117 <span class="comment"></span>
+<a name="l00118"></a>00118 <span class="comment">/** @brief Symbol table that holds all known symbols during parsing and compilation.</span>
+<a name="l00119"></a>00119 <span class="comment"></span>
+<a name="l00120"></a>00120 <span class="comment">    A single instance of a SymbolTable is stored in the Module class</span>
+<a name="l00121"></a>00121 <span class="comment">    (Module::symbolTable); it is created in the Module::Module()</span>
+<a name="l00122"></a>00122 <span class="comment">    constructor.  It is then accessed via the global variable Module *\ref m</span>
+<a name="l00123"></a>00123 <span class="comment">    throughout the ispc implementation.</span>
+<a name="l00124"></a>00124 <span class="comment"> */</span>
+<a name="l00125"></a>00125 
+<a name="l00126"></a><a class="code" href="classSymbolTable.html">00126</a> <span class="keyword">class </span><a class="code" href="classSymbolTable.html" title="Symbol table that holds all known symbols during parsing and compilation.">SymbolTable</a> {
+<a name="l00127"></a>00127 <span class="keyword">public</span>:
+<a name="l00128"></a>00128     <a class="code" href="classSymbolTable.html#a1fbe6cec5594463b766db0ac58c9aa1d">SymbolTable</a>();
+<a name="l00129"></a>00129     <a class="code" href="classSymbolTable.html#a5d5ae9b5b22d87691cec9ec17cfff650">~SymbolTable</a>();
+<a name="l00130"></a>00130 <span class="comment"></span>
+<a name="l00131"></a>00131 <span class="comment">    /** The parser calls this method when it enters a new scope in the</span>
+<a name="l00132"></a>00132 <span class="comment">        program; this allows us to track variables that shadows others in</span>
+<a name="l00133"></a>00133 <span class="comment">        outer scopes with same name as well as to efficiently discard all</span>
+<a name="l00134"></a>00134 <span class="comment">        of the variables declared in a particular scope when we exit that</span>
+<a name="l00135"></a>00135 <span class="comment">        scope. */</span>
+<a name="l00136"></a>00136     <span class="keywordtype">void</span> <a class="code" href="classSymbolTable.html#ae8daa1cf8667258e065b8be95facb330">PushScope</a>();
+<a name="l00137"></a>00137 <span class="comment"></span>
+<a name="l00138"></a>00138 <span class="comment">    /** For each scope started by a call to SymbolTable::PushScope(), there</span>
+<a name="l00139"></a>00139 <span class="comment">        must be a matching call to SymbolTable::PopScope() at the end of</span>
+<a name="l00140"></a>00140 <span class="comment">        that scope. */</span> 
+<a name="l00141"></a>00141     <span class="keywordtype">void</span> <a class="code" href="classSymbolTable.html#aa79caf59c28df4805abaf2ce5df83198">PopScope</a>();
+<a name="l00142"></a>00142 <span class="comment"></span>
+<a name="l00143"></a>00143 <span class="comment">    /** Adds the given variable symbol to the symbol table.</span>
+<a name="l00144"></a>00144 <span class="comment">        @param symbol The symbol to be added</span>
+<a name="l00145"></a>00145 <span class="comment"></span>
+<a name="l00146"></a>00146 <span class="comment">        @return true if successful; false if the provided symbol clashes</span>
+<a name="l00147"></a>00147 <span class="comment">        with a symbol defined at the same scope.  (Symbols may shaodow</span>
+<a name="l00148"></a>00148 <span class="comment">        symbols in outer scopes; a warning is issued in this case, but this</span>
+<a name="l00149"></a>00149 <span class="comment">        method still returns true.) */</span>
+<a name="l00150"></a>00150     <span class="keywordtype">bool</span> <a class="code" href="classSymbolTable.html#a2d5e4d85d5e1ede45b7fd155741628ff">AddVariable</a>(<a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *symbol);
 <a name="l00151"></a>00151 <span class="comment"></span>
-<a name="l00152"></a>00152 <span class="comment">        @param  name The name of the variable to be searched for.</span>
-<a name="l00153"></a>00153 <span class="comment">        @return A pointer to the Symbol, if a match is found.  NULL if no </span>
-<a name="l00154"></a>00154 <span class="comment">        Symbol with the given name is in the symbol table. */</span>
-<a name="l00155"></a>00155     <a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *<a class="code" href="classSymbolTable.html#a4c89545a31f6a562bb10089b79fa5c08">LookupVariable</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name);
-<a name="l00156"></a>00156 <span class="comment"></span>
-<a name="l00157"></a>00157 <span class="comment">    /** Adds the given function symbol to the symbol table.</span>
-<a name="l00158"></a>00158 <span class="comment">        @param symbol The function symbol to be added.</span>
-<a name="l00159"></a>00159 <span class="comment"></span>
-<a name="l00160"></a>00160 <span class="comment">        @return true if the symbol has been added.  False if another</span>
-<a name="l00161"></a>00161 <span class="comment">        function symbol with the same name and function signature is</span>
-<a name="l00162"></a>00162 <span class="comment">        already present in the symbol table. */</span>
-<a name="l00163"></a>00163     <span class="keywordtype">bool</span> <a class="code" href="classSymbolTable.html#ab49a5dd3c4f49a5c1a2b7882dd1af736">AddFunction</a>(<a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *symbol);
-<a name="l00164"></a>00164 <span class="comment"></span>
-<a name="l00165"></a>00165 <span class="comment">    /** Looks for the function or functions with the given name in the</span>
-<a name="l00166"></a>00166 <span class="comment">        symbol name.  If a function has been overloaded and multiple</span>
-<a name="l00167"></a>00167 <span class="comment">        definitions are present for a given function name, all of them will</span>
-<a name="l00168"></a>00168 <span class="comment">        be returned and it&#39;s up the the caller to resolve which one (if</span>
-<a name="l00169"></a>00169 <span class="comment">        any) to use.</span>
-<a name="l00170"></a>00170 <span class="comment"></span>
-<a name="l00171"></a>00171 <span class="comment">        @return vector of Symbol pointers to functions with the given name. */</span>
-<a name="l00172"></a>00172     std::vector&lt;Symbol *&gt; *<a class="code" href="classSymbolTable.html#aa6d40cc2e51a74600689f6b36228368b">LookupFunction</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name);
-<a name="l00173"></a>00173 <span class="comment"></span>
-<a name="l00174"></a>00174 <span class="comment">    /** Looks for a function with the given name and type</span>
-<a name="l00175"></a>00175 <span class="comment">        in the symbol table.</span>
-<a name="l00176"></a>00176 <span class="comment"></span>
-<a name="l00177"></a>00177 <span class="comment">        @return pointer to matching Symbol; NULL if none is found. */</span>
-<a name="l00178"></a>00178     <a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *<a class="code" href="classSymbolTable.html#aa6d40cc2e51a74600689f6b36228368b">LookupFunction</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name, <span class="keyword">const</span> <a class="code" href="classFunctionType.html" title="Type representing a function (return type + argument types)">FunctionType</a> *type);
-<a name="l00179"></a>00179 <span class="comment"></span>
-<a name="l00180"></a>00180 <span class="comment">    /** Returns all of the functions in the symbol table that match the given </span>
-<a name="l00181"></a>00181 <span class="comment">        predicate.</span>
-<a name="l00182"></a>00182 <span class="comment"></span>
-<a name="l00183"></a>00183 <span class="comment">        @param pred A unary predicate that returns true or false, given a Symbol </span>
-<a name="l00184"></a>00184 <span class="comment">        pointer, based on whether the symbol should be included in the returned </span>
-<a name="l00185"></a>00185 <span class="comment">        set of matches.  It can either be a function, with signature </span>
-<a name="l00186"></a>00186 <span class="comment">        &lt;tt&gt;bool pred(const Symbol *s)&lt;/tt&gt;, or a unary predicate object with </span>
-<a name="l00187"></a>00187 <span class="comment">        an &lt;tt&gt;bool operator()(const Symbol *)&lt;/tt&gt; method.</span>
-<a name="l00188"></a>00188 <span class="comment"></span>
-<a name="l00189"></a>00189 <span class="comment">        @param matches Pointer to a vector in which to return the matching</span>
-<a name="l00190"></a>00190 <span class="comment">        symbols. </span>
-<a name="l00191"></a>00191 <span class="comment">     */</span>
-<a name="l00192"></a>00192     <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Predicate&gt; 
-<a name="l00193"></a>00193         <span class="keywordtype">void</span> <a class="code" href="classSymbolTable.html#a405f262bf6a2687b2e804c92d5c99724">GetMatchingFunctions</a>(Predicate pred, 
-<a name="l00194"></a>00194                                   std::vector&lt;Symbol *&gt; *matches) <span class="keyword">const</span>;
-<a name="l00195"></a>00195 <span class="comment"></span>
-<a name="l00196"></a>00196 <span class="comment">    /** Returns all of the variable symbols in the symbol table that match</span>
-<a name="l00197"></a>00197 <span class="comment">        the given predicate.  The predicate is defined as in the</span>
-<a name="l00198"></a>00198 <span class="comment">        GetMatchingFunctions() method.</span>
-<a name="l00199"></a>00199 <span class="comment">     */</span>
-<a name="l00200"></a>00200     <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Predicate&gt; 
-<a name="l00201"></a>00201         <span class="keywordtype">void</span> <a class="code" href="classSymbolTable.html#a2f8ec5942168f85ec74baf3778a778a1">GetMatchingVariables</a>(Predicate pred, 
-<a name="l00202"></a>00202                                   std::vector&lt;Symbol *&gt; *matches) <span class="keyword">const</span>;
-<a name="l00203"></a>00203 <span class="comment"></span>
-<a name="l00204"></a>00204 <span class="comment">    /** Adds the named type to the symbol table.  This is used for both</span>
-<a name="l00205"></a>00205 <span class="comment">        struct definitions (where &lt;tt&gt;struct Foo&lt;/tt&gt; causes type \c Foo to</span>
-<a name="l00206"></a>00206 <span class="comment">        be added to the symbol table) as well as for &lt;tt&gt;typedef&lt;/tt&gt;s.</span>
+<a name="l00152"></a>00152 <span class="comment">    /** Looks for a variable with the given name in the symbol table.  This</span>
+<a name="l00153"></a>00153 <span class="comment">        method searches outward from the innermost scope to the outermost,</span>
+<a name="l00154"></a>00154 <span class="comment">        returning the first match found.</span>
+<a name="l00155"></a>00155 <span class="comment"></span>
+<a name="l00156"></a>00156 <span class="comment">        @param  name The name of the variable to be searched for.</span>
+<a name="l00157"></a>00157 <span class="comment">        @return A pointer to the Symbol, if a match is found.  NULL if no </span>
+<a name="l00158"></a>00158 <span class="comment">        Symbol with the given name is in the symbol table. */</span>
+<a name="l00159"></a>00159     <a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *<a class="code" href="classSymbolTable.html#a4c89545a31f6a562bb10089b79fa5c08">LookupVariable</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name);
+<a name="l00160"></a>00160 <span class="comment"></span>
+<a name="l00161"></a>00161 <span class="comment">    /** Adds the given function symbol to the symbol table.</span>
+<a name="l00162"></a>00162 <span class="comment">        @param symbol The function symbol to be added.</span>
+<a name="l00163"></a>00163 <span class="comment"></span>
+<a name="l00164"></a>00164 <span class="comment">        @return true if the symbol has been added.  False if another</span>
+<a name="l00165"></a>00165 <span class="comment">        function symbol with the same name and function signature is</span>
+<a name="l00166"></a>00166 <span class="comment">        already present in the symbol table. */</span>
+<a name="l00167"></a>00167     <span class="keywordtype">bool</span> <a class="code" href="classSymbolTable.html#ab49a5dd3c4f49a5c1a2b7882dd1af736">AddFunction</a>(<a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *symbol);
+<a name="l00168"></a>00168 <span class="comment"></span>
+<a name="l00169"></a>00169 <span class="comment">    /** Looks for the function or functions with the given name in the</span>
+<a name="l00170"></a>00170 <span class="comment">        symbol name.  If a function has been overloaded and multiple</span>
+<a name="l00171"></a>00171 <span class="comment">        definitions are present for a given function name, all of them will</span>
+<a name="l00172"></a>00172 <span class="comment">        be returned and it&#39;s up the the caller to resolve which one (if</span>
+<a name="l00173"></a>00173 <span class="comment">        any) to use.</span>
+<a name="l00174"></a>00174 <span class="comment"></span>
+<a name="l00175"></a>00175 <span class="comment">        @return vector of Symbol pointers to functions with the given name. */</span>
+<a name="l00176"></a>00176     std::vector&lt;Symbol *&gt; *<a class="code" href="classSymbolTable.html#aa6d40cc2e51a74600689f6b36228368b">LookupFunction</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name);
+<a name="l00177"></a>00177 <span class="comment"></span>
+<a name="l00178"></a>00178 <span class="comment">    /** Looks for a function with the given name and type</span>
+<a name="l00179"></a>00179 <span class="comment">        in the symbol table.</span>
+<a name="l00180"></a>00180 <span class="comment"></span>
+<a name="l00181"></a>00181 <span class="comment">        @return pointer to matching Symbol; NULL if none is found. */</span>
+<a name="l00182"></a>00182     <a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *<a class="code" href="classSymbolTable.html#aa6d40cc2e51a74600689f6b36228368b">LookupFunction</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name, <span class="keyword">const</span> <a class="code" href="classFunctionType.html" title="Type representing a function (return type + argument types)">FunctionType</a> *type);
+<a name="l00183"></a>00183 <span class="comment"></span>
+<a name="l00184"></a>00184 <span class="comment">    /** Returns all of the functions in the symbol table that match the given </span>
+<a name="l00185"></a>00185 <span class="comment">        predicate.</span>
+<a name="l00186"></a>00186 <span class="comment"></span>
+<a name="l00187"></a>00187 <span class="comment">        @param pred A unary predicate that returns true or false, given a Symbol </span>
+<a name="l00188"></a>00188 <span class="comment">        pointer, based on whether the symbol should be included in the returned </span>
+<a name="l00189"></a>00189 <span class="comment">        set of matches.  It can either be a function, with signature </span>
+<a name="l00190"></a>00190 <span class="comment">        &lt;tt&gt;bool pred(const Symbol *s)&lt;/tt&gt;, or a unary predicate object with </span>
+<a name="l00191"></a>00191 <span class="comment">        an &lt;tt&gt;bool operator()(const Symbol *)&lt;/tt&gt; method.</span>
+<a name="l00192"></a>00192 <span class="comment"></span>
+<a name="l00193"></a>00193 <span class="comment">        @param matches Pointer to a vector in which to return the matching</span>
+<a name="l00194"></a>00194 <span class="comment">        symbols. </span>
+<a name="l00195"></a>00195 <span class="comment">     */</span>
+<a name="l00196"></a>00196     <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Predicate&gt; 
+<a name="l00197"></a>00197         <span class="keywordtype">void</span> <a class="code" href="classSymbolTable.html#a405f262bf6a2687b2e804c92d5c99724">GetMatchingFunctions</a>(Predicate pred, 
+<a name="l00198"></a>00198                                   std::vector&lt;Symbol *&gt; *matches) <span class="keyword">const</span>;
+<a name="l00199"></a>00199 <span class="comment"></span>
+<a name="l00200"></a>00200 <span class="comment">    /** Returns all of the variable symbols in the symbol table that match</span>
+<a name="l00201"></a>00201 <span class="comment">        the given predicate.  The predicate is defined as in the</span>
+<a name="l00202"></a>00202 <span class="comment">        GetMatchingFunctions() method.</span>
+<a name="l00203"></a>00203 <span class="comment">     */</span>
+<a name="l00204"></a>00204     <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Predicate&gt; 
+<a name="l00205"></a>00205         <span class="keywordtype">void</span> <a class="code" href="classSymbolTable.html#a2f8ec5942168f85ec74baf3778a778a1">GetMatchingVariables</a>(Predicate pred, 
+<a name="l00206"></a>00206                                   std::vector&lt;Symbol *&gt; *matches) <span class="keyword">const</span>;
 <a name="l00207"></a>00207 <span class="comment"></span>
-<a name="l00208"></a>00208 <span class="comment">        @param name Name of the type to be added</span>
-<a name="l00209"></a>00209 <span class="comment">        @param type Type that \c name represents</span>
-<a name="l00210"></a>00210 <span class="comment">        @param pos Position in source file where the type was named</span>
-<a name="l00211"></a>00211 <span class="comment">        @return true if the named type was successfully added.  False if a type</span>
-<a name="l00212"></a>00212 <span class="comment">        with the same name has already been defined.</span>
-<a name="l00213"></a>00213 <span class="comment">        </span>
-<a name="l00214"></a>00214 <span class="comment">    */</span>
-<a name="l00215"></a>00215     <span class="keywordtype">bool</span> <a class="code" href="classSymbolTable.html#ab449fbe2b55797a074940394467a262e">AddType</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos);
-<a name="l00216"></a>00216 <span class="comment"></span>
-<a name="l00217"></a>00217 <span class="comment">    /** Looks for a type of the given name in the symbol table.</span>
-<a name="l00218"></a>00218 <span class="comment"></span>
-<a name="l00219"></a>00219 <span class="comment">        @return Pointer to the Type, if found; otherwise NULL is returned.</span>
-<a name="l00220"></a>00220 <span class="comment">    */</span>
-<a name="l00221"></a>00221     <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *<a class="code" href="classSymbolTable.html#a0d086940081f34d21263eb828a3ddfed">LookupType</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name) <span class="keyword">const</span>;
+<a name="l00208"></a>00208 <span class="comment">    /** Adds the named type to the symbol table.  This is used for both</span>
+<a name="l00209"></a>00209 <span class="comment">        struct definitions (where &lt;tt&gt;struct Foo&lt;/tt&gt; causes type \c Foo to</span>
+<a name="l00210"></a>00210 <span class="comment">        be added to the symbol table) as well as for &lt;tt&gt;typedef&lt;/tt&gt;s.</span>
+<a name="l00211"></a>00211 <span class="comment"></span>
+<a name="l00212"></a>00212 <span class="comment">        @param name Name of the type to be added</span>
+<a name="l00213"></a>00213 <span class="comment">        @param type Type that \c name represents</span>
+<a name="l00214"></a>00214 <span class="comment">        @param pos Position in source file where the type was named</span>
+<a name="l00215"></a>00215 <span class="comment">        @return true if the named type was successfully added.  False if a type</span>
+<a name="l00216"></a>00216 <span class="comment">        with the same name has already been defined.</span>
+<a name="l00217"></a>00217 <span class="comment">        </span>
+<a name="l00218"></a>00218 <span class="comment">    */</span>
+<a name="l00219"></a>00219     <span class="keywordtype">bool</span> <a class="code" href="classSymbolTable.html#ab449fbe2b55797a074940394467a262e">AddType</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos);
+<a name="l00220"></a>00220 <span class="comment"></span>
+<a name="l00221"></a>00221 <span class="comment">    /** Looks for a type of the given name in the symbol table.</span>
 <a name="l00222"></a>00222 <span class="comment"></span>
-<a name="l00223"></a>00223 <span class="comment">    /** This method returns zero or more strings with the names of symbols</span>
-<a name="l00224"></a>00224 <span class="comment">        in the symbol table that nearly (but not exactly) match the given</span>
-<a name="l00225"></a>00225 <span class="comment">        name.  This is useful for issuing informative error methods when</span>
-<a name="l00226"></a>00226 <span class="comment">        misspelled identifiers are found a programs.</span>
-<a name="l00227"></a>00227 <span class="comment"></span>
-<a name="l00228"></a>00228 <span class="comment">        @param name String to compare variable and function symbol names against.</span>
-<a name="l00229"></a>00229 <span class="comment">        @return vector of zero or more strings that approximately match \c name.</span>
-<a name="l00230"></a>00230 <span class="comment">    */</span>
-<a name="l00231"></a>00231     std::vector&lt;std::string&gt; <a class="code" href="classSymbolTable.html#a6e76946243946eace77ea44ea30329d6">ClosestVariableOrFunctionMatch</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name) <span class="keyword">const</span>;<span class="comment"></span>
-<a name="l00232"></a>00232 <span class="comment">    /** This method returns zero or more strings with the names of types</span>
-<a name="l00233"></a>00233 <span class="comment">        in the symbol table that nearly (but not exactly) match the given</span>
-<a name="l00234"></a>00234 <span class="comment">        name. */</span>
-<a name="l00235"></a>00235     std::vector&lt;std::string&gt; <a class="code" href="classSymbolTable.html#af496f9175cb4a1370d61d9b166050324">ClosestTypeMatch</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name) <span class="keyword">const</span>;
-<a name="l00236"></a>00236 
-<a name="l00237"></a>00237     std::vector&lt;std::string&gt; <a class="code" href="classSymbolTable.html#aa3608c26685895932ce7db07ec3ab73d">ClosestEnumTypeMatch</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name) <span class="keyword">const</span>;
-<a name="l00238"></a>00238 <span class="comment"></span>
-<a name="l00239"></a>00239 <span class="comment">    /** Prints out the entire contents of the symbol table to standard error.</span>
-<a name="l00240"></a>00240 <span class="comment">        (Debugging method). */</span>
-<a name="l00241"></a>00241     <span class="keywordtype">void</span> <a class="code" href="classSymbolTable.html#a6642684baa5464f91821d8a83595bb7b">Print</a>();
-<a name="l00242"></a>00242 
-<a name="l00243"></a>00243 <span class="keyword">private</span>:
-<a name="l00244"></a>00244     std::vector&lt;std::string&gt; <a class="code" href="classSymbolTable.html#a1cbb54b5e068d8b3da9a35fafd91af76">closestTypeMatch</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, 
-<a name="l00245"></a>00245                                               <span class="keywordtype">bool</span> structsVsEnums) <span class="keyword">const</span>;
-<a name="l00246"></a>00246 <span class="comment"></span>
-<a name="l00247"></a>00247 <span class="comment">    /** This member variable holds one \c vector of Symbol pointers for</span>
-<a name="l00248"></a>00248 <span class="comment">        each of the current active scopes as the program is being parsed.</span>
-<a name="l00249"></a>00249 <span class="comment">        New vectors of symbols are added and removed from the end of the</span>
-<a name="l00250"></a>00250 <span class="comment">        main vector, so searches for symbols start looking at the end of \c</span>
-<a name="l00251"></a>00251 <span class="comment">        variables and work backwards.</span>
-<a name="l00252"></a>00252 <span class="comment">     */</span>
-<a name="l00253"></a><a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">00253</a>     std::vector&lt;std::vector&lt;Symbol *&gt; *&gt; <a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">variables</a>;<span class="comment"></span>
-<a name="l00254"></a>00254 <span class="comment">    /** Because there is no scoping for function symbols, functions are</span>
-<a name="l00255"></a>00255 <span class="comment">        represented with a single STL \c map from names to symbols.  A STL</span>
-<a name="l00256"></a>00256 <span class="comment">        \c vector is used to store the function symbols for a given name</span>
-<a name="l00257"></a>00257 <span class="comment">        since, due to function overloading, a name can have multiple</span>
-<a name="l00258"></a>00258 <span class="comment">        function symbols associated with it. */</span>
-<a name="l00259"></a><a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">00259</a>     std::map&lt;std::string, std::vector&lt;Symbol *&gt; &gt; <a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">functions</a>;
-<a name="l00260"></a><a class="code" href="classSymbolTable.html#a03c3d3253785b20285973345d1ebda6c">00260</a>     <span class="keyword">typedef</span> std::map&lt;std::string, const Type *&gt; <a class="code" href="classSymbolTable.html#a03c3d3253785b20285973345d1ebda6c">TypeMapType</a>;<span class="comment"></span>
-<a name="l00261"></a>00261 <span class="comment">    /** Like variables, type definitions can be scoped.  A new \c TypeMapType</span>
-<a name="l00262"></a>00262 <span class="comment">        is added to the back of the \c types \c vector each time a new scope</span>
-<a name="l00263"></a>00263 <span class="comment">        is entered.  (And it&#39;s removed when the scope exits).</span>
-<a name="l00264"></a>00264 <span class="comment">     */</span>
-<a name="l00265"></a><a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">00265</a>     std::vector&lt;TypeMapType *&gt; <a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">types</a>;
-<a name="l00266"></a>00266 };
-<a name="l00267"></a>00267 
-<a name="l00268"></a>00268 
-<a name="l00269"></a>00269 <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Predicate&gt; <span class="keywordtype">void</span>
-<a name="l00270"></a><a class="code" href="classSymbolTable.html#a405f262bf6a2687b2e804c92d5c99724">00270</a> <a class="code" href="classSymbolTable.html#a405f262bf6a2687b2e804c92d5c99724">SymbolTable::GetMatchingFunctions</a>(Predicate pred, 
-<a name="l00271"></a>00271                                   std::vector&lt;Symbol *&gt; *matches)<span class="keyword"> const </span>{
-<a name="l00272"></a>00272     <span class="comment">// Iterate through all function symbols and apply the given predicate.</span>
-<a name="l00273"></a>00273     <span class="comment">// If it returns true, add the Symbol * to the provided vector.</span>
-<a name="l00274"></a>00274     std::map&lt;std::string, std::vector&lt;Symbol *&gt; &gt;::const_iterator iter;
-<a name="l00275"></a>00275     <span class="keywordflow">for</span> (iter = <a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">functions</a>.begin(); iter != <a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">functions</a>.end(); ++iter) {
-<a name="l00276"></a>00276         <span class="keyword">const</span> std::vector&lt;Symbol *&gt; &amp;syms = iter-&gt;second;
-<a name="l00277"></a>00277         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; syms.size(); ++i) {
-<a name="l00278"></a>00278             <span class="keywordflow">if</span> (pred(syms[i]))
-<a name="l00279"></a>00279                 matches-&gt;push_back(syms[i]);
-<a name="l00280"></a>00280         }
-<a name="l00281"></a>00281     }
-<a name="l00282"></a>00282 }
-<a name="l00283"></a>00283 
-<a name="l00284"></a>00284 
-<a name="l00285"></a>00285 <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Predicate&gt; <span class="keywordtype">void</span>
-<a name="l00286"></a><a class="code" href="classSymbolTable.html#a2f8ec5942168f85ec74baf3778a778a1">00286</a> <a class="code" href="classSymbolTable.html#a2f8ec5942168f85ec74baf3778a778a1">SymbolTable::GetMatchingVariables</a>(Predicate pred, 
-<a name="l00287"></a>00287                                   std::vector&lt;Symbol *&gt; *matches)<span class="keyword"> const </span>{
-<a name="l00288"></a>00288     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">variables</a>.size(); ++i)
-<a name="l00289"></a>00289         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">variables</a>[i]-&gt;size(); ++j)
-<a name="l00290"></a>00290             <span class="keywordflow">if</span> (pred((*<a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">variables</a>[i])[j]))
-<a name="l00291"></a>00291                 matches-&gt;push_back((*<a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">variables</a>[i])[j]);
-<a name="l00292"></a>00292 }
-<a name="l00293"></a>00293 
-<a name="l00294"></a>00294 <span class="preprocessor">#endif // ISPC_SYM_H</span>
+<a name="l00223"></a>00223 <span class="comment">        @return Pointer to the Type, if found; otherwise NULL is returned.</span>
+<a name="l00224"></a>00224 <span class="comment">    */</span>
+<a name="l00225"></a>00225     <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *<a class="code" href="classSymbolTable.html#a0d086940081f34d21263eb828a3ddfed">LookupType</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name) <span class="keyword">const</span>;
+<a name="l00226"></a>00226 <span class="comment"></span>
+<a name="l00227"></a>00227 <span class="comment">    /** This method returns zero or more strings with the names of symbols</span>
+<a name="l00228"></a>00228 <span class="comment">        in the symbol table that nearly (but not exactly) match the given</span>
+<a name="l00229"></a>00229 <span class="comment">        name.  This is useful for issuing informative error methods when</span>
+<a name="l00230"></a>00230 <span class="comment">        misspelled identifiers are found a programs.</span>
+<a name="l00231"></a>00231 <span class="comment"></span>
+<a name="l00232"></a>00232 <span class="comment">        @param name String to compare variable and function symbol names against.</span>
+<a name="l00233"></a>00233 <span class="comment">        @return vector of zero or more strings that approximately match \c name.</span>
+<a name="l00234"></a>00234 <span class="comment">    */</span>
+<a name="l00235"></a>00235     std::vector&lt;std::string&gt; <a class="code" href="classSymbolTable.html#a6e76946243946eace77ea44ea30329d6">ClosestVariableOrFunctionMatch</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name) <span class="keyword">const</span>;<span class="comment"></span>
+<a name="l00236"></a>00236 <span class="comment">    /** This method returns zero or more strings with the names of types</span>
+<a name="l00237"></a>00237 <span class="comment">        in the symbol table that nearly (but not exactly) match the given</span>
+<a name="l00238"></a>00238 <span class="comment">        name. */</span>
+<a name="l00239"></a>00239     std::vector&lt;std::string&gt; <a class="code" href="classSymbolTable.html#af496f9175cb4a1370d61d9b166050324">ClosestTypeMatch</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name) <span class="keyword">const</span>;
+<a name="l00240"></a>00240 
+<a name="l00241"></a>00241     std::vector&lt;std::string&gt; <a class="code" href="classSymbolTable.html#aa3608c26685895932ce7db07ec3ab73d">ClosestEnumTypeMatch</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *name) <span class="keyword">const</span>;
+<a name="l00242"></a>00242 <span class="comment"></span>
+<a name="l00243"></a>00243 <span class="comment">    /** Prints out the entire contents of the symbol table to standard error.</span>
+<a name="l00244"></a>00244 <span class="comment">        (Debugging method). */</span>
+<a name="l00245"></a>00245     <span class="keywordtype">void</span> <a class="code" href="classSymbolTable.html#a6642684baa5464f91821d8a83595bb7b">Print</a>();
+<a name="l00246"></a>00246 
+<a name="l00247"></a>00247 <span class="keyword">private</span>:
+<a name="l00248"></a>00248     std::vector&lt;std::string&gt; <a class="code" href="classSymbolTable.html#a1cbb54b5e068d8b3da9a35fafd91af76">closestTypeMatch</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *str, 
+<a name="l00249"></a>00249                                               <span class="keywordtype">bool</span> structsVsEnums) <span class="keyword">const</span>;
+<a name="l00250"></a>00250 <span class="comment"></span>
+<a name="l00251"></a>00251 <span class="comment">    /** This member variable holds one \c vector of Symbol pointers for</span>
+<a name="l00252"></a>00252 <span class="comment">        each of the current active scopes as the program is being parsed.</span>
+<a name="l00253"></a>00253 <span class="comment">        New vectors of symbols are added and removed from the end of the</span>
+<a name="l00254"></a>00254 <span class="comment">        main vector, so searches for symbols start looking at the end of \c</span>
+<a name="l00255"></a>00255 <span class="comment">        variables and work backwards.</span>
+<a name="l00256"></a>00256 <span class="comment">     */</span>
+<a name="l00257"></a><a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">00257</a>     std::vector&lt;std::vector&lt;Symbol *&gt; *&gt; <a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">variables</a>;<span class="comment"></span>
+<a name="l00258"></a>00258 <span class="comment">    /** Because there is no scoping for function symbols, functions are</span>
+<a name="l00259"></a>00259 <span class="comment">        represented with a single STL \c map from names to symbols.  A STL</span>
+<a name="l00260"></a>00260 <span class="comment">        \c vector is used to store the function symbols for a given name</span>
+<a name="l00261"></a>00261 <span class="comment">        since, due to function overloading, a name can have multiple</span>
+<a name="l00262"></a>00262 <span class="comment">        function symbols associated with it. */</span>
+<a name="l00263"></a><a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">00263</a>     std::map&lt;std::string, std::vector&lt;Symbol *&gt; &gt; <a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">functions</a>;
+<a name="l00264"></a><a class="code" href="classSymbolTable.html#a03c3d3253785b20285973345d1ebda6c">00264</a>     <span class="keyword">typedef</span> std::map&lt;std::string, const Type *&gt; <a class="code" href="classSymbolTable.html#a03c3d3253785b20285973345d1ebda6c">TypeMapType</a>;<span class="comment"></span>
+<a name="l00265"></a>00265 <span class="comment">    /** Like variables, type definitions can be scoped.  A new \c TypeMapType</span>
+<a name="l00266"></a>00266 <span class="comment">        is added to the back of the \c types \c vector each time a new scope</span>
+<a name="l00267"></a>00267 <span class="comment">        is entered.  (And it&#39;s removed when the scope exits).</span>
+<a name="l00268"></a>00268 <span class="comment">     */</span>
+<a name="l00269"></a><a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">00269</a>     std::vector&lt;TypeMapType *&gt; <a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">types</a>;
+<a name="l00270"></a>00270 };
+<a name="l00271"></a>00271 
+<a name="l00272"></a>00272 
+<a name="l00273"></a>00273 <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Predicate&gt; <span class="keywordtype">void</span>
+<a name="l00274"></a><a class="code" href="classSymbolTable.html#a405f262bf6a2687b2e804c92d5c99724">00274</a> <a class="code" href="classSymbolTable.html#a405f262bf6a2687b2e804c92d5c99724">SymbolTable::GetMatchingFunctions</a>(Predicate pred, 
+<a name="l00275"></a>00275                                   std::vector&lt;Symbol *&gt; *matches)<span class="keyword"> const </span>{
+<a name="l00276"></a>00276     <span class="comment">// Iterate through all function symbols and apply the given predicate.</span>
+<a name="l00277"></a>00277     <span class="comment">// If it returns true, add the Symbol * to the provided vector.</span>
+<a name="l00278"></a>00278     std::map&lt;std::string, std::vector&lt;Symbol *&gt; &gt;::const_iterator iter;
+<a name="l00279"></a>00279     <span class="keywordflow">for</span> (iter = <a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">functions</a>.begin(); iter != <a class="code" href="classSymbolTable.html#a4508517e91f92712f53d37e0dd4854b1">functions</a>.end(); ++iter) {
+<a name="l00280"></a>00280         <span class="keyword">const</span> std::vector&lt;Symbol *&gt; &amp;syms = iter-&gt;second;
+<a name="l00281"></a>00281         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; syms.size(); ++i) {
+<a name="l00282"></a>00282             <span class="keywordflow">if</span> (pred(syms[i]))
+<a name="l00283"></a>00283                 matches-&gt;push_back(syms[i]);
+<a name="l00284"></a>00284         }
+<a name="l00285"></a>00285     }
+<a name="l00286"></a>00286 }
+<a name="l00287"></a>00287 
+<a name="l00288"></a>00288 
+<a name="l00289"></a>00289 <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Predicate&gt; <span class="keywordtype">void</span>
+<a name="l00290"></a><a class="code" href="classSymbolTable.html#a2f8ec5942168f85ec74baf3778a778a1">00290</a> <a class="code" href="classSymbolTable.html#a2f8ec5942168f85ec74baf3778a778a1">SymbolTable::GetMatchingVariables</a>(Predicate pred, 
+<a name="l00291"></a>00291                                   std::vector&lt;Symbol *&gt; *matches)<span class="keyword"> const </span>{
+<a name="l00292"></a>00292     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">variables</a>.size(); ++i)
+<a name="l00293"></a>00293         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">variables</a>[i]-&gt;size(); ++j)
+<a name="l00294"></a>00294             <span class="keywordflow">if</span> (pred((*<a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">variables</a>[i])[j]))
+<a name="l00295"></a>00295                 matches-&gt;push_back((*<a class="code" href="classSymbolTable.html#a79ef1f70396160a15004be66cb313b7a">variables</a>[i])[j]);
+<a name="l00296"></a>00296 }
+<a name="l00297"></a>00297 
+<a name="l00298"></a>00298 <span class="preprocessor">#endif // ISPC_SYM_H</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Thu Oct 6 2011 19:44:51 for Intel SPMD Program Compiler by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Oct 20 2011 11:49:20 for Intel SPMD Program Compiler by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.2 </small></address>
 </body>
