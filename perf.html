@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.9: http://docutils.sourceforge.net/" />
+<title>Performance</title>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-1486404-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="performance">
+<div id="wrap">
+  <div id="wrap2">
+    <div id="header">
+      <h1 id="logo">Intel SPMD Program Compiler</h1>
+      <div id="slogan">An open-source compiler for high-performance SIMD programming on
+      the CPU</div>
+    </div>
+    <div id="nav">
+      <div id="nbar">
+        <ul>
+          <li><a href="index.html">Overview</a></li>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="downloads.html">Downloads</a></li>
+          <li><a href="documentation.html">Documentation</a></li>
+          <li id="selected"><a href="perf.html">Performance</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="content-wrap">
+      <div id="sidebar">
+          <div class="widgetspace">
+            <h1>Resources</h1>
+            <ul class="menu">
+              <li><a href="http://github.com/ispc/ispc/">ispc page on github</a></li>
+              <li><a href="http://groups.google.com/group/ispc-users/">ispc
+              users mailing list</a></li>
+              <li><a href="http://groups.google.com/group/ispc-dev/">ispc
+              developers mailing list</a></li>
+              <li><a href="http://github.com/ispc/ispc/wiki/">Wiki</a></li>
+              <li><a href="http://github.com/ispc/ispc/issues/">Bug tracking</a></li>
+              <li><a href="doxygen/index.html">Doxygen documentation of
+              <tt>ispc</tt> source code</a></li>
+            </ul>
+        </div>
+      </div>
+<h1 class="title">Performance</h1>
+
+<div id="content">
+<p>The SPMD programming model that <tt class="docutils literal">ispc</tt> makes it easy to harness the
+computational power available in SIMD vector units on modern CPUs, while
+its basis in C makes it easy for programmers to adopt and use
+productively.  This page summarizes the performance of <tt class="docutils literal">ispc</tt> with the
+workloads in the <tt class="docutils literal">examples/</tt> directory of the <tt class="docutils literal">ispc</tt> distribution.</p>
+<p>These results were measured on a 4-core Apple iMac with a 4-core 3.4GHz
+Intel® Core-i7 processor using the Intel® AVX instruction set.  The basis
+for comparison is a reference C++ implementation compiled with gcc 4.2.1,
+the version distributed with OS X 10.7.2.  (The reference implementation is
+also included in the <tt class="docutils literal">examples/</tt> directory.)</p>
+<table border="1" class="docutils">
+<caption>Performance of <tt class="docutils literal">ispc</tt> with a variety of the workloads
+ from the <tt class="docutils literal">examples/</tt> directory of the <tt class="docutils literal">ispc</tt> distribution, compared
+ a reference C++ implementation compiled with gcc 4.2.1.</caption>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Workload</td>
+<td><tt class="docutils literal">ispc</tt>, 1 core</td>
+<td><tt class="docutils literal">ispc</tt>, 4 cores</td>
+</tr>
+<tr><td><a class="reference external" href="https://github.com/ispc/ispc/tree/master/examples/aobench">AOBench</a> (512 x 512 resolution)</td>
+<td>3.99x</td>
+<td>19.32x</td>
+</tr>
+<tr><td><a class="reference external" href="https://github.com/ispc/ispc/tree/master/examples/options">Binomial Options</a> (128k options)</td>
+<td>7.94x</td>
+<td>33.43x</td>
+</tr>
+<tr><td><a class="reference external" href="https://github.com/ispc/ispc/tree/master/examples/options">Black-Scholes Options</a> (128k options)</td>
+<td>8.45x</td>
+<td>32.48x</td>
+</tr>
+<tr><td><a class="reference external" href="https://github.com/ispc/ispc/tree/master/examples/deferred">Deferred Shading</a> (1280p)</td>
+<td>n/a</td>
+<td>23.06x</td>
+</tr>
+<tr><td><a class="reference external" href="https://github.com/ispc/ispc/tree/master/examples/mandelbrot_tasks">Mandelbrot Set</a></td>
+<td>6.21x</td>
+<td>19.90x</td>
+</tr>
+<tr><td><a class="reference external" href="https://github.com/ispc/ispc/tree/master/examples/noise">Perlin Noise Function</a></td>
+<td>5.37x</td>
+<td>n/a</td>
+</tr>
+<tr><td><a class="reference external" href="https://github.com/ispc/ispc/tree/master/examples/rt">Ray Tracer</a> (Sponza dataset)</td>
+<td>3.99x</td>
+<td>19.32x</td>
+</tr>
+<tr><td><a class="reference external" href="https://github.com/ispc/ispc/tree/master/examples/stencil">3D Stencil</a></td>
+<td>3.76x</td>
+<td>13.79x</td>
+</tr>
+<tr><td><a class="reference external" href="https://github.com/ispc/ispc/tree/master/examples/volume_rendering">Volume Rendering</a></td>
+<td>3.11x</td>
+<td>15.80x</td>
+</tr>
+</tbody>
+</table>
+<p>The following table shows speedups for a number of the examples on a
+2.40GHz, 40-core Intel® Xeon E7-8870 system with the Intel® SSE4
+instruction set, running Microsoft Windows Server 2008 Enterprise.  Here,
+the serial C/C++ baseline code was compiled with MSVC 2010.</p>
+<table border="1" class="docutils">
+<caption>Performance of <tt class="docutils literal">ispc</tt> with a variety of the workloads
+ from the <tt class="docutils literal">examples/</tt> directory of the <tt class="docutils literal">ispc</tt> distribution, on
+ system with 40 CPU cores.</caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Workload</td>
+<td><tt class="docutils literal">ispc</tt>, 40 cores</td>
+</tr>
+<tr><td>AOBench (2048 x 2048 resolution)</td>
+<td>182.36x</td>
+</tr>
+<tr><td>Binomial Options (2m options)</td>
+<td>63.85x</td>
+</tr>
+<tr><td>Black-Scholes Options (2m options)</td>
+<td>83.97x</td>
+</tr>
+<tr><td>Ray Tracer (Sponza dataset)</td>
+<td>195.67x</td>
+</tr>
+<tr><td>Volume Rendering</td>
+<td>243.18x</td>
+</tr>
+</tbody>
+</table>
+</div>
+    <div class="clearfix"></div>
+    <div id="footer"> &copy; 2011 <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
+      <!-- Please Do Not remove this link, thank u -->
+      </div>
+      </div>
+      </div>
+      </div>
+</div>
+</body>
+</html>
