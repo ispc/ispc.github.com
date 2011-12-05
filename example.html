@@ -47,10 +47,10 @@
     <div id="nav">
       <div id="nbar">
         <ul>
-          <li><a href="index.html">Home</a></li>
+          <li id="selected"><a href="index.html">Overview</a></li>
+          <li><a href="features.html">Features</a></li>
           <li><a href="downloads.html">Downloads</a></li>
-          <li id="selected"><a href="example.html">Example</a></li>
-          <li><a href="ispc.html">User's Guide</a></li>
+          <li><a href="documentation.html">Documentation</a></li>
         </ul>
       </div>
     </div>
@@ -72,7 +72,7 @@
         </div>
       </div>
       <div id="content">
-        <h1>A Simple Example</h1>
+        <h1>A Simple ispc Example</h1>
 <p>Here is a walkthrough of a simple example of using <tt>ispc</tt> to
   compute an image of the Mandelbrot set.  The full source code for this
   example is in the <tt>examples/mandelbrot</tt> directory of
@@ -125,10 +125,12 @@ things to notice here.
   discussed in more detail in the <a href="ispc.html">ispc User's
   Manual</a>.  Any values passed from the application to the <tt>ispc</tt>
   program must be <tt>uniform</tt>.</li>
-<li>The pointer to the output buffer is passed as a reference to an array.
-  Like the other function parameters, this buffer is passed from the
-  application to the <tt>ispc</tt> code without any copying or
-  reformatting, as would be required with a driver model based
+<li>The pointer to the output buffer is passed as an unsized array.  Just
+  like in C, arrays in function calls are converted to pointers to the
+  first element of the array.  (This parameter could also be declared to
+  just be a pointer.)  Like the other function parameters, this buffer is
+  passed from the application to the <tt>ispc</tt> code without any copying
+  or reformatting, as would be required with a driver model based
   implementation.</li>
 </ol>
 
@@ -137,73 +139,65 @@ export void mandelbrot_ispc(uniform float x0, uniform float y0, <br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniform float x1, uniform float y1,<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniform int width, uniform int height, <br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniform int maxIterations,<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reference uniform int output[]) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniform int output[]) {<br />
 </code></p>
 
-
-<p>
-Most of the implementation of this function is the same as a regular serial
-C/C++ implementation would be.  The first significant difference is in the
-second nested <tt>for</tt> loop.  In the <tt>for</tt> loop
-over <tt>width</tt>, we can see that the step from one iteration to the
-next is <tt>programCount</tt>, rather than one, as might be expected in a
-serial implementation.  <tt>programCount</tt> is a special built-in
-variable in the <tt>ispc</tt> language that gives the number of program
-instances running concurrently.  (For example, on a 4-wide SSE CPU, it
-generally has the value 4).  Here we can see the SPMD nature of
-the <tt>ispc</tt> language; we are actually computing the Mandelbrot set
-iteration count for <tt>programCount</tt> pixels in parallel, rather than
-one at a time.  Here, we have written the example to spans
-of <tt>programCount</tt> of them at a time in the <tt>x</tt> dimension.
-(Alternatively, we could do one at a time in <tt>x</tt>
-and <tt>programCount</tt> at a time in <tt>y</tt>, a mixture of some in
-the <tt>x</tt> direction and some in <tt>y</tt>, etc.
-</p>
+The function implementation starts by computing the step between pixels in
+the x and y directions.
 
 <p><code>
 &nbsp;&nbsp;&nbsp;&nbsp;float dx = (x1 - x0) / width;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;float dy = (y1 - y0) / height;<br />
-<br />
-&nbsp;&nbsp;&nbsp;&nbsp;for (uniform int j = 0; j &lt; height; j++) {<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (uniform int i = 0; i &lt; width; i += programCount) {<br />
 </code></p>
 
 <p>
-Inside these loops, we first find the floating-point <tt>x</tt> and <tt>y</tt>
-values that correspond to the pixels at which to compute the Mandelbrot
-iteration counts.  Here we see the other main difference from a regular
-serial implementation.  The initializer for <tt>y</tt> is as one would
-expect, but the initializer for the <tt>x</tt> variable uses another
-special built-in variable, <tt>programIndex</tt>.  This variable is used to
-index across the running program instances; it has the value zero for the
-first program instance, one for the second one, etc.  (It is analogous to
-the OpenCL <tt>get_global_id()</tt> function or CUDA's <tt>threadIdx</tt>
-variable.)
+Next, the function loops over the pixels of the image with a doubly-nested
+loop.  The outer loop is a regular loop over scanlines, while the inner
+loop introduces a new looping construct provided
+by <tt>ispc</tt>, <tt>foreach</tt>.  In general, <tt>foreach</tt> specfies
+parallel iteration over an n-dimensional range of integer values.  In this
+case, it specifies parallel iteration over a 1-D range of pixels in a
+scanline.  Each time through the loop, the iteration variable <tt>i</tt>
+takes on values corresponding to a small range of the domain.
 </p>
 
+<p>For example, if <tt>ispc</tt> was generating code to run in 8-wide
+parallel fashion for an 8-wide AVX SIMD unit, <tt>i</tt> would have the
+values (0,1,2,3,4,5,6,7) across the group of executign program instances
+the first time the loop executed, (8,9,10,11,12,13,14,15) the second
+timethe loop executed, and so forth.  See the other examples in
+the <tt>ispc</tt> distribution for other examples of using <tt>foreach</tt>
+to perform this mapping for other computations.
+</p>
+
+<p><code>
+&nbsp;&nbsp;&nbsp;&nbsp;for (uniform int j = 0; j &lt; height; j++) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach (i = 0 ... width) {<br />
+</code></p>
+
 <p>
-More generally, this is where the program does the mapping between the
-multiple program instances running in parallel and the data over which
-computation is being performed (here, the pixels of an image).  See the
-other examples in the <tt>ispc</tt> distribution for other examples of
-doing this mapping for other computations.
+Inside these loops, we first find the floating-point <tt>x</tt>
+and <tt>y</tt> values that correspond to the pixels at which to compute the
+Mandelbrot iteration counts; note that these are also straightforward
+calculations.  (Recall how the <tt>i</tt> variable is initialized by
+the <tt>foreach</tt> loop to see how values derived from <tt>i</tt> have
+different values across program instances, in this case corresponding to a
+number of <tt>x</tt> positions at which to perform the Mandelbrot set test.
 </p>  
 
 <p><code>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float x = x0 + (programIndex + i) * dx;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float x = x0 + i * dx;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float y = y0 + j * dy;<br />
 </code></p>
 
 <p>
 Once it has figured out the coordinates at which to compute the number of
 iterations, the program finds the appropriate index into the output array
-for them and calls a subroutine to do the actual computation.  Note also
-that each running program instance computes its own index into the output
-array, incorporating the <tt>programIndex</tt> value into that computation.
+for them and calls a subroutine to do the actual computation.
 </p>
 
 <p><code>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int index = j * width + i + programIndex;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int index = j * width + i;<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output[index] = mandel(x, y, maxIterations);<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
 &nbsp;&nbsp;&nbsp;&nbsp;}<br />
@@ -243,18 +237,11 @@ static inline int mandel(float c_re, float c_im, int count) {<br />
   with MSVC 2010.  Note that the <tt>ispc</tt> compiler generates regular
   object files that you can just link with object files compiled with C/C++
   compilers.  (Here is the <a href="mandelbrot.txt">assembly language
-  output</a> from compiling the <tt>mandelbrot.ispc</tt> source file with
-  the <tt>--emit-asm</tt> command-line option.)  In this case, we've
-  compiled the program with the <tt>sse4x2</tt> target, which targets the
-  SSE4 instruction set and doubles the number of program instances that run
-  in parallel from the baseline of four.  By doubling up and computing
-  eight results in parallel, the compiled code provides more
-  instruction-level parallelism to the CPU (at the cost of greater register
-  pressure).
-</p>
+  output</a> from compiling the <tt>mandelbrot.ispc</tt> source file for
+  the AVX target with the <tt>--emit-asm</tt> command-line option.)</p>
 <p><code>
 % make<br />
-ispc -O2 --target=sse4x2 mandelbrot.ispc -o objs/mandelbrot_ispc.o -h
+ispc -O2 --target=avx mandelbrot.ispc -o objs/mandelbrot_ispc.o -h
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objs/mandelbrot_ispc.h<br />
 g++ mandelbrot.cpp -Iobjs/ -O3 -Wall -c -o objs/mandelbrot.o<br />
 g++ mandelbrot_serial.cpp -Iobjs/ -O3 -Wall -c -o
@@ -270,16 +257,16 @@ implementation of computing the Mandelbrot set and the <tt>ispc</tt>
 version.  (You may want to compare the files <tt>mandelbrot.ispc</tt>
 and <tt>mandelbrot_serial.cpp</tt> to see the few syntactic differences
 between a C++ implementation of this computation and the <tt>ispc</tt>
-implementation.)  On an Intel&#174; Core2 CPU, doing this computation in
-parallel across the SIMD lanes of a single core gives a substantial
-speedup:
+implementation.)  On an Second Generation Intel&#174; Core i7 CPU, doing
+this computation in parallel across the SIMD lanes of a single core gives a
+substantial speedup:
 </p>
 
 <p><code>
 % ./mandelbrot<br />
-[mandelbrot ispc]:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[133.913] million cycles<br />
-[mandelbrot serial]:&nbsp;&nbsp;&nbsp;&nbsp;[438.521] millon cycles<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(3.27x speedup from ISPC)<br />
+[mandelbrot ispc]:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[58.570] million cycles<br />
+[mandelbrot serial]:&nbsp;&nbsp;&nbsp;&nbsp;[335.005] millon cycles<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(5.72x speedup from ISPC)<br />
 %<br />
 </code></p>
 

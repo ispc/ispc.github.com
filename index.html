@@ -47,10 +47,10 @@
     <div id="nav">
       <div id="nbar">
         <ul>
-          <li id="selected"><a href="index.html">Home</a></li>
+          <li id="selected"><a href="index.html">Overview</a></li>
+          <li><a href="features.html">Features</a></li>
           <li><a href="downloads.html">Downloads</a></li>
-          <li><a href="example.html">Example</a></li>
-          <li><a href="ispc.html">User's Guide</a></li>
+          <li><a href="documentation.html">Documentation</a></li>
         </ul>
       </div>
     </div>
@@ -72,26 +72,32 @@
         </div>
       </div>
       <div id="content">
-        <h1>Announcing ispc, the Intel&#174; SPMD Program Compiler</h1>
-        <p><strong>ispc</strong> is a new compiler for "single program,
-          multiple
+        <h1>Overview</h1>
+        <p><tt>ispc</tt> is a compiler for a variant of the C
+          programming language, with extensions for "single program, multiple
           data" <a href="http://en.wikipedia.org/wiki/SPMD">(SPMD)</a>
-          programs.  Under the SPMD model, the programmer writes a program
-          that mostly appears to be a regular serial program, though the
-          execution model is actually that a number of <i>program
-          instances</i> execute in parallel on the hardware.  (See
-          a <a href="example.html">more detailed example</a> that
-          illustrates this concept.)
-          <tt>ispc</tt> compiles a C-based SPMD programming language to run
-          on the SIMD units of CPUs; it frequently provides a 3x or more
-          speedup on CPUs with 4-wide SSE units, without any of the
-          difficulty of writing intrinsics code.
-          </p>There are a few principles and goals behind the design
-          of <tt>ispc</tt>:
+          programming.  Under the SPMD model, the programmer writes a
+          program that generally appears to be a regular serial program,
+          though the execution model is actually that a number
+          of <i>program instances</i> execute in parallel on the hardware.
+          (See the <a href="documentation.html">ispc documentation</a> for
+          more details and examples that illustrate this concept.)</p>
+
+        <p><tt>ispc</tt> compiles a C-based SPMD programming language to
+          run on the SIMD units of CPUs; it frequently provides a 3x or
+          more speedup on CPUs with 4-wide vector SSE units and 5x-6x on
+          CPUs with 8-wide AVX vector units, without any of the difficulty
+          of writing intrinsics code.  Parallelization across multiple
+          cores is also supported by <tt>ispc</tt>, making it possible to
+          write programs that achieve performance improvement that scales
+          by both number of cores and vector unit size.
+        </p>
+
+        <p>There are a few key principles in the design of <tt>ispc</tt>:
         <ul>
-          <li>To build a small C-like language that delivers excellent
-            performance to performance-oriented programmers who want to run
-            SPMD programs on the CPU.</li>
+          <li>To build a small set of extensions to the C language that
+            would deliver excellent performance to performance-oriented
+            programmers who want to run SPMD programs on the CPU.</li>
           <li>To provide a thin abstraction layer between the programmer
             and the hardware&mdash;in particular, to have an execution and
             data model where the programmer can cleanly reason about the
@@ -106,7 +112,8 @@
             the two languages and to share data directly via pointers without
             copying or reformatting.</li>
           </ul>
-        <p><tt>ispc</tt> is an open source compiler with a <a href="https://github.com/ispc/ispc/blob/master/LICENSE.txt">BSD
+        <p><tt>ispc</tt> is an open source compiler with a
+          <a href="https://github.com/ispc/ispc/blob/master/LICENSE.txt">BSD
           license</a>.  It uses the remarkable
           <a href="http://llvm.org">LLVM Compiler Infrastructure</a> for
           back-end code generation and optimization and
@@ -115,10 +122,11 @@
           and x86-64 targets.  It currently supports the SSE2, SSE4, and AVX
           instruction sets.
         </p>
-        <p>(Please note that <tt>ispc</tt> is a separate project than
+        <p>(Please note that <tt>ispc</tt> is separate from
           <a href="http://software.intel.com/en-us/articles/intel-composer-xe/">the Intel
             compiler products</a> and that <tt>ispc</tt> is not supported
             by the regular Intel Software Support organization.)
+        </p>
         </p>
       </div>
     </div>
