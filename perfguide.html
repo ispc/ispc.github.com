@@ -112,7 +112,7 @@ export void foo(uniform int a[], uniform int count) {
 <p>Depending on the specifics of the computation being performed, the code
 generated for this function could likely be improved by modifying the code
 so that the loop only goes as far through the data as is possible to pack
-an entire gang of program instances with computation each time thorugh the
+an entire gang of program instances with computation each time through the
 loop.  Doing so enables the <tt class="docutils literal">ispc</tt> compiler to generate more efficient
 code for cases where it knows that the execution mask is &quot;all on&quot;.  Then,
 an <tt class="docutils literal">if</tt> statement at the end handles processing the ragged extra bits of
@@ -187,7 +187,7 @@ tiles are iterated over; for 4D iteration with a 8-gang, 1x2x2x2 tiles are
 processed, and so forth.</p>
 <p>Performance benefit can come from using <tt class="docutils literal">foreach_tiled</tt> in that it
 essentially optimizes for the benefit of iterating over <em>compact</em> regions
-of the domian (while <tt class="docutils literal">foreach</tt> iterates over the domain in a way that
+of the domain (while <tt class="docutils literal">foreach</tt> iterates over the domain in a way that
 generally allows linear memory access.)  There are two benefits from
 processing compact regions of the domain.</p>
 <p>First, it's often the case that the control flow coherence of the program
@@ -237,7 +237,7 @@ corresponding non-&quot;c&quot;-prefixed functions.</p>
 <div class="section" id="use-uniform-whenever-appropriate">
 <h2>Use &quot;uniform&quot; Whenever Appropriate</h2>
 <p>For any variable that will always have the same value across all of the
-program instances in a gang, declare the variable with the  <tt class="docutils literal">unfiorm</tt>
+program instances in a gang, declare the variable with the  <tt class="docutils literal">uniform</tt>
 qualifier.  Doing so enables the <tt class="docutils literal">ispc</tt> compiler to emit better code in
 many different ways.</p>
 <p>As a simple example, consider a <tt class="docutils literal">for</tt> loop that always does the same
@@ -248,7 +248,7 @@ for (int i = 0; i &lt; 10; ++i)
 </pre>
 <p>If this is written with <tt class="docutils literal">i</tt> as a <tt class="docutils literal">varying</tt> variable, as above, there's
 additional overhead in the code generated for the loop as the compiler
-emits instructions to handle the possibilty of not all program instances
+emits instructions to handle the possibility of not all program instances
 following the same control flow path (as might be the case if the loop
 limit, 10, was itself a <tt class="docutils literal">varying</tt> value.)</p>
 <p>If the above loop is instead written with <tt class="docutils literal">i</tt> <tt class="docutils literal">uniform</tt>, as:</p>
@@ -534,7 +534,7 @@ entered the function defined at line 55 of the file <tt class="docutils literal"
 mask of all lanes currently executing (assuming a four-wide gang size
 target machine).</p>
 <p>For a fuller example of the utility of this functionality, see
-<tt class="docutils literal">examples/aobench_instrumented</tt> in the <tt class="docutils literal">ispc</tt> distribution.  Ths
+<tt class="docutils literal">examples/aobench_instrumented</tt> in the <tt class="docutils literal">ispc</tt> distribution.  This
 example includes an implementation of the <tt class="docutils literal">ISPCInstrument()</tt> function
 that collects aggregate data about the program's execution behavior.</p>
 <p>When running this example, you will want to direct to the <tt class="docutils literal">ao</tt> executable

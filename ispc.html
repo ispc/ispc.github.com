@@ -83,9 +83,9 @@ language and the underlying hardware.</li>
 units without the extremely low-programmer-productivity activity of directly
 writing intrinsics.</li>
 <li>Explore opportunities from close-coupling between C/C++ application code
-and SPMD <tt class="docutils literal">ispc</tt> code running on the same processor--lightweight funcion
-calls betwen the two languages, sharing data directly via pointers without
-copying or reformating, etc.</li>
+and SPMD <tt class="docutils literal">ispc</tt> code running on the same processor--lightweight function
+calls between the two languages, sharing data directly via pointers without
+copying or reformatting, etc.</li>
 </ul>
 <p><strong>We are very interested in your feedback and comments about ispc and
 in hearing your experiences using the system.  We are especially interested
@@ -201,7 +201,6 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#understanding-how-to-interoperate-with-the-application-s-data">Understanding How to Interoperate With the Application's Data</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#related-languages">Related Languages</a></li>
 <li><a class="reference internal" href="#disclaimer-and-legal-information">Disclaimer and Legal Information</a></li>
 <li><a class="reference internal" href="#optimization-notice">Optimization Notice</a></li>
 </ul>
@@ -286,7 +285,7 @@ of the value.</p>
 <p>The first thing to notice in this program is the presence of the <tt class="docutils literal">export</tt>
 keyword in the function definition; this indicates that the function should
 be made available to be called from application code.  The <tt class="docutils literal">uniform</tt>
-qualifiers on the parameters to <tt class="docutils literal">simple</tt> indicate that the correpsonding
+qualifiers on the parameters to <tt class="docutils literal">simple</tt> indicate that the corresponding
 variables are non-vector quantities--this concept is discussed in detail in the
 <a class="reference internal" href="#uniform-and-varying-qualifiers">&quot;uniform&quot; and &quot;varying&quot; Qualifiers</a> section.</p>
 <p>Each iteration of the <tt class="docutils literal">foreach</tt> loop works on a number of input values in
@@ -348,7 +347,7 @@ call, for that matter.)</p>
 ...
 </pre>
 <p>For a slightly more complex example of using <tt class="docutils literal">ispc</tt>, see the <a class="reference external" href="http://ispc.github.com/example.html">Mandelbrot
-set example</a> page on the <tt class="docutils literal">ispc</tt> website for a walkthrough of an <tt class="docutils literal">ispc</tt>
+set example</a> page on the <tt class="docutils literal">ispc</tt> website for a walk-through of an <tt class="docutils literal">ispc</tt>
 implementation of that algorithm.  After reading through that example, you
 may want to examine the source code of the various examples in the
 <tt class="docutils literal">examples/</tt> directory of the <tt class="docutils literal">ispc</tt> distribution.</p>
@@ -385,7 +384,7 @@ ispc foo.ispc -o foo.obj -O0
 <p>On Mac* and Linux*, there is basic support for generating debugging
 symbols; this is enabled with the <tt class="docutils literal"><span class="pre">-g</span></tt> command-line flag.  Using <tt class="docutils literal"><span class="pre">-g</span></tt>
 causes optimizations to be disabled; to compile with debugging symbols and
-optimizaion, <tt class="docutils literal"><span class="pre">-O1</span></tt> should be provided as well as the <tt class="docutils literal"><span class="pre">-g</span></tt> flag.</p>
+optimization, <tt class="docutils literal"><span class="pre">-O1</span></tt> should be provided as well as the <tt class="docutils literal"><span class="pre">-g</span></tt> flag.</p>
 <p>The <tt class="docutils literal"><span class="pre">-h</span></tt> flag can also be used to direct <tt class="docutils literal">ispc</tt> to generate a C/C++
 header file that includes C/C++ declarations of the C-callable <tt class="docutils literal">ispc</tt>
 functions and the types passed to it.</p>
@@ -407,8 +406,8 @@ direct the compiler to treat any warnings as errors.</p>
 which sets the target architecture, <tt class="docutils literal"><span class="pre">--cpu</span></tt>, which sets the target CPU,
 and <tt class="docutils literal"><span class="pre">--target</span></tt>, which sets the target instruction set.</p>
 <p>By default, the <tt class="docutils literal">ispc</tt> compiler generates code for the 64-bit x86-64
-architecture (i.e. <tt class="docutils literal"><span class="pre">--arch=x86-64`.)</span>&nbsp; To compile to a <span class="pre">32-bit</span> x86 target,
-supply <span class="pre">``--arch=x86</span></tt> on the command line:</p>
+architecture (i.e. <tt class="docutils literal"><span class="pre">--arch=x86-64</span></tt>.)  To compile to a 32-bit x86 target,
+supply <tt class="docutils literal"><span class="pre">--arch=x86</span></tt> on the command line:</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.obj --arch=x86
 </pre>
@@ -475,6 +474,10 @@ preprocessor runs:</p>
 <td>1</td>
 <td>One of these will be set, depending on the compilation target.</td>
 </tr>
+<tr><td>ISPC_POINTER_SIZE</td>
+<td>32 or 64</td>
+<td>Number of bits used to represent a pointer for the target architecture.</td>
+</tr>
 <tr><td>ISPC_MAJOR_VERSION</td>
 <td>1</td>
 <td>Major version of the <tt class="docutils literal">ispc</tt> compiler/language</td>
@@ -524,8 +527,8 @@ Language</a> section for details on language syntax.</p>
 <p>Upon entry to a <tt class="docutils literal">ispc</tt> function called from C/C++ code, the execution
 model switches from the application's serial model to <tt class="docutils literal">ispc</tt>'s execution
 model.  Conceptually, a number of <tt class="docutils literal">ispc</tt> <em>program instances</em> start
-running in concurrently.  The group of running program instances is a
-called <em>gang</em> (harkening to &quot;gang scheduling&quot;, since <tt class="docutils literal">ispc</tt> provides
+running concurrently.  The group of running program instances is a
+called a <em>gang</em> (harkening to &quot;gang scheduling&quot;, since <tt class="docutils literal">ispc</tt> provides
 certain guarantees about the control flow coherence of program instances
 running in a gang, detailed in <a class="reference internal" href="#gang-convergence-guarantees">Gang Convergence Guarantees</a>.)  An
 <tt class="docutils literal">ispc</tt> program instance is thus similar to a CUDA* &quot;thread&quot; or an OpenCL*
@@ -597,7 +600,7 @@ were to be executed with an &quot;all off&quot; mask, there should be no observa
 side-effects.</p>
 <p>Upon entry to an <tt class="docutils literal">ispc</tt> function called by the application, the execution
 mask is &quot;all on&quot; and the program counter points at the first statement in
-the function.  The following two statments describe the required behavior
+the function.  The following two statements describe the required behavior
 of the program counter and the execution mask over the course of execution
 of an <tt class="docutils literal">ispc</tt> function.</p>
 <blockquote>
@@ -700,7 +703,7 @@ program instances is <em>maximally converged</em>.  Maximal convergence means th
 if two program instances follow the same control path, they are guaranteed
 to execute each program statement concurrently. If two program instances
 follow diverging control paths, it is guaranteed that they will reconverge
-as soon as possible (if they do later reconverge). <a class="footnote-reference" href="#id2" id="id1">[1]</a></p>
+as soon as possible in the function (if they do later reconverge). <a class="footnote-reference" href="#id2" id="id1">[1]</a></p>
 <table class="docutils footnote" frame="void" id="id2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
@@ -724,9 +727,22 @@ else {
 (This guarantee stems from the notion of having a single program counter
 for the gang of program instances, rather than the concept of a unique
 program counter for each program instance.)</p>
-<p>Another implication of this property is that it is illegal to execute a
-function with an 8-wide gang by running it two times, with a 4-wide gang
-representing half of the original 8-wide gang each time.</p>
+<p>Another implication of this property is that it would be illegal for the
+<tt class="docutils literal">ispc</tt> implementation to execute a function with an 8-wide gang by
+running it two times, with a 4-wide gang representing half of the original
+8-wide gang each time.</p>
+<p>It also follows that given the following program:</p>
+<pre class="literal-block">
+if (programIndex == 0) {
+    while (true)  // infinite loop
+        ;
+}
+print(&quot;hello, world\n&quot;);
+</pre>
+<p>the program will loop infinitely and the <tt class="docutils literal">print</tt> statement will never be
+executed.  (A different execution model that allowed gang divergence might
+execute the <tt class="docutils literal">print</tt> statement since not all program instances were caught
+in the infinite loop in the example above.)</p>
 <p>The way that &quot;varying&quot; function pointers are handled in <tt class="docutils literal">ispc</tt> is also
 affected by this guarantee: if a function pointer is <tt class="docutils literal">varying</tt>, then it
 has a possibly-different value for all running program instances.  Given a
@@ -765,7 +781,7 @@ control flow divergence and mask management.  (To distinguish the two forms
 of control flow, will say that control flow based on <tt class="docutils literal">varying</tt>
 expressions is &quot;varying&quot; control flow.)</p>
 <p>Consider for example an image filtering operation where the program loops
-over pixels adjacent to the given (x,y) coordiantes:</p>
+over pixels adjacent to the given (x,y) coordinates:</p>
 <pre class="literal-block">
 float box3x3(uniform float image[32][32], int x, int y) {
     float sum = 0;
@@ -856,7 +872,7 @@ executed with an &quot;all off&quot; mask.  Thus, even if <tt class="docutils li
 for all program instances in the gang, it's possible that the &quot;true&quot; clause
 executed with an &quot;all off&quot; mask and <tt class="docutils literal">b</tt> was modified there.</p>
 <p>If it is important that code never be executed with an &quot;all off&quot; execution
-mask, then the <tt class="docutils literal">cif</tt> statment (documented in the <a class="reference internal" href="#coherent-control-flow-statements-cif-and-friends">&quot;Coherent&quot; Control Flow
+mask, then the <tt class="docutils literal">cif</tt> statement (documented in the <a class="reference internal" href="#coherent-control-flow-statements-cif-and-friends">&quot;Coherent&quot; Control Flow
 Statements: &quot;cif&quot; and Friends</a> section) can be used in place of a regular
 <tt class="docutils literal">if</tt>, as it guarantees this property.</p>
 </div>
@@ -918,6 +934,16 @@ void assign(uniform int array[], int index, int value) {
     array[index] = value;
 }
 </pre>
+<p>As another example, if the values of the array indices <tt class="docutils literal">i</tt> and <tt class="docutils literal">j</tt> have
+the same values for some of the program instances, and an assignment like
+the following is performed:</p>
+<pre class="literal-block">
+int i = ..., j = ...;
+uniform int array[...] = { ... };
+array[i] = array[j];
+</pre>
+<p>then the program's behavior is undefined, since there is no sequence point
+between the reads and writes to the same location.</p>
 <p>While this rule that says that program instances can safely depend on
 side-effects from by other program instances in their gang eliminates a
 class of synchronization requirements imposed by some other SPMD languages,
@@ -953,7 +979,7 @@ completed.</p>
 </div>
 <div class="section" id="the-ispc-language">
 <h1>The ISPC Language</h1>
-<p><tt class="docutils literal">ispc</tt> is an extended verion of the C programming language, providing a
+<p><tt class="docutils literal">ispc</tt> is an extended version of the C programming language, providing a
 number of new features that make it easy to write high-performance SPMD
 programs for the CPU.  Note that between not only the few small syntactic
 differences between <tt class="docutils literal">ispc</tt> and C code but more importantly <tt class="docutils literal">ispc</tt>'s
@@ -971,11 +997,11 @@ previous section, <a class="reference internal" href="#the-ispc-parallel-executi
 are already familiar with C, you may find it most effective to focus on
 this subsection and just focus on the topics in the remainder of section
 that introduce new language features.  You may also find it helpful to
-comapre the <tt class="docutils literal">ispc</tt> and C++ implementations of various algorithms in the
+compare the <tt class="docutils literal">ispc</tt> and C++ implementations of various algorithms in the
 <tt class="docutils literal">ispc</tt> <tt class="docutils literal">examples/</tt> directory to get a sense of the close relationship
 between <tt class="docutils literal">ispc</tt> and C.</p>
 <p>Specifically, C89 is used as the baseline for comparison in this subsection
-(this is also the verion of C described in the Second Edition of Kernighan
+(this is also the version of C described in the Second Edition of Kernighan
 and Ritchie's book).  (<tt class="docutils literal">ispc</tt> adopts some features from C99 and from C++,
 which will be highlighted in the below.)</p>
 <p><tt class="docutils literal">ispc</tt> has the same syntax and features for the following as is present
@@ -1002,7 +1028,7 @@ values</li>
 statement itself (e.g. <tt class="docutils literal">for (int i = 0; ...</tt>)</li>
 <li>The <tt class="docutils literal">inline</tt> qualifier to indicate that a function should be inlined</li>
 <li>Function overloading by parameter type</li>
-<li>Hexidecimal floating-point constants</li>
+<li>Hexadecimal floating-point constants</li>
 </ul>
 <p><tt class="docutils literal">ispc</tt> also adds a number of new features that aren't in C89, C99, or
 C++:</p>
@@ -1056,19 +1082,19 @@ currently treated as being <tt class="docutils literal">float</tt> type, not <tt
 </div>
 <div class="section" id="lexical-structure">
 <h2>Lexical Structure</h2>
-<p>Tokens in <tt class="docutils literal">ispc</tt> are delimted by white-space and comments.  The
+<p>Tokens in <tt class="docutils literal">ispc</tt> are delimited by white-space and comments.  The
 white-space characters are the usual set of spaces, tabs, and carriage
-returns/line feeds.  Comments can be delinated with <tt class="docutils literal">//</tt>, which starts a
+returns/line feeds.  Comments can be delineated with <tt class="docutils literal">//</tt>, which starts a
 comment that continues to the end of the line, or the start of a comment
-can be delinated with <tt class="docutils literal">/*</tt> and the end with <tt class="docutils literal">*/</tt>.  Like C/C++,
+can be delineated with <tt class="docutils literal">/*</tt> and the end with <tt class="docutils literal">*/</tt>.  Like C/C++,
 comments can't be nested.</p>
 <p>Identifiers in <tt class="docutils literal">ispc</tt> are sequences of characters that start with an
 underscore or an upper-case or lower-case letter, and then followed by
 zero or more letters, numbers, or underscores.  Identifiers that start with
 two underscores are reserved for use by the compiler.</p>
-<p>Integer numeric constants can be specified in base 10, hexidecimal, or
+<p>Integer numeric constants can be specified in base 10, hexadecimal, or
 binary.  (Octal integer constants aren't supported).  Base 10 constants are
-given by a sequence of one or more digits from 0 to 9.  Hexidecimal
+given by a sequence of one or more digits from 0 to 9.  Hexadecimal
 constants are denoted by a leading <tt class="docutils literal">0x</tt> and then one or more digits from
 0-9, a-f, or A-F.  Finally, binary constants are denoted by a leading
 <tt class="docutils literal">0b</tt> and then a sequence of 1s and 0s.</p>
@@ -1085,11 +1111,11 @@ least one digit before or after the period).</p>
 <p>The second option is scientific notation, where a base value is specified
 as the first form of a floating-point constant but is then followed by an
 &quot;e&quot; or &quot;E&quot;, then a plus sign or a minus sign, and then an exponent.</p>
-<p>Finally, floating-point constants may be specified as hexidecimal
+<p>Finally, floating-point constants may be specified as hexadecimal
 constants; this form can ensure a perfectly bit-accurate representation of
 a particular floating-point number.  These are specified with an &quot;0x&quot;
 prefix, followed by a zero or a one, a period, and then the remainder of
-the mantissa in hexidecimal form, with digits from 0-9, a-f, or A-F.  The
+the mantissa in hexadecimal form, with digits from 0-9, a-f, or A-F.  The
 start of the exponent is denoted by a &quot;p&quot;, which is then followed by an
 optional plus or minus sign and then digits from 0 to 9.  For example:</p>
 <pre class="literal-block">
@@ -1134,7 +1160,7 @@ to specify special characters.  These sequences all start with an initial
 <td>newline</td>
 </tr>
 <tr><td><tt class="docutils literal">\r</tt></td>
-<td>carriabe return</td>
+<td>carriage return</td>
 </tr>
 <tr><td><tt class="docutils literal">\t</tt></td>
 <td>horizontal tab</td>
@@ -1146,7 +1172,7 @@ to specify special characters.  These sequences all start with an initial
 <td>ASCII character in octal notation</td>
 </tr>
 <tr><td><tt class="docutils literal">\x</tt>, followed by one or more digits from 0-9, a-f, A-F</td>
-<td>ASCII character in hexidecimal notation</td>
+<td>ASCII character in hexadecimal notation</td>
 </tr>
 </tbody>
 </table>
@@ -1310,7 +1336,7 @@ float foo[10];
 uniform float bar[10];
 </pre>
 <p>The first declaration corresponds to 10 gang-wide <tt class="docutils literal">float</tt> values in
-memory, while the second declaration corresonds to 10 <tt class="docutils literal">float</tt> values.</p>
+memory, while the second declaration corresponds to 10 <tt class="docutils literal">float</tt> values.</p>
 </div>
 <div class="section" id="defining-new-names-for-types">
 <h2>Defining New Names For Types</h2>
@@ -1439,7 +1465,7 @@ float &amp;rb = *vptr;  // ERROR: *ptr is a varying lvalue type
 </pre>
 <p>(The rationale for this limitation is that references must be represented
 as either a uniform pointer or a varying pointer internally.  While
-choosing a varying pointer would provide maximum flexibilty and eliminate
+choosing a varying pointer would provide maximum flexibility and eliminate
 this restriction, it would reduce performance in the common case where a
 uniform pointer is all that's needed.  As a work-around, a varying pointer
 can be used in cases where a varying lvalue reference would be desired.)</p>
@@ -1459,7 +1485,7 @@ enum Flags {
 </pre>
 <p>Each <tt class="docutils literal">enum</tt> declaration defines a new type; an attempt to implicitly
 convert between enumerations of different types gives a compile-time error,
-but enuemrations of different types can be explicitly cast to one other.</p>
+but enumerations of different types can be explicitly cast to one other.</p>
 <pre class="literal-block">
 Color c = (Color)CACHED;
 </pre>
@@ -1467,7 +1493,7 @@ Color c = (Color)CACHED;
 be directly passed to routines that take integer parameters and can be used
 in expressions including integers, for example.  However, the integer
 result of such an expression must be explicitly cast back to the enumerant
-type if it to be assigned to a variable with the enuemrant type.</p>
+type if it to be assigned to a variable with the enumerant type.</p>
 <pre class="literal-block">
 Color c = RED;
 int nextColor = c+1;
@@ -1660,7 +1686,7 @@ struct Color { float r, g, b; };
 ....
 Color d = { 0.5, .75, 1.0 }; // r = 0.5, ...
 </pre>
-<p>Arrays of structures and arrays inside structures can be initialzed with
+<p>Arrays of structures and arrays inside structures can be initialized with
 the expected syntax:</p>
 <pre class="literal-block">
 struct Foo { int x; float bar[3]; };
@@ -1687,7 +1713,7 @@ struct Foo { float f[5]; int i; };
 Foo foo = { { 1,2,3,4,5 }, 2 };
 return foo.f[4] - foo.i;
 </pre>
-<p>The address-of operator, pointer derefernce operator, and pointer member
+<p>The address-of operator, pointer dereference operator, and pointer member
 operator also work as expected.</p>
 <pre class="literal-block">
 struct Foo { float a, b, c; };
@@ -1725,7 +1751,7 @@ else
 <h2>Basic Iteration Statements: &quot;for&quot;, &quot;while&quot;, and &quot;do&quot;</h2>
 <p><tt class="docutils literal">ispc</tt> supports <tt class="docutils literal">for</tt>, <tt class="docutils literal">while</tt>, and <tt class="docutils literal">do</tt> loops, with the same
 specification as in C.  Like C++, variables can be declared in the <tt class="docutils literal">for</tt>
-statment itself:</p>
+statement itself:</p>
 <pre class="literal-block">
 for (uniform int i = 0; i &lt; 10; ++i) {
   // loop body
@@ -1796,7 +1822,7 @@ nested inside a <tt class="docutils literal">foreach</tt> loop.)  <tt class="doc
 <tt class="docutils literal">foreach</tt> loops; they have the same effect as in regular <tt class="docutils literal">for</tt> loops:
 a program instances that executes a <tt class="docutils literal">continue</tt> statement effectively
 skips over the rest of the loop body for the current iteration.</p>
-<p>As a specific example, consdier the following <tt class="docutils literal">foreach</tt> statement:</p>
+<p>As a specific example, consider the following <tt class="docutils literal">foreach</tt> statement:</p>
 <pre class="literal-block">
 foreach (j = 0 ... height, i = 0 ... width) {
     // loop body--process data element (i,j)
@@ -1880,7 +1906,7 @@ for (uniform int i = 0; i &lt; count; i += programCount) {
 }
 </pre>
 <p>Here, we've written a loop that explicitly loops over the data in chunks of
-<tt class="docutils literal">programCount</tt> elements.  In each loop iteraton, the running program
+<tt class="docutils literal">programCount</tt> elements.  In each loop iteration, the running program
 instances effectively collude amongst themselves using <tt class="docutils literal">programIndex</tt> to
 determine which elements to work on in a way that ensures that all of the
 data elements will be processed.  In this particular case, a <tt class="docutils literal">foreach</tt>
@@ -2057,7 +2083,7 @@ distributions.</p>
 <p>If you are implementing your own task system, the remainder of this section
 discusses the requirements for these calls.  You will also likely want to
 review the example task systems in <tt class="docutils literal">examples/tasksys.cpp</tt> for reference.
-If you are not implmenting your own task system, you can skip reading the
+If you are not implementing your own task system, you can skip reading the
 remainder of this section.</p>
 <p>Here are the declarations of the three functions that must be provided to
 manage tasks in <tt class="docutils literal">ispc</tt>:</p>
@@ -2073,7 +2099,7 @@ different functions in <tt class="docutils literal">ispc</tt> code.  In this way
 implementation can efficiently wait for completion on just the tasks
 launched from a single function.</p>
 <p>The first time one of <tt class="docutils literal">ISPCLaunch()</tt> or <tt class="docutils literal">ISPCAlloc()</tt> is called in an
-<tt class="docutils literal">ispc</tt> functon, the <tt class="docutils literal">void *</tt> pointed to by the <tt class="docutils literal">handlePtr</tt> parameter
+<tt class="docutils literal">ispc</tt> function, the <tt class="docutils literal">void *</tt> pointed to by the <tt class="docutils literal">handlePtr</tt> parameter
 will be <tt class="docutils literal">NULL</tt>.  The implementations of these function should then
 initialize <tt class="docutils literal">*handlePtr</tt> to a unique handle value of some sort.  (For
 example, it might allocate a small structure to record which tasks were
@@ -2087,13 +2113,13 @@ Therefore, the handle value is passed directly to <tt class="docutils literal">I
 than a pointer to it, as in the other functions.</p>
 <p>The <tt class="docutils literal">ISPCAlloc()</tt> function is used to allocate small blocks of memory to
 store parameters passed to tasks.  It should return a pointer to memory
-with the given aize and alignment.  Note that there is no explicit
+with the given size and alignment.  Note that there is no explicit
 <tt class="docutils literal">ISPCFree()</tt> call; instead, all memory allocated within an <tt class="docutils literal">ispc</tt>
 function should be freed when <tt class="docutils literal">ISPCSync()</tt> is called.</p>
 <p><tt class="docutils literal">ISPCLaunch()</tt> is called to launch to launch one or more asynchronous
 tasks.  Each <tt class="docutils literal">launch</tt> statement in <tt class="docutils literal">ispc</tt> code causes a call to
 <tt class="docutils literal">ISPCLaunch()</tt> to be emitted in the generated code.  The three parameters
-after the handle pointer to thie function are relatively straightforward;
+after the handle pointer to the function are relatively straightforward;
 the <tt class="docutils literal">void *f</tt> parameter holds a pointer to a function to call to run the
 work for this task, <tt class="docutils literal">data</tt> holds a pointer to data to pass to this
 function, and <tt class="docutils literal">count</tt> is the number of instances of this function to
@@ -2105,7 +2131,7 @@ void (*TaskFuncPtr)(void *data, int threadIndex, int threadCount,
                     int taskIndex, int taskCount)
 </pre>
 <p>When this function pointer is called by one of the hardware threads managed
-bythe task system, the <tt class="docutils literal">data</tt> pointer passed to <tt class="docutils literal">ISPCLaunch()</tt> should
+by the task system, the <tt class="docutils literal">data</tt> pointer passed to <tt class="docutils literal">ISPCLaunch()</tt> should
 be passed to it for its first parameter; <tt class="docutils literal">threadCount</tt> gives the total
 number of hardware threads that have been spawned to run tasks and
 <tt class="docutils literal">threadIndex</tt> should be an integer index between zero and <tt class="docutils literal">threadCount</tt>
@@ -2369,7 +2395,7 @@ last print of x = [1.000000,2.000000,2.000000,3.000000]
 <p>When a varying variable is printed, the values for program instances that
 aren't currently executing are printed inside double parenthesis,
 indicating inactive program instances.  The elements for inactive program
-instances may have garabge values, though in some circumstances it can be
+instances may have garbage values, though in some circumstances it can be
 useful to see their values.</p>
 </div>
 <div class="section" id="assertions">
@@ -2551,7 +2577,7 @@ uniform bool reduce_equal(double, uniform double * uniform sameval)
 <p>There are also a number of functions to compute &quot;scan&quot;s of values across
 the program instances.  For example, the <tt class="docutils literal">exclusive_scan_and()</tt> function
 computes, for each program instance, the sum of the given value over all of
-the preceeding program instances.  (The scans currently available in
+the preceding program instances.  (The scans currently available in
 <tt class="docutils literal">ispc</tt> are all so-called &quot;exclusive&quot; scans, meaning that the value
 computed for a given element does not include the value provided for that
 element.)  In C code, an exclusive add scan over an array might be
@@ -2800,7 +2826,7 @@ uniform int32 atomic_swap_global(uniform int32 * uniform ptr,
                                  uniform int32 newval)
 </pre>
 <p>Be careful that you use the atomic function that you mean to; consider the
-folloiwng code:</p>
+following code:</p>
 <pre class="literal-block">
 extern uniform int32 counter;
 int32 myCounter = atomic_add_global(&amp;counter, 1);
@@ -3087,7 +3113,7 @@ may alias.)</p>
 <h2>Restructuring Existing Programs to Use ISPC</h2>
 <p><tt class="docutils literal">ispc</tt> is designed to enable you to incorporate
 SPMD parallelism into existing code with minimal modification; features
-like the ability to share memory and data structures betwen C/C++ and
+like the ability to share memory and data structures between C/C++ and
 <tt class="docutils literal">ispc</tt> code and the ability to directly call back and forth between
 <tt class="docutils literal">ispc</tt> and C/C++ are motivated by this.  These features also make it
 easy to incrementally transform a program to use <tt class="docutils literal">ispc</tt>; the most
@@ -3233,10 +3259,6 @@ export void length(Vector4 v[N_VEC], uniform float len[]) {
 }
 </pre>
 </div>
-</div>
-<div class="section" id="related-languages">
-<h1>Related Languages</h1>
-<p>TODO: rsl, C*, IVL</p>
 </div>
 <div class="section" id="disclaimer-and-legal-information">
 <h1>Disclaimer and Legal Information</h1>

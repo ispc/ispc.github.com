@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.1.0</span>
+   &#160;<span id="projectnumber">1.1.1</span>
    </div>
    
   </td>
@@ -691,84 +691,85 @@
 <a name="l00634"></a>00634 <span class="comment">        being done just given type information without the parameter</span>
 <a name="l00635"></a>00635 <span class="comment">        argument expressions being available.  It returns true on success.</span>
 <a name="l00636"></a>00636 <span class="comment">     */</span>
-<a name="l00637"></a>00637     <span class="keywordtype">bool</span> <a class="code" href="classFunctionSymbolExpr.html#afb42b1eb59fd3f6629c2d0208622a111">ResolveOverloads</a>(<span class="keyword">const</span> std::vector&lt;const Type *&gt; &amp;argTypes,
-<a name="l00638"></a>00638                           <span class="keyword">const</span> std::vector&lt;bool&gt; *argCouldBeNULL = <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00639"></a>00639     <a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *<a class="code" href="classFunctionSymbolExpr.html#a279cba96c85ccb8bec2c4d188641804b">GetMatchingFunction</a>();
-<a name="l00640"></a>00640 
-<a name="l00641"></a>00641 <span class="keyword">private</span>:
-<a name="l00642"></a>00642     <span class="keywordtype">bool</span> <a class="code" href="classFunctionSymbolExpr.html#a10b938674c4acedc40364be0727ed13e">tryResolve</a>(<span class="keywordtype">int</span> (*matchFunc)(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *),
-<a name="l00643"></a>00643                     <span class="keyword">const</span> std::vector&lt;const Type *&gt; &amp;argTypes,
-<a name="l00644"></a>00644                     <span class="keyword">const</span> std::vector&lt;bool&gt; *argCouldBeNULL);
-<a name="l00645"></a>00645 <span class="comment"></span>
-<a name="l00646"></a>00646 <span class="comment">    /** Name of the function that is being called. */</span>
-<a name="l00647"></a><a class="code" href="classFunctionSymbolExpr.html#a23dc665e0c2734daea7439ba42c75f45">00647</a>     std::string <a class="code" href="classFunctionSymbolExpr.html#a23dc665e0c2734daea7439ba42c75f45">name</a>;
-<a name="l00648"></a>00648 <span class="comment"></span>
-<a name="l00649"></a>00649 <span class="comment">    /** All of the functions with the name given in the function call;</span>
-<a name="l00650"></a>00650 <span class="comment">        there may be more then one, in which case we need to resolve which</span>
-<a name="l00651"></a>00651 <span class="comment">        overload is the best match. */</span>
-<a name="l00652"></a><a class="code" href="classFunctionSymbolExpr.html#a78f5eb40094e572c102215fd9e9c8d9a">00652</a>     std::vector&lt;Symbol *&gt; <a class="code" href="classFunctionSymbolExpr.html#a78f5eb40094e572c102215fd9e9c8d9a">candidateFunctions</a>;
-<a name="l00653"></a>00653 <span class="comment"></span>
-<a name="l00654"></a>00654 <span class="comment">    /** The actual matching function found after overload resolution. */</span>
-<a name="l00655"></a><a class="code" href="classFunctionSymbolExpr.html#ada53c1fccabda44ceb4a65faa9b8fc8a">00655</a>     <a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *<a class="code" href="classFunctionSymbolExpr.html#ada53c1fccabda44ceb4a65faa9b8fc8a">matchingFunc</a>;
-<a name="l00656"></a>00656 
-<a name="l00657"></a><a class="code" href="classFunctionSymbolExpr.html#a71400218b7f4dedb4d339358b05c525a">00657</a>     <span class="keywordtype">bool</span> <a class="code" href="classFunctionSymbolExpr.html#a71400218b7f4dedb4d339358b05c525a">triedToResolve</a>;
-<a name="l00658"></a>00658 };
-<a name="l00659"></a>00659 
-<a name="l00660"></a>00660 <span class="comment"></span>
-<a name="l00661"></a>00661 <span class="comment">/** @brief A sync statement in the program (waits for all launched tasks before</span>
-<a name="l00662"></a>00662 <span class="comment">    proceeding). */</span>
-<a name="l00663"></a><a class="code" href="classSyncExpr.html">00663</a> <span class="keyword">class </span><a class="code" href="classSyncExpr.html" title="A sync statement in the program (waits for all launched tasks before proceeding).">SyncExpr</a> : <span class="keyword">public</span> <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> {
-<a name="l00664"></a>00664 <span class="keyword">public</span>:
-<a name="l00665"></a><a class="code" href="classSyncExpr.html#a61a97214bbee52ad2499fcadf892709e">00665</a>     <a class="code" href="classSyncExpr.html#a61a97214bbee52ad2499fcadf892709e">SyncExpr</a>(<a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p) : <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a>(p) { }
-<a name="l00666"></a>00666 
-<a name="l00667"></a>00667     llvm::Value *<a class="code" href="classSyncExpr.html#aa9a46eb62f7879b61fd56da3092b4ff5">GetValue</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
-<a name="l00668"></a>00668     <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *<a class="code" href="classSyncExpr.html#a9279f70fda2e643d34972bdff71b0a47">GetType</a>() <span class="keyword">const</span>;
-<a name="l00669"></a>00669     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classSyncExpr.html#af411fe3062afc649c104ed877bd5fd41">TypeCheck</a>();
-<a name="l00670"></a>00670     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classSyncExpr.html#a12b8c56aa2ae34936242b449932e467f">Optimize</a>();
-<a name="l00671"></a>00671     <span class="keywordtype">void</span> <a class="code" href="classSyncExpr.html#ad3a4bff2fbe2b44429b3765dfdf3e1bb">Print</a>() <span class="keyword">const</span>;
-<a name="l00672"></a>00672     <span class="keywordtype">int</span> <a class="code" href="classSyncExpr.html#a98c9e183d66f659cdfed37e332c0de44">EstimateCost</a>() <span class="keyword">const</span>;
-<a name="l00673"></a>00673 };
-<a name="l00674"></a>00674 
-<a name="l00675"></a>00675 <span class="comment"></span>
-<a name="l00676"></a>00676 <span class="comment">/** @brief An expression that represents a NULL pointer. */</span>
-<a name="l00677"></a><a class="code" href="classNullPointerExpr.html">00677</a> <span class="keyword">class </span><a class="code" href="classNullPointerExpr.html" title="An expression that represents a NULL pointer.">NullPointerExpr</a> : <span class="keyword">public</span> <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> {
-<a name="l00678"></a>00678 <span class="keyword">public</span>:
-<a name="l00679"></a><a class="code" href="classNullPointerExpr.html#acebb8ef975899ecfd51351b1a30e02bb">00679</a>     <a class="code" href="classNullPointerExpr.html#acebb8ef975899ecfd51351b1a30e02bb">NullPointerExpr</a>(<a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p) : <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a>(p) { }
-<a name="l00680"></a>00680     
-<a name="l00681"></a>00681     llvm::Value *<a class="code" href="classNullPointerExpr.html#a712084b202968c0d33056f5b48b98051">GetValue</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
-<a name="l00682"></a>00682     <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *<a class="code" href="classNullPointerExpr.html#a9d5a368b03a4010a46376bd9a467d807">GetType</a>() <span class="keyword">const</span>;
-<a name="l00683"></a>00683     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classNullPointerExpr.html#a8256bd3c7d8e8c7e6ad76f7b8290bca5">TypeCheck</a>();
-<a name="l00684"></a>00684     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classNullPointerExpr.html#a40c6da2090595393ab5fd08a3719d696">Optimize</a>();
-<a name="l00685"></a>00685     <span class="keywordtype">void</span> <a class="code" href="classNullPointerExpr.html#aa32f15aad78ac2632020a9a11525ae83">Print</a>() <span class="keyword">const</span>;
-<a name="l00686"></a>00686     <span class="keywordtype">int</span> <a class="code" href="classNullPointerExpr.html#a2ba09b53ff5f0c3883d1a1612bbaf3c7">EstimateCost</a>() <span class="keyword">const</span>;
-<a name="l00687"></a>00687 };
-<a name="l00688"></a>00688 
-<a name="l00689"></a>00689 <span class="comment"></span>
-<a name="l00690"></a>00690 <span class="comment">/** This function indicates whether it&#39;s legal to convert from fromType to</span>
-<a name="l00691"></a>00691 <span class="comment">    toType.  If the optional errorMsgBase and source position parameters</span>
-<a name="l00692"></a>00692 <span class="comment">    are provided, then an error message is issued if the type conversion</span>
-<a name="l00693"></a>00693 <span class="comment">    isn&#39;t possible.</span>
-<a name="l00694"></a>00694 <span class="comment"> */</span>
-<a name="l00695"></a>00695 <span class="keywordtype">bool</span> <a class="code" href="expr_8h.html#a22c267bd1298a34e1b3fec5254903717">CanConvertTypes</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *fromType, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *toType,
-<a name="l00696"></a>00696                      <span class="keyword">const</span> <span class="keywordtype">char</span> *errorMsgBase = NULL,
-<a name="l00697"></a>00697                      <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos = <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a>());
-<a name="l00698"></a>00698 <span class="comment"></span>
-<a name="l00699"></a>00699 <span class="comment">/** This function attempts to convert the given expression to the given</span>
-<a name="l00700"></a>00700 <span class="comment">    type, returning a pointer to a new expression that is the result.  If</span>
-<a name="l00701"></a>00701 <span class="comment">    the required type conversion is illegal, it returns NULL and prints an</span>
-<a name="l00702"></a>00702 <span class="comment">    error message using the provided string to indicate the context for</span>
-<a name="l00703"></a>00703 <span class="comment">    which type conversion was being applied (e.g. &quot;function call</span>
-<a name="l00704"></a>00704 <span class="comment">    parameter&quot;).</span>
-<a name="l00705"></a>00705 <span class="comment"> */</span>
-<a name="l00706"></a>00706 <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="expr_8h.html#a776a3d6e37bb2b78ce0d3ed4cdea9556">TypeConvertExpr</a>(<a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *expr, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *toType, <span class="keyword">const</span> <span class="keywordtype">char</span> *errorMsgBase);
-<a name="l00707"></a>00707 
-<a name="l00708"></a>00708 <span class="preprocessor">#endif // ISPC_EXPR_H</span>
+<a name="l00637"></a>00637     <span class="keywordtype">bool</span> <a class="code" href="classFunctionSymbolExpr.html#a0651eaec44c76ccac4512c1c3e4fd156">ResolveOverloads</a>(<a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> argPos,
+<a name="l00638"></a>00638                           <span class="keyword">const</span> std::vector&lt;const Type *&gt; &amp;argTypes,
+<a name="l00639"></a>00639                           <span class="keyword">const</span> std::vector&lt;bool&gt; *argCouldBeNULL = <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00640"></a>00640     <a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *<a class="code" href="classFunctionSymbolExpr.html#a279cba96c85ccb8bec2c4d188641804b">GetMatchingFunction</a>();
+<a name="l00641"></a>00641 
+<a name="l00642"></a>00642 <span class="keyword">private</span>:
+<a name="l00643"></a>00643     <span class="keywordtype">bool</span> <a class="code" href="classFunctionSymbolExpr.html#a43ac9c746ec52be3ba6d2e7ce8bfeee5">tryResolve</a>(<span class="keywordtype">int</span> (*matchFunc)(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *),
+<a name="l00644"></a>00644                     <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> argPos, <span class="keyword">const</span> std::vector&lt;const Type *&gt; &amp;argTypes,
+<a name="l00645"></a>00645                     <span class="keyword">const</span> std::vector&lt;bool&gt; *argCouldBeNULL);
+<a name="l00646"></a>00646 <span class="comment"></span>
+<a name="l00647"></a>00647 <span class="comment">    /** Name of the function that is being called. */</span>
+<a name="l00648"></a><a class="code" href="classFunctionSymbolExpr.html#a23dc665e0c2734daea7439ba42c75f45">00648</a>     std::string <a class="code" href="classFunctionSymbolExpr.html#a23dc665e0c2734daea7439ba42c75f45">name</a>;
+<a name="l00649"></a>00649 <span class="comment"></span>
+<a name="l00650"></a>00650 <span class="comment">    /** All of the functions with the name given in the function call;</span>
+<a name="l00651"></a>00651 <span class="comment">        there may be more then one, in which case we need to resolve which</span>
+<a name="l00652"></a>00652 <span class="comment">        overload is the best match. */</span>
+<a name="l00653"></a><a class="code" href="classFunctionSymbolExpr.html#a78f5eb40094e572c102215fd9e9c8d9a">00653</a>     std::vector&lt;Symbol *&gt; <a class="code" href="classFunctionSymbolExpr.html#a78f5eb40094e572c102215fd9e9c8d9a">candidateFunctions</a>;
+<a name="l00654"></a>00654 <span class="comment"></span>
+<a name="l00655"></a>00655 <span class="comment">    /** The actual matching function found after overload resolution. */</span>
+<a name="l00656"></a><a class="code" href="classFunctionSymbolExpr.html#ada53c1fccabda44ceb4a65faa9b8fc8a">00656</a>     <a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *<a class="code" href="classFunctionSymbolExpr.html#ada53c1fccabda44ceb4a65faa9b8fc8a">matchingFunc</a>;
+<a name="l00657"></a>00657 
+<a name="l00658"></a><a class="code" href="classFunctionSymbolExpr.html#a71400218b7f4dedb4d339358b05c525a">00658</a>     <span class="keywordtype">bool</span> <a class="code" href="classFunctionSymbolExpr.html#a71400218b7f4dedb4d339358b05c525a">triedToResolve</a>;
+<a name="l00659"></a>00659 };
+<a name="l00660"></a>00660 
+<a name="l00661"></a>00661 <span class="comment"></span>
+<a name="l00662"></a>00662 <span class="comment">/** @brief A sync statement in the program (waits for all launched tasks before</span>
+<a name="l00663"></a>00663 <span class="comment">    proceeding). */</span>
+<a name="l00664"></a><a class="code" href="classSyncExpr.html">00664</a> <span class="keyword">class </span><a class="code" href="classSyncExpr.html" title="A sync statement in the program (waits for all launched tasks before proceeding).">SyncExpr</a> : <span class="keyword">public</span> <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> {
+<a name="l00665"></a>00665 <span class="keyword">public</span>:
+<a name="l00666"></a><a class="code" href="classSyncExpr.html#a61a97214bbee52ad2499fcadf892709e">00666</a>     <a class="code" href="classSyncExpr.html#a61a97214bbee52ad2499fcadf892709e">SyncExpr</a>(<a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p) : <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a>(p) { }
+<a name="l00667"></a>00667 
+<a name="l00668"></a>00668     llvm::Value *<a class="code" href="classSyncExpr.html#aa9a46eb62f7879b61fd56da3092b4ff5">GetValue</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
+<a name="l00669"></a>00669     <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *<a class="code" href="classSyncExpr.html#a9279f70fda2e643d34972bdff71b0a47">GetType</a>() <span class="keyword">const</span>;
+<a name="l00670"></a>00670     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classSyncExpr.html#af411fe3062afc649c104ed877bd5fd41">TypeCheck</a>();
+<a name="l00671"></a>00671     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classSyncExpr.html#a12b8c56aa2ae34936242b449932e467f">Optimize</a>();
+<a name="l00672"></a>00672     <span class="keywordtype">void</span> <a class="code" href="classSyncExpr.html#ad3a4bff2fbe2b44429b3765dfdf3e1bb">Print</a>() <span class="keyword">const</span>;
+<a name="l00673"></a>00673     <span class="keywordtype">int</span> <a class="code" href="classSyncExpr.html#a98c9e183d66f659cdfed37e332c0de44">EstimateCost</a>() <span class="keyword">const</span>;
+<a name="l00674"></a>00674 };
+<a name="l00675"></a>00675 
+<a name="l00676"></a>00676 <span class="comment"></span>
+<a name="l00677"></a>00677 <span class="comment">/** @brief An expression that represents a NULL pointer. */</span>
+<a name="l00678"></a><a class="code" href="classNullPointerExpr.html">00678</a> <span class="keyword">class </span><a class="code" href="classNullPointerExpr.html" title="An expression that represents a NULL pointer.">NullPointerExpr</a> : <span class="keyword">public</span> <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> {
+<a name="l00679"></a>00679 <span class="keyword">public</span>:
+<a name="l00680"></a><a class="code" href="classNullPointerExpr.html#acebb8ef975899ecfd51351b1a30e02bb">00680</a>     <a class="code" href="classNullPointerExpr.html#acebb8ef975899ecfd51351b1a30e02bb">NullPointerExpr</a>(<a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p) : <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a>(p) { }
+<a name="l00681"></a>00681     
+<a name="l00682"></a>00682     llvm::Value *<a class="code" href="classNullPointerExpr.html#a712084b202968c0d33056f5b48b98051">GetValue</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
+<a name="l00683"></a>00683     <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *<a class="code" href="classNullPointerExpr.html#a9d5a368b03a4010a46376bd9a467d807">GetType</a>() <span class="keyword">const</span>;
+<a name="l00684"></a>00684     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classNullPointerExpr.html#a8256bd3c7d8e8c7e6ad76f7b8290bca5">TypeCheck</a>();
+<a name="l00685"></a>00685     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classNullPointerExpr.html#a40c6da2090595393ab5fd08a3719d696">Optimize</a>();
+<a name="l00686"></a>00686     <span class="keywordtype">void</span> <a class="code" href="classNullPointerExpr.html#aa32f15aad78ac2632020a9a11525ae83">Print</a>() <span class="keyword">const</span>;
+<a name="l00687"></a>00687     <span class="keywordtype">int</span> <a class="code" href="classNullPointerExpr.html#a2ba09b53ff5f0c3883d1a1612bbaf3c7">EstimateCost</a>() <span class="keyword">const</span>;
+<a name="l00688"></a>00688 };
+<a name="l00689"></a>00689 
+<a name="l00690"></a>00690 <span class="comment"></span>
+<a name="l00691"></a>00691 <span class="comment">/** This function indicates whether it&#39;s legal to convert from fromType to</span>
+<a name="l00692"></a>00692 <span class="comment">    toType.  If the optional errorMsgBase and source position parameters</span>
+<a name="l00693"></a>00693 <span class="comment">    are provided, then an error message is issued if the type conversion</span>
+<a name="l00694"></a>00694 <span class="comment">    isn&#39;t possible.</span>
+<a name="l00695"></a>00695 <span class="comment"> */</span>
+<a name="l00696"></a>00696 <span class="keywordtype">bool</span> <a class="code" href="expr_8h.html#a22c267bd1298a34e1b3fec5254903717">CanConvertTypes</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *fromType, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *toType,
+<a name="l00697"></a>00697                      <span class="keyword">const</span> <span class="keywordtype">char</span> *errorMsgBase = NULL,
+<a name="l00698"></a>00698                      <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos = <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a>());
+<a name="l00699"></a>00699 <span class="comment"></span>
+<a name="l00700"></a>00700 <span class="comment">/** This function attempts to convert the given expression to the given</span>
+<a name="l00701"></a>00701 <span class="comment">    type, returning a pointer to a new expression that is the result.  If</span>
+<a name="l00702"></a>00702 <span class="comment">    the required type conversion is illegal, it returns NULL and prints an</span>
+<a name="l00703"></a>00703 <span class="comment">    error message using the provided string to indicate the context for</span>
+<a name="l00704"></a>00704 <span class="comment">    which type conversion was being applied (e.g. &quot;function call</span>
+<a name="l00705"></a>00705 <span class="comment">    parameter&quot;).</span>
+<a name="l00706"></a>00706 <span class="comment"> */</span>
+<a name="l00707"></a>00707 <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="expr_8h.html#a776a3d6e37bb2b78ce0d3ed4cdea9556">TypeConvertExpr</a>(<a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *expr, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *toType, <span class="keyword">const</span> <span class="keywordtype">char</span> *errorMsgBase);
+<a name="l00708"></a>00708 
+<a name="l00709"></a>00709 <span class="preprocessor">#endif // ISPC_EXPR_H</span>
 </pre></div></div>
 </div>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 5 2011 14:46:08 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 15 2011 12:38:08 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

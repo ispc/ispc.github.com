@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.1.0</span>
+   &#160;<span id="projectnumber">1.1.1</span>
    </div>
    
   </td>
@@ -218,259 +218,292 @@
 <a name="l00161"></a>00161         t-&gt;<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a> = 16;
 <a name="l00162"></a>00162         t-&gt;<a class="code" href="structTarget.html#a01424094b1354481c1d6b200c8889fe5">attributes</a> = <span class="stringliteral">&quot;+avx,+popcnt,+cmov&quot;</span>;
 <a name="l00163"></a>00163     }
-<a name="l00164"></a>00164 <span class="preprocessor">#endif // LLVM 3.0</span>
-<a name="l00165"></a>00165 <span class="preprocessor"></span>    <span class="keywordflow">else</span> {
-<a name="l00166"></a>00166         fprintf(<a class="code" href="parse_8yy.html">stderr</a>, <span class="stringliteral">&quot;Target ISA \&quot;%s\&quot; is unknown.  Choices are: %s\n&quot;</span>, 
-<a name="l00167"></a>00167                 isa, <a class="code" href="structTarget.html#aa4eef29d6c935850bfcd7b3245618c31">SupportedTargetISAs</a>());
-<a name="l00168"></a>00168         error = <span class="keyword">true</span>;
-<a name="l00169"></a>00169     }
-<a name="l00170"></a>00170 
-<a name="l00171"></a>00171     <span class="keywordflow">if</span> (!error) {
-<a name="l00172"></a>00172         llvm::TargetMachine *targetMachine = t-&gt;<a class="code" href="structTarget.html#a555a165ae94adf95dc5f6696dc636002">GetTargetMachine</a>();
-<a name="l00173"></a>00173         <span class="keyword">const</span> llvm::TargetData *targetData = targetMachine-&gt;getTargetData();
-<a name="l00174"></a>00174         t-&gt;<a class="code" href="structTarget.html#a020c3a918fec5062c174266db0e36720">is32Bit</a> = (targetData-&gt;getPointerSize() == 4);
-<a name="l00175"></a>00175     }
-<a name="l00176"></a>00176 
-<a name="l00177"></a>00177     <span class="keywordflow">return</span> !error;
-<a name="l00178"></a>00178 }
-<a name="l00179"></a>00179 
-<a name="l00180"></a>00180 
-<a name="l00181"></a>00181 <span class="keyword">const</span> <span class="keywordtype">char</span> *
-<a name="l00182"></a><a class="code" href="structTarget.html#a5104570c83ae7dbdcc007a60f3ab0b43">00182</a> <a class="code" href="structTarget.html#a5104570c83ae7dbdcc007a60f3ab0b43">Target::SupportedTargetCPUs</a>() {
-<a name="l00183"></a>00183     <span class="keywordflow">return</span> <span class="stringliteral">&quot;atom, barcelona, core2, corei7, &quot;</span>
-<a name="l00184"></a>00184 <span class="preprocessor">#if defined(LLVM_3_0) || defined(LLVM_3_0svn) || defined(LLVM_3_1svn)</span>
-<a name="l00185"></a>00185 <span class="preprocessor"></span>        <span class="stringliteral">&quot;corei7-avx, &quot;</span>
-<a name="l00186"></a>00186 <span class="preprocessor">#endif</span>
-<a name="l00187"></a>00187 <span class="preprocessor"></span>        <span class="stringliteral">&quot;istanbul, nocona, penryn, &quot;</span>
-<a name="l00188"></a>00188 <span class="preprocessor">#ifdef LLVM_2_9</span>
-<a name="l00189"></a>00189 <span class="preprocessor"></span>        <span class="stringliteral">&quot;sandybridge, &quot;</span>
-<a name="l00190"></a>00190 <span class="preprocessor">#endif</span>
-<a name="l00191"></a>00191 <span class="preprocessor"></span>        <span class="stringliteral">&quot;westmere&quot;</span>;
+<a name="l00164"></a>00164 <span class="preprocessor">#endif // LLVM 3.0+</span>
+<a name="l00165"></a>00165 <span class="preprocessor"></span><span class="preprocessor">#if defined(LLVM_3_1svn)</span>
+<a name="l00166"></a>00166 <span class="preprocessor"></span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcasecmp(isa, <span class="stringliteral">&quot;avx2&quot;</span>)) {
+<a name="l00167"></a>00167         t-&gt;<a class="code" href="structTarget.html#a3ca3d78d8240b68881e00af656df2951">isa</a> = <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa0cf71c169e93a54fb004ef81032a3438">Target::AVX2</a>;
+<a name="l00168"></a>00168         t-&gt;<a class="code" href="structTarget.html#a4b83ff7fe30594a1d28759fdf2ac3cc1">nativeVectorWidth</a> = 8;
+<a name="l00169"></a>00169         t-&gt;<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a> = 8;
+<a name="l00170"></a>00170         t-&gt;<a class="code" href="structTarget.html#a01424094b1354481c1d6b200c8889fe5">attributes</a> = <span class="stringliteral">&quot;+avx2,+popcnt,+cmov&quot;</span>;
+<a name="l00171"></a>00171     }
+<a name="l00172"></a>00172     <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcasecmp(isa, <span class="stringliteral">&quot;avx2-x2&quot;</span>)) {
+<a name="l00173"></a>00173         t-&gt;<a class="code" href="structTarget.html#a3ca3d78d8240b68881e00af656df2951">isa</a> = <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa0cf71c169e93a54fb004ef81032a3438">Target::AVX2</a>;
+<a name="l00174"></a>00174         t-&gt;<a class="code" href="structTarget.html#a4b83ff7fe30594a1d28759fdf2ac3cc1">nativeVectorWidth</a> = 16;
+<a name="l00175"></a>00175         t-&gt;<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a> = 16;
+<a name="l00176"></a>00176         t-&gt;<a class="code" href="structTarget.html#a01424094b1354481c1d6b200c8889fe5">attributes</a> = <span class="stringliteral">&quot;+avx2,+popcnt,+cmov&quot;</span>;
+<a name="l00177"></a>00177     }
+<a name="l00178"></a>00178 <span class="preprocessor">#endif // LLVM 3.1</span>
+<a name="l00179"></a>00179 <span class="preprocessor"></span>    <span class="keywordflow">else</span> {
+<a name="l00180"></a>00180         fprintf(<a class="code" href="parse_8yy.html">stderr</a>, <span class="stringliteral">&quot;Target ISA \&quot;%s\&quot; is unknown.  Choices are: %s\n&quot;</span>, 
+<a name="l00181"></a>00181                 isa, <a class="code" href="structTarget.html#aa4eef29d6c935850bfcd7b3245618c31">SupportedTargetISAs</a>());
+<a name="l00182"></a>00182         error = <span class="keyword">true</span>;
+<a name="l00183"></a>00183     }
+<a name="l00184"></a>00184 
+<a name="l00185"></a>00185     <span class="keywordflow">if</span> (!error) {
+<a name="l00186"></a>00186         llvm::TargetMachine *targetMachine = t-&gt;<a class="code" href="structTarget.html#a555a165ae94adf95dc5f6696dc636002">GetTargetMachine</a>();
+<a name="l00187"></a>00187         <span class="keyword">const</span> llvm::TargetData *targetData = targetMachine-&gt;getTargetData();
+<a name="l00188"></a>00188         t-&gt;<a class="code" href="structTarget.html#a020c3a918fec5062c174266db0e36720">is32Bit</a> = (targetData-&gt;getPointerSize() == 4);
+<a name="l00189"></a>00189     }
+<a name="l00190"></a>00190 
+<a name="l00191"></a>00191     <span class="keywordflow">return</span> !error;
 <a name="l00192"></a>00192 }
 <a name="l00193"></a>00193 
 <a name="l00194"></a>00194 
 <a name="l00195"></a>00195 <span class="keyword">const</span> <span class="keywordtype">char</span> *
-<a name="l00196"></a><a class="code" href="structTarget.html#a5041eb44952f1f269cb0e261818183cc">00196</a> <a class="code" href="structTarget.html#a5041eb44952f1f269cb0e261818183cc">Target::SupportedTargetArchs</a>() {
-<a name="l00197"></a>00197     <span class="keywordflow">return</span> <span class="stringliteral">&quot;x86, x86-64&quot;</span>;
-<a name="l00198"></a>00198 }
-<a name="l00199"></a>00199 
-<a name="l00200"></a>00200 
-<a name="l00201"></a>00201 <span class="keyword">const</span> <span class="keywordtype">char</span> *
-<a name="l00202"></a><a class="code" href="structTarget.html#aa4eef29d6c935850bfcd7b3245618c31">00202</a> <a class="code" href="structTarget.html#aa4eef29d6c935850bfcd7b3245618c31">Target::SupportedTargetISAs</a>() {
-<a name="l00203"></a>00203     <span class="keywordflow">return</span> <span class="stringliteral">&quot;sse2, sse2-x2, sse4, sse4-x2&quot;</span>
-<a name="l00204"></a>00204 <span class="preprocessor">#if defined(LLVM_3_0) || defined(LLVM_3_0svn) || defined(LLVM_3_1svn)</span>
-<a name="l00205"></a>00205 <span class="preprocessor"></span>        <span class="stringliteral">&quot;, avx, avx-x2&quot;</span>
-<a name="l00206"></a>00206 <span class="preprocessor">#endif</span>
-<a name="l00207"></a>00207 <span class="preprocessor"></span>        ;
-<a name="l00208"></a>00208 }
-<a name="l00209"></a>00209 
-<a name="l00210"></a>00210 
-<a name="l00211"></a>00211 std::string
-<a name="l00212"></a><a class="code" href="structTarget.html#ab2ff7278411fa2284c11853ec218dad3">00212</a> <a class="code" href="structTarget.html#ab2ff7278411fa2284c11853ec218dad3">Target::GetTripleString</a>()<span class="keyword"> const </span>{
-<a name="l00213"></a>00213     llvm::Triple triple;
-<a name="l00214"></a>00214     <span class="comment">// Start with the host triple as the default</span>
-<a name="l00215"></a>00215 <span class="preprocessor">#if defined(LLVM_3_1) || defined(LLVM_3_1svn)</span>
-<a name="l00216"></a>00216 <span class="preprocessor"></span>    triple.setTriple(llvm::sys::getDefaultTargetTriple());
-<a name="l00217"></a>00217 <span class="preprocessor">#else</span>
-<a name="l00218"></a>00218 <span class="preprocessor"></span>    triple.setTriple(llvm::sys::getHostTriple());
-<a name="l00219"></a>00219 <span class="preprocessor">#endif</span>
-<a name="l00220"></a>00220 <span class="preprocessor"></span>
-<a name="l00221"></a>00221     <span class="comment">// And override the arch in the host triple based on what the user</span>
-<a name="l00222"></a>00222     <span class="comment">// specified.  Here we need to deal with the fact that LLVM uses one</span>
-<a name="l00223"></a>00223     <span class="comment">// naming convention for targets TargetRegistry, but wants some</span>
-<a name="l00224"></a>00224     <span class="comment">// slightly different ones for the triple.  TODO: is there a way to</span>
-<a name="l00225"></a>00225     <span class="comment">// have it do this remapping, which would presumably be a bit less</span>
-<a name="l00226"></a>00226     <span class="comment">// error prone?</span>
-<a name="l00227"></a>00227     <span class="keywordflow">if</span> (<a class="code" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">arch</a> == <span class="stringliteral">&quot;x86&quot;</span>)
-<a name="l00228"></a>00228         triple.setArchName(<span class="stringliteral">&quot;i386&quot;</span>);
-<a name="l00229"></a>00229     <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">arch</a> == <span class="stringliteral">&quot;x86-64&quot;</span>)
-<a name="l00230"></a>00230         triple.setArchName(<span class="stringliteral">&quot;x86_64&quot;</span>);
-<a name="l00231"></a>00231     <span class="keywordflow">else</span>
-<a name="l00232"></a>00232         triple.setArchName(<a class="code" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">arch</a>);
-<a name="l00233"></a>00233 
-<a name="l00234"></a>00234     <span class="keywordflow">return</span> triple.str();
-<a name="l00235"></a>00235 }
-<a name="l00236"></a>00236 
-<a name="l00237"></a>00237 
-<a name="l00238"></a>00238 llvm::TargetMachine *
-<a name="l00239"></a><a class="code" href="structTarget.html#a555a165ae94adf95dc5f6696dc636002">00239</a> <a class="code" href="structTarget.html#a555a165ae94adf95dc5f6696dc636002">Target::GetTargetMachine</a>()<span class="keyword"> const </span>{
-<a name="l00240"></a>00240     std::string triple = <a class="code" href="structTarget.html#ab2ff7278411fa2284c11853ec218dad3">GetTripleString</a>();
-<a name="l00241"></a>00241 
-<a name="l00242"></a>00242     llvm::Reloc::Model relocModel = <a class="code" href="structTarget.html#a6be1ed9658230f08d1804d97d4ba613a">generatePIC</a> ? llvm::Reloc::PIC_ : 
-<a name="l00243"></a>00243                                                   llvm::Reloc::Default;
-<a name="l00244"></a>00244 <span class="preprocessor">#if defined(LLVM_3_0svn) || defined(LLVM_3_1svn) || defined(LLVM_3_0)</span>
-<a name="l00245"></a>00245 <span class="preprocessor"></span>    std::string featuresString = <a class="code" href="structTarget.html#a01424094b1354481c1d6b200c8889fe5">attributes</a>;
-<a name="l00246"></a>00246     llvm::TargetMachine *targetMachine = 
-<a name="l00247"></a>00247         <a class="code" href="structTarget.html#a55890a8b4d0f386f67b0e3497da6c238">target</a>-&gt;createTargetMachine(triple, <a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">cpu</a>, featuresString, relocModel);
-<a name="l00248"></a>00248 <span class="preprocessor">#else</span>
-<a name="l00249"></a>00249 <span class="preprocessor"></span><span class="preprocessor">#ifdef ISPC_IS_APPLE</span>
-<a name="l00250"></a>00250 <span class="preprocessor"></span>    relocModel = llvm::Reloc::PIC_;
-<a name="l00251"></a>00251 <span class="preprocessor">#endif // ISPC_IS_APPLE</span>
-<a name="l00252"></a>00252 <span class="preprocessor"></span>    std::string featuresString = <a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">cpu</a> + std::string(<span class="stringliteral">&quot;,&quot;</span>) + <a class="code" href="structTarget.html#a01424094b1354481c1d6b200c8889fe5">attributes</a>;
-<a name="l00253"></a>00253     llvm::TargetMachine *targetMachine = 
-<a name="l00254"></a>00254         <a class="code" href="structTarget.html#a55890a8b4d0f386f67b0e3497da6c238">target</a>-&gt;createTargetMachine(triple, featuresString);
-<a name="l00255"></a>00255 <span class="preprocessor">#ifndef ISPC_IS_WINDOWS</span>
-<a name="l00256"></a>00256 <span class="preprocessor"></span>    targetMachine-&gt;setRelocationModel(relocModel);
-<a name="l00257"></a>00257 <span class="preprocessor">#endif // !ISPC_IS_WINDOWS</span>
-<a name="l00258"></a>00258 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00259"></a>00259 <span class="preprocessor"></span>    <a class="code" href="parse_8yy.html">assert</a>(targetMachine != <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00260"></a>00260 
-<a name="l00261"></a>00261     targetMachine-&gt;setAsmVerbosityDefault(<span class="keyword">true</span>);
-<a name="l00262"></a>00262     <span class="keywordflow">return</span> targetMachine;
-<a name="l00263"></a>00263 }
-<a name="l00264"></a>00264 
-<a name="l00265"></a>00265 
-<a name="l00266"></a>00266 <span class="keyword">const</span> <span class="keywordtype">char</span> *
-<a name="l00267"></a><a class="code" href="structTarget.html#a30f10ac6e7be95c65a4808da30b62de3">00267</a> <a class="code" href="structTarget.html#a30f10ac6e7be95c65a4808da30b62de3">Target::GetISAString</a>()<span class="keyword"> const </span>{
-<a name="l00268"></a>00268     <span class="keywordflow">switch</span> (<a class="code" href="structTarget.html#a3ca3d78d8240b68881e00af656df2951">isa</a>) {
-<a name="l00269"></a>00269     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa405a12bd45be878b6cc9c6d006e1dd76">Target::SSE2</a>:
-<a name="l00270"></a>00270         <span class="keywordflow">return</span> <span class="stringliteral">&quot;sse2&quot;</span>;
-<a name="l00271"></a>00271     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa4ae729a3f9131ab5aa5d621fa6e24cc3">Target::SSE4</a>:
-<a name="l00272"></a>00272         <span class="keywordflow">return</span> <span class="stringliteral">&quot;sse4&quot;</span>;
-<a name="l00273"></a>00273     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa0bb31e5429c5e5ae43b3ac3c76104ef7">Target::AVX</a>:
-<a name="l00274"></a>00274         <span class="keywordflow">return</span> <span class="stringliteral">&quot;avx&quot;</span>;
-<a name="l00275"></a>00275         <span class="keywordflow">break</span>;
-<a name="l00276"></a>00276     <span class="keywordflow">default</span>:
-<a name="l00277"></a>00277         <a class="code" href="util_8h.html#a14ec8c552061330276dfd86f506095a3">FATAL</a>(<span class="stringliteral">&quot;Unhandled target in GetISAString()&quot;</span>);
-<a name="l00278"></a>00278     }
-<a name="l00279"></a>00279     <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;
-<a name="l00280"></a>00280 }
-<a name="l00281"></a>00281 
-<a name="l00282"></a>00282 
-<a name="l00283"></a>00283 llvm::Value *
-<a name="l00284"></a><a class="code" href="structTarget.html#a7371a212ee18874627f0a5f9aae82dca">00284</a> <a class="code" href="structTarget.html#a7371a212ee18874627f0a5f9aae82dca">Target::SizeOf</a>(<a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type) {
-<a name="l00285"></a>00285     <span class="keyword">const</span> llvm::TargetData *td = <a class="code" href="structTarget.html#a555a165ae94adf95dc5f6696dc636002">GetTargetMachine</a>()-&gt;getTargetData();
-<a name="l00286"></a>00286     <a class="code" href="parse_8yy.html">assert</a>(td != <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00287"></a>00287     uint64_t byteSize = td-&gt;getTypeSizeInBits(type) / 8;
-<a name="l00288"></a>00288     <span class="keywordflow">if</span> (<a class="code" href="structTarget.html#a020c3a918fec5062c174266db0e36720">is32Bit</a> || g-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a8c01f8f3455aa7c26a3ddcc55f1a4099">force32BitAddressing</a>)
-<a name="l00289"></a>00289         <span class="keywordflow">return</span> <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(byteSize);
-<a name="l00290"></a>00290     <span class="keywordflow">else</span>
-<a name="l00291"></a>00291         <span class="keywordflow">return</span> <a class="code" href="llvmutil_8h.html#a55856bce3d2fc76f28111393ab711537">LLVMInt64</a>(byteSize);
-<a name="l00292"></a>00292 }
-<a name="l00293"></a>00293 
-<a name="l00294"></a>00294 
-<a name="l00295"></a>00295 llvm::Value *
-<a name="l00296"></a><a class="code" href="structTarget.html#af50a6d3e136bf1c625213d672575d152">00296</a> <a class="code" href="structTarget.html#af50a6d3e136bf1c625213d672575d152">Target::StructOffset</a>(<a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type, <span class="keywordtype">int</span> element) {
-<a name="l00297"></a>00297     <span class="keyword">const</span> llvm::TargetData *td = <a class="code" href="structTarget.html#a555a165ae94adf95dc5f6696dc636002">GetTargetMachine</a>()-&gt;getTargetData();
-<a name="l00298"></a>00298     <a class="code" href="parse_8yy.html">assert</a>(td != <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00299"></a>00299     <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::StructType *structType = 
-<a name="l00300"></a>00300         llvm::dyn_cast&lt;<a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::StructType&gt;(type);
-<a name="l00301"></a>00301     <a class="code" href="parse_8yy.html">assert</a>(structType != <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00302"></a>00302     <span class="keyword">const</span> llvm::StructLayout *sl = td-&gt;getStructLayout(structType);
-<a name="l00303"></a>00303     assert(sl != <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00304"></a>00304 
-<a name="l00305"></a>00305     uint64_t offset = sl-&gt;getElementOffset(element);
-<a name="l00306"></a>00306     <span class="keywordflow">if</span> (<a class="code" href="structTarget.html#a020c3a918fec5062c174266db0e36720">is32Bit</a> || g-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a8c01f8f3455aa7c26a3ddcc55f1a4099">force32BitAddressing</a>)
-<a name="l00307"></a>00307         <span class="keywordflow">return</span> <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(offset);
-<a name="l00308"></a>00308     <span class="keywordflow">else</span>
-<a name="l00309"></a>00309         <span class="keywordflow">return</span> <a class="code" href="llvmutil_8h.html#a55856bce3d2fc76f28111393ab711537">LLVMInt64</a>(offset);
-<a name="l00310"></a>00310 }
-<a name="l00311"></a>00311 
-<a name="l00312"></a>00312 <span class="comment"></span>
-<a name="l00313"></a>00313 <span class="comment">///////////////////////////////////////////////////////////////////////////</span>
-<a name="l00314"></a>00314 <span class="comment"></span><span class="comment">// Opt</span>
-<a name="l00315"></a>00315 
-<a name="l00316"></a><a class="code" href="structOpt.html#ae1ec631e0d039be80e5182b5d79ec0dd">00316</a> <a class="code" href="structOpt.html#ae1ec631e0d039be80e5182b5d79ec0dd">Opt::Opt</a>() {
-<a name="l00317"></a>00317     <a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a> = 1;
-<a name="l00318"></a>00318     <a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">fastMath</a> = <span class="keyword">false</span>;
-<a name="l00319"></a>00319     <a class="code" href="structOpt.html#a751580c259f1ee6f7ecf82d025651b54">fastMaskedVload</a> = <span class="keyword">false</span>;
-<a name="l00320"></a>00320     <a class="code" href="structOpt.html#a8c01f8f3455aa7c26a3ddcc55f1a4099">force32BitAddressing</a> = <span class="keyword">true</span>;
-<a name="l00321"></a>00321     <a class="code" href="structOpt.html#a93ab457610c75c76b82b35bdbee5e18a">unrollLoops</a> = <span class="keyword">true</span>;
-<a name="l00322"></a>00322     <a class="code" href="structOpt.html#afc84ab6af324e0efee5c0f9f86390d07">disableAsserts</a> = <span class="keyword">false</span>;
-<a name="l00323"></a>00323     <a class="code" href="structOpt.html#a1f2ce342012d4e65a83a47a0327380bc">disableHandlePseudoMemoryOps</a> = <span class="keyword">false</span>;
-<a name="l00324"></a>00324     <a class="code" href="structOpt.html#a441c78a679b7bc088d879ade8d20845f">disableBlendedMaskedStores</a> = <span class="keyword">false</span>;
-<a name="l00325"></a>00325     <a class="code" href="structOpt.html#a269b3d2789b821a74a7255b2fd308da4">disableCoherentControlFlow</a> = <span class="keyword">false</span>;
-<a name="l00326"></a>00326     <a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">disableUniformControlFlow</a> = <span class="keyword">false</span>;
-<a name="l00327"></a>00327     <a class="code" href="structOpt.html#a515b1fed805b43f36ec51403c8d4f3bf">disableGatherScatterOptimizations</a> = <span class="keyword">false</span>;
-<a name="l00328"></a>00328     <a class="code" href="structOpt.html#a4922c058dd40b20fcda0022be7a7d6ea">disableMaskedStoreToStore</a> = <span class="keyword">false</span>;
-<a name="l00329"></a>00329     <a class="code" href="structOpt.html#a6e55373ff211bb3ea9d98d731d074c92">disableGatherScatterFlattening</a> = <span class="keyword">false</span>;
-<a name="l00330"></a>00330     <a class="code" href="structOpt.html#ade00ce91375beef743b1dc773a526d12">disableUniformMemoryOptimizations</a> = <span class="keyword">false</span>;
-<a name="l00331"></a>00331     <a class="code" href="structOpt.html#a2c9adc53ac4a504bf41f84aa68b1d471">disableMaskedStoreOptimizations</a> = <span class="keyword">false</span>;
-<a name="l00332"></a>00332 }
-<a name="l00333"></a>00333 <span class="comment"></span>
-<a name="l00334"></a>00334 <span class="comment">///////////////////////////////////////////////////////////////////////////</span>
-<a name="l00335"></a>00335 <span class="comment"></span><span class="comment">// Globals</span>
-<a name="l00336"></a>00336 
-<a name="l00337"></a><a class="code" href="structGlobals.html#a3b78cfdbe2809ad8b6b722969dda4425">00337</a> <a class="code" href="structGlobals.html#a3b78cfdbe2809ad8b6b722969dda4425">Globals::Globals</a>() {
-<a name="l00338"></a>00338     <a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a> = <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3f9d7b36c46f10ce2e7246c587fdb284">Globals::Math_ISPC</a>;
-<a name="l00339"></a>00339 
-<a name="l00340"></a>00340     <a class="code" href="structGlobals.html#a65b6c565d6264e535d48a27f89de3329">includeStdlib</a> = <span class="keyword">true</span>;
-<a name="l00341"></a>00341     <a class="code" href="structGlobals.html#aa150c22538b58a8a390466ce996d9a6f">runCPP</a> = <span class="keyword">true</span>;
-<a name="l00342"></a>00342     <a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a> = <span class="keyword">false</span>;
-<a name="l00343"></a>00343     <a class="code" href="structGlobals.html#a59396e4fc487ea16b659d6e370bcb624">disableWarnings</a> = <span class="keyword">false</span>;
-<a name="l00344"></a>00344     <a class="code" href="structGlobals.html#abe8464ded1077b692bf7446bd120672c">warningsAsErrors</a> = <span class="keyword">false</span>;
-<a name="l00345"></a>00345     <a class="code" href="structGlobals.html#a3d125edf09b2a3f07d83986ea25b87e3">disableLineWrap</a> = <span class="keyword">false</span>;
-<a name="l00346"></a>00346     <a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">emitPerfWarnings</a> = <span class="keyword">true</span>;
-<a name="l00347"></a>00347     <a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">emitInstrumentation</a> = <span class="keyword">false</span>;
-<a name="l00348"></a>00348     <a class="code" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">generateDebuggingSymbols</a> = <span class="keyword">false</span>;
-<a name="l00349"></a>00349     <a class="code" href="structGlobals.html#a70d9662d1a19c30f5d94dfebf5e6d49c">mangleFunctionsWithTarget</a> = <span class="keyword">false</span>;
-<a name="l00350"></a>00350 
-<a name="l00351"></a>00351     <a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a> = <span class="keyword">new</span> llvm::LLVMContext;
-<a name="l00352"></a>00352 
-<a name="l00353"></a>00353 <span class="preprocessor">#ifdef ISPC_IS_WINDOWS</span>
-<a name="l00354"></a>00354 <span class="preprocessor"></span>    _getcwd(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>, <span class="keyword">sizeof</span>(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>));
-<a name="l00355"></a>00355 <span class="preprocessor">#else</span>
-<a name="l00356"></a>00356 <span class="preprocessor"></span>    <span class="keywordflow">if</span> (getcwd(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>, <span class="keyword">sizeof</span>(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>)) == <a class="code" href="parse_8yy.html">NULL</a>)
-<a name="l00357"></a>00357         <a class="code" href="util_8h.html#a14ec8c552061330276dfd86f506095a3">FATAL</a>(<span class="stringliteral">&quot;Current directory path too long!&quot;</span>);
-<a name="l00358"></a>00358 <span class="preprocessor">#endif</span>
-<a name="l00359"></a>00359 <span class="preprocessor"></span>}
+<a name="l00196"></a><a class="code" href="structTarget.html#a5104570c83ae7dbdcc007a60f3ab0b43">00196</a> <a class="code" href="structTarget.html#a5104570c83ae7dbdcc007a60f3ab0b43">Target::SupportedTargetCPUs</a>() {
+<a name="l00197"></a>00197     <span class="keywordflow">return</span> <span class="stringliteral">&quot;atom, barcelona, core2, corei7, &quot;</span>
+<a name="l00198"></a>00198 <span class="preprocessor">#if defined(LLVM_3_0) || defined(LLVM_3_0svn) || defined(LLVM_3_1svn)</span>
+<a name="l00199"></a>00199 <span class="preprocessor"></span>        <span class="stringliteral">&quot;corei7-avx, &quot;</span>
+<a name="l00200"></a>00200 <span class="preprocessor">#endif</span>
+<a name="l00201"></a>00201 <span class="preprocessor"></span>        <span class="stringliteral">&quot;istanbul, nocona, penryn, &quot;</span>
+<a name="l00202"></a>00202 <span class="preprocessor">#ifdef LLVM_2_9</span>
+<a name="l00203"></a>00203 <span class="preprocessor"></span>        <span class="stringliteral">&quot;sandybridge, &quot;</span>
+<a name="l00204"></a>00204 <span class="preprocessor">#endif</span>
+<a name="l00205"></a>00205 <span class="preprocessor"></span>        <span class="stringliteral">&quot;westmere&quot;</span>;
+<a name="l00206"></a>00206 }
+<a name="l00207"></a>00207 
+<a name="l00208"></a>00208 
+<a name="l00209"></a>00209 <span class="keyword">const</span> <span class="keywordtype">char</span> *
+<a name="l00210"></a><a class="code" href="structTarget.html#a5041eb44952f1f269cb0e261818183cc">00210</a> <a class="code" href="structTarget.html#a5041eb44952f1f269cb0e261818183cc">Target::SupportedTargetArchs</a>() {
+<a name="l00211"></a>00211     <span class="keywordflow">return</span> <span class="stringliteral">&quot;x86, x86-64&quot;</span>;
+<a name="l00212"></a>00212 }
+<a name="l00213"></a>00213 
+<a name="l00214"></a>00214 
+<a name="l00215"></a>00215 <span class="keyword">const</span> <span class="keywordtype">char</span> *
+<a name="l00216"></a><a class="code" href="structTarget.html#aa4eef29d6c935850bfcd7b3245618c31">00216</a> <a class="code" href="structTarget.html#aa4eef29d6c935850bfcd7b3245618c31">Target::SupportedTargetISAs</a>() {
+<a name="l00217"></a>00217     <span class="keywordflow">return</span> <span class="stringliteral">&quot;sse2, sse2-x2, sse4, sse4-x2&quot;</span>
+<a name="l00218"></a>00218 <span class="preprocessor">#ifndef LLVM_2_9</span>
+<a name="l00219"></a>00219 <span class="preprocessor"></span>        <span class="stringliteral">&quot;, avx, avx-x2&quot;</span>
+<a name="l00220"></a>00220 <span class="preprocessor">#endif !LLVM_2_9</span>
+<a name="l00221"></a>00221 <span class="preprocessor"></span><span class="preprocessor">#ifdef LLVM_3_1svn</span>
+<a name="l00222"></a>00222 <span class="preprocessor"></span>        <span class="stringliteral">&quot;, avx2, avx2-x2&quot;</span>
+<a name="l00223"></a>00223 <span class="preprocessor">#endif // LLVM_3_1svn</span>
+<a name="l00224"></a>00224 <span class="preprocessor"></span>        ;
+<a name="l00225"></a>00225 }
+<a name="l00226"></a>00226 
+<a name="l00227"></a>00227 
+<a name="l00228"></a>00228 std::string
+<a name="l00229"></a><a class="code" href="structTarget.html#ab2ff7278411fa2284c11853ec218dad3">00229</a> <a class="code" href="structTarget.html#ab2ff7278411fa2284c11853ec218dad3">Target::GetTripleString</a>()<span class="keyword"> const </span>{
+<a name="l00230"></a>00230     llvm::Triple triple;
+<a name="l00231"></a>00231     <span class="comment">// Start with the host triple as the default</span>
+<a name="l00232"></a>00232 <span class="preprocessor">#if defined(LLVM_3_1) || defined(LLVM_3_1svn)</span>
+<a name="l00233"></a>00233 <span class="preprocessor"></span>    triple.setTriple(llvm::sys::getDefaultTargetTriple());
+<a name="l00234"></a>00234 <span class="preprocessor">#else</span>
+<a name="l00235"></a>00235 <span class="preprocessor"></span>    triple.setTriple(llvm::sys::getHostTriple());
+<a name="l00236"></a>00236 <span class="preprocessor">#endif</span>
+<a name="l00237"></a>00237 <span class="preprocessor"></span>
+<a name="l00238"></a>00238     <span class="comment">// And override the arch in the host triple based on what the user</span>
+<a name="l00239"></a>00239     <span class="comment">// specified.  Here we need to deal with the fact that LLVM uses one</span>
+<a name="l00240"></a>00240     <span class="comment">// naming convention for targets TargetRegistry, but wants some</span>
+<a name="l00241"></a>00241     <span class="comment">// slightly different ones for the triple.  TODO: is there a way to</span>
+<a name="l00242"></a>00242     <span class="comment">// have it do this remapping, which would presumably be a bit less</span>
+<a name="l00243"></a>00243     <span class="comment">// error prone?</span>
+<a name="l00244"></a>00244     <span class="keywordflow">if</span> (<a class="code" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">arch</a> == <span class="stringliteral">&quot;x86&quot;</span>)
+<a name="l00245"></a>00245         triple.setArchName(<span class="stringliteral">&quot;i386&quot;</span>);
+<a name="l00246"></a>00246     <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">arch</a> == <span class="stringliteral">&quot;x86-64&quot;</span>)
+<a name="l00247"></a>00247         triple.setArchName(<span class="stringliteral">&quot;x86_64&quot;</span>);
+<a name="l00248"></a>00248     <span class="keywordflow">else</span>
+<a name="l00249"></a>00249         triple.setArchName(<a class="code" href="structTarget.html#ae5ece00826a86ceddb3f124f844536b6">arch</a>);
+<a name="l00250"></a>00250 
+<a name="l00251"></a>00251     <span class="keywordflow">return</span> triple.str();
+<a name="l00252"></a>00252 }
+<a name="l00253"></a>00253 
+<a name="l00254"></a>00254 
+<a name="l00255"></a>00255 llvm::TargetMachine *
+<a name="l00256"></a><a class="code" href="structTarget.html#a555a165ae94adf95dc5f6696dc636002">00256</a> <a class="code" href="structTarget.html#a555a165ae94adf95dc5f6696dc636002">Target::GetTargetMachine</a>()<span class="keyword"> const </span>{
+<a name="l00257"></a>00257     std::string triple = <a class="code" href="structTarget.html#ab2ff7278411fa2284c11853ec218dad3">GetTripleString</a>();
+<a name="l00258"></a>00258 
+<a name="l00259"></a>00259     llvm::Reloc::Model relocModel = <a class="code" href="structTarget.html#a6be1ed9658230f08d1804d97d4ba613a">generatePIC</a> ? llvm::Reloc::PIC_ : 
+<a name="l00260"></a>00260                                                   llvm::Reloc::Default;
+<a name="l00261"></a>00261 <span class="preprocessor">#if defined(LLVM_3_1svn)</span>
+<a name="l00262"></a>00262 <span class="preprocessor"></span>    std::string featuresString = <a class="code" href="structTarget.html#a01424094b1354481c1d6b200c8889fe5">attributes</a>;
+<a name="l00263"></a>00263     llvm::TargetOptions options;
+<a name="l00264"></a>00264     <span class="keywordflow">if</span> (g-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">fastMath</a> == <span class="keyword">true</span>)
+<a name="l00265"></a>00265         options.UnsafeFPMath = 1;
+<a name="l00266"></a>00266     llvm::TargetMachine *targetMachine = 
+<a name="l00267"></a>00267         <a class="code" href="structTarget.html#a55890a8b4d0f386f67b0e3497da6c238">target</a>-&gt;createTargetMachine(triple, <a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">cpu</a>, featuresString, options,
+<a name="l00268"></a>00268                                     relocModel);
+<a name="l00269"></a>00269 <span class="preprocessor">#elif defined(LLVM_3_0)</span>
+<a name="l00270"></a>00270 <span class="preprocessor"></span>    std::string featuresString = <a class="code" href="structTarget.html#a01424094b1354481c1d6b200c8889fe5">attributes</a>;
+<a name="l00271"></a>00271     llvm::TargetMachine *targetMachine = 
+<a name="l00272"></a>00272         <a class="code" href="structTarget.html#a55890a8b4d0f386f67b0e3497da6c238">target</a>-&gt;createTargetMachine(triple, <a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">cpu</a>, featuresString, relocModel);
+<a name="l00273"></a>00273 <span class="preprocessor">#else // LLVM 2.9</span>
+<a name="l00274"></a>00274 <span class="preprocessor"></span><span class="preprocessor">#ifdef ISPC_IS_APPLE</span>
+<a name="l00275"></a>00275 <span class="preprocessor"></span>    relocModel = llvm::Reloc::PIC_;
+<a name="l00276"></a>00276 <span class="preprocessor">#endif // ISPC_IS_APPLE</span>
+<a name="l00277"></a>00277 <span class="preprocessor"></span>    std::string featuresString = <a class="code" href="structTarget.html#ac679ed8206a1c9a8e150a15cff46b840">cpu</a> + std::string(<span class="stringliteral">&quot;,&quot;</span>) + <a class="code" href="structTarget.html#a01424094b1354481c1d6b200c8889fe5">attributes</a>;
+<a name="l00278"></a>00278     llvm::TargetMachine *targetMachine = 
+<a name="l00279"></a>00279         <a class="code" href="structTarget.html#a55890a8b4d0f386f67b0e3497da6c238">target</a>-&gt;createTargetMachine(triple, featuresString);
+<a name="l00280"></a>00280 <span class="preprocessor">#ifndef ISPC_IS_WINDOWS</span>
+<a name="l00281"></a>00281 <span class="preprocessor"></span>    targetMachine-&gt;setRelocationModel(relocModel);
+<a name="l00282"></a>00282 <span class="preprocessor">#endif // !ISPC_IS_WINDOWS</span>
+<a name="l00283"></a>00283 <span class="preprocessor"></span><span class="preprocessor">#endif // LLVM_2_9</span>
+<a name="l00284"></a>00284 <span class="preprocessor"></span>
+<a name="l00285"></a>00285     <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(targetMachine != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00286"></a>00286 
+<a name="l00287"></a>00287     targetMachine-&gt;setAsmVerbosityDefault(<span class="keyword">true</span>);
+<a name="l00288"></a>00288     <span class="keywordflow">return</span> targetMachine;
+<a name="l00289"></a>00289 }
+<a name="l00290"></a>00290 
+<a name="l00291"></a>00291 
+<a name="l00292"></a>00292 <span class="keyword">const</span> <span class="keywordtype">char</span> *
+<a name="l00293"></a><a class="code" href="structTarget.html#a30f10ac6e7be95c65a4808da30b62de3">00293</a> <a class="code" href="structTarget.html#a30f10ac6e7be95c65a4808da30b62de3">Target::GetISAString</a>()<span class="keyword"> const </span>{
+<a name="l00294"></a>00294     <span class="keywordflow">switch</span> (<a class="code" href="structTarget.html#a3ca3d78d8240b68881e00af656df2951">isa</a>) {
+<a name="l00295"></a>00295     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa405a12bd45be878b6cc9c6d006e1dd76">Target::SSE2</a>:
+<a name="l00296"></a>00296         <span class="keywordflow">return</span> <span class="stringliteral">&quot;sse2&quot;</span>;
+<a name="l00297"></a>00297     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa4ae729a3f9131ab5aa5d621fa6e24cc3">Target::SSE4</a>:
+<a name="l00298"></a>00298         <span class="keywordflow">return</span> <span class="stringliteral">&quot;sse4&quot;</span>;
+<a name="l00299"></a>00299     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa0bb31e5429c5e5ae43b3ac3c76104ef7">Target::AVX</a>:
+<a name="l00300"></a>00300         <span class="keywordflow">return</span> <span class="stringliteral">&quot;avx&quot;</span>;
+<a name="l00301"></a>00301     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa0cf71c169e93a54fb004ef81032a3438">Target::AVX2</a>:
+<a name="l00302"></a>00302         <span class="keywordflow">return</span> <span class="stringliteral">&quot;avx2&quot;</span>;
+<a name="l00303"></a>00303     <span class="keywordflow">default</span>:
+<a name="l00304"></a>00304         <a class="code" href="util_8h.html#a14ec8c552061330276dfd86f506095a3">FATAL</a>(<span class="stringliteral">&quot;Unhandled target in GetISAString()&quot;</span>);
+<a name="l00305"></a>00305     }
+<a name="l00306"></a>00306     <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;
+<a name="l00307"></a>00307 }
+<a name="l00308"></a>00308 
+<a name="l00309"></a>00309 
+<a name="l00310"></a>00310 llvm::Value *
+<a name="l00311"></a><a class="code" href="structTarget.html#a7371a212ee18874627f0a5f9aae82dca">00311</a> <a class="code" href="structTarget.html#a7371a212ee18874627f0a5f9aae82dca">Target::SizeOf</a>(<a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type) {
+<a name="l00312"></a>00312     <span class="keyword">const</span> llvm::TargetData *td = <a class="code" href="structTarget.html#a555a165ae94adf95dc5f6696dc636002">GetTargetMachine</a>()-&gt;getTargetData();
+<a name="l00313"></a>00313     <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(td != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00314"></a>00314     uint64_t byteSize = td-&gt;getTypeSizeInBits(type) / 8;
+<a name="l00315"></a>00315     <span class="keywordflow">if</span> (<a class="code" href="structTarget.html#a020c3a918fec5062c174266db0e36720">is32Bit</a> || g-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a8c01f8f3455aa7c26a3ddcc55f1a4099">force32BitAddressing</a>)
+<a name="l00316"></a>00316         <span class="keywordflow">return</span> <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>((<a class="code" href="parse_8yy.html#a10e8b2d266b06d06f972396bf71af292">int32_t</a>)byteSize);
+<a name="l00317"></a>00317     <span class="keywordflow">else</span>
+<a name="l00318"></a>00318         <span class="keywordflow">return</span> <a class="code" href="llvmutil_8h.html#a55856bce3d2fc76f28111393ab711537">LLVMInt64</a>(byteSize);
+<a name="l00319"></a>00319 }
+<a name="l00320"></a>00320 
+<a name="l00321"></a>00321 
+<a name="l00322"></a>00322 llvm::Value *
+<a name="l00323"></a><a class="code" href="structTarget.html#af50a6d3e136bf1c625213d672575d152">00323</a> <a class="code" href="structTarget.html#af50a6d3e136bf1c625213d672575d152">Target::StructOffset</a>(<a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *type, <span class="keywordtype">int</span> element) {
+<a name="l00324"></a>00324     <span class="keyword">const</span> llvm::TargetData *td = <a class="code" href="structTarget.html#a555a165ae94adf95dc5f6696dc636002">GetTargetMachine</a>()-&gt;getTargetData();
+<a name="l00325"></a>00325     <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(td != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00326"></a>00326     <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::StructType *structType = 
+<a name="l00327"></a>00327         llvm::dyn_cast&lt;<a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::StructType&gt;(type);
+<a name="l00328"></a>00328     <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(structType != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00329"></a>00329     <span class="keyword">const</span> llvm::StructLayout *sl = td-&gt;getStructLayout(structType);
+<a name="l00330"></a>00330     <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(sl != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00331"></a>00331 
+<a name="l00332"></a>00332     uint64_t offset = sl-&gt;getElementOffset(element);
+<a name="l00333"></a>00333     <span class="keywordflow">if</span> (<a class="code" href="structTarget.html#a020c3a918fec5062c174266db0e36720">is32Bit</a> || g-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a8c01f8f3455aa7c26a3ddcc55f1a4099">force32BitAddressing</a>)
+<a name="l00334"></a>00334         <span class="keywordflow">return</span> <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>((<a class="code" href="parse_8yy.html#a10e8b2d266b06d06f972396bf71af292">int32_t</a>)offset);
+<a name="l00335"></a>00335     <span class="keywordflow">else</span>
+<a name="l00336"></a>00336         <span class="keywordflow">return</span> <a class="code" href="llvmutil_8h.html#a55856bce3d2fc76f28111393ab711537">LLVMInt64</a>(offset);
+<a name="l00337"></a>00337 }
+<a name="l00338"></a>00338 
+<a name="l00339"></a>00339 <span class="comment"></span>
+<a name="l00340"></a>00340 <span class="comment">///////////////////////////////////////////////////////////////////////////</span>
+<a name="l00341"></a>00341 <span class="comment"></span><span class="comment">// Opt</span>
+<a name="l00342"></a>00342 
+<a name="l00343"></a><a class="code" href="structOpt.html#ae1ec631e0d039be80e5182b5d79ec0dd">00343</a> <a class="code" href="structOpt.html#ae1ec631e0d039be80e5182b5d79ec0dd">Opt::Opt</a>() {
+<a name="l00344"></a>00344     <a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a> = 1;
+<a name="l00345"></a>00345     <a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">fastMath</a> = <span class="keyword">false</span>;
+<a name="l00346"></a>00346     <a class="code" href="structOpt.html#a751580c259f1ee6f7ecf82d025651b54">fastMaskedVload</a> = <span class="keyword">false</span>;
+<a name="l00347"></a>00347     <a class="code" href="structOpt.html#a8c01f8f3455aa7c26a3ddcc55f1a4099">force32BitAddressing</a> = <span class="keyword">true</span>;
+<a name="l00348"></a>00348     <a class="code" href="structOpt.html#a93ab457610c75c76b82b35bdbee5e18a">unrollLoops</a> = <span class="keyword">true</span>;
+<a name="l00349"></a>00349     <a class="code" href="structOpt.html#afc84ab6af324e0efee5c0f9f86390d07">disableAsserts</a> = <span class="keyword">false</span>;
+<a name="l00350"></a>00350     <a class="code" href="structOpt.html#aca3c4f4401d84d52bcf77b3dd8a89d0c">disableMaskAllOnOptimizations</a> = <span class="keyword">false</span>;
+<a name="l00351"></a>00351     <a class="code" href="structOpt.html#a1f2ce342012d4e65a83a47a0327380bc">disableHandlePseudoMemoryOps</a> = <span class="keyword">false</span>;
+<a name="l00352"></a>00352     <a class="code" href="structOpt.html#a441c78a679b7bc088d879ade8d20845f">disableBlendedMaskedStores</a> = <span class="keyword">false</span>;
+<a name="l00353"></a>00353     <a class="code" href="structOpt.html#a269b3d2789b821a74a7255b2fd308da4">disableCoherentControlFlow</a> = <span class="keyword">false</span>;
+<a name="l00354"></a>00354     <a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">disableUniformControlFlow</a> = <span class="keyword">false</span>;
+<a name="l00355"></a>00355     <a class="code" href="structOpt.html#a515b1fed805b43f36ec51403c8d4f3bf">disableGatherScatterOptimizations</a> = <span class="keyword">false</span>;
+<a name="l00356"></a>00356     <a class="code" href="structOpt.html#a4922c058dd40b20fcda0022be7a7d6ea">disableMaskedStoreToStore</a> = <span class="keyword">false</span>;
+<a name="l00357"></a>00357     <a class="code" href="structOpt.html#a6e55373ff211bb3ea9d98d731d074c92">disableGatherScatterFlattening</a> = <span class="keyword">false</span>;
+<a name="l00358"></a>00358     <a class="code" href="structOpt.html#ade00ce91375beef743b1dc773a526d12">disableUniformMemoryOptimizations</a> = <span class="keyword">false</span>;
+<a name="l00359"></a>00359 }
 <a name="l00360"></a>00360 <span class="comment"></span>
 <a name="l00361"></a>00361 <span class="comment">///////////////////////////////////////////////////////////////////////////</span>
-<a name="l00362"></a>00362 <span class="comment"></span><span class="comment">// SourcePos</span>
+<a name="l00362"></a>00362 <span class="comment"></span><span class="comment">// Globals</span>
 <a name="l00363"></a>00363 
-<a name="l00364"></a><a class="code" href="structSourcePos.html#ab616f6aad74378f9f4d0a9ace425c662">00364</a> <a class="code" href="structSourcePos.html#ab616f6aad74378f9f4d0a9ace425c662">SourcePos::SourcePos</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *n, <span class="keywordtype">int</span> fl, <span class="keywordtype">int</span> fc, <span class="keywordtype">int</span> ll, <span class="keywordtype">int</span> lc) {
-<a name="l00365"></a>00365     <a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a> = n ? n : m-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getModuleIdentifier().c_str();
-<a name="l00366"></a>00366     <a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a> = fl;
-<a name="l00367"></a>00367     <a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a> = fc;
-<a name="l00368"></a>00368     <a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a> = ll != 0 ? ll : fl;
-<a name="l00369"></a>00369     <a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a> = lc != 0 ? lc : fc;
-<a name="l00370"></a>00370 }
-<a name="l00371"></a>00371 
-<a name="l00372"></a>00372 
-<a name="l00373"></a>00373 llvm::DIFile
-<a name="l00374"></a><a class="code" href="structSourcePos.html#a57433eabbd210646542327733061bc3a">00374</a> <a class="code" href="structSourcePos.html#a57433eabbd210646542327733061bc3a">SourcePos::GetDIFile</a>()<span class="keyword"> const </span>{
-<a name="l00375"></a>00375     std::string directory, <a class="code" href="lex_8ll.html#ae80f820219e45772366a2a68de6a54c4">filename</a>;
-<a name="l00376"></a>00376     <a class="code" href="util_8h.html#a523e79710c3f66bf78e5f752589dfc41">GetDirectoryAndFileName</a>(g-&gt;<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>, <a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>, &amp;directory, &amp;filename);
-<a name="l00377"></a>00377     <span class="keywordflow">return</span> m-&gt;<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>-&gt;createFile(filename, directory);
-<a name="l00378"></a>00378 }
+<a name="l00364"></a><a class="code" href="structGlobals.html#a3b78cfdbe2809ad8b6b722969dda4425">00364</a> <a class="code" href="structGlobals.html#a3b78cfdbe2809ad8b6b722969dda4425">Globals::Globals</a>() {
+<a name="l00365"></a>00365     <a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a> = <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3f9d7b36c46f10ce2e7246c587fdb284">Globals::Math_ISPC</a>;
+<a name="l00366"></a>00366 
+<a name="l00367"></a>00367     <a class="code" href="structGlobals.html#a65b6c565d6264e535d48a27f89de3329">includeStdlib</a> = <span class="keyword">true</span>;
+<a name="l00368"></a>00368     <a class="code" href="structGlobals.html#aa150c22538b58a8a390466ce996d9a6f">runCPP</a> = <span class="keyword">true</span>;
+<a name="l00369"></a>00369     <a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a> = <span class="keyword">false</span>;
+<a name="l00370"></a>00370     <a class="code" href="structGlobals.html#a59396e4fc487ea16b659d6e370bcb624">disableWarnings</a> = <span class="keyword">false</span>;
+<a name="l00371"></a>00371     <a class="code" href="structGlobals.html#abe8464ded1077b692bf7446bd120672c">warningsAsErrors</a> = <span class="keyword">false</span>;
+<a name="l00372"></a>00372     <a class="code" href="structGlobals.html#a3d125edf09b2a3f07d83986ea25b87e3">disableLineWrap</a> = <span class="keyword">false</span>;
+<a name="l00373"></a>00373     <a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">emitPerfWarnings</a> = <span class="keyword">true</span>;
+<a name="l00374"></a>00374     <a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">emitInstrumentation</a> = <span class="keyword">false</span>;
+<a name="l00375"></a>00375     <a class="code" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">generateDebuggingSymbols</a> = <span class="keyword">false</span>;
+<a name="l00376"></a>00376     <a class="code" href="structGlobals.html#a70d9662d1a19c30f5d94dfebf5e6d49c">mangleFunctionsWithTarget</a> = <span class="keyword">false</span>;
+<a name="l00377"></a>00377 
+<a name="l00378"></a>00378     <a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a> = <span class="keyword">new</span> llvm::LLVMContext;
 <a name="l00379"></a>00379 
-<a name="l00380"></a>00380 
-<a name="l00381"></a>00381 <span class="keywordtype">void</span>
-<a name="l00382"></a><a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">00382</a> <a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">SourcePos::Print</a>()<span class="keyword"> const </span>{ 
-<a name="l00383"></a>00383     printf(<span class="stringliteral">&quot; @ [%s:%d.%d - %d.%d] &quot;</span>, <a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>, <a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>, <a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a>,
-<a name="l00384"></a>00384            <a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a>, <a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a>); 
-<a name="l00385"></a>00385 }
-<a name="l00386"></a>00386 
-<a name="l00387"></a>00387 
-<a name="l00388"></a>00388 <span class="keywordtype">bool</span>
-<a name="l00389"></a><a class="code" href="structSourcePos.html#ae0f1fca8c871e86a0e4eb0475132e777">00389</a> <a class="code" href="structSourcePos.html#ae0f1fca8c871e86a0e4eb0475132e777">SourcePos::operator==</a>(<span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> &amp;p2)<span class="keyword"> const </span>{
-<a name="l00390"></a>00390     <span class="keywordflow">return</span> (!strcmp(<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>, p2.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>) &amp;&amp; 
-<a name="l00391"></a>00391             <a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a> == p2.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a> &amp;&amp;
-<a name="l00392"></a>00392             <a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a> == p2.<a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a> &amp;&amp;
-<a name="l00393"></a>00393             <a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a> == p2.<a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a> &amp;&amp;
-<a name="l00394"></a>00394             <a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a> == p2.<a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a>);
-<a name="l00395"></a>00395 }
-<a name="l00396"></a>00396 
-<a name="l00397"></a>00397 
-<a name="l00398"></a>00398 <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a>
-<a name="l00399"></a><a class="code" href="ispc_8cpp.html#acbd38f07d1ae1bac50358d5d01cb3265">00399</a> <a class="code" href="ispc_8h.html#acbd38f07d1ae1bac50358d5d01cb3265">Union</a>(<span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> &amp;p1, <span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> &amp;p2) {
-<a name="l00400"></a>00400     <span class="keywordflow">if</span> (strcmp(p1.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>, p2.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>) != 0)
-<a name="l00401"></a>00401         <span class="keywordflow">return</span> p1;
-<a name="l00402"></a>00402 
-<a name="l00403"></a>00403     <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> ret;
-<a name="l00404"></a>00404     ret.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a> = p1.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>;
-<a name="l00405"></a>00405     ret.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a> = std::min(p1.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>, p2.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>);
-<a name="l00406"></a>00406     ret.<a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a> = std::min(p1.<a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a>, p2.<a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a>);
-<a name="l00407"></a>00407     ret.<a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a> = std::max(p1.<a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a>, p2.<a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a>);
-<a name="l00408"></a>00408     ret.<a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a> = std::max(p1.<a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a>, p2.<a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a>);
-<a name="l00409"></a>00409     <span class="keywordflow">return</span> ret;
-<a name="l00410"></a>00410 }
+<a name="l00380"></a>00380 <span class="preprocessor">#ifdef ISPC_IS_WINDOWS</span>
+<a name="l00381"></a>00381 <span class="preprocessor"></span>    _getcwd(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>, <span class="keyword">sizeof</span>(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>));
+<a name="l00382"></a>00382 <span class="preprocessor">#else</span>
+<a name="l00383"></a>00383 <span class="preprocessor"></span>    <span class="keywordflow">if</span> (getcwd(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>, <span class="keyword">sizeof</span>(<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>)) == <a class="code" href="parse_8yy.html">NULL</a>)
+<a name="l00384"></a>00384         <a class="code" href="util_8h.html#a14ec8c552061330276dfd86f506095a3">FATAL</a>(<span class="stringliteral">&quot;Current directory path too long!&quot;</span>);
+<a name="l00385"></a>00385 <span class="preprocessor">#endif</span>
+<a name="l00386"></a>00386 <span class="preprocessor"></span>}
+<a name="l00387"></a>00387 <span class="comment"></span>
+<a name="l00388"></a>00388 <span class="comment">///////////////////////////////////////////////////////////////////////////</span>
+<a name="l00389"></a>00389 <span class="comment"></span><span class="comment">// SourcePos</span>
+<a name="l00390"></a>00390 
+<a name="l00391"></a><a class="code" href="structSourcePos.html#ab616f6aad74378f9f4d0a9ace425c662">00391</a> <a class="code" href="structSourcePos.html#ab616f6aad74378f9f4d0a9ace425c662">SourcePos::SourcePos</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *n, <span class="keywordtype">int</span> fl, <span class="keywordtype">int</span> fc, <span class="keywordtype">int</span> ll, <span class="keywordtype">int</span> lc) {
+<a name="l00392"></a>00392     <a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a> = n;
+<a name="l00393"></a>00393     <span class="keywordflow">if</span> (<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a> == <a class="code" href="parse_8yy.html">NULL</a>) {
+<a name="l00394"></a>00394         <span class="keywordflow">if</span> (m != <a class="code" href="parse_8yy.html">NULL</a>)
+<a name="l00395"></a>00395             <a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a> = m-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getModuleIdentifier().c_str();
+<a name="l00396"></a>00396         <span class="keywordflow">else</span>
+<a name="l00397"></a>00397             <a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a> = <span class="stringliteral">&quot;(unknown)&quot;</span>;
+<a name="l00398"></a>00398     }
+<a name="l00399"></a>00399     <a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a> = fl;
+<a name="l00400"></a>00400     <a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a> = fc;
+<a name="l00401"></a>00401     <a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a> = ll != 0 ? ll : fl;
+<a name="l00402"></a>00402     <a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a> = lc != 0 ? lc : fc;
+<a name="l00403"></a>00403 }
+<a name="l00404"></a>00404 
+<a name="l00405"></a>00405 
+<a name="l00406"></a>00406 llvm::DIFile
+<a name="l00407"></a><a class="code" href="structSourcePos.html#a57433eabbd210646542327733061bc3a">00407</a> <a class="code" href="structSourcePos.html#a57433eabbd210646542327733061bc3a">SourcePos::GetDIFile</a>()<span class="keyword"> const </span>{
+<a name="l00408"></a>00408     std::string directory, <a class="code" href="lex_8ll.html#ae80f820219e45772366a2a68de6a54c4">filename</a>;
+<a name="l00409"></a>00409     <a class="code" href="util_8h.html#a523e79710c3f66bf78e5f752589dfc41">GetDirectoryAndFileName</a>(g-&gt;<a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>, <a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>, &amp;directory, &amp;filename);
+<a name="l00410"></a>00410     <span class="keywordflow">return</span> m-&gt;<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>-&gt;createFile(filename, directory);
+<a name="l00411"></a>00411 }
+<a name="l00412"></a>00412 
+<a name="l00413"></a>00413 
+<a name="l00414"></a>00414 <span class="keywordtype">void</span>
+<a name="l00415"></a><a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">00415</a> <a class="code" href="structSourcePos.html#a9b5217a2056b9dd99c1762c5b4fdaade">SourcePos::Print</a>()<span class="keyword"> const </span>{ 
+<a name="l00416"></a>00416     printf(<span class="stringliteral">&quot; @ [%s:%d.%d - %d.%d] &quot;</span>, <a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>, <a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>, <a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a>,
+<a name="l00417"></a>00417            <a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a>, <a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a>); 
+<a name="l00418"></a>00418 }
+<a name="l00419"></a>00419 
+<a name="l00420"></a>00420 
+<a name="l00421"></a>00421 <span class="keywordtype">bool</span>
+<a name="l00422"></a><a class="code" href="structSourcePos.html#ae0f1fca8c871e86a0e4eb0475132e777">00422</a> <a class="code" href="structSourcePos.html#ae0f1fca8c871e86a0e4eb0475132e777">SourcePos::operator==</a>(<span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> &amp;p2)<span class="keyword"> const </span>{
+<a name="l00423"></a>00423     <span class="keywordflow">return</span> (!strcmp(<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>, p2.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>) &amp;&amp; 
+<a name="l00424"></a>00424             <a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a> == p2.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a> &amp;&amp;
+<a name="l00425"></a>00425             <a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a> == p2.<a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a> &amp;&amp;
+<a name="l00426"></a>00426             <a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a> == p2.<a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a> &amp;&amp;
+<a name="l00427"></a>00427             <a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a> == p2.<a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a>);
+<a name="l00428"></a>00428 }
+<a name="l00429"></a>00429 
+<a name="l00430"></a>00430 
+<a name="l00431"></a>00431 <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a>
+<a name="l00432"></a><a class="code" href="ispc_8cpp.html#acbd38f07d1ae1bac50358d5d01cb3265">00432</a> <a class="code" href="ispc_8h.html#acbd38f07d1ae1bac50358d5d01cb3265">Union</a>(<span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> &amp;p1, <span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> &amp;p2) {
+<a name="l00433"></a>00433     <span class="keywordflow">if</span> (strcmp(p1.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>, p2.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>) != 0)
+<a name="l00434"></a>00434         <span class="keywordflow">return</span> p1;
+<a name="l00435"></a>00435 
+<a name="l00436"></a>00436     <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> ret;
+<a name="l00437"></a>00437     ret.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a> = p1.<a class="code" href="structSourcePos.html#afb69f0a15c6bcc83842503ac680aff10">name</a>;
+<a name="l00438"></a>00438     ret.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a> = std::min(p1.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>, p2.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>);
+<a name="l00439"></a>00439     ret.<a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a> = std::min(p1.<a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a>, p2.<a class="code" href="structSourcePos.html#a4851c375e953c427868639ca09c46fd0">first_column</a>);
+<a name="l00440"></a>00440     ret.<a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a> = std::max(p1.<a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a>, p2.<a class="code" href="structSourcePos.html#a40567aa62f103f6943c81db7928d51ba">last_line</a>);
+<a name="l00441"></a>00441     ret.<a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a> = std::max(p1.<a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a>, p2.<a class="code" href="structSourcePos.html#a15b3adc9f7782e00df6d7a87ad576273">last_column</a>);
+<a name="l00442"></a>00442     <span class="keywordflow">return</span> ret;
+<a name="l00443"></a>00443 }
 </pre></div></div>
 </div>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 5 2011 14:46:08 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 15 2011 12:38:08 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

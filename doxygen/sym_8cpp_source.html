@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.1.0</span>
+   &#160;<span id="projectnumber">1.1.1</span>
    </div>
    
   </td>
@@ -129,7 +129,7 @@
 <a name="l00072"></a>00072 
 <a name="l00073"></a><a class="code" href="classSymbolTable.html#a5d5ae9b5b22d87691cec9ec17cfff650">00073</a> <a class="code" href="classSymbolTable.html#a5d5ae9b5b22d87691cec9ec17cfff650">SymbolTable::~SymbolTable</a>() {
 <a name="l00074"></a>00074     <span class="comment">// Otherwise we have mismatched push/pop scopes</span>
-<a name="l00075"></a>00075     <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>.size() == 1 &amp;&amp; <a class="code" href="classSymbolTable.html#ac1f7c7275c0776b88274976f4e05e150">functions</a>.size() == 1 &amp;&amp;
+<a name="l00075"></a>00075     <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(<a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>.size() == 1 &amp;&amp; <a class="code" href="classSymbolTable.html#ac1f7c7275c0776b88274976f4e05e150">functions</a>.size() == 1 &amp;&amp;
 <a name="l00076"></a>00076            <a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">types</a>.size() == 1);
 <a name="l00077"></a>00077     <a class="code" href="classSymbolTable.html#aa79caf59c28df4805abaf2ce5df83198">PopScope</a>();
 <a name="l00078"></a>00078 }
@@ -145,15 +145,15 @@
 <a name="l00088"></a>00088 
 <a name="l00089"></a>00089 <span class="keywordtype">void</span>
 <a name="l00090"></a><a class="code" href="classSymbolTable.html#aa79caf59c28df4805abaf2ce5df83198">00090</a> <a class="code" href="classSymbolTable.html#aa79caf59c28df4805abaf2ce5df83198">SymbolTable::PopScope</a>() { 
-<a name="l00091"></a>00091     <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>.size() &gt; 1);
+<a name="l00091"></a>00091     <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(<a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>.size() &gt; 1);
 <a name="l00092"></a>00092     <span class="keyword">delete</span> <a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>.back();
 <a name="l00093"></a>00093     <a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>.pop_back();
 <a name="l00094"></a>00094 
-<a name="l00095"></a>00095     <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="classSymbolTable.html#ac1f7c7275c0776b88274976f4e05e150">functions</a>.size() &gt; 1);
+<a name="l00095"></a>00095     <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(<a class="code" href="classSymbolTable.html#ac1f7c7275c0776b88274976f4e05e150">functions</a>.size() &gt; 1);
 <a name="l00096"></a>00096     <span class="keyword">delete</span> <a class="code" href="classSymbolTable.html#ac1f7c7275c0776b88274976f4e05e150">functions</a>.back();
 <a name="l00097"></a>00097     <a class="code" href="classSymbolTable.html#ac1f7c7275c0776b88274976f4e05e150">functions</a>.pop_back();
 <a name="l00098"></a>00098 
-<a name="l00099"></a>00099     <a class="code" href="parse_8yy.html">assert</a>(<a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">types</a>.size() &gt; 1);
+<a name="l00099"></a>00099     <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(<a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">types</a>.size() &gt; 1);
 <a name="l00100"></a>00100     <span class="keyword">delete</span> <a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">types</a>.back();
 <a name="l00101"></a>00101     <a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">types</a>.pop_back();
 <a name="l00102"></a>00102 }
@@ -161,7 +161,7 @@
 <a name="l00104"></a>00104 
 <a name="l00105"></a>00105 <span class="keywordtype">bool</span>
 <a name="l00106"></a><a class="code" href="classSymbolTable.html#a2d5e4d85d5e1ede45b7fd155741628ff">00106</a> <a class="code" href="classSymbolTable.html#a2d5e4d85d5e1ede45b7fd155741628ff">SymbolTable::AddVariable</a>(<a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *symbol) {
-<a name="l00107"></a>00107     <a class="code" href="parse_8yy.html">assert</a>(symbol != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00107"></a>00107     <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(symbol != <a class="code" href="parse_8yy.html">NULL</a>);
 <a name="l00108"></a>00108 
 <a name="l00109"></a>00109     <span class="comment">// Check to see if a symbol of the same name has already been declared.</span>
 <a name="l00110"></a>00110     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = (<span class="keywordtype">int</span>)<a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>.size() - 1; i &gt;= 0; --i) {
@@ -211,7 +211,7 @@
 <a name="l00154"></a>00154 <span class="keywordtype">bool</span>
 <a name="l00155"></a><a class="code" href="classSymbolTable.html#ab49a5dd3c4f49a5c1a2b7882dd1af736">00155</a> <a class="code" href="classSymbolTable.html#ab49a5dd3c4f49a5c1a2b7882dd1af736">SymbolTable::AddFunction</a>(<a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *symbol) {
 <a name="l00156"></a>00156     <span class="keyword">const</span> <a class="code" href="classFunctionType.html" title="Type representing a function (return type + argument types)">FunctionType</a> *ft = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classFunctionType.html" title="Type representing a function (return type + argument types)">FunctionType</a> *<span class="keyword">&gt;</span>(symbol-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>);
-<a name="l00157"></a>00157     <a class="code" href="parse_8yy.html">assert</a>(ft != <a class="code" href="parse_8yy.html">NULL</a>);
+<a name="l00157"></a>00157     <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(ft != <a class="code" href="parse_8yy.html">NULL</a>);
 <a name="l00158"></a>00158     <span class="keywordflow">if</span> (<a class="code" href="classSymbolTable.html#a9f0b950e01362dd2d954c53158cd2167">LookupFunction</a>(symbol-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>.c_str(), ft) != <a class="code" href="parse_8yy.html">NULL</a>)
 <a name="l00159"></a>00159         <span class="comment">// A function of the same name and type has already been added to</span>
 <a name="l00160"></a>00160         <span class="comment">// the symbol table</span>
@@ -433,7 +433,7 @@
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 5 2011 14:46:09 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 15 2011 12:38:08 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>
