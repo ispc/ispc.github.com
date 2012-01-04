@@ -2,12 +2,10 @@
 Intel(r) SPMD Program Compiler
 ==============================
 
-Welcome to the Intel(r) SPMD Program Compiler (ispc)!  
-
 ``ispc`` is a compiler for a variant of the C programming language, with
 extensions for `single program, multiple
-data<http://en.wikipedia.org/wiki/SPMD">(SPMD)`_ programming.  Under the
-SPMD model, the programmer writes a program that generally appears to be a
+data<http://en.wikipedia.org/wiki/SPMD>`_ programming.  Under the SPMD
+model, the programmer writes a program that generally appears to be a
 regular serial program, though the execution model is actually that a
 number of *program instances* execute in parallel on the hardware.
 
@@ -44,17 +42,17 @@ There are a few key principles in the design of ``ispc``:
     the two languages and to share data directly via pointers without
     copying or reformatting.
 
-``ispc`` is an open source compiler with the BSD license</a>.  It uses the
-remarkable `LLVM Compiler Infrastructure<http://llvm.org>`_ for back-end
+``ispc`` is an open source compiler with the BSD license.  It uses the
+remarkable `LLVM Compiler Infrastructure <http://llvm.org>`_ for back-end
 code generation and optimization and is `hosted on
-github<http://github.com/ispc/ispc/>`_. It supports Windows, Mac, and
+github <http://github.com/ispc/ispc/>`_. It supports Windows, Mac, and
 Linux, with both x86 and x86-64 targets.  It currently supports the SSE2,
 SSE4, and AVX instruction sets.
 
 Features
 --------
 
-``ispc provides a number of key features to developers:
+``ispc`` provides a number of key features to developers:
 
   * Familiarity as an extension of the C programming
     language: ``ispc`` supports familiar C syntax and
@@ -75,17 +73,18 @@ Features
     (and soon, AVX2).
 
   * Portability across operating systems: Microsoft
-     Windows, Mac OS X, and Linux are all supported
-     by ``ispc``.
+    Windows, Mac OS X, and Linux are all supported
+    by ``ispc``.
 
   * Debugging with standard tools: ``ispc``
     programs can be debugged with standard debuggers (OS X and
+    Linux only).
 
 Additional Resources
 --------------------
 
 Prebuilt ``ispc`` binaries for Windows, OS X and Linux can be downloaded
-from the `ispc downloads page<http://ispc.github.com/downloads.html>`_.
+from the `ispc downloads page <http://ispc.github.com/downloads.html>`_.
 See also additional
-`documentation<http://ispc.github.com/documentation.html>`_ and additional
-`performance information<http://ispc.github.com/perf.html>`_.
+`documentation <http://ispc.github.com/documentation.html>`_ and additional
+`performance information <http://ispc.github.com/perf.html>`_.
