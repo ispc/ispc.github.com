@@ -107,6 +107,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#using-the-ispc-compiler">Using The ISPC Compiler</a><ul>
 <li><a class="reference internal" href="#basic-command-line-options">Basic Command-line Options</a></li>
 <li><a class="reference internal" href="#selecting-the-compilation-target">Selecting The Compilation Target</a></li>
+<li><a class="reference internal" href="#generating-generic-c-output">Generating Generic C++ Output</a></li>
 <li><a class="reference internal" href="#selecting-32-or-64-bit-addressing">Selecting 32 or 64 Bit Addressing</a></li>
 <li><a class="reference internal" href="#the-preprocessor">The Preprocessor</a></li>
 <li><a class="reference internal" href="#debugging">Debugging</a></li>
@@ -149,6 +150,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#control-flow">Control Flow</a><ul>
 <li><a class="reference internal" href="#conditional-statements-if">Conditional Statements: &quot;if&quot;</a></li>
 <li><a class="reference internal" href="#basic-iteration-statements-for-while-and-do">Basic Iteration Statements: &quot;for&quot;, &quot;while&quot;, and &quot;do&quot;</a></li>
+<li><a class="reference internal" href="#unstructured-control-flow-goto">Unstructured Control Flow: &quot;goto&quot;</a></li>
 <li><a class="reference internal" href="#coherent-control-flow-statements-cif-and-friends">&quot;Coherent&quot; Control Flow Statements: &quot;cif&quot; and Friends</a></li>
 <li><a class="reference internal" href="#parallel-iteration-statements-foreach-and-foreach-tiled">Parallel Iteration Statements: &quot;foreach&quot; and &quot;foreach_tiled&quot;</a></li>
 <li><a class="reference internal" href="#parallel-iteration-with-programindex-and-programcount">Parallel Iteration with &quot;programIndex&quot; and &quot;programCount&quot;</a></li>
@@ -431,6 +433,53 @@ override this choice with the <tt class="docutils literal"><span class="pre">--t
 Intel® SSE2, use <tt class="docutils literal"><span class="pre">--target=sse2</span></tt>.  (As with the other options in this
 section, see the output of <tt class="docutils literal">ispc <span class="pre">--help</span></tt> for a full list of supported
 targets.)</p>
+</div>
+<div class="section" id="generating-generic-c-output">
+<h2>Generating Generic C++ Output</h2>
+<p>In addition to generating object files or assembly output for specific
+targets like SSE2, SSE4, and AVX, <tt class="docutils literal">ispc</tt> provides an option to generate
+&quot;generic&quot; C++ output.  This</p>
+<p>As an example, consider the following simple <tt class="docutils literal">ispc</tt> program:</p>
+<pre class="literal-block">
+int foo(int i, int j) {
+    return (i &lt; 0) ? 0 : i + j;
+}
+</pre>
+<p>If this program is compiled with the following command:</p>
+<pre class="literal-block">
+ispc foo.ispc --emit-c++ --target=generic-4 -o foo.cpp
+</pre>
+<p>Then <tt class="docutils literal">foo()</tt> is compiled to the following C++ code (after various
+automatically-generated boilerplate code):</p>
+<pre class="literal-block">
+__vec4_i32 foo(__vec4_i32 i_llvm_cbe, __vec4_i32 j_llvm_cbe,
+               __vec4_i1 __mask_llvm_cbe) {
+    return (__select((__signed_less_than(i_llvm_cbe,
+                                         __vec4_i32 (0u, 0u, 0u, 0u))),
+                     __vec4_i32 (0u, 0u, 0u, 0u),
+                    (__add(i_llvm_cbe, j_llvm_cbe))));
+}
+</pre>
+<p>Note that the original computation has been expressed in terms of a number
+of vector types (e.g. <tt class="docutils literal">__vec4_i32</tt> for a 4-wide vector of 32-bit integers
+and <tt class="docutils literal">__vec4_i1</tt> for a 4-wide vector of boolean values) and in terms of
+vector operations on these types like <tt class="docutils literal">__add()</tt> and <tt class="docutils literal">__select()</tt>).</p>
+<p>You are then free to provide your own implementations of these types and
+functions.  For example, you might want to target a specific vector ISA, or
+you might want to instrument these functions for performance measurements.</p>
+<p>There is an example implementation of 4-wide variants of the required
+functions, suitable for use with the <tt class="docutils literal"><span class="pre">generic-4</span></tt> target in the file
+<tt class="docutils literal">examples/intrinsics/sse4.h</tt>, and there is an example straightforward C
+implementation of the 16-wide variants for the <tt class="docutils literal"><span class="pre">generic-16</span></tt> target in the
+file <tt class="docutils literal"><span class="pre">examples/intrinsics/generic-16.h</span></tt>.  There is not yet comprehensive
+documentation of these types and the functions that must be provided for
+them when the C++ target is used, but a review of those two files should
+provide the basic context.</p>
+<p>If you are using C++ source emission, you may also find the
+<tt class="docutils literal"><span class="pre">--c++-include-file=&lt;filename&gt;</span></tt> command line argument useful; it adds an
+<tt class="docutils literal">#include</tt> statement with the given filename at the top of the emitted
+C++ file; this can be used to easily include specific implementations of
+the vector types and functions.</p>
 </div>
 <div class="section" id="selecting-32-or-64-bit-addressing">
 <h2>Selecting 32 or 64 Bit Addressing</h2>
@@ -1053,7 +1102,8 @@ double</tt>).  However, there are built-in <tt class="docutils literal">int8</tt
 <tt class="docutils literal">int64</tt> types</li>
 <li>Character constants</li>
 <li>String constants and arrays of characters as strings</li>
-<li><tt class="docutils literal">switch</tt> and <tt class="docutils literal">goto</tt> statements</li>
+<li><tt class="docutils literal">switch</tt> statements</li>
+<li><tt class="docutils literal">goto</tt> statements are partially supported (see <a class="reference internal" href="#unstructured-control-flow-goto">Unstructured Control Flow: &quot;goto&quot;</a>)</li>
 <li><tt class="docutils literal">union</tt> types</li>
 <li>Bitfield members of <tt class="docutils literal">struct</tt> types</li>
 <li>Variable numbers of arguments to functions</li>
@@ -1103,6 +1153,16 @@ constants are denoted by a leading <tt class="docutils literal">0x</tt> and then
 int fifteen_decimal = 15;
 int fifteen_hex     = 0xf;
 int fifteen_binary  = 0b1111;
+</pre>
+<p>A number of suffixes can be provided with integer numeric constants.
+First, &quot;u&quot; denotes that the constant is unsigned, and &quot;ll&quot; denotes a 64-bit
+integer constant (while &quot;l&quot; denotes a 32-bit integer constant).  It is also
+possible to denote units of 1024, 1024*1024, or 1024*1024*1024 with the
+SI-inspired suffixes &quot;k&quot;, &quot;M&quot;, and &quot;G&quot; respectively:</p>
+<pre class="literal-block">
+int two_kb = 2k;   // 2048
+int two_megs = 2M; // 2 * 1024 * 1024
+int one_gig = 1G;  // 1024 * 1024 * 1024
 </pre>
 <p>Floating-point constants can be specified in one of three ways.  First,
 they may be a sequence of zero or more digits from 0 to 9, followed by a
@@ -1767,6 +1827,32 @@ independently for each of the program instances in a gang; for example, if
 one of them executes a <tt class="docutils literal">continue</tt> statement, other program instances
 executing code in the loop body that didn't execute the <tt class="docutils literal">continue</tt> will
 be unaffected by it.</p>
+</div>
+<div class="section" id="unstructured-control-flow-goto">
+<h2>Unstructured Control Flow: &quot;goto&quot;</h2>
+<p><tt class="docutils literal">goto</tt> statements are allowed in <tt class="docutils literal">ispc</tt> programs under limited
+circumstances; specifically, only when the compiler can determine that if
+any program instance executes a <tt class="docutils literal">goto</tt> statement, then all of the program
+instances will be running at that statement, such that all will follow the
+<tt class="docutils literal">goto</tt>.</p>
+<p>Put another way: it's illegal for there to be &quot;varying&quot; control flow
+statements in scopes that enclose a <tt class="docutils literal">goto</tt> statement.  An error is issued
+if a <tt class="docutils literal">goto</tt> is used in this situation.</p>
+<p>The syntax for adding labels to <tt class="docutils literal">ispc</tt> programs and jumping to them with
+<tt class="docutils literal">goto</tt> is the same as in C.  The following code shows a <tt class="docutils literal">goto</tt> based
+equivalent of a <tt class="docutils literal">for</tt> loop where the induction variable <tt class="docutils literal">i</tt> goes from
+zero to ten.</p>
+<pre class="literal-block">
+  uniform int i = 0;
+check:
+  if (i &gt; 10)
+      goto done;
+  // loop body
+  ++i;
+  goto check;
+done:
+  // ...
+</pre>
 </div>
 <div class="section" id="coherent-control-flow-statements-cif-and-friends">
 <h2>&quot;Coherent&quot; Control Flow Statements: &quot;cif&quot; and Friends</h2>

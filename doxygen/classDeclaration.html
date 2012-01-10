@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.1.1</span>
+   &#160;<span id="projectnumber">1.1.2</span>
    </div>
    
   </td>
@@ -80,8 +80,9 @@ Collaboration diagram for Declaration:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDeclaration.html#a0a4f34f73dfdea511ad8762d7945a77f">Declaration</a> (<a class="el" href="classDeclSpecs.html">DeclSpecs</a> *ds, std::vector&lt; <a class="el" href="classDeclarator.html">Declarator</a> * &gt; *dlist=NULL)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDeclaration.html#ad736e7fd064c15fd79ce1a3c0415c2ed">Declaration</a> (<a class="el" href="classDeclSpecs.html">DeclSpecs</a> *ds, <a class="el" href="classDeclarator.html">Declarator</a> *d)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDeclaration.html#a767d4759d38a2aff5bd282d2b99cf8b4">Print</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDeclaration.html#a199b20270f10b8d3586001df65e34fba">Print</a> (int indent) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structVariableDeclaration.html">VariableDeclaration</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDeclaration.html#a27b8baa41096cbc4f5713ae238103812">GetVariableDeclarations</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDeclaration.html#a767c5ed8ee4d45a5a8522459255a6030">DeclareFunctions</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDeclSpecs.html">DeclSpecs</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDeclaration.html#ad211b8dff8e276083a7044bcd2b0d5ef">declSpecs</a></td></tr>
@@ -90,7 +91,7 @@ Public Attributes</h2></td></tr>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Representation of a full declaration of one or more variables, including the shared <a class="el" href="classDeclSpecs.html" title="Representation of the declaration specifiers in a declaration.">DeclSpecs</a> as well as the per-variable Declarators. </p>
 
-<p>Definition at line <a class="el" href="decl_8h_source.html#l00197">197</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
+<p>Definition at line <a class="el" href="decl_8h_source.html#l00199">199</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a0a4f34f73dfdea511ad8762d7945a77f"></a><!-- doxytag: member="Declaration::Declaration" ref="a0a4f34f73dfdea511ad8762d7945a77f" args="(DeclSpecs *ds, std::vector&lt; Declarator * &gt; *dlist=NULL)" -->
 <div class="memitem">
@@ -117,9 +118,9 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="decl_8cpp_source.html#l00467">467</a> of file <a class="el" href="decl_8cpp_source.html">decl.cpp</a>.</p>
+<p>Definition at line <a class="el" href="decl_8cpp_source.html#l00513">513</a> of file <a class="el" href="decl_8cpp_source.html">decl.cpp</a>.</p>
 
-<p>References <a class="el" href="decl_8h_source.html#l00212">declarators</a>, <a class="el" href="decl_8h_source.html#l00211">declSpecs</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="decl_8h_source.html#l00218">declarators</a>, <a class="el" href="decl_8h_source.html#l00217">declSpecs</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
 </div>
 </div>
@@ -148,13 +149,34 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="decl_8cpp_source.html#l00477">477</a> of file <a class="el" href="decl_8cpp_source.html">decl.cpp</a>.</p>
+<p>Definition at line <a class="el" href="decl_8cpp_source.html#l00523">523</a> of file <a class="el" href="decl_8cpp_source.html">decl.cpp</a>.</p>
 
-<p>References <a class="el" href="decl_8h_source.html#l00212">declarators</a>, <a class="el" href="decl_8h_source.html#l00211">declSpecs</a>, <a class="el" href="decl_8cpp_source.html#l00173">Declarator::InitFromDeclSpecs()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="decl_8h_source.html#l00218">declarators</a>, <a class="el" href="decl_8h_source.html#l00217">declSpecs</a>, <a class="el" href="decl_8cpp_source.html#l00172">Declarator::InitFromDeclSpecs()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a767c5ed8ee4d45a5a8522459255a6030"></a><!-- doxytag: member="Declaration::DeclareFunctions" ref="a767c5ed8ee4d45a5a8522459255a6030" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Declaration::DeclareFunctions </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>For any function declarations in the <a class="el" href="classDeclaration.html" title="Representation of a full declaration of one or more variables, including the shared DeclSpecs as well...">Declaration</a>, add the declaration to the module. </p>
+
+<p>Definition at line <a class="el" href="decl_8cpp_source.html#l00556">556</a> of file <a class="el" href="decl_8cpp_source.html">decl.cpp</a>.</p>
+
+<p>References <a class="el" href="module_8cpp_source.html#l00389">Module::AddFunctionDeclaration()</a>, <a class="el" href="ispc_8h_source.html#l00059">Assert</a>, <a class="el" href="decl_8h_source.html#l00218">declarators</a>, <a class="el" href="decl_8h_source.html#l00217">declSpecs</a>, <a class="el" href="decl_8cpp_source.html#l00183">Declarator::GetSymbol()</a>, <a class="el" href="ispc_8cpp_source.html#l00068">m</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="classType.html#adced497622fac125548ef5531495c738">Type::ResolveUnboundVariability()</a>, <a class="el" href="decl_8h_source.html#l00069">SC_TYPEDEF</a>, <a class="el" href="decl_8h_source.html#l00097">DeclSpecs::storageClass</a>, <a class="el" href="sym_8h_source.html#l00091">Symbol::type</a>, <a class="el" href="decl_8h_source.html#l00084">TYPEQUAL_INLINE</a>, <a class="el" href="decl_8h_source.html#l00100">DeclSpecs::typeQualifiers</a>, and <a class="el" href="type_8h_source.html#l00086">Type::Varying</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a27b8baa41096cbc4f5713ae238103812"></a><!-- doxytag: member="Declaration::GetVariableDeclarations" ref="a27b8baa41096cbc4f5713ae238103812" args="() const " -->
 <div class="memitem">
 <div class="memproto">
@@ -170,29 +192,30 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p>This method walks through all of the Declarators in a declaration and returns a fully-initialized <a class="el" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> and (possibly) and initialization expression for each one. (This allows the rest of the system to not have to worry about the mess of the general <a class="el" href="classDeclarator.html" title="Representation of the declaration of a single variable.">Declarator</a> representation.) </p>
 
-<p>Definition at line <a class="el" href="decl_8cpp_source.html#l00487">487</a> of file <a class="el" href="decl_8cpp_source.html">decl.cpp</a>.</p>
+<p>Definition at line <a class="el" href="decl_8cpp_source.html#l00533">533</a> of file <a class="el" href="decl_8cpp_source.html">decl.cpp</a>.</p>
 
-<p>References <a class="el" href="sym_8cpp_source.html#l00155">SymbolTable::AddFunction()</a>, <a class="el" href="sym_8cpp_source.html#l00106">SymbolTable::AddVariable()</a>, <a class="el" href="ispc_8h_source.html#l00058">Assert</a>, <a class="el" href="decl_8h_source.html#l00212">declarators</a>, <a class="el" href="decl_8h_source.html#l00211">declSpecs</a>, <a class="el" href="decl_8cpp_source.html#l00184">Declarator::GetSymbol()</a>, <a class="el" href="decl_8h_source.html#l00186">Declarator::initExpr</a>, <a class="el" href="ispc_8cpp_source.html#l00067">m</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="decl_8h_source.html#l00069">SC_TYPEDEF</a>, <a class="el" href="decl_8h_source.html#l00097">DeclSpecs::storageClass</a>, <a class="el" href="module_8h_source.html#l00125">Module::symbolTable</a>, and <a class="el" href="sym_8h_source.html#l00091">Symbol::type</a>.</p>
+<p>References <a class="el" href="sym_8cpp_source.html#l00100">SymbolTable::AddVariable()</a>, <a class="el" href="ispc_8h_source.html#l00059">Assert</a>, <a class="el" href="decl_8h_source.html#l00218">declarators</a>, <a class="el" href="decl_8h_source.html#l00217">declSpecs</a>, <a class="el" href="decl_8cpp_source.html#l00183">Declarator::GetSymbol()</a>, <a class="el" href="decl_8h_source.html#l00188">Declarator::initExpr</a>, <a class="el" href="ispc_8cpp_source.html#l00068">m</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="classType.html#adced497622fac125548ef5531495c738">Type::ResolveUnboundVariability()</a>, <a class="el" href="decl_8h_source.html#l00069">SC_TYPEDEF</a>, <a class="el" href="decl_8h_source.html#l00097">DeclSpecs::storageClass</a>, <a class="el" href="module_8h_source.html#l00133">Module::symbolTable</a>, <a class="el" href="sym_8h_source.html#l00091">Symbol::type</a>, and <a class="el" href="type_8h_source.html#l00086">Type::Varying</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a767d4759d38a2aff5bd282d2b99cf8b4"></a><!-- doxytag: member="Declaration::Print" ref="a767d4759d38a2aff5bd282d2b99cf8b4" args="() const " -->
+<a class="anchor" id="a199b20270f10b8d3586001df65e34fba"></a><!-- doxytag: member="Declaration::Print" ref="a199b20270f10b8d3586001df65e34fba" args="(int indent) const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void Declaration::Print </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>indent</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="decl_8cpp_source.html#l00514">514</a> of file <a class="el" href="decl_8cpp_source.html">decl.cpp</a>.</p>
+<p>Definition at line <a class="el" href="decl_8cpp_source.html#l00578">578</a> of file <a class="el" href="decl_8cpp_source.html">decl.cpp</a>.</p>
 
-<p>References <a class="el" href="decl_8h_source.html#l00212">declarators</a>, <a class="el" href="decl_8h_source.html#l00211">declSpecs</a>, and <a class="el" href="decl_8cpp_source.html#l00140">DeclSpecs::Print()</a>.</p>
+<p>References <a class="el" href="decl_8h_source.html#l00218">declarators</a>, <a class="el" href="decl_8h_source.html#l00217">declSpecs</a>, and <a class="el" href="decl_8cpp_source.html#l00146">DeclSpecs::Print()</a>.</p>
 
 </div>
 </div>
@@ -208,9 +231,9 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="decl_8h_source.html#l00212">212</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
+<p>Definition at line <a class="el" href="decl_8h_source.html#l00218">218</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
 
-<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00467">Declaration()</a>, <a class="el" href="decl_8cpp_source.html#l00212">Declarator::GetFunctionInfo()</a>, <a class="el" href="decl_8cpp_source.html#l00248">Declarator::GetType()</a>, <a class="el" href="decl_8cpp_source.html#l00487">GetVariableDeclarations()</a>, and <a class="el" href="decl_8cpp_source.html#l00514">Print()</a>.</p>
+<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00513">Declaration()</a>, <a class="el" href="decl_8cpp_source.html#l00556">DeclareFunctions()</a>, <a class="el" href="decl_8cpp_source.html#l00276">Declarator::GetType()</a>, <a class="el" href="decl_8cpp_source.html#l00533">GetVariableDeclarations()</a>, and <a class="el" href="decl_8cpp_source.html#l00578">Print()</a>.</p>
 
 </div>
 </div>
@@ -225,9 +248,9 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="decl_8h_source.html#l00211">211</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
+<p>Definition at line <a class="el" href="decl_8h_source.html#l00217">217</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
 
-<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00467">Declaration()</a>, <a class="el" href="decl_8cpp_source.html#l00248">Declarator::GetType()</a>, <a class="el" href="decl_8cpp_source.html#l00487">GetVariableDeclarations()</a>, and <a class="el" href="decl_8cpp_source.html#l00514">Print()</a>.</p>
+<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00513">Declaration()</a>, <a class="el" href="decl_8cpp_source.html#l00556">DeclareFunctions()</a>, <a class="el" href="decl_8cpp_source.html#l00276">Declarator::GetType()</a>, <a class="el" href="decl_8cpp_source.html#l00533">GetVariableDeclarations()</a>, and <a class="el" href="decl_8cpp_source.html#l00578">Print()</a>.</p>
 
 </div>
 </div>
@@ -239,7 +262,7 @@ Public Attributes</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 15 2011 12:38:09 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 9 2012 16:08:20 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>
