@@ -52,8 +52,7 @@
               developers mailing list</a></li>
               <li><a href="http://github.com/ispc/ispc/wiki/">Wiki</a></li>
               <li><a href="http://github.com/ispc/ispc/issues/">Bug tracking</a></li>
-              <li><a href="doxygen/index.html">Doxygen documentation of
-              <tt>ispc</tt> source code</a></li>
+              <li><a href="doxygen/index.html">Doxygen</a></li>
             </ul>
         </div>
       </div>
@@ -149,6 +148,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#expressions">Expressions</a></li>
 <li><a class="reference internal" href="#control-flow">Control Flow</a><ul>
 <li><a class="reference internal" href="#conditional-statements-if">Conditional Statements: &quot;if&quot;</a></li>
+<li><a class="reference internal" href="#conditional-statements-switch">Conditional Statements: &quot;switch&quot;</a></li>
 <li><a class="reference internal" href="#basic-iteration-statements-for-while-and-do">Basic Iteration Statements: &quot;for&quot;, &quot;while&quot;, and &quot;do&quot;</a></li>
 <li><a class="reference internal" href="#unstructured-control-flow-goto">Unstructured Control Flow: &quot;goto&quot;</a></li>
 <li><a class="reference internal" href="#coherent-control-flow-statements-cif-and-friends">&quot;Coherent&quot; Control Flow Statements: &quot;cif&quot; and Friends</a></li>
@@ -1058,7 +1058,7 @@ in C:</p>
 <ul class="simple">
 <li>Expression syntax and basic types</li>
 <li>Syntax for variable declarations</li>
-<li>Control flow structures: if, for, while, do</li>
+<li>Control flow structures: <tt class="docutils literal">if</tt>, <tt class="docutils literal">for</tt>, <tt class="docutils literal">while</tt>, <tt class="docutils literal">do</tt>, and <tt class="docutils literal">switch</tt>.</li>
 <li>Pointers, including function pointers, <tt class="docutils literal">void *</tt>, and C's array/pointer
 duality (arrays are converted to pointers when passed to functions, etc.)</li>
 <li>Structs and arrays</li>
@@ -1102,7 +1102,6 @@ double</tt>).  However, there are built-in <tt class="docutils literal">int8</tt
 <tt class="docutils literal">int64</tt> types</li>
 <li>Character constants</li>
 <li>String constants and arrays of characters as strings</li>
-<li><tt class="docutils literal">switch</tt> statements</li>
 <li><tt class="docutils literal">goto</tt> statements are partially supported (see <a class="reference internal" href="#unstructured-control-flow-goto">Unstructured Control Flow: &quot;goto&quot;</a>)</li>
 <li><tt class="docutils literal">union</tt> types</li>
 <li>Bitfield members of <tt class="docutils literal">struct</tt> types</li>
@@ -1805,6 +1804,29 @@ if (x &lt; 0.)
     y = -y;
 else
     x *= 2.;
+</pre>
+</div>
+<div class="section" id="conditional-statements-switch">
+<h2>Conditional Statements: &quot;switch&quot;</h2>
+<p>The <tt class="docutils literal">switch</tt> conditional statement is also available, again with the same
+behavior as in C; the expression used in the <tt class="docutils literal">switch</tt> must be of integer
+type (but it can be uniform or varying).  As in C, if there is no <tt class="docutils literal">break</tt>
+statement at the end of the code for a given case, execution &quot;falls
+through&quot; to the following case.  These features are demonstrated in the
+code below.</p>
+<pre class="literal-block">
+int x = ...;
+switch (x) {
+case 0:
+case 1:
+    foo(x);
+    /* fall through */
+case 5:
+    x = 0;
+    break;
+default:
+    x *= x;
+}
 </pre>
 </div>
 <div class="section" id="basic-iteration-statements-for-while-and-do">
