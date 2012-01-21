@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.1.2</span>
+   &#160;<span id="projectnumber">1.1.3</span>
    </div>
    
   </td>
@@ -60,33 +60,41 @@
 <div class="contents">
 This is the complete list of members for <a class="el" href="structCFInfo.html">CFInfo</a>, including all inherited members.<table>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a4cf460b650319642998e68548784e81e">CFInfo</a>(CFType t, bool uniformIf, llvm::Value *sm)</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td><code> [inline, private]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="structCFInfo.html#ae7128d522d9d4aaeaccae9db54c69713">CFInfo</a>(CFType t, bool iu, llvm::BasicBlock *bt, llvm::BasicBlock *ct, llvm::Value *sb, llvm::Value *sc, llvm::Value *sm, llvm::Value *lm)</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td><code> [inline, private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="structCFInfo.html#a9873e350c5b6491e664f22c5685b07cf">CFInfo</a>(CFType t, bool iu, llvm::BasicBlock *bt, llvm::BasicBlock *ct, llvm::Value *sb, llvm::Value *sc, llvm::Value *sm, llvm::Value *lm, llvm::Value *sse=NULL, llvm::BasicBlock *bbd=NULL, const std::vector&lt; std::pair&lt; int, llvm::BasicBlock * &gt; &gt; *bbc=NULL, const std::map&lt; llvm::BasicBlock *, llvm::BasicBlock * &gt; *bbn=NULL, bool scu=false)</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td><code> [inline, private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a781a33247a92849a733a9896b7b3249e">CFInfo</a>(CFType t, llvm::BasicBlock *bt, llvm::BasicBlock *ct, llvm::Value *sb, llvm::Value *sc, llvm::Value *sm, llvm::Value *lm)</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td><code> [inline, private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29">CFType</a> enum name</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29ab6497e206c9d778206afd06cf8cef4d3">Foreach</a> enum value</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#af9e2f421bf433f2bf71993bdd8af5ee0">GetForeach</a>(llvm::BasicBlock *breakTarget, llvm::BasicBlock *continueTarget, llvm::Value *savedBreakLanesPtr, llvm::Value *savedContinueLanesPtr, llvm::Value *savedMask, llvm::Value *savedLoopMask)</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#ad8eaa5964cf535407e3aaeb660cf67c8">GetIf</a>(bool isUniform, llvm::Value *savedMask)</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a28155c0fa8db90b9a95d1af0daff27b0">GetLoop</a>(bool isUniform, llvm::BasicBlock *breakTarget, llvm::BasicBlock *continueTarget, llvm::Value *savedBreakLanesPtr, llvm::Value *savedContinueLanesPtr, llvm::Value *savedMask, llvm::Value *savedLoopMask)</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td><code> [static]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="structCFInfo.html#ab02f62a60329770b05fc93e907bed928">GetSwitch</a>(bool isUniform, llvm::BasicBlock *breakTarget, llvm::BasicBlock *continueTarget, llvm::Value *savedBreakLanesPtr, llvm::Value *savedContinueLanesPtr, llvm::Value *savedMask, llvm::Value *savedLoopMask, llvm::Value *switchExpr, llvm::BasicBlock *bbDefault, const std::vector&lt; std::pair&lt; int, llvm::BasicBlock * &gt; &gt; *bbCases, const std::map&lt; llvm::BasicBlock *, llvm::BasicBlock * &gt; *bbNext, bool scUniform)</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29a969ff5c81e5be7b661fad1a5a27af99b">If</a> enum value</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#ae06d5e5b14261742e87d0a43241ba74f">IsForeach</a>()</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a9aa8fe7badb4a7f45e5f4f3ebb0c39a3">IsIf</a>()</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a89214676dd97495370eeba1a12208aca">IsLoop</a>()</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="structCFInfo.html#ac6a23f92c462401a95827e0b748769d8">IsSwitch</a>()</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#aab1aa0d848397cf55f79c2245c3e1c98">IsUniform</a>()</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a50cd1fbf68a8a1d0cda1c997b40c9eca">isUniform</a></td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a4abf67fdc19c962450a1c1b8e827e8d7">IsVarying</a>()</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29a764fe9ede7dda6597d916c057ecb5f3a">Loop</a> enum value</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#ac68d8d9b0ec69da1a71764f3f738c150">savedBreakLanesPtr</a></td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a0fa763db2b5d4ec00537a2ef1b52c5df">savedBreakTarget</a></td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="structCFInfo.html#afc2c852a6f6f25ffc623502501e477f6">savedCaseBlocks</a></td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a2d14c7daac1289f82378dce9b9b8aaaa">savedContinueLanesPtr</a></td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a5c349d3b59389c4bdf6ca5f320987ca0">savedContinueTarget</a></td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="structCFInfo.html#a61c6be561232755403095ec8294961da">savedDefaultBlock</a></td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#af150eebdba9bac1c00ef591e0d3d8e68">savedLoopMask</a></td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#a6d13b4372865208cdcfce9e64636b767">savedMask</a></td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="structCFInfo.html#a342082b275394c569cebb38c8e37526f">savedNextBlocks</a></td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="structCFInfo.html#a13ee3819036e133b2354712679174009">savedSwitchConditionWasUniform</a></td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="structCFInfo.html#af1387860ee5ff735aee5b479e9118992">savedSwitchExpr</a></td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29a2f6c3a1a3609445db058ce2f78ed9bc9">Switch</a> enum value</td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="structCFInfo.html#ad2746c61513797ec629d609906bec8f5">type</a></td><td><a class="el" href="structCFInfo.html">CFInfo</a></td><td></td></tr>
 </table></div>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 9 2012 16:08:20 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 20 2012 17:05:06 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

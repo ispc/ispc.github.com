@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.1.2</span>
+   &#160;<span id="projectnumber">1.1.3</span>
    </div>
    
   </td>
@@ -338,115 +338,174 @@
 <a name="l00281"></a><a class="code" href="classReturnStmt.html#a917fce74d4489b6d165f2eaceb42b47b">00281</a>     <span class="keyword">const</span> <span class="keywordtype">bool</span> <a class="code" href="classReturnStmt.html#a917fce74d4489b6d165f2eaceb42b47b">doCoherenceCheck</a>;
 <a name="l00282"></a>00282 };
 <a name="l00283"></a>00283 
-<a name="l00284"></a>00284 
-<a name="l00285"></a><a class="code" href="classGotoStmt.html">00285</a> <span class="keyword">class </span><a class="code" href="classGotoStmt.html">GotoStmt</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
-<a name="l00286"></a>00286 <span class="keyword">public</span>:
-<a name="l00287"></a>00287     <a class="code" href="classGotoStmt.html#a74d8c18d9400fb4d648cb5364aa2dd11">GotoStmt</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="classGotoStmt.html#ab5c2d12129611a505d3b6d3e17a4ab61">label</a>, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> gotoPos, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> idPos);
-<a name="l00288"></a>00288 
-<a name="l00289"></a>00289     <span class="keywordtype">void</span> <a class="code" href="classGotoStmt.html#afdaea947d8ccb3097c05633328dac4b7">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
-<a name="l00290"></a>00290     <span class="keywordtype">void</span> <a class="code" href="classGotoStmt.html#a9c08a52284503d74d46fdd2113af7095">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
+<a name="l00284"></a>00284 <span class="comment"></span>
+<a name="l00285"></a>00285 <span class="comment">/** Statement corresponding to a &quot;case&quot; label in the program.  In addition</span>
+<a name="l00286"></a>00286 <span class="comment">    to the value associated with the &quot;case&quot;, this statement also stores the</span>
+<a name="l00287"></a>00287 <span class="comment">    statements following it. */</span>
+<a name="l00288"></a><a class="code" href="classCaseStmt.html">00288</a> <span class="keyword">class </span><a class="code" href="classCaseStmt.html">CaseStmt</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
+<a name="l00289"></a>00289 <span class="keyword">public</span>:
+<a name="l00290"></a>00290     <a class="code" href="classCaseStmt.html#a2f57a7eace73296a41381ae2a4580e55">CaseStmt</a>(<span class="keywordtype">int</span> <a class="code" href="classCaseStmt.html#a83ffc393aa22882fa1949afa5253f48f">value</a>, <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *stmt, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos);
 <a name="l00291"></a>00291 
-<a name="l00292"></a>00292     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classGotoStmt.html#ac3995b35a108935e1747c15d6e33f465">Optimize</a>();
-<a name="l00293"></a>00293     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classGotoStmt.html#a773887c6d5ac71846f377928e3d0a81b">TypeCheck</a>();
-<a name="l00294"></a>00294     <span class="keywordtype">int</span> <a class="code" href="classGotoStmt.html#ab8959b37fe8abe15922cef2378223953">EstimateCost</a>() <span class="keyword">const</span>;
-<a name="l00295"></a>00295 
-<a name="l00296"></a><a class="code" href="classGotoStmt.html#ab5c2d12129611a505d3b6d3e17a4ab61">00296</a>     std::string <a class="code" href="classGotoStmt.html#ab5c2d12129611a505d3b6d3e17a4ab61">label</a>;
-<a name="l00297"></a><a class="code" href="classGotoStmt.html#a660e1a52b72c25719ad2917b8207e9a3">00297</a>     <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> <a class="code" href="classGotoStmt.html#a660e1a52b72c25719ad2917b8207e9a3">identifierPos</a>;
-<a name="l00298"></a>00298 };
-<a name="l00299"></a>00299 
-<a name="l00300"></a>00300 
-<a name="l00301"></a><a class="code" href="classLabeledStmt.html">00301</a> <span class="keyword">class </span><a class="code" href="classLabeledStmt.html">LabeledStmt</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
-<a name="l00302"></a>00302 <span class="keyword">public</span>:
-<a name="l00303"></a>00303     <a class="code" href="classLabeledStmt.html#a7b1377aa15a9cd89cfe38da395022ca9">LabeledStmt</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *label, <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classLabeledStmt.html#a21337836e88d4a88c47d5c7e684f9741">stmt</a>, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p);
-<a name="l00304"></a>00304 
-<a name="l00305"></a>00305     <span class="keywordtype">void</span> <a class="code" href="classLabeledStmt.html#a17c63d6a3cdeb614f552354de185101c">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
-<a name="l00306"></a>00306     <span class="keywordtype">void</span> <a class="code" href="classLabeledStmt.html#abe23d45ff7df92c595c512319884c092">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
-<a name="l00307"></a>00307 
-<a name="l00308"></a>00308     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classLabeledStmt.html#a8ea31adc92edd1e49290794f5a163724">Optimize</a>();
-<a name="l00309"></a>00309     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classLabeledStmt.html#a6a5246cb184f68ede77811216d0d68c4">TypeCheck</a>();
-<a name="l00310"></a>00310     <span class="keywordtype">int</span> <a class="code" href="classLabeledStmt.html#a32b650d833175893f0465dd74e0adb8d">EstimateCost</a>() <span class="keyword">const</span>;
-<a name="l00311"></a>00311 
-<a name="l00312"></a><a class="code" href="classLabeledStmt.html#a2a482b448e38b0e0ac820c36c18612ef">00312</a>     std::string <a class="code" href="classLabeledStmt.html#a2a482b448e38b0e0ac820c36c18612ef">name</a>;
-<a name="l00313"></a><a class="code" href="classLabeledStmt.html#a21337836e88d4a88c47d5c7e684f9741">00313</a>     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classLabeledStmt.html#a21337836e88d4a88c47d5c7e684f9741">stmt</a>;
-<a name="l00314"></a>00314 };
+<a name="l00292"></a>00292     <span class="keywordtype">void</span> <a class="code" href="classCaseStmt.html#a2c00e20301b1dbf5e36d3de0bc913abc">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
+<a name="l00293"></a>00293     <span class="keywordtype">void</span> <a class="code" href="classCaseStmt.html#a42f7df468019986589b3f03b92341fcb">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
+<a name="l00294"></a>00294 
+<a name="l00295"></a>00295     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classCaseStmt.html#a1e101101e8825ceb393e2bdf5668591d">TypeCheck</a>();
+<a name="l00296"></a>00296     <span class="keywordtype">int</span> <a class="code" href="classCaseStmt.html#a4f3e50048d63c783793d54f5c961ce2d">EstimateCost</a>() <span class="keyword">const</span>;
+<a name="l00297"></a>00297 <span class="comment"></span>
+<a name="l00298"></a>00298 <span class="comment">    /** Integer value after the &quot;case&quot; statement */</span>
+<a name="l00299"></a><a class="code" href="classCaseStmt.html#a83ffc393aa22882fa1949afa5253f48f">00299</a>     <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="classCaseStmt.html#a83ffc393aa22882fa1949afa5253f48f">value</a>;
+<a name="l00300"></a><a class="code" href="classCaseStmt.html#aa92977e80bc8da2bf8bdb579b6bd1d7e">00300</a>     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classCaseStmt.html#aa92977e80bc8da2bf8bdb579b6bd1d7e">stmts</a>;
+<a name="l00301"></a>00301 };
+<a name="l00302"></a>00302 
+<a name="l00303"></a>00303 <span class="comment"></span>
+<a name="l00304"></a>00304 <span class="comment">/** Statement for a &quot;default&quot; label (as would be found inside a &quot;switch&quot;</span>
+<a name="l00305"></a>00305 <span class="comment">    statement). */</span>
+<a name="l00306"></a><a class="code" href="classDefaultStmt.html">00306</a> <span class="keyword">class </span><a class="code" href="classDefaultStmt.html">DefaultStmt</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
+<a name="l00307"></a>00307 <span class="keyword">public</span>:
+<a name="l00308"></a>00308     <a class="code" href="classDefaultStmt.html#ac7c84ee347061bf6cccbfd37edc9231d">DefaultStmt</a>(<a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *stmt, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos);
+<a name="l00309"></a>00309 
+<a name="l00310"></a>00310     <span class="keywordtype">void</span> <a class="code" href="classDefaultStmt.html#a2568b80294d3bc412bf1b0c6d6cebc46">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
+<a name="l00311"></a>00311     <span class="keywordtype">void</span> <a class="code" href="classDefaultStmt.html#ae2af4370a9c2f07abbcda0af073a02cb">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
+<a name="l00312"></a>00312 
+<a name="l00313"></a>00313     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classDefaultStmt.html#abc1b69438eee808982e4242ff3124aa2">TypeCheck</a>();
+<a name="l00314"></a>00314     <span class="keywordtype">int</span> <a class="code" href="classDefaultStmt.html#aaea37c688a8381f15a8d704fc712cf90">EstimateCost</a>() <span class="keyword">const</span>;
 <a name="l00315"></a>00315 
-<a name="l00316"></a>00316 <span class="comment"></span>
-<a name="l00317"></a>00317 <span class="comment">/** @brief Representation of a list of statements in the program.</span>
-<a name="l00318"></a>00318 <span class="comment"> */</span>
-<a name="l00319"></a><a class="code" href="classStmtList.html">00319</a> <span class="keyword">class </span><a class="code" href="classStmtList.html" title="Representation of a list of statements in the program.">StmtList</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
-<a name="l00320"></a>00320 <span class="keyword">public</span>:
-<a name="l00321"></a><a class="code" href="classStmtList.html#a0f73135cadf0ca25ed22defd56c6f750">00321</a>     <a class="code" href="classStmtList.html#a0f73135cadf0ca25ed22defd56c6f750">StmtList</a>(<a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p) : <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a>(p) { }
-<a name="l00322"></a>00322 
-<a name="l00323"></a>00323     <span class="keywordtype">void</span> <a class="code" href="classStmtList.html#a38cbdce99384f80223a7c8620c30fad4">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
-<a name="l00324"></a>00324     <span class="keywordtype">void</span> <a class="code" href="classStmtList.html#a07546eeef3066307d379d165dcdf97e6">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
-<a name="l00325"></a>00325 
-<a name="l00326"></a>00326     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classStmtList.html#aa3fa1d1f1f45156f78afeab362c7a877">TypeCheck</a>();
-<a name="l00327"></a>00327     <span class="keywordtype">int</span> <a class="code" href="classStmtList.html#a8faf9e29292e5f40d11aadedbc402c8b">EstimateCost</a>() <span class="keyword">const</span>;
-<a name="l00328"></a>00328 
-<a name="l00329"></a><a class="code" href="classStmtList.html#acebf64c96072fba4b606f8d30c790428">00329</a>     <span class="keywordtype">void</span> <a class="code" href="classStmtList.html#acebf64c96072fba4b606f8d30c790428">Add</a>(<a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="parse_8yy.html#a670da3e561356241efb8054bd91b88a8">s</a>) { <span class="keywordflow">if</span> (s) <a class="code" href="classStmtList.html#a853b289aad0fd7a217716e9c5d95154d">stmts</a>.push_back(s); }
-<a name="l00330"></a>00330 
-<a name="l00331"></a><a class="code" href="classStmtList.html#a853b289aad0fd7a217716e9c5d95154d">00331</a>     std::vector&lt;Stmt *&gt; <a class="code" href="classStmtList.html#a853b289aad0fd7a217716e9c5d95154d">stmts</a>;
-<a name="l00332"></a>00332 };
-<a name="l00333"></a>00333 
-<a name="l00334"></a>00334 <span class="comment"></span>
-<a name="l00335"></a>00335 <span class="comment">/** @brief Representation of a print() statement in the program.</span>
-<a name="l00336"></a>00336 <span class="comment"></span>
-<a name="l00337"></a>00337 <span class="comment">    It&#39;s currently necessary to have a special statement type for print()</span>
-<a name="l00338"></a>00338 <span class="comment">    since strings aren&#39;t supported as first-class types in the language,</span>
-<a name="l00339"></a>00339 <span class="comment">    but we need to be able to pass a formatting string as the first</span>
-<a name="l00340"></a>00340 <span class="comment">    argument to print().  We also need this to be a variable argument</span>
-<a name="l00341"></a>00341 <span class="comment">    function, which also isn&#39;t supported.  Representing print() as a</span>
-<a name="l00342"></a>00342 <span class="comment">    statement lets us work around both of those ugly little issues...</span>
-<a name="l00343"></a>00343 <span class="comment">  */</span>
-<a name="l00344"></a><a class="code" href="classPrintStmt.html">00344</a> <span class="keyword">class </span><a class="code" href="classPrintStmt.html" title="Representation of a print() statement in the program.">PrintStmt</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
-<a name="l00345"></a>00345 <span class="keyword">public</span>:
-<a name="l00346"></a>00346     <a class="code" href="classPrintStmt.html#abd952391bce4382aedc6951dcc8022be">PrintStmt</a>(<span class="keyword">const</span> std::string &amp;f, <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *v, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p);
-<a name="l00347"></a>00347 
-<a name="l00348"></a>00348     <span class="keywordtype">void</span> <a class="code" href="classPrintStmt.html#aa725879589165c0caa9ca58bf341f8fb">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
-<a name="l00349"></a>00349     <span class="keywordtype">void</span> <a class="code" href="classPrintStmt.html#a62be166288c26754f50c66305a61b599">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
-<a name="l00350"></a>00350 
-<a name="l00351"></a>00351     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classPrintStmt.html#aa025a579a6a07556a8da4dd8760e81bb">TypeCheck</a>();
-<a name="l00352"></a>00352     <span class="keywordtype">int</span> <a class="code" href="classPrintStmt.html#a87f340f7cb64b7f8d03d6109d0ffd6ab">EstimateCost</a>() <span class="keyword">const</span>;
-<a name="l00353"></a>00353 <span class="comment"></span>
-<a name="l00354"></a>00354 <span class="comment">    /** Format string for the print() statement. */</span>
-<a name="l00355"></a><a class="code" href="classPrintStmt.html#a50d68cfc613077ff9f14f8b406a1b2db">00355</a>     <span class="keyword">const</span> std::string <a class="code" href="classPrintStmt.html#a50d68cfc613077ff9f14f8b406a1b2db">format</a>;<span class="comment"></span>
-<a name="l00356"></a>00356 <span class="comment">    /** This holds the arguments passed to the print() statement.  If more</span>
-<a name="l00357"></a>00357 <span class="comment">        than one was provided, this will be an ExprList. */</span>
-<a name="l00358"></a><a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">00358</a>     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>;
-<a name="l00359"></a>00359 };
-<a name="l00360"></a>00360 
-<a name="l00361"></a>00361 <span class="comment"></span>
-<a name="l00362"></a>00362 <span class="comment">/** @brief Representation of an assert statement in the program.</span>
-<a name="l00363"></a>00363 <span class="comment"></span>
-<a name="l00364"></a>00364 <span class="comment">    Like print() above, since we don&#39;t have strings as first-class types in</span>
-<a name="l00365"></a>00365 <span class="comment">    the language, we need to do some gymnastics to support it.  Like</span>
-<a name="l00366"></a>00366 <span class="comment">    assert() in C, assert() checks the given condition and prints an error</span>
-<a name="l00367"></a>00367 <span class="comment">    and calls abort if the condition fails.  For varying conditions, the</span>
-<a name="l00368"></a>00368 <span class="comment">    assert triggers if it&#39;s true for any of the program instances.</span>
-<a name="l00369"></a>00369 <span class="comment">*/</span>
-<a name="l00370"></a><a class="code" href="classAssertStmt.html">00370</a> <span class="keyword">class </span><a class="code" href="classAssertStmt.html" title="Representation of an assert statement in the program.">AssertStmt</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
-<a name="l00371"></a>00371 <span class="keyword">public</span>:
-<a name="l00372"></a>00372     <a class="code" href="classAssertStmt.html#a8cfe30445d8a127a338525a64b9b2b28">AssertStmt</a>(<span class="keyword">const</span> std::string &amp;msg, <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *e, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p);
-<a name="l00373"></a>00373 
-<a name="l00374"></a>00374     <span class="keywordtype">void</span> <a class="code" href="classAssertStmt.html#a7bad10cd3efa643d441769b3e5f456bd">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
-<a name="l00375"></a>00375     <span class="keywordtype">void</span> <a class="code" href="classAssertStmt.html#afae5f8fdb6b7d4afcb09a64b2b848c3e">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
-<a name="l00376"></a>00376 
-<a name="l00377"></a>00377     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classAssertStmt.html#ac2f0caef58fb59a7f81618188e3e1956">TypeCheck</a>();
-<a name="l00378"></a>00378     <span class="keywordtype">int</span> <a class="code" href="classAssertStmt.html#a9a2a6d362badda54fdeb0edd06eb2866">EstimateCost</a>() <span class="keyword">const</span>;
-<a name="l00379"></a>00379 <span class="comment"></span>
-<a name="l00380"></a>00380 <span class="comment">    /** Message to print if the assertion fails. */</span>
-<a name="l00381"></a><a class="code" href="classAssertStmt.html#a331997328030949a1663072f88f59f3a">00381</a>     <span class="keyword">const</span> std::string <a class="code" href="classAssertStmt.html#a331997328030949a1663072f88f59f3a">message</a>;<span class="comment"></span>
-<a name="l00382"></a>00382 <span class="comment">    /** The expression to be evaluated (that is asserted to be true). */</span>
-<a name="l00383"></a><a class="code" href="classAssertStmt.html#ad3d757a58f2f3db888ddb28106545cf8">00383</a>     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classAssertStmt.html#ad3d757a58f2f3db888ddb28106545cf8">expr</a>;
-<a name="l00384"></a>00384 };
-<a name="l00385"></a>00385 
-<a name="l00386"></a>00386 <span class="preprocessor">#endif // ISPC_STMT_H</span>
+<a name="l00316"></a><a class="code" href="classDefaultStmt.html#a7b9a802fd22ae446d76351dbdd7e03dc">00316</a>     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classDefaultStmt.html#a7b9a802fd22ae446d76351dbdd7e03dc">stmts</a>;
+<a name="l00317"></a>00317 };
+<a name="l00318"></a>00318 
+<a name="l00319"></a>00319 <span class="comment"></span>
+<a name="l00320"></a>00320 <span class="comment">/** A &quot;switch&quot; statement in the program. */</span>
+<a name="l00321"></a><a class="code" href="classSwitchStmt.html">00321</a> <span class="keyword">class </span><a class="code" href="classSwitchStmt.html">SwitchStmt</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
+<a name="l00322"></a>00322 <span class="keyword">public</span>:
+<a name="l00323"></a>00323     <a class="code" href="classSwitchStmt.html#af9d25fdb19ebb83de94509dad63011d7">SwitchStmt</a>(<a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classSwitchStmt.html#aba98ea077440bf875e10767327be205c">expr</a>, <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classSwitchStmt.html#a227e2e576a608003106a5822ac5d46b6">stmts</a>, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos);
+<a name="l00324"></a>00324 
+<a name="l00325"></a>00325     <span class="keywordtype">void</span> <a class="code" href="classSwitchStmt.html#a9c9dae7686bb35b1296bc083c559fa95">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
+<a name="l00326"></a>00326     <span class="keywordtype">void</span> <a class="code" href="classSwitchStmt.html#a11b30a48501d4c7181985a425c2660af">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
+<a name="l00327"></a>00327 
+<a name="l00328"></a>00328     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classSwitchStmt.html#aa8207768e174d22d7e8df4e38b79aa3d">TypeCheck</a>();
+<a name="l00329"></a>00329     <span class="keywordtype">int</span> <a class="code" href="classSwitchStmt.html#abb013a462019e06476d502f065d024dd">EstimateCost</a>() <span class="keyword">const</span>;
+<a name="l00330"></a>00330 <span class="comment"></span>
+<a name="l00331"></a>00331 <span class="comment">    /** Expression that is used to determine which label to jump to. */</span>
+<a name="l00332"></a><a class="code" href="classSwitchStmt.html#aba98ea077440bf875e10767327be205c">00332</a>     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classSwitchStmt.html#aba98ea077440bf875e10767327be205c">expr</a>;<span class="comment"></span>
+<a name="l00333"></a>00333 <span class="comment">    /** Statement block after the &quot;switch&quot; expression. */</span>
+<a name="l00334"></a><a class="code" href="classSwitchStmt.html#a227e2e576a608003106a5822ac5d46b6">00334</a>     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classSwitchStmt.html#a227e2e576a608003106a5822ac5d46b6">stmts</a>;
+<a name="l00335"></a>00335 };
+<a name="l00336"></a>00336 
+<a name="l00337"></a>00337 <span class="comment"></span>
+<a name="l00338"></a>00338 <span class="comment">/** A &quot;goto&quot; in an ispc program. */</span>
+<a name="l00339"></a><a class="code" href="classGotoStmt.html">00339</a> <span class="keyword">class </span><a class="code" href="classGotoStmt.html">GotoStmt</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
+<a name="l00340"></a>00340 <span class="keyword">public</span>:
+<a name="l00341"></a>00341     <a class="code" href="classGotoStmt.html#a74d8c18d9400fb4d648cb5364aa2dd11">GotoStmt</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="classGotoStmt.html#ab5c2d12129611a505d3b6d3e17a4ab61">label</a>, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> gotoPos, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> idPos);
+<a name="l00342"></a>00342 
+<a name="l00343"></a>00343     <span class="keywordtype">void</span> <a class="code" href="classGotoStmt.html#afdaea947d8ccb3097c05633328dac4b7">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
+<a name="l00344"></a>00344     <span class="keywordtype">void</span> <a class="code" href="classGotoStmt.html#a9c08a52284503d74d46fdd2113af7095">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
+<a name="l00345"></a>00345 
+<a name="l00346"></a>00346     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classGotoStmt.html#ac3995b35a108935e1747c15d6e33f465">Optimize</a>();
+<a name="l00347"></a>00347     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classGotoStmt.html#a773887c6d5ac71846f377928e3d0a81b">TypeCheck</a>();
+<a name="l00348"></a>00348     <span class="keywordtype">int</span> <a class="code" href="classGotoStmt.html#ab8959b37fe8abe15922cef2378223953">EstimateCost</a>() <span class="keyword">const</span>;
+<a name="l00349"></a>00349 <span class="comment"></span>
+<a name="l00350"></a>00350 <span class="comment">    /** Name of the label to jump to when the goto is executed. */</span>
+<a name="l00351"></a><a class="code" href="classGotoStmt.html#ab5c2d12129611a505d3b6d3e17a4ab61">00351</a>     std::string <a class="code" href="classGotoStmt.html#ab5c2d12129611a505d3b6d3e17a4ab61">label</a>;
+<a name="l00352"></a><a class="code" href="classGotoStmt.html#a660e1a52b72c25719ad2917b8207e9a3">00352</a>     <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> <a class="code" href="classGotoStmt.html#a660e1a52b72c25719ad2917b8207e9a3">identifierPos</a>;
+<a name="l00353"></a>00353 };
+<a name="l00354"></a>00354 
+<a name="l00355"></a>00355 <span class="comment"></span>
+<a name="l00356"></a>00356 <span class="comment">/** Statement corresponding to a label (as would be used as a goto target)</span>
+<a name="l00357"></a>00357 <span class="comment">    in the program. */</span>
+<a name="l00358"></a><a class="code" href="classLabeledStmt.html">00358</a> <span class="keyword">class </span><a class="code" href="classLabeledStmt.html">LabeledStmt</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
+<a name="l00359"></a>00359 <span class="keyword">public</span>:
+<a name="l00360"></a>00360     <a class="code" href="classLabeledStmt.html#a7b1377aa15a9cd89cfe38da395022ca9">LabeledStmt</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *label, <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classLabeledStmt.html#a21337836e88d4a88c47d5c7e684f9741">stmt</a>, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p);
+<a name="l00361"></a>00361 
+<a name="l00362"></a>00362     <span class="keywordtype">void</span> <a class="code" href="classLabeledStmt.html#a17c63d6a3cdeb614f552354de185101c">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
+<a name="l00363"></a>00363     <span class="keywordtype">void</span> <a class="code" href="classLabeledStmt.html#abe23d45ff7df92c595c512319884c092">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
+<a name="l00364"></a>00364 
+<a name="l00365"></a>00365     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classLabeledStmt.html#a8ea31adc92edd1e49290794f5a163724">Optimize</a>();
+<a name="l00366"></a>00366     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classLabeledStmt.html#a6a5246cb184f68ede77811216d0d68c4">TypeCheck</a>();
+<a name="l00367"></a>00367     <span class="keywordtype">int</span> <a class="code" href="classLabeledStmt.html#a32b650d833175893f0465dd74e0adb8d">EstimateCost</a>() <span class="keyword">const</span>;
+<a name="l00368"></a>00368 <span class="comment"></span>
+<a name="l00369"></a>00369 <span class="comment">    /** Name of the label. */</span>
+<a name="l00370"></a><a class="code" href="classLabeledStmt.html#a2a482b448e38b0e0ac820c36c18612ef">00370</a>     std::string <a class="code" href="classLabeledStmt.html#a2a482b448e38b0e0ac820c36c18612ef">name</a>;<span class="comment"></span>
+<a name="l00371"></a>00371 <span class="comment">    /** Statements following the label. */</span>
+<a name="l00372"></a><a class="code" href="classLabeledStmt.html#a21337836e88d4a88c47d5c7e684f9741">00372</a>     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classLabeledStmt.html#a21337836e88d4a88c47d5c7e684f9741">stmt</a>;
+<a name="l00373"></a>00373 };
+<a name="l00374"></a>00374 
+<a name="l00375"></a>00375 <span class="comment"></span>
+<a name="l00376"></a>00376 <span class="comment">/** @brief Representation of a list of statements in the program.</span>
+<a name="l00377"></a>00377 <span class="comment"> */</span>
+<a name="l00378"></a><a class="code" href="classStmtList.html">00378</a> <span class="keyword">class </span><a class="code" href="classStmtList.html" title="Representation of a list of statements in the program.">StmtList</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
+<a name="l00379"></a>00379 <span class="keyword">public</span>:
+<a name="l00380"></a><a class="code" href="classStmtList.html#a0f73135cadf0ca25ed22defd56c6f750">00380</a>     <a class="code" href="classStmtList.html#a0f73135cadf0ca25ed22defd56c6f750">StmtList</a>(<a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p) : <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a>(p) { }
+<a name="l00381"></a>00381 
+<a name="l00382"></a>00382     <span class="keywordtype">void</span> <a class="code" href="classStmtList.html#a38cbdce99384f80223a7c8620c30fad4">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
+<a name="l00383"></a>00383     <span class="keywordtype">void</span> <a class="code" href="classStmtList.html#a07546eeef3066307d379d165dcdf97e6">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
+<a name="l00384"></a>00384 
+<a name="l00385"></a>00385     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classStmtList.html#aa3fa1d1f1f45156f78afeab362c7a877">TypeCheck</a>();
+<a name="l00386"></a>00386     <span class="keywordtype">int</span> <a class="code" href="classStmtList.html#a8faf9e29292e5f40d11aadedbc402c8b">EstimateCost</a>() <span class="keyword">const</span>;
+<a name="l00387"></a>00387 
+<a name="l00388"></a><a class="code" href="classStmtList.html#acebf64c96072fba4b606f8d30c790428">00388</a>     <span class="keywordtype">void</span> <a class="code" href="classStmtList.html#acebf64c96072fba4b606f8d30c790428">Add</a>(<a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="parse_8yy.html#a670da3e561356241efb8054bd91b88a8">s</a>) { <span class="keywordflow">if</span> (s) <a class="code" href="classStmtList.html#a853b289aad0fd7a217716e9c5d95154d">stmts</a>.push_back(s); }
+<a name="l00389"></a>00389 
+<a name="l00390"></a><a class="code" href="classStmtList.html#a853b289aad0fd7a217716e9c5d95154d">00390</a>     std::vector&lt;Stmt *&gt; <a class="code" href="classStmtList.html#a853b289aad0fd7a217716e9c5d95154d">stmts</a>;
+<a name="l00391"></a>00391 };
+<a name="l00392"></a>00392 
+<a name="l00393"></a>00393 <span class="comment"></span>
+<a name="l00394"></a>00394 <span class="comment">/** @brief Representation of a print() statement in the program.</span>
+<a name="l00395"></a>00395 <span class="comment"></span>
+<a name="l00396"></a>00396 <span class="comment">    It&#39;s currently necessary to have a special statement type for print()</span>
+<a name="l00397"></a>00397 <span class="comment">    since strings aren&#39;t supported as first-class types in the language,</span>
+<a name="l00398"></a>00398 <span class="comment">    but we need to be able to pass a formatting string as the first</span>
+<a name="l00399"></a>00399 <span class="comment">    argument to print().  We also need this to be a variable argument</span>
+<a name="l00400"></a>00400 <span class="comment">    function, which also isn&#39;t supported.  Representing print() as a</span>
+<a name="l00401"></a>00401 <span class="comment">    statement lets us work around both of those ugly little issues...</span>
+<a name="l00402"></a>00402 <span class="comment">  */</span>
+<a name="l00403"></a><a class="code" href="classPrintStmt.html">00403</a> <span class="keyword">class </span><a class="code" href="classPrintStmt.html" title="Representation of a print() statement in the program.">PrintStmt</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
+<a name="l00404"></a>00404 <span class="keyword">public</span>:
+<a name="l00405"></a>00405     <a class="code" href="classPrintStmt.html#abd952391bce4382aedc6951dcc8022be">PrintStmt</a>(<span class="keyword">const</span> std::string &amp;f, <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *v, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p);
+<a name="l00406"></a>00406 
+<a name="l00407"></a>00407     <span class="keywordtype">void</span> <a class="code" href="classPrintStmt.html#aa725879589165c0caa9ca58bf341f8fb">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
+<a name="l00408"></a>00408     <span class="keywordtype">void</span> <a class="code" href="classPrintStmt.html#a62be166288c26754f50c66305a61b599">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
+<a name="l00409"></a>00409 
+<a name="l00410"></a>00410     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classPrintStmt.html#aa025a579a6a07556a8da4dd8760e81bb">TypeCheck</a>();
+<a name="l00411"></a>00411     <span class="keywordtype">int</span> <a class="code" href="classPrintStmt.html#a87f340f7cb64b7f8d03d6109d0ffd6ab">EstimateCost</a>() <span class="keyword">const</span>;
+<a name="l00412"></a>00412 <span class="comment"></span>
+<a name="l00413"></a>00413 <span class="comment">    /** Format string for the print() statement. */</span>
+<a name="l00414"></a><a class="code" href="classPrintStmt.html#a50d68cfc613077ff9f14f8b406a1b2db">00414</a>     <span class="keyword">const</span> std::string <a class="code" href="classPrintStmt.html#a50d68cfc613077ff9f14f8b406a1b2db">format</a>;<span class="comment"></span>
+<a name="l00415"></a>00415 <span class="comment">    /** This holds the arguments passed to the print() statement.  If more</span>
+<a name="l00416"></a>00416 <span class="comment">        than one was provided, this will be an ExprList. */</span>
+<a name="l00417"></a><a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">00417</a>     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a>;
+<a name="l00418"></a>00418 };
+<a name="l00419"></a>00419 
+<a name="l00420"></a>00420 <span class="comment"></span>
+<a name="l00421"></a>00421 <span class="comment">/** @brief Representation of an assert statement in the program.</span>
+<a name="l00422"></a>00422 <span class="comment"></span>
+<a name="l00423"></a>00423 <span class="comment">    Like print() above, since we don&#39;t have strings as first-class types in</span>
+<a name="l00424"></a>00424 <span class="comment">    the language, we need to do some gymnastics to support it.  Like</span>
+<a name="l00425"></a>00425 <span class="comment">    assert() in C, assert() checks the given condition and prints an error</span>
+<a name="l00426"></a>00426 <span class="comment">    and calls abort if the condition fails.  For varying conditions, the</span>
+<a name="l00427"></a>00427 <span class="comment">    assert triggers if it&#39;s true for any of the program instances.</span>
+<a name="l00428"></a>00428 <span class="comment">*/</span>
+<a name="l00429"></a><a class="code" href="classAssertStmt.html">00429</a> <span class="keyword">class </span><a class="code" href="classAssertStmt.html" title="Representation of an assert statement in the program.">AssertStmt</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
+<a name="l00430"></a>00430 <span class="keyword">public</span>:
+<a name="l00431"></a>00431     <a class="code" href="classAssertStmt.html#a8cfe30445d8a127a338525a64b9b2b28">AssertStmt</a>(<span class="keyword">const</span> std::string &amp;msg, <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *e, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p);
+<a name="l00432"></a>00432 
+<a name="l00433"></a>00433     <span class="keywordtype">void</span> <a class="code" href="classAssertStmt.html#a7bad10cd3efa643d441769b3e5f456bd">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
+<a name="l00434"></a>00434     <span class="keywordtype">void</span> <a class="code" href="classAssertStmt.html#afae5f8fdb6b7d4afcb09a64b2b848c3e">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
+<a name="l00435"></a>00435 
+<a name="l00436"></a>00436     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classAssertStmt.html#ac2f0caef58fb59a7f81618188e3e1956">TypeCheck</a>();
+<a name="l00437"></a>00437     <span class="keywordtype">int</span> <a class="code" href="classAssertStmt.html#a9a2a6d362badda54fdeb0edd06eb2866">EstimateCost</a>() <span class="keyword">const</span>;
+<a name="l00438"></a>00438 <span class="comment"></span>
+<a name="l00439"></a>00439 <span class="comment">    /** Message to print if the assertion fails. */</span>
+<a name="l00440"></a><a class="code" href="classAssertStmt.html#a331997328030949a1663072f88f59f3a">00440</a>     <span class="keyword">const</span> std::string <a class="code" href="classAssertStmt.html#a331997328030949a1663072f88f59f3a">message</a>;<span class="comment"></span>
+<a name="l00441"></a>00441 <span class="comment">    /** The expression to be evaluated (that is asserted to be true). */</span>
+<a name="l00442"></a><a class="code" href="classAssertStmt.html#ad3d757a58f2f3db888ddb28106545cf8">00442</a>     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classAssertStmt.html#ad3d757a58f2f3db888ddb28106545cf8">expr</a>;
+<a name="l00443"></a>00443 };
+<a name="l00444"></a>00444 
+<a name="l00445"></a>00445 <span class="preprocessor">#endif // ISPC_STMT_H</span>
 </pre></div></div>
 </div>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 9 2012 16:08:19 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 20 2012 17:05:05 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

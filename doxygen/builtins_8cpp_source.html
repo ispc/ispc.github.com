@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.1.2</span>
+   &#160;<span id="projectnumber">1.1.3</span>
    </div>
    
   </td>
@@ -774,109 +774,132 @@
 <a name="l00717"></a>00717         <span class="keyword">extern</span> <span class="keywordtype">int</span> builtins_bitcode_sse4_x2_length;
 <a name="l00718"></a>00718         <span class="keywordflow">switch</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>) {
 <a name="l00719"></a>00719         <span class="keywordflow">case</span> 4: 
-<a name="l00720"></a>00720             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_sse4, builtins_bitcode_sse4_length, 
-<a name="l00721"></a>00721                                module, symbolTable);
-<a name="l00722"></a>00722             <span class="keywordflow">break</span>;
-<a name="l00723"></a>00723         <span class="keywordflow">case</span> 8:
-<a name="l00724"></a>00724             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_sse4_x2, builtins_bitcode_sse4_x2_length, 
-<a name="l00725"></a>00725                                module, symbolTable);
-<a name="l00726"></a>00726             <span class="keywordflow">break</span>;
-<a name="l00727"></a>00727         <span class="keywordflow">default</span>:
-<a name="l00728"></a>00728             <a class="code" href="util_8h.html#a14ec8c552061330276dfd86f506095a3">FATAL</a>(<span class="stringliteral">&quot;logic error in DefineStdlib&quot;</span>);
-<a name="l00729"></a>00729         }
-<a name="l00730"></a>00730         <span class="keywordflow">break</span>;
-<a name="l00731"></a>00731     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa0bb31e5429c5e5ae43b3ac3c76104ef7">Target::AVX</a>:
-<a name="l00732"></a>00732     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa0cf71c169e93a54fb004ef81032a3438">Target::AVX2</a>:
-<a name="l00733"></a>00733         <span class="keywordflow">switch</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>) {
-<a name="l00734"></a>00734         <span class="keywordflow">case</span> 8:
-<a name="l00735"></a>00735             <span class="keyword">extern</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> builtins_bitcode_avx[];
-<a name="l00736"></a>00736             <span class="keyword">extern</span> <span class="keywordtype">int</span> builtins_bitcode_avx_length;
-<a name="l00737"></a>00737             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_avx, builtins_bitcode_avx_length, 
-<a name="l00738"></a>00738                                module, symbolTable);
-<a name="l00739"></a>00739             <span class="keywordflow">break</span>;
-<a name="l00740"></a>00740         <span class="keywordflow">case</span> 16:
-<a name="l00741"></a>00741             <span class="keyword">extern</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> builtins_bitcode_avx_x2[];
-<a name="l00742"></a>00742             <span class="keyword">extern</span> <span class="keywordtype">int</span> builtins_bitcode_avx_x2_length;
-<a name="l00743"></a>00743             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_avx_x2, builtins_bitcode_avx_x2_length,
-<a name="l00744"></a>00744                                module,  symbolTable);
-<a name="l00745"></a>00745             <span class="keywordflow">break</span>;
-<a name="l00746"></a>00746         <span class="keywordflow">default</span>:
-<a name="l00747"></a>00747             <a class="code" href="util_8h.html#a14ec8c552061330276dfd86f506095a3">FATAL</a>(<span class="stringliteral">&quot;logic error in DefineStdlib&quot;</span>);
-<a name="l00748"></a>00748         }
-<a name="l00749"></a>00749         <span class="keywordflow">break</span>;
-<a name="l00750"></a>00750     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa98594465f020e3d53bddf2e0740728fd">Target::GENERIC</a>:
-<a name="l00751"></a>00751         <span class="keywordflow">switch</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>) {
-<a name="l00752"></a>00752         <span class="keywordflow">case</span> 4:
-<a name="l00753"></a>00753             <span class="keyword">extern</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> builtins_bitcode_generic_4[];
-<a name="l00754"></a>00754             <span class="keyword">extern</span> <span class="keywordtype">int</span> builtins_bitcode_generic_4_length;
-<a name="l00755"></a>00755             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_generic_4, 
-<a name="l00756"></a>00756                                builtins_bitcode_generic_4_length, 
-<a name="l00757"></a>00757                                module, symbolTable);
-<a name="l00758"></a>00758             <span class="keywordflow">break</span>;
-<a name="l00759"></a>00759         <span class="keywordflow">case</span> 8:
-<a name="l00760"></a>00760             <span class="keyword">extern</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> builtins_bitcode_generic_8[];
-<a name="l00761"></a>00761             <span class="keyword">extern</span> <span class="keywordtype">int</span> builtins_bitcode_generic_8_length;
-<a name="l00762"></a>00762             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_generic_8, 
-<a name="l00763"></a>00763                                builtins_bitcode_generic_8_length, 
-<a name="l00764"></a>00764                                module, symbolTable);
-<a name="l00765"></a>00765             <span class="keywordflow">break</span>;
-<a name="l00766"></a>00766         <span class="keywordflow">case</span> 16:
-<a name="l00767"></a>00767             <span class="keyword">extern</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> builtins_bitcode_generic_16[];
-<a name="l00768"></a>00768             <span class="keyword">extern</span> <span class="keywordtype">int</span> builtins_bitcode_generic_16_length;
-<a name="l00769"></a>00769             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_generic_16, 
-<a name="l00770"></a>00770                                builtins_bitcode_generic_16_length, 
-<a name="l00771"></a>00771                                module, symbolTable);
-<a name="l00772"></a>00772             <span class="keywordflow">break</span>;
-<a name="l00773"></a>00773         <span class="keywordflow">default</span>:
-<a name="l00774"></a>00774             <a class="code" href="util_8h.html#a14ec8c552061330276dfd86f506095a3">FATAL</a>(<span class="stringliteral">&quot;logic error in DefineStdlib&quot;</span>);
-<a name="l00775"></a>00775         }
-<a name="l00776"></a>00776         <span class="keywordflow">break</span>;
-<a name="l00777"></a>00777     <span class="keywordflow">default</span>:
-<a name="l00778"></a>00778         <a class="code" href="util_8h.html#a14ec8c552061330276dfd86f506095a3">FATAL</a>(<span class="stringliteral">&quot;logic error&quot;</span>);
-<a name="l00779"></a>00779     }
-<a name="l00780"></a>00780 
-<a name="l00781"></a>00781     <span class="comment">// define the &#39;programCount&#39; builtin variable</span>
-<a name="l00782"></a>00782     <a class="code" href="builtins_8cpp.html#ac856ea2f0d194438ddf3b45476a32ed6">lDefineConstantInt</a>(<span class="stringliteral">&quot;programCount&quot;</span>, <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>, module, symbolTable);
-<a name="l00783"></a>00783 
-<a name="l00784"></a>00784     <span class="comment">// define the &#39;programIndex&#39; builtin</span>
-<a name="l00785"></a>00785     <a class="code" href="builtins_8cpp.html#af3cb7d2a18e821d2d1cac65334f55e45">lDefineProgramIndex</a>(module, symbolTable);
-<a name="l00786"></a>00786 
-<a name="l00787"></a>00787     <span class="comment">// Define __math_lib stuff.  This is used by stdlib.ispc, for example, to</span>
-<a name="l00788"></a>00788     <span class="comment">// figure out which math routines to end up calling...</span>
-<a name="l00789"></a>00789     <a class="code" href="builtins_8cpp.html#ac856ea2f0d194438ddf3b45476a32ed6">lDefineConstantInt</a>(<span class="stringliteral">&quot;__math_lib&quot;</span>, (<span class="keywordtype">int</span>)<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a>, module, symbolTable);
-<a name="l00790"></a>00790     <a class="code" href="builtins_8cpp.html#ac856ea2f0d194438ddf3b45476a32ed6">lDefineConstantInt</a>(<span class="stringliteral">&quot;__math_lib_ispc&quot;</span>, (<span class="keywordtype">int</span>)<a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3f9d7b36c46f10ce2e7246c587fdb284">Globals::Math_ISPC</a>, module,
-<a name="l00791"></a>00791                        symbolTable);
-<a name="l00792"></a>00792     <a class="code" href="builtins_8cpp.html#ac856ea2f0d194438ddf3b45476a32ed6">lDefineConstantInt</a>(<span class="stringliteral">&quot;__math_lib_ispc_fast&quot;</span>, (<span class="keywordtype">int</span>)<a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a8c7eff35ae130e97be933e1bf32cc35b">Globals::Math_ISPCFast</a>, 
-<a name="l00793"></a>00793                        module, symbolTable);
-<a name="l00794"></a>00794     <a class="code" href="builtins_8cpp.html#ac856ea2f0d194438ddf3b45476a32ed6">lDefineConstantInt</a>(<span class="stringliteral">&quot;__math_lib_svml&quot;</span>, (<span class="keywordtype">int</span>)<a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45af2767474d6d68689e5438e5885d3600b">Globals::Math_SVML</a>, module,
-<a name="l00795"></a>00795                        symbolTable);
-<a name="l00796"></a>00796     <a class="code" href="builtins_8cpp.html#ac856ea2f0d194438ddf3b45476a32ed6">lDefineConstantInt</a>(<span class="stringliteral">&quot;__math_lib_system&quot;</span>, (<span class="keywordtype">int</span>)<a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3e401778bb86ff534f0f59d55d61a6ac">Globals::Math_System</a>, module,
-<a name="l00797"></a>00797                        symbolTable);
-<a name="l00798"></a>00798     <a class="code" href="builtins_8cpp.html#abb212cbf480db6c2edde04fcb5cfef57">lDefineConstantIntFunc</a>(<span class="stringliteral">&quot;__fast_masked_vload&quot;</span>, (<span class="keywordtype">int</span>)<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a751580c259f1ee6f7ecf82d025651b54">fastMaskedVload</a>, module,
-<a name="l00799"></a>00799                            symbolTable);
-<a name="l00800"></a>00800 
-<a name="l00801"></a>00801     <span class="keywordflow">if</span> (includeStdlibISPC) {
-<a name="l00802"></a>00802         <span class="comment">// If the user wants the standard library to be included, parse the</span>
-<a name="l00803"></a>00803         <span class="comment">// serialized version of the stdlib.ispc file to get its</span>
-<a name="l00804"></a>00804         <span class="comment">// definitions added.</span>
-<a name="l00805"></a>00805         <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a3ca3d78d8240b68881e00af656df2951">isa</a> == <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa98594465f020e3d53bddf2e0740728fd">Target::GENERIC</a>) {
-<a name="l00806"></a>00806             <span class="keyword">extern</span> <span class="keywordtype">char</span> stdlib_generic_code[];
-<a name="l00807"></a>00807             <a class="code" href="builtins_8cpp.html#a14866839501f9788fa33614be98acd4f">yy_scan_string</a>(stdlib_generic_code);
-<a name="l00808"></a>00808             <a class="code" href="builtins_8cpp.html#acd8617a8f2ac0de8bc1cc032cf449e19">yyparse</a>();
-<a name="l00809"></a>00809         }
-<a name="l00810"></a>00810         <span class="keywordflow">else</span> {
-<a name="l00811"></a>00811             <span class="keyword">extern</span> <span class="keywordtype">char</span> stdlib_x86_code[];
-<a name="l00812"></a>00812             <a class="code" href="builtins_8cpp.html#a14866839501f9788fa33614be98acd4f">yy_scan_string</a>(stdlib_x86_code);
-<a name="l00813"></a>00813             <a class="code" href="builtins_8cpp.html#acd8617a8f2ac0de8bc1cc032cf449e19">yyparse</a>();
-<a name="l00814"></a>00814         }
-<a name="l00815"></a>00815     }
-<a name="l00816"></a>00816 }
+<a name="l00720"></a>00720             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_sse4,
+<a name="l00721"></a>00721                                builtins_bitcode_sse4_length, 
+<a name="l00722"></a>00722                                module, symbolTable);
+<a name="l00723"></a>00723             <span class="keywordflow">break</span>;
+<a name="l00724"></a>00724         <span class="keywordflow">case</span> 8:
+<a name="l00725"></a>00725             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_sse4_x2, 
+<a name="l00726"></a>00726                                builtins_bitcode_sse4_x2_length, 
+<a name="l00727"></a>00727                                module, symbolTable);
+<a name="l00728"></a>00728             <span class="keywordflow">break</span>;
+<a name="l00729"></a>00729         <span class="keywordflow">default</span>:
+<a name="l00730"></a>00730             <a class="code" href="util_8h.html#a14ec8c552061330276dfd86f506095a3">FATAL</a>(<span class="stringliteral">&quot;logic error in DefineStdlib&quot;</span>);
+<a name="l00731"></a>00731         }
+<a name="l00732"></a>00732         <span class="keywordflow">break</span>;
+<a name="l00733"></a>00733     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa0bb31e5429c5e5ae43b3ac3c76104ef7">Target::AVX</a>:
+<a name="l00734"></a>00734         <span class="keywordflow">switch</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>) {
+<a name="l00735"></a>00735         <span class="keywordflow">case</span> 8:
+<a name="l00736"></a>00736             <span class="keyword">extern</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> builtins_bitcode_avx1[];
+<a name="l00737"></a>00737             <span class="keyword">extern</span> <span class="keywordtype">int</span> builtins_bitcode_avx1_length;
+<a name="l00738"></a>00738             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_avx1, 
+<a name="l00739"></a>00739                                builtins_bitcode_avx1_length, 
+<a name="l00740"></a>00740                                module, symbolTable);
+<a name="l00741"></a>00741             <span class="keywordflow">break</span>;
+<a name="l00742"></a>00742         <span class="keywordflow">case</span> 16:
+<a name="l00743"></a>00743             <span class="keyword">extern</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> builtins_bitcode_avx1_x2[];
+<a name="l00744"></a>00744             <span class="keyword">extern</span> <span class="keywordtype">int</span> builtins_bitcode_avx1_x2_length;
+<a name="l00745"></a>00745             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_avx1_x2, 
+<a name="l00746"></a>00746                                builtins_bitcode_avx1_x2_length,
+<a name="l00747"></a>00747                                module,  symbolTable);
+<a name="l00748"></a>00748             <span class="keywordflow">break</span>;
+<a name="l00749"></a>00749         <span class="keywordflow">default</span>:
+<a name="l00750"></a>00750             <a class="code" href="util_8h.html#a14ec8c552061330276dfd86f506095a3">FATAL</a>(<span class="stringliteral">&quot;logic error in DefineStdlib&quot;</span>);
+<a name="l00751"></a>00751         }
+<a name="l00752"></a>00752         <span class="keywordflow">break</span>;
+<a name="l00753"></a>00753     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa0cf71c169e93a54fb004ef81032a3438">Target::AVX2</a>:
+<a name="l00754"></a>00754         <span class="keywordflow">switch</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>) {
+<a name="l00755"></a>00755         <span class="keywordflow">case</span> 8:
+<a name="l00756"></a>00756             <span class="keyword">extern</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> builtins_bitcode_avx2[];
+<a name="l00757"></a>00757             <span class="keyword">extern</span> <span class="keywordtype">int</span> builtins_bitcode_avx2_length;
+<a name="l00758"></a>00758             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_avx2, 
+<a name="l00759"></a>00759                                builtins_bitcode_avx2_length, 
+<a name="l00760"></a>00760                                module, symbolTable);
+<a name="l00761"></a>00761             <span class="keywordflow">break</span>;
+<a name="l00762"></a>00762         <span class="keywordflow">case</span> 16:
+<a name="l00763"></a>00763             <span class="keyword">extern</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> builtins_bitcode_avx2_x2[];
+<a name="l00764"></a>00764             <span class="keyword">extern</span> <span class="keywordtype">int</span> builtins_bitcode_avx2_x2_length;
+<a name="l00765"></a>00765             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_avx2_x2, 
+<a name="l00766"></a>00766                                builtins_bitcode_avx2_x2_length,
+<a name="l00767"></a>00767                                module,  symbolTable);
+<a name="l00768"></a>00768             <span class="keywordflow">break</span>;
+<a name="l00769"></a>00769         <span class="keywordflow">default</span>:
+<a name="l00770"></a>00770             <a class="code" href="util_8h.html#a14ec8c552061330276dfd86f506095a3">FATAL</a>(<span class="stringliteral">&quot;logic error in DefineStdlib&quot;</span>);
+<a name="l00771"></a>00771         }
+<a name="l00772"></a>00772         <span class="keywordflow">break</span>;
+<a name="l00773"></a>00773     <span class="keywordflow">case</span> <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa98594465f020e3d53bddf2e0740728fd">Target::GENERIC</a>:
+<a name="l00774"></a>00774         <span class="keywordflow">switch</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>) {
+<a name="l00775"></a>00775         <span class="keywordflow">case</span> 4:
+<a name="l00776"></a>00776             <span class="keyword">extern</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> builtins_bitcode_generic_4[];
+<a name="l00777"></a>00777             <span class="keyword">extern</span> <span class="keywordtype">int</span> builtins_bitcode_generic_4_length;
+<a name="l00778"></a>00778             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_generic_4, 
+<a name="l00779"></a>00779                                builtins_bitcode_generic_4_length, 
+<a name="l00780"></a>00780                                module, symbolTable);
+<a name="l00781"></a>00781             <span class="keywordflow">break</span>;
+<a name="l00782"></a>00782         <span class="keywordflow">case</span> 8:
+<a name="l00783"></a>00783             <span class="keyword">extern</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> builtins_bitcode_generic_8[];
+<a name="l00784"></a>00784             <span class="keyword">extern</span> <span class="keywordtype">int</span> builtins_bitcode_generic_8_length;
+<a name="l00785"></a>00785             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_generic_8, 
+<a name="l00786"></a>00786                                builtins_bitcode_generic_8_length, 
+<a name="l00787"></a>00787                                module, symbolTable);
+<a name="l00788"></a>00788             <span class="keywordflow">break</span>;
+<a name="l00789"></a>00789         <span class="keywordflow">case</span> 16:
+<a name="l00790"></a>00790             <span class="keyword">extern</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> builtins_bitcode_generic_16[];
+<a name="l00791"></a>00791             <span class="keyword">extern</span> <span class="keywordtype">int</span> builtins_bitcode_generic_16_length;
+<a name="l00792"></a>00792             <a class="code" href="builtins_8h.html#a0b594a90fc7ef81ed6a2a1ae1be5fa41">AddBitcodeToModule</a>(builtins_bitcode_generic_16, 
+<a name="l00793"></a>00793                                builtins_bitcode_generic_16_length, 
+<a name="l00794"></a>00794                                module, symbolTable);
+<a name="l00795"></a>00795             <span class="keywordflow">break</span>;
+<a name="l00796"></a>00796         <span class="keywordflow">default</span>:
+<a name="l00797"></a>00797             <a class="code" href="util_8h.html#a14ec8c552061330276dfd86f506095a3">FATAL</a>(<span class="stringliteral">&quot;logic error in DefineStdlib&quot;</span>);
+<a name="l00798"></a>00798         }
+<a name="l00799"></a>00799         <span class="keywordflow">break</span>;
+<a name="l00800"></a>00800     <span class="keywordflow">default</span>:
+<a name="l00801"></a>00801         <a class="code" href="util_8h.html#a14ec8c552061330276dfd86f506095a3">FATAL</a>(<span class="stringliteral">&quot;logic error&quot;</span>);
+<a name="l00802"></a>00802     }
+<a name="l00803"></a>00803 
+<a name="l00804"></a>00804     <span class="comment">// define the &#39;programCount&#39; builtin variable</span>
+<a name="l00805"></a>00805     <a class="code" href="builtins_8cpp.html#ac856ea2f0d194438ddf3b45476a32ed6">lDefineConstantInt</a>(<span class="stringliteral">&quot;programCount&quot;</span>, <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>, module, symbolTable);
+<a name="l00806"></a>00806 
+<a name="l00807"></a>00807     <span class="comment">// define the &#39;programIndex&#39; builtin</span>
+<a name="l00808"></a>00808     <a class="code" href="builtins_8cpp.html#af3cb7d2a18e821d2d1cac65334f55e45">lDefineProgramIndex</a>(module, symbolTable);
+<a name="l00809"></a>00809 
+<a name="l00810"></a>00810     <span class="comment">// Define __math_lib stuff.  This is used by stdlib.ispc, for example, to</span>
+<a name="l00811"></a>00811     <span class="comment">// figure out which math routines to end up calling...</span>
+<a name="l00812"></a>00812     <a class="code" href="builtins_8cpp.html#ac856ea2f0d194438ddf3b45476a32ed6">lDefineConstantInt</a>(<span class="stringliteral">&quot;__math_lib&quot;</span>, (<span class="keywordtype">int</span>)<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a>, module, symbolTable);
+<a name="l00813"></a>00813     <a class="code" href="builtins_8cpp.html#ac856ea2f0d194438ddf3b45476a32ed6">lDefineConstantInt</a>(<span class="stringliteral">&quot;__math_lib_ispc&quot;</span>, (<span class="keywordtype">int</span>)<a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3f9d7b36c46f10ce2e7246c587fdb284">Globals::Math_ISPC</a>, module,
+<a name="l00814"></a>00814                        symbolTable);
+<a name="l00815"></a>00815     <a class="code" href="builtins_8cpp.html#ac856ea2f0d194438ddf3b45476a32ed6">lDefineConstantInt</a>(<span class="stringliteral">&quot;__math_lib_ispc_fast&quot;</span>, (<span class="keywordtype">int</span>)<a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a8c7eff35ae130e97be933e1bf32cc35b">Globals::Math_ISPCFast</a>, 
+<a name="l00816"></a>00816                        module, symbolTable);
+<a name="l00817"></a>00817     <a class="code" href="builtins_8cpp.html#ac856ea2f0d194438ddf3b45476a32ed6">lDefineConstantInt</a>(<span class="stringliteral">&quot;__math_lib_svml&quot;</span>, (<span class="keywordtype">int</span>)<a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45af2767474d6d68689e5438e5885d3600b">Globals::Math_SVML</a>, module,
+<a name="l00818"></a>00818                        symbolTable);
+<a name="l00819"></a>00819     <a class="code" href="builtins_8cpp.html#ac856ea2f0d194438ddf3b45476a32ed6">lDefineConstantInt</a>(<span class="stringliteral">&quot;__math_lib_system&quot;</span>, (<span class="keywordtype">int</span>)<a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3e401778bb86ff534f0f59d55d61a6ac">Globals::Math_System</a>, module,
+<a name="l00820"></a>00820                        symbolTable);
+<a name="l00821"></a>00821     <a class="code" href="builtins_8cpp.html#abb212cbf480db6c2edde04fcb5cfef57">lDefineConstantIntFunc</a>(<span class="stringliteral">&quot;__fast_masked_vload&quot;</span>, (<span class="keywordtype">int</span>)<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>.<a class="code" href="structOpt.html#a751580c259f1ee6f7ecf82d025651b54">fastMaskedVload</a>, module,
+<a name="l00822"></a>00822                            symbolTable);
+<a name="l00823"></a>00823 
+<a name="l00824"></a>00824     <span class="keywordflow">if</span> (includeStdlibISPC) {
+<a name="l00825"></a>00825         <span class="comment">// If the user wants the standard library to be included, parse the</span>
+<a name="l00826"></a>00826         <span class="comment">// serialized version of the stdlib.ispc file to get its</span>
+<a name="l00827"></a>00827         <span class="comment">// definitions added.</span>
+<a name="l00828"></a>00828         <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a3ca3d78d8240b68881e00af656df2951">isa</a> == <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa98594465f020e3d53bddf2e0740728fd">Target::GENERIC</a>) {
+<a name="l00829"></a>00829             <span class="keyword">extern</span> <span class="keywordtype">char</span> stdlib_generic_code[];
+<a name="l00830"></a>00830             <a class="code" href="builtins_8cpp.html#a14866839501f9788fa33614be98acd4f">yy_scan_string</a>(stdlib_generic_code);
+<a name="l00831"></a>00831             <a class="code" href="builtins_8cpp.html#acd8617a8f2ac0de8bc1cc032cf449e19">yyparse</a>();
+<a name="l00832"></a>00832         }
+<a name="l00833"></a>00833         <span class="keywordflow">else</span> {
+<a name="l00834"></a>00834             <span class="keyword">extern</span> <span class="keywordtype">char</span> stdlib_x86_code[];
+<a name="l00835"></a>00835             <a class="code" href="builtins_8cpp.html#a14866839501f9788fa33614be98acd4f">yy_scan_string</a>(stdlib_x86_code);
+<a name="l00836"></a>00836             <a class="code" href="builtins_8cpp.html#acd8617a8f2ac0de8bc1cc032cf449e19">yyparse</a>();
+<a name="l00837"></a>00837         }
+<a name="l00838"></a>00838     }
+<a name="l00839"></a>00839 }
 </pre></div></div>
 </div>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 9 2012 16:08:18 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 20 2012 17:05:04 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

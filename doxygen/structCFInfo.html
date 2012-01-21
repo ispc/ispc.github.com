@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.1.2</span>
+   &#160;<span id="projectnumber">1.1.3</span>
    </div>
    
   </td>
@@ -78,13 +78,15 @@ Collaboration diagram for CFInfo:</div>
 Public Types</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29">CFType</a> { <a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29a969ff5c81e5be7b661fad1a5a27af99b">If</a>, 
 <a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29a764fe9ede7dda6597d916c057ecb5f3a">Loop</a>, 
-<a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29ab6497e206c9d778206afd06cf8cef4d3">Foreach</a>
+<a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29ab6497e206c9d778206afd06cf8cef4d3">Foreach</a>, 
+<a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29a2f6c3a1a3609445db058ce2f78ed9bc9">Switch</a>
  }</td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a9aa8fe7badb4a7f45e5f4f3ebb0c39a3">IsIf</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a89214676dd97495370eeba1a12208aca">IsLoop</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#ae06d5e5b14261742e87d0a43241ba74f">IsForeach</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#ac6a23f92c462401a95827e0b748769d8">IsSwitch</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a4abf67fdc19c962450a1c1b8e827e8d7">IsVarying</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#aab1aa0d848397cf55f79c2245c3e1c98">IsUniform</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
@@ -92,6 +94,7 @@ Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structCFInfo.html">CFInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#ad8eaa5964cf535407e3aaeb660cf67c8">GetIf</a> (bool <a class="el" href="structCFInfo.html#a50cd1fbf68a8a1d0cda1c997b40c9eca">isUniform</a>, llvm::Value *<a class="el" href="structCFInfo.html#a6d13b4372865208cdcfce9e64636b767">savedMask</a>)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structCFInfo.html">CFInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a28155c0fa8db90b9a95d1af0daff27b0">GetLoop</a> (bool <a class="el" href="structCFInfo.html#a50cd1fbf68a8a1d0cda1c997b40c9eca">isUniform</a>, llvm::BasicBlock *breakTarget, llvm::BasicBlock *continueTarget, llvm::Value *<a class="el" href="structCFInfo.html#ac68d8d9b0ec69da1a71764f3f738c150">savedBreakLanesPtr</a>, llvm::Value *<a class="el" href="structCFInfo.html#a2d14c7daac1289f82378dce9b9b8aaaa">savedContinueLanesPtr</a>, llvm::Value *<a class="el" href="structCFInfo.html#a6d13b4372865208cdcfce9e64636b767">savedMask</a>, llvm::Value *<a class="el" href="structCFInfo.html#af150eebdba9bac1c00ef591e0d3d8e68">savedLoopMask</a>)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structCFInfo.html">CFInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#af9e2f421bf433f2bf71993bdd8af5ee0">GetForeach</a> (llvm::BasicBlock *breakTarget, llvm::BasicBlock *continueTarget, llvm::Value *<a class="el" href="structCFInfo.html#ac68d8d9b0ec69da1a71764f3f738c150">savedBreakLanesPtr</a>, llvm::Value *<a class="el" href="structCFInfo.html#a2d14c7daac1289f82378dce9b9b8aaaa">savedContinueLanesPtr</a>, llvm::Value *<a class="el" href="structCFInfo.html#a6d13b4372865208cdcfce9e64636b767">savedMask</a>, llvm::Value *<a class="el" href="structCFInfo.html#af150eebdba9bac1c00ef591e0d3d8e68">savedLoopMask</a>)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structCFInfo.html">CFInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#ab02f62a60329770b05fc93e907bed928">GetSwitch</a> (bool <a class="el" href="structCFInfo.html#a50cd1fbf68a8a1d0cda1c997b40c9eca">isUniform</a>, llvm::BasicBlock *breakTarget, llvm::BasicBlock *continueTarget, llvm::Value *<a class="el" href="structCFInfo.html#ac68d8d9b0ec69da1a71764f3f738c150">savedBreakLanesPtr</a>, llvm::Value *<a class="el" href="structCFInfo.html#a2d14c7daac1289f82378dce9b9b8aaaa">savedContinueLanesPtr</a>, llvm::Value *<a class="el" href="structCFInfo.html#a6d13b4372865208cdcfce9e64636b767">savedMask</a>, llvm::Value *<a class="el" href="structCFInfo.html#af150eebdba9bac1c00ef591e0d3d8e68">savedLoopMask</a>, llvm::Value *switchExpr, llvm::BasicBlock *bbDefault, const std::vector&lt; std::pair&lt; int, llvm::BasicBlock * &gt; &gt; *bbCases, const std::map&lt; llvm::BasicBlock *, llvm::BasicBlock * &gt; *bbNext, bool scUniform)</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29">CFType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#ad2746c61513797ec629d609906bec8f5">type</a></td></tr>
@@ -102,10 +105,18 @@ Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a2d14c7daac1289f82378dce9b9b8aaaa">savedContinueLanesPtr</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a6d13b4372865208cdcfce9e64636b767">savedMask</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#af150eebdba9bac1c00ef591e0d3d8e68">savedLoopMask</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#af1387860ee5ff735aee5b479e9118992">savedSwitchExpr</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">llvm::BasicBlock *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a61c6be561232755403095ec8294961da">savedDefaultBlock</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::pair<br class="typebreak"/>
+&lt; int, llvm::BasicBlock * &gt; &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#afc2c852a6f6f25ffc623502501e477f6">savedCaseBlocks</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const std::map<br class="typebreak"/>
+&lt; llvm::BasicBlock <br class="typebreak"/>
+*, llvm::BasicBlock * &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a342082b275394c569cebb38c8e37526f">savedNextBlocks</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a13ee3819036e133b2354712679174009">savedSwitchConditionWasUniform</a></td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a4cf460b650319642998e68548784e81e">CFInfo</a> (<a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29">CFType</a> t, bool uniformIf, llvm::Value *sm)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#ae7128d522d9d4aaeaccae9db54c69713">CFInfo</a> (<a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29">CFType</a> t, bool iu, llvm::BasicBlock *bt, llvm::BasicBlock *ct, llvm::Value *sb, llvm::Value *sc, llvm::Value *sm, llvm::Value *lm)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a9873e350c5b6491e664f22c5685b07cf">CFInfo</a> (<a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29">CFType</a> t, bool iu, llvm::BasicBlock *bt, llvm::BasicBlock *ct, llvm::Value *sb, llvm::Value *sc, llvm::Value *sm, llvm::Value *lm, llvm::Value *sse=NULL, llvm::BasicBlock *bbd=NULL, const std::vector&lt; std::pair&lt; int, llvm::BasicBlock * &gt; &gt; *bbc=NULL, const std::map&lt; llvm::BasicBlock *, llvm::BasicBlock * &gt; *bbn=NULL, bool scu=false)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a781a33247a92849a733a9896b7b3249e">CFInfo</a> (<a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29">CFType</a> t, llvm::BasicBlock *bt, llvm::BasicBlock *ct, llvm::Value *sb, llvm::Value *sc, llvm::Value *sm, llvm::Value *lm)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
@@ -130,11 +141,13 @@ Private Member Functions</h2></td></tr>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a25de504c8fccf132a136f1a039671e29ab6497e206c9d778206afd06cf8cef4d3"></a><!-- doxytag: member="Foreach" ref="a25de504c8fccf132a136f1a039671e29ab6497e206c9d778206afd06cf8cef4d3" args="" -->Foreach</em>&nbsp;</td><td>
 </td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a25de504c8fccf132a136f1a039671e29a2f6c3a1a3609445db058ce2f78ed9bc9"></a><!-- doxytag: member="Switch" ref="a25de504c8fccf132a136f1a039671e29a2f6c3a1a3609445db058ce2f78ed9bc9" args="" -->Switch</em>&nbsp;</td><td>
+</td></tr>
 </table>
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00083">83</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00095">95</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
 </div>
 </div>
@@ -170,15 +183,15 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00091">91</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00108">108</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00059">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l00083">If</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00086">savedBreakTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00086">savedContinueTarget</a>, and <a class="el" href="ctx_8cpp_source.html#l00084">type</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00059">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l00095">If</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00098">savedBreakTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00103">savedCaseBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00098">savedContinueTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00102">savedDefaultBlock</a>, <a class="el" href="ctx_8cpp_source.html#l00104">savedNextBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00101">savedSwitchExpr</a>, and <a class="el" href="ctx_8cpp_source.html#l00096">type</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00147">GetForeach()</a>, <a class="el" href="ctx_8cpp_source.html#l00129">GetIf()</a>, and <a class="el" href="ctx_8cpp_source.html#l00135">GetLoop()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00180">GetForeach()</a>, <a class="el" href="ctx_8cpp_source.html#l00162">GetIf()</a>, <a class="el" href="ctx_8cpp_source.html#l00168">GetLoop()</a>, and <a class="el" href="ctx_8cpp_source.html#l00192">GetSwitch()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ae7128d522d9d4aaeaccae9db54c69713"></a><!-- doxytag: member="CFInfo::CFInfo" ref="ae7128d522d9d4aaeaccae9db54c69713" args="(CFType t, bool iu, llvm::BasicBlock *bt, llvm::BasicBlock *ct, llvm::Value *sb, llvm::Value *sc, llvm::Value *sm, llvm::Value *lm)" -->
+<a class="anchor" id="a9873e350c5b6491e664f22c5685b07cf"></a><!-- doxytag: member="CFInfo::CFInfo" ref="a9873e350c5b6491e664f22c5685b07cf" args="(CFType t, bool iu, llvm::BasicBlock *bt, llvm::BasicBlock *ct, llvm::Value *sb, llvm::Value *sc, llvm::Value *sm, llvm::Value *lm, llvm::Value *sse=NULL, llvm::BasicBlock *bbd=NULL, const std::vector&lt; std::pair&lt; int, llvm::BasicBlock * &gt; &gt; *bbc=NULL, const std::map&lt; llvm::BasicBlock *, llvm::BasicBlock * &gt; *bbn=NULL, bool scu=false)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -228,7 +241,37 @@ Private Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">llvm::Value *&#160;</td>
-          <td class="paramname"><em>lm</em>&#160;</td>
+          <td class="paramname"><em>lm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>sse</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::BasicBlock *&#160;</td>
+          <td class="paramname"><em>bbd</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::pair&lt; int, llvm::BasicBlock * &gt; &gt; *&#160;</td>
+          <td class="paramname"><em>bbc</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::map&lt; llvm::BasicBlock *, llvm::BasicBlock * &gt; *&#160;</td>
+          <td class="paramname"><em>bbn</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>scu</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -239,9 +282,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00099">99</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00120">120</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00059">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l00083">Loop</a>, <a class="el" href="ctx_8cpp_source.html#l00086">savedBreakTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00086">savedContinueTarget</a>, and <a class="el" href="ctx_8cpp_source.html#l00084">type</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00059">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l00095">Loop</a>, <a class="el" href="ctx_8cpp_source.html#l00098">savedBreakTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00103">savedCaseBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00098">savedContinueTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00102">savedDefaultBlock</a>, <a class="el" href="ctx_8cpp_source.html#l00104">savedNextBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00105">savedSwitchConditionWasUniform</a>, <a class="el" href="ctx_8cpp_source.html#l00101">savedSwitchExpr</a>, <a class="el" href="opt_8cpp.html#a2084fcd069065ef366a212a84d8e498d">sse()</a>, <a class="el" href="ctx_8cpp_source.html#l00095">Switch</a>, and <a class="el" href="ctx_8cpp_source.html#l00096">type</a>.</p>
 
 </div>
 </div>
@@ -300,9 +343,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00112">112</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00141">141</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00059">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l00083">Foreach</a>, <a class="el" href="ctx_8cpp_source.html#l00086">savedBreakTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00086">savedContinueTarget</a>, and <a class="el" href="ctx_8cpp_source.html#l00084">type</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00059">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l00095">Foreach</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00098">savedBreakTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00103">savedCaseBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00098">savedContinueTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00102">savedDefaultBlock</a>, <a class="el" href="ctx_8cpp_source.html#l00104">savedNextBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00101">savedSwitchExpr</a>, and <a class="el" href="ctx_8cpp_source.html#l00096">type</a>.</p>
 
 </div>
 </div>
@@ -356,11 +399,11 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00147">147</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00180">180</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00091">CFInfo()</a>, and <a class="el" href="ctx_8cpp_source.html#l00083">Foreach</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>, and <a class="el" href="ctx_8cpp_source.html#l00095">Foreach</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00528">FunctionEmitContext::StartForeach()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00584">FunctionEmitContext::StartForeach()</a>.</p>
 
 </div>
 </div>
@@ -390,11 +433,11 @@ Private Member Functions</h2></td></tr>
 <div class="memdoc">
 <p>Returns a new instance of the structure that represents entering an 'if' statement </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00129">129</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00162">162</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00091">CFInfo()</a>, and <a class="el" href="ctx_8cpp_source.html#l00083">If</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>, and <a class="el" href="ctx_8cpp_source.html#l00095">If</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00412">FunctionEmitContext::StartUniformIf()</a>, and <a class="el" href="ctx_8cpp_source.html#l00418">FunctionEmitContext::StartVaryingIf()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00467">FunctionEmitContext::StartUniformIf()</a>, and <a class="el" href="ctx_8cpp_source.html#l00473">FunctionEmitContext::StartVaryingIf()</a>.</p>
 
 </div>
 </div>
@@ -454,11 +497,104 @@ Private Member Functions</h2></td></tr>
 <div class="memdoc">
 <p>Returns a new instance of the structure that represents entering a loop. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00135">135</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00168">168</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00091">CFInfo()</a>, and <a class="el" href="ctx_8cpp_source.html#l00083">Loop</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>, and <a class="el" href="ctx_8cpp_source.html#l00095">Loop</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00475">FunctionEmitContext::StartLoop()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00540">FunctionEmitContext::StartLoop()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab02f62a60329770b05fc93e907bed928"></a><!-- doxytag: member="CFInfo::GetSwitch" ref="ab02f62a60329770b05fc93e907bed928" args="(bool isUniform, llvm::BasicBlock *breakTarget, llvm::BasicBlock *continueTarget, llvm::Value *savedBreakLanesPtr, llvm::Value *savedContinueLanesPtr, llvm::Value *savedMask, llvm::Value *savedLoopMask, llvm::Value *switchExpr, llvm::BasicBlock *bbDefault, const std::vector&lt; std::pair&lt; int, llvm::BasicBlock * &gt; &gt; *bbCases, const std::map&lt; llvm::BasicBlock *, llvm::BasicBlock * &gt; *bbNext, bool scUniform)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structCFInfo.html">CFInfo</a> * CFInfo::GetSwitch </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isUniform</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::BasicBlock *&#160;</td>
+          <td class="paramname"><em>breakTarget</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::BasicBlock *&#160;</td>
+          <td class="paramname"><em>continueTarget</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>savedBreakLanesPtr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>savedContinueLanesPtr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>savedMask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>savedLoopMask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>switchExpr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::BasicBlock *&#160;</td>
+          <td class="paramname"><em>bbDefault</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::pair&lt; int, llvm::BasicBlock * &gt; &gt; *&#160;</td>
+          <td class="paramname"><em>bbCases</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::map&lt; llvm::BasicBlock *, llvm::BasicBlock * &gt; *&#160;</td>
+          <td class="paramname"><em>bbNext</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>scUniform</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00192">192</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+
+<p>References <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>, and <a class="el" href="ctx_8cpp_source.html#l00095">Switch</a>.</p>
+
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00852">FunctionEmitContext::StartSwitch()</a>.</p>
 
 </div>
 </div>
@@ -476,9 +612,11 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00079">79</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00090">90</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00083">Foreach</a>, and <a class="el" href="ctx_8cpp_source.html#l00084">type</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00095">Foreach</a>, and <a class="el" href="ctx_8cpp_source.html#l00096">type</a>.</p>
+
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00603">FunctionEmitContext::EndForeach()</a>.</p>
 
 </div>
 </div>
@@ -496,9 +634,11 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00077">77</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00088">88</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00083">If</a>, and <a class="el" href="ctx_8cpp_source.html#l00084">type</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00095">If</a>, and <a class="el" href="ctx_8cpp_source.html#l00096">type</a>.</p>
+
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00479">FunctionEmitContext::EndIf()</a>.</p>
 
 </div>
 </div>
@@ -516,9 +656,31 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00078">78</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00089">89</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00083">Loop</a>, and <a class="el" href="ctx_8cpp_source.html#l00084">type</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00095">Loop</a>, and <a class="el" href="ctx_8cpp_source.html#l00096">type</a>.</p>
+
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00569">FunctionEmitContext::EndLoop()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac6a23f92c462401a95827e0b748769d8"></a><!-- doxytag: member="CFInfo::IsSwitch" ref="ac6a23f92c462401a95827e0b748769d8" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CFInfo::IsSwitch </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00091">91</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+
+<p>References <a class="el" href="ctx_8cpp_source.html#l00095">Switch</a>, and <a class="el" href="ctx_8cpp_source.html#l00096">type</a>.</p>
 
 </div>
 </div>
@@ -536,9 +698,11 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00081">81</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00093">93</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00085">isUniform</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00097">isUniform</a>.</p>
+
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00479">FunctionEmitContext::EndIf()</a>, and <a class="el" href="ctx_8cpp_source.html#l00569">FunctionEmitContext::EndLoop()</a>.</p>
 
 </div>
 </div>
@@ -556,9 +720,11 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00080">80</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00092">92</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00085">isUniform</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00097">isUniform</a>.</p>
+
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00878">FunctionEmitContext::EndSwitch()</a>.</p>
 
 </div>
 </div>
@@ -574,9 +740,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00085">85</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00097">97</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00081">IsUniform()</a>, and <a class="el" href="ctx_8cpp_source.html#l00080">IsVarying()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00093">IsUniform()</a>, and <a class="el" href="ctx_8cpp_source.html#l00092">IsVarying()</a>.</p>
 
 </div>
 </div>
@@ -591,7 +757,7 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00087">87</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00099">99</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
 </div>
 </div>
@@ -606,9 +772,26 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00086">86</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00098">98</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00091">CFInfo()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afc2c852a6f6f25ffc623502501e477f6"></a><!-- doxytag: member="CFInfo::savedCaseBlocks" ref="afc2c852a6f6f25ffc623502501e477f6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;std::pair&lt;int, llvm::BasicBlock *&gt; &gt;* <a class="el" href="structCFInfo.html#afc2c852a6f6f25ffc623502501e477f6">CFInfo::savedCaseBlocks</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00103">103</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>.</p>
 
 </div>
 </div>
@@ -623,7 +806,7 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00087">87</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00099">99</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
 </div>
 </div>
@@ -638,9 +821,26 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00086">86</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00098">98</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00091">CFInfo()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a61c6be561232755403095ec8294961da"></a><!-- doxytag: member="CFInfo::savedDefaultBlock" ref="a61c6be561232755403095ec8294961da" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">llvm::BasicBlock* <a class="el" href="structCFInfo.html#a61c6be561232755403095ec8294961da">CFInfo::savedDefaultBlock</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00102">102</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>.</p>
 
 </div>
 </div>
@@ -655,7 +855,7 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00088">88</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00100">100</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
 </div>
 </div>
@@ -670,7 +870,60 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00088">88</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00100">100</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00479">FunctionEmitContext::EndIf()</a>, <a class="el" href="ctx_8cpp_source.html#l00569">FunctionEmitContext::EndLoop()</a>, and <a class="el" href="ctx_8cpp_source.html#l00878">FunctionEmitContext::EndSwitch()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a342082b275394c569cebb38c8e37526f"></a><!-- doxytag: member="CFInfo::savedNextBlocks" ref="a342082b275394c569cebb38c8e37526f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::map&lt;llvm::BasicBlock *, llvm::BasicBlock *&gt;* <a class="el" href="structCFInfo.html#a342082b275394c569cebb38c8e37526f">CFInfo::savedNextBlocks</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00104">104</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a13ee3819036e133b2354712679174009"></a><!-- doxytag: member="CFInfo::savedSwitchConditionWasUniform" ref="a13ee3819036e133b2354712679174009" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structCFInfo.html#a13ee3819036e133b2354712679174009">CFInfo::savedSwitchConditionWasUniform</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00105">105</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00120">CFInfo()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af1387860ee5ff735aee5b479e9118992"></a><!-- doxytag: member="CFInfo::savedSwitchExpr" ref="af1387860ee5ff735aee5b479e9118992" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">llvm::Value* <a class="el" href="structCFInfo.html#af1387860ee5ff735aee5b479e9118992">CFInfo::savedSwitchExpr</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00101">101</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>.</p>
 
 </div>
 </div>
@@ -685,9 +938,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00084">84</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00096">96</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00091">CFInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l00079">IsForeach()</a>, <a class="el" href="ctx_8cpp_source.html#l00077">IsIf()</a>, and <a class="el" href="ctx_8cpp_source.html#l00078">IsLoop()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l00090">IsForeach()</a>, <a class="el" href="ctx_8cpp_source.html#l00088">IsIf()</a>, <a class="el" href="ctx_8cpp_source.html#l00089">IsLoop()</a>, and <a class="el" href="ctx_8cpp_source.html#l00091">IsSwitch()</a>.</p>
 
 </div>
 </div>
@@ -698,7 +951,7 @@ Private Member Functions</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 9 2012 16:08:20 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 20 2012 17:05:06 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>
