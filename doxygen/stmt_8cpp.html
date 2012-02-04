@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.1.3</span>
+   &#160;<span id="projectnumber">1.1.4</span>
    </div>
    
   </td>
@@ -98,11 +98,8 @@ Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSwitchVisitInfo.html">SwitchVisitInfo</a></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stmt_8cpp.html#ac04354119ffb49194503ce08df9f1669">lPossiblyResolveFunctionOverloads</a> (<a class="el" href="classExpr.html">Expr</a> *expr, const <a class="el" href="classType.html">Type</a> *type)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stmt_8cpp.html#aeb301a8e2e4f3276905d7d7e88ceaa5f">lInitSymbol</a> (llvm::Value *lvalue, const char *symName, const <a class="el" href="classType.html">Type</a> *symType, <a class="el" href="classExpr.html">Expr</a> *initExpr, <a class="el" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx, <a class="el" href="structSourcePos.html">SourcePos</a> pos)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stmt_8cpp.html#a2a7929684182311accbe01407d98ff90">lHasUnsizedArrays</a> (const <a class="el" href="classType.html">Type</a> *type)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stmt_8cpp.html#a09afc5d67f2a327ad2a09fbe2d3e657f">lEmitIfStatements</a> (<a class="el" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx, <a class="el" href="classStmt.html">Stmt</a> *stmts, const char *trueOrFalse)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stmt_8cpp.html#a08e31e65a4088769236514d90845c966">lCheckAllOffSafety</a> (<a class="el" href="classASTNode.html">ASTNode</a> *node, void *data)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stmt_8cpp.html#a29a7b0434aff9294a9d59466d43b052f">lIsVaryingFor</a> (<a class="el" href="classASTNode.html">ASTNode</a> *node)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stmt_8cpp.html#a5472a4152828737d63dd2757d6a99d42">lVaryingBCPreFunc</a> (<a class="el" href="classASTNode.html">ASTNode</a> *node, void *d)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classASTNode.html">ASTNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stmt_8cpp.html#a3eb0f59e2650e322e5393d495a16659a">lVaryingBCPostFunc</a> (<a class="el" href="classASTNode.html">ASTNode</a> *node, void *d)</td></tr>
@@ -120,40 +117,6 @@ Functions</h2></td></tr>
 
 <p>Definition in file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 </div><hr/><h2>Function Documentation</h2>
-<a class="anchor" id="a08e31e65a4088769236514d90845c966"></a><!-- doxytag: member="stmt.cpp::lCheckAllOffSafety" ref="a08e31e65a4088769236514d90845c966" args="(ASTNode *node, void *data)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool lCheckAllOffSafety </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classASTNode.html">ASTNode</a> *&#160;</td>
-          <td class="paramname"><em>node</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>data</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Given an AST node, check to see if it's safe if we happen to run the code for that node with the execution mask all off. </p>
-
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l00628">628</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
-
-<p>References <a class="el" href="ispc_8h_source.html#l00240">Target::allOffMaskIsSafe</a>, <a class="el" href="expr_8cpp_source.html#l04351">ConstExpr::AsInt32()</a>, <a class="el" href="ispc_8h_source.html#l00059">Assert</a>, <a class="el" href="expr_8h_source.html#l00286">IndexExpr::baseExpr</a>, <a class="el" href="expr_8h_source.html#l00323">MemberExpr::dereferenceExpr</a>, <a class="el" href="expr_8h_source.html#l00546">DereferenceExpr::expr</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="classCollectionType.html#abc5eb48e176e4abb0fa405d41ae99381">CollectionType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l02520">Type::GetReferenceTarget()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="expr_8h_source.html#l00286">IndexExpr::index</a>, <a class="el" href="parse_8yy_source.html#l269276">int32_t</a>, <a class="el" href="ispc_8h_source.html#l00072">ISPC_MAX_NVEC</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ispc_8h_source.html#l00358">Globals::target</a>.</p>
-
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00725">IfStmt::emitVaryingIf()</a>, and <a class="el" href="stmt_8cpp_source.html#l02121">lCheckMask()</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="afff63ba2a87165950a7b5f22b4c94a54"></a><!-- doxytag: member="stmt.cpp::lCheckMask" ref="afff63ba2a87165950a7b5f22b4c94a54" args="(Stmt *stmts)" -->
 <div class="memitem">
 <div class="memproto">
@@ -170,11 +133,11 @@ Functions</h2></td></tr>
 <div class="memdoc">
 <p>Given the statements following a 'case' or 'default' label, this function determines whether the mask should be checked to see if it is "all off" immediately after the label, before executing the code for the statements. </p>
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l02121">2121</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01875">1875</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
-<p>References <a class="el" href="stmt_8cpp_source.html#l00628">lCheckAllOffSafety()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ispc_8h_source.html#l00445">PREDICATE_SAFE_IF_STATEMENT_COST</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ispc_8h_source.html#l00447">PREDICATE_SAFE_IF_STATEMENT_COST</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l02145">CaseStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l02183">DefaultStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01897">CaseStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l01935">DefaultStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -209,11 +172,11 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l00485">485</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l00337">337</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l01349">FunctionEmitContext::AddInstrumentationPoint()</a>, <a class="el" href="classStmt.html#a018a0d7fc9a5db8a319bda3d87a9c15f">Stmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01416">FunctionEmitContext::EndScope()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ctx_8cpp_source.html#l01398">FunctionEmitContext::StartScope()</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l01357">FunctionEmitContext::AddInstrumentationPoint()</a>, <a class="el" href="classStmt.html#a018a0d7fc9a5db8a319bda3d87a9c15f">Stmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01424">FunctionEmitContext::EndScope()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="ctx_8cpp_source.html#l01406">FunctionEmitContext::StartScope()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00499">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00810">IfStmt::emitMaskAllOn()</a>, <a class="el" href="stmt_8cpp_source.html#l00607">IfStmt::emitMaskedTrueAndFalse()</a>, and <a class="el" href="stmt_8cpp_source.html#l00880">IfStmt::emitMaskMixed()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00351">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00564">IfStmt::emitMaskAllOn()</a>, <a class="el" href="stmt_8cpp_source.html#l00459">IfStmt::emitMaskedTrueAndFalse()</a>, and <a class="el" href="stmt_8cpp_source.html#l00634">IfStmt::emitMaskMixed()</a>.</p>
 
 </div>
 </div>
@@ -232,11 +195,11 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l02631">2631</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l02383">2383</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
 <p>References <a class="el" href="type_8h_source.html#l00094">Type::IsUniformType()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="type_8h_source.html#l00259">AtomicType::UniformBool</a>, <a class="el" href="type_8h_source.html#l00269">AtomicType::UniformDouble</a>, <a class="el" href="type_8h_source.html#l00266">AtomicType::UniformFloat</a>, <a class="el" href="type_8h_source.html#l00262">AtomicType::UniformInt32</a>, <a class="el" href="type_8h_source.html#l00267">AtomicType::UniformInt64</a>, <a class="el" href="type_8h_source.html#l00265">AtomicType::UniformUInt32</a>, <a class="el" href="type_8h_source.html#l00268">AtomicType::UniformUInt64</a>, <a class="el" href="type_8h_source.html#l00259">AtomicType::VaryingBool</a>, <a class="el" href="type_8h_source.html#l00269">AtomicType::VaryingDouble</a>, <a class="el" href="type_8h_source.html#l00266">AtomicType::VaryingFloat</a>, <a class="el" href="type_8h_source.html#l00262">AtomicType::VaryingInt32</a>, <a class="el" href="type_8h_source.html#l00267">AtomicType::VaryingInt64</a>, <a class="el" href="type_8h_source.html#l00265">AtomicType::VaryingUInt32</a>, and <a class="el" href="type_8h_source.html#l00268">AtomicType::VaryingUInt64</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l02661">lProcessPrintArg()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l02413">lProcessPrintArg()</a>.</p>
 
 </div>
 </div>
@@ -283,11 +246,11 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01541">1541</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01295">1295</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
-<p>References <a class="el" href="stmt_8cpp_source.html#l01521">lLog2()</a>.</p>
+<p>References <a class="el" href="stmt_8cpp_source.html#l01275">lLog2()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01574">ForeachStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01328">ForeachStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -306,11 +269,11 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l00270">270</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l00123">123</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
 <p>References <a class="el" href="type_8cpp_source.html#l01281">ArrayType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l01287">ArrayType::GetElementType()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00283">DeclStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00136">DeclStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -330,80 +293,11 @@ Functions</h2></td></tr>
 <div class="memdoc">
 <p>Given a statment, walk through it to see if there is a 'break' or 'continue' statement inside if its children, under varying control flow. We need to detect this case for loops since what might otherwise look like a 'uniform' loop needs to have code emitted to do all of the lane management stuff if this is the case. </p>
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01002">1002</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l00756">756</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
-<p>References <a class="el" href="stmt_8cpp_source.html#l00933">VaryingBCCheckInfo::foundVaryingBreakOrContinue</a>, <a class="el" href="stmt_8cpp_source.html#l00987">lVaryingBCPostFunc()</a>, and <a class="el" href="stmt_8cpp_source.html#l00955">lVaryingBCPreFunc()</a>.</p>
+<p>References <a class="el" href="stmt_8cpp_source.html#l00687">VaryingBCCheckInfo::foundVaryingBreakOrContinue</a>, <a class="el" href="stmt_8cpp_source.html#l00741">lVaryingBCPostFunc()</a>, and <a class="el" href="stmt_8cpp_source.html#l00709">lVaryingBCPreFunc()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01195">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02310">SwitchStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01161">DoStmt::EstimateCost()</a>, <a class="el" href="stmt_8cpp_source.html#l01349">ForStmt::EstimateCost()</a>, <a class="el" href="stmt_8cpp_source.html#l01123">DoStmt::TypeCheck()</a>, and <a class="el" href="stmt_8cpp_source.html#l01323">ForStmt::TypeCheck()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aeb301a8e2e4f3276905d7d7e88ceaa5f"></a><!-- doxytag: member="stmt.cpp::lInitSymbol" ref="aeb301a8e2e4f3276905d7d7e88ceaa5f" args="(llvm::Value *lvalue, const char *symName, const Type *symType, Expr *initExpr, FunctionEmitContext *ctx, SourcePos pos)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void lInitSymbol </td>
-          <td>(</td>
-          <td class="paramtype">llvm::Value *&#160;</td>
-          <td class="paramname"><em>lvalue</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>symName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classType.html">Type</a> *&#160;</td>
-          <td class="paramname"><em>symType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classExpr.html">Expr</a> *&#160;</td>
-          <td class="paramname"><em>initExpr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classFunctionEmitContext.html">FunctionEmitContext</a> *&#160;</td>
-          <td class="paramname"><em>ctx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structSourcePos.html">SourcePos</a>&#160;</td>
-          <td class="paramname"><em>pos</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Utility routine that emits code to initialize a symbol given an initializer expression.</p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">lvalue</td><td>Memory location of storage for the symbol's data </td></tr>
-    <tr><td class="paramname">symName</td><td>Name of symbol (used in error messages) </td></tr>
-    <tr><td class="paramname">symType</td><td><a class="el" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> of variable being initialized </td></tr>
-    <tr><td class="paramname">initExpr</td><td>Expression for the initializer </td></tr>
-    <tr><td class="paramname">ctx</td><td><a class="el" href="classFunctionEmitContext.html">FunctionEmitContext</a> to use for generating instructions </td></tr>
-    <tr><td class="paramname">pos</td><td>Source file position of the variable being initialized </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l00155">155</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
-
-<p>References <a class="el" href="ctx_8cpp_source.html#l01994">FunctionEmitContext::AddElementOffset()</a>, <a class="el" href="type_8cpp_source.html#l02821">Type::Equal()</a>, <a class="el" href="util_8cpp_source.html#l00267">Error()</a>, <a class="el" href="expr_8h_source.html#l00240">ExprList::exprs</a>, <a class="el" href="util_8h_source.html#l00113">FATAL</a>, <a class="el" href="classCollectionType.html#abc5eb48e176e4abb0fa405d41ae99381">CollectionType::GetElementCount()</a>, <a class="el" href="ctx_8cpp_source.html#l01899">FunctionEmitContext::GetElementPtrInst()</a>, <a class="el" href="classCollectionType.html#a6f8fa8323edfe0d729b9973a38254cf1">CollectionType::GetElementType()</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, <a class="el" href="type_8cpp_source.html#l02185">ReferenceType::GetString()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="type_8cpp_source.html#l00896">PointerType::GetUniform()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00204">LLVMInt32()</a>, <a class="el" href="stmt_8cpp_source.html#l00123">lPossiblyResolveFunctionOverloads()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l02453">FunctionEmitContext::StoreInst()</a>, and <a class="el" href="expr_8cpp_source.html#l00493">TypeConvertExpr()</a>.</p>
-
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00283">DeclStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00949">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02062">SwitchStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00915">DoStmt::EstimateCost()</a>, <a class="el" href="stmt_8cpp_source.html#l01103">ForStmt::EstimateCost()</a>, <a class="el" href="stmt_8cpp_source.html#l00877">DoStmt::TypeCheck()</a>, and <a class="el" href="stmt_8cpp_source.html#l01077">ForStmt::TypeCheck()</a>.</p>
 
 </div>
 </div>
@@ -423,11 +317,11 @@ Functions</h2></td></tr>
 <div class="memdoc">
 <p>Returns true if the given node is an 'if' statement where the test condition has varying type. </p>
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l00940">940</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l00694">694</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
 <p>References <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="type_8h_source.html#l00097">Type::IsVaryingType()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="stmt_8h_source.html#l00127">IfStmt::test</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00987">lVaryingBCPostFunc()</a>, and <a class="el" href="stmt_8cpp_source.html#l00955">lVaryingBCPreFunc()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00741">lVaryingBCPostFunc()</a>, and <a class="el" href="stmt_8cpp_source.html#l00709">lVaryingBCPreFunc()</a>.</p>
 
 </div>
 </div>
@@ -447,42 +341,9 @@ Functions</h2></td></tr>
 <div class="memdoc">
 <p>Returns the integer log2 of the given integer. </p>
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01521">1521</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01275">1275</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01541">lGetSpans()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac04354119ffb49194503ce08df9f1669"></a><!-- doxytag: member="stmt.cpp::lPossiblyResolveFunctionOverloads" ref="ac04354119ffb49194503ce08df9f1669" args="(Expr *expr, const Type *type)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool lPossiblyResolveFunctionOverloads </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classExpr.html">Expr</a> *&#160;</td>
-          <td class="paramname"><em>expr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classType.html">Type</a> *&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l00123">123</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
-
-<p>References <a class="el" href="classType.html#a51af28faf17eb05982547d9b340429eb">Type::GetBaseType()</a>, <a class="el" href="type_8h_source.html#l00801">FunctionType::GetNumParameters()</a>, <a class="el" href="type_8cpp_source.html#l02489">FunctionType::GetParameterType()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="expr_8cpp_source.html#l06386">FunctionSymbolExpr::ResolveOverloads()</a>.</p>
-
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00283">DeclStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l00155">lInitSymbol()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01295">lGetSpans()</a>.</p>
 
 </div>
 </div>
@@ -518,11 +379,11 @@ Functions</h2></td></tr>
 <div class="memdoc">
 <p>Given an <a class="el" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> for a value to be printed, emit the code to evaluate the expression and store the result to alloca'd memory. Update the argTypes string with the type encoding for this expression. </p>
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l02661">2661</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l02413">2413</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l02230">FunctionEmitContext::AllocaInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01648">FunctionEmitContext::BitCastInst()</a>, <a class="el" href="ispc_8h_source.html#l00406">Globals::ctx</a>, <a class="el" href="util_8cpp_source.html#l00267">Error()</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, <a class="el" href="classType.html#ab0eff8692794d3437a91404c98985d20">Type::GetAsUniformType()</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="type_8h_source.html#l00094">Type::IsUniformType()</a>, <a class="el" href="stmt_8cpp_source.html#l02631">lEncodeType()</a>, <a class="el" href="ispc_8h_source.html#l00097">LLVM_TYPE_CONST</a>, <a class="el" href="classType.html#aa7b08bf258938faa7e12b580b623621a">Type::LLVMType()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l02453">FunctionEmitContext::StoreInst()</a>, <a class="el" href="type_8h_source.html#l00261">AtomicType::UniformInt16</a>, <a class="el" href="type_8h_source.html#l00262">AtomicType::UniformInt32</a>, <a class="el" href="type_8h_source.html#l00260">AtomicType::UniformInt8</a>, <a class="el" href="type_8h_source.html#l00264">AtomicType::UniformUInt16</a>, <a class="el" href="type_8h_source.html#l00263">AtomicType::UniformUInt8</a>, <a class="el" href="type_8h_source.html#l00262">AtomicType::VaryingInt32</a>, and <a class="el" href="llvmutil_8h_source.html#l00065">LLVMTypes::VoidPointerType</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l02238">FunctionEmitContext::AllocaInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01656">FunctionEmitContext::BitCastInst()</a>, <a class="el" href="ispc_8h_source.html#l00406">Globals::ctx</a>, <a class="el" href="util_8cpp_source.html#l00267">Error()</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, <a class="el" href="classType.html#ab0eff8692794d3437a91404c98985d20">Type::GetAsUniformType()</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="type_8h_source.html#l00094">Type::IsUniformType()</a>, <a class="el" href="stmt_8cpp_source.html#l02383">lEncodeType()</a>, <a class="el" href="ispc_8h_source.html#l00097">LLVM_TYPE_CONST</a>, <a class="el" href="classType.html#aa7b08bf258938faa7e12b580b623621a">Type::LLVMType()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l02461">FunctionEmitContext::StoreInst()</a>, <a class="el" href="type_8h_source.html#l00261">AtomicType::UniformInt16</a>, <a class="el" href="type_8h_source.html#l00262">AtomicType::UniformInt32</a>, <a class="el" href="type_8h_source.html#l00260">AtomicType::UniformInt8</a>, <a class="el" href="type_8h_source.html#l00264">AtomicType::UniformUInt16</a>, <a class="el" href="type_8h_source.html#l00263">AtomicType::UniformUInt8</a>, <a class="el" href="type_8h_source.html#l00262">AtomicType::VaryingInt32</a>, and <a class="el" href="llvmutil_8h_source.html#l00065">LLVMTypes::VoidPointerType</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l02714">PrintStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l02466">PrintStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -551,11 +412,11 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l02254">2254</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l02006">2006</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
-<p>References <a class="el" href="stmt_8cpp_source.html#l02239">SwitchVisitInfo::caseBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l01293">FunctionEmitContext::CreateBasicBlock()</a>, <a class="el" href="stmt_8cpp_source.html#l02232">SwitchVisitInfo::ctx</a>, <a class="el" href="stmt_8cpp_source.html#l02235">SwitchVisitInfo::defaultBlock</a>, <a class="el" href="util_8cpp_source.html#l00267">Error()</a>, <a class="el" href="stmt_8cpp_source.html#l02249">SwitchVisitInfo::lastBlock</a>, <a class="el" href="stmt_8cpp_source.html#l02244">SwitchVisitInfo::nextBlock</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="stmt_8h_source.html#l00299">CaseStmt::value</a>.</p>
+<p>References <a class="el" href="stmt_8cpp_source.html#l01991">SwitchVisitInfo::caseBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l01297">FunctionEmitContext::CreateBasicBlock()</a>, <a class="el" href="stmt_8cpp_source.html#l01984">SwitchVisitInfo::ctx</a>, <a class="el" href="stmt_8cpp_source.html#l01987">SwitchVisitInfo::defaultBlock</a>, <a class="el" href="util_8cpp_source.html#l00267">Error()</a>, <a class="el" href="stmt_8cpp_source.html#l02001">SwitchVisitInfo::lastBlock</a>, <a class="el" href="stmt_8cpp_source.html#l01996">SwitchVisitInfo::nextBlock</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="stmt_8h_source.html#l00299">CaseStmt::value</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l02310">SwitchStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l02062">SwitchStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -608,11 +469,11 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01477">1477</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l01231">1231</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l01495">FunctionEmitContext::BinaryOperator()</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="ctx_8cpp_source.html#l02550">FunctionEmitContext::InsertInst()</a>, <a class="el" href="parse_8yy_source.html#l269276">int32_t</a>, <a class="el" href="llvmutil_8h_source.html#l00089">LLVMTypes::Int32VectorType</a>, <a class="el" href="ispc_8h_source.html#l00072">ISPC_MAX_NVEC</a>, <a class="el" href="llvmutil_8cpp_source.html#l00320">LLVMInt32Vector()</a>, <a class="el" href="ctx_8cpp_source.html#l02080">FunctionEmitContext::LoadInst()</a>, <a class="el" href="ctx_8cpp_source.html#l02453">FunctionEmitContext::StoreInst()</a>, <a class="el" href="ispc_8h_source.html#l00358">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00225">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l01503">FunctionEmitContext::BinaryOperator()</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="ctx_8cpp_source.html#l02558">FunctionEmitContext::InsertInst()</a>, <a class="el" href="parse_8yy_source.html#l269385">int32_t</a>, <a class="el" href="llvmutil_8h_source.html#l00089">LLVMTypes::Int32VectorType</a>, <a class="el" href="ispc_8h_source.html#l00072">ISPC_MAX_NVEC</a>, <a class="el" href="llvmutil_8cpp_source.html#l00320">LLVMInt32Vector()</a>, <a class="el" href="ctx_8cpp_source.html#l02088">FunctionEmitContext::LoadInst()</a>, <a class="el" href="ctx_8cpp_source.html#l02461">FunctionEmitContext::StoreInst()</a>, <a class="el" href="ispc_8h_source.html#l00358">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00225">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01574">ForeachStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01328">ForeachStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -642,11 +503,11 @@ Functions</h2></td></tr>
 <div class="memdoc">
 <p>Postorder callback function for checking for varying breaks or continues; decrement the varying control flow depth after the node's children have been processed, if this is a varying if statement. </p>
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l00987">987</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l00741">741</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
-<p>References <a class="el" href="stmt_8cpp_source.html#l00940">lIsVaryingFor()</a>, and <a class="el" href="stmt_8cpp_source.html#l00932">VaryingBCCheckInfo::varyingControlFlowDepth</a>.</p>
+<p>References <a class="el" href="stmt_8cpp_source.html#l00694">lIsVaryingFor()</a>, and <a class="el" href="stmt_8cpp_source.html#l00686">VaryingBCCheckInfo::varyingControlFlowDepth</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01002">lHasVaryingBreakOrContinue()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00756">lHasVaryingBreakOrContinue()</a>.</p>
 
 </div>
 </div>
@@ -676,11 +537,11 @@ Functions</h2></td></tr>
 <div class="memdoc">
 <p>Preorder callback function for checking for varying breaks or continues. </p>
 
-<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l00955">955</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l00709">709</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
 
-<p>References <a class="el" href="stmt_8cpp_source.html#l00933">VaryingBCCheckInfo::foundVaryingBreakOrContinue</a>, <a class="el" href="parse_8yy.html#a801facd0a7a4df1fc1589b4e5456b2a7">if()</a>, <a class="el" href="stmt_8cpp_source.html#l00940">lIsVaryingFor()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="stmt_8cpp_source.html#l00932">VaryingBCCheckInfo::varyingControlFlowDepth</a>.</p>
+<p>References <a class="el" href="stmt_8cpp_source.html#l00687">VaryingBCCheckInfo::foundVaryingBreakOrContinue</a>, <a class="el" href="parse_8yy.html#a801facd0a7a4df1fc1589b4e5456b2a7">if()</a>, <a class="el" href="stmt_8cpp_source.html#l00694">lIsVaryingFor()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="stmt_8cpp_source.html#l00686">VaryingBCCheckInfo::varyingControlFlowDepth</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01002">lHasVaryingBreakOrContinue()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00756">lHasVaryingBreakOrContinue()</a>.</p>
 
 </div>
 </div>
@@ -688,7 +549,7 @@ Functions</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jan 20 2012 17:05:05 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Feb 4 2012 15:26:36 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

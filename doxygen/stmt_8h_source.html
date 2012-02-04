@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.1.3</span>
+   &#160;<span id="projectnumber">1.1.4</span>
    </div>
    
   </td>
@@ -499,13 +499,30 @@
 <a name="l00442"></a><a class="code" href="classAssertStmt.html#ad3d757a58f2f3db888ddb28106545cf8">00442</a>     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classAssertStmt.html#ad3d757a58f2f3db888ddb28106545cf8">expr</a>;
 <a name="l00443"></a>00443 };
 <a name="l00444"></a>00444 
-<a name="l00445"></a>00445 <span class="preprocessor">#endif // ISPC_STMT_H</span>
+<a name="l00445"></a>00445 <span class="comment"></span>
+<a name="l00446"></a>00446 <span class="comment">/** Representation of a delete statement in the program.</span>
+<a name="l00447"></a>00447 <span class="comment">*/</span>
+<a name="l00448"></a><a class="code" href="classDeleteStmt.html">00448</a> <span class="keyword">class </span><a class="code" href="classDeleteStmt.html">DeleteStmt</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
+<a name="l00449"></a>00449 <span class="keyword">public</span>:
+<a name="l00450"></a>00450     <a class="code" href="classDeleteStmt.html#a5ebf615fd2b10f1a8098b3c896996397">DeleteStmt</a>(<a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *e, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p);
+<a name="l00451"></a>00451 
+<a name="l00452"></a>00452     <span class="keywordtype">void</span> <a class="code" href="classDeleteStmt.html#afca7eb7b0ae8e7a0e4b42fdb11cc3510">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
+<a name="l00453"></a>00453     <span class="keywordtype">void</span> <a class="code" href="classDeleteStmt.html#aa5d47bf64d75970de2278846793d8519">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
+<a name="l00454"></a>00454 
+<a name="l00455"></a>00455     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classDeleteStmt.html#a0eb6b305a9013266637b423ad61126bb">TypeCheck</a>();
+<a name="l00456"></a>00456     <span class="keywordtype">int</span> <a class="code" href="classDeleteStmt.html#a6b3752d439f48e55f701af2d25cebe4e">EstimateCost</a>() <span class="keyword">const</span>;
+<a name="l00457"></a>00457 <span class="comment"></span>
+<a name="l00458"></a>00458 <span class="comment">    /** Expression that gives the pointer value to be deleted. */</span>
+<a name="l00459"></a><a class="code" href="classDeleteStmt.html#a0c2033b02d3544b598a7376215bb6140">00459</a>     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classDeleteStmt.html#a0c2033b02d3544b598a7376215bb6140">expr</a>;
+<a name="l00460"></a>00460 };
+<a name="l00461"></a>00461 
+<a name="l00462"></a>00462 <span class="preprocessor">#endif // ISPC_STMT_H</span>
 </pre></div></div>
 </div>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jan 20 2012 17:05:05 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Feb 4 2012 15:26:36 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

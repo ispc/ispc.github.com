@@ -145,7 +145,10 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 </ul>
 </li>
 <li><a class="reference internal" href="#declarations-and-initializers">Declarations and Initializers</a></li>
-<li><a class="reference internal" href="#expressions">Expressions</a></li>
+<li><a class="reference internal" href="#expressions">Expressions</a><ul>
+<li><a class="reference internal" href="#dynamic-memory-allocation">Dynamic Memory Allocation</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#control-flow">Control Flow</a><ul>
 <li><a class="reference internal" href="#conditional-statements-if">Conditional Statements: &quot;if&quot;</a></li>
 <li><a class="reference internal" href="#conditional-statements-switch">Conditional Statements: &quot;switch&quot;</a></li>
@@ -1064,6 +1067,7 @@ duality (arrays are converted to pointers when passed to functions, etc.)</li>
 <li>Structs and arrays</li>
 <li>Support for recursive function calls</li>
 <li>Support for separate compilation of source files</li>
+<li>&quot;Short-circuit&quot; evaluation of <tt class="docutils literal">||</tt>, <tt class="docutils literal">&amp;&amp;</tt> and <tt class="docutils literal">? :</tt> operators</li>
 <li>The preprocessor</li>
 </ul>
 <p><tt class="docutils literal">ispc</tt> adds a number of features from C++ and C99 to this base:</p>
@@ -1078,6 +1082,7 @@ statement itself (e.g. <tt class="docutils literal">for (int i = 0; ...</tt>)</l
 <li>The <tt class="docutils literal">inline</tt> qualifier to indicate that a function should be inlined</li>
 <li>Function overloading by parameter type</li>
 <li>Hexadecimal floating-point constants</li>
+<li>Dynamic memory allocation with <tt class="docutils literal">new</tt> and <tt class="docutils literal">delete</tt>.</li>
 </ul>
 <p><tt class="docutils literal">ispc</tt> also adds a number of new features that aren't in C89, C99, or
 C++:</p>
@@ -1096,7 +1101,6 @@ ISPC Standard Library</a>.)</li>
 <p>There are a number of features of C89 that are not supported in <tt class="docutils literal">ispc</tt>
 but are likely to be supported in future releases:</p>
 <ul class="simple">
-<li>Short circuiting of logical operations</li>
 <li>There are no types named <tt class="docutils literal">char</tt>, <tt class="docutils literal">short</tt>, or <tt class="docutils literal">long</tt> (or <tt class="docutils literal">long
 double</tt>).  However, there are built-in <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>, and
 <tt class="docutils literal">int64</tt> types</li>
@@ -1781,16 +1785,114 @@ Foo * uniform fp = &amp;f;
 (*fp).a = 0;
 fp-&gt;b = 1;
 </pre>
+<p>As in C and C++, evaluation of the <tt class="docutils literal">||</tt> and <tt class="docutils literal">&amp;&amp;</tt> logical operators as
+well as the selection operator <tt class="docutils literal">? :</tt> is &quot;short-circuited&quot;; the right hand
+side won't be evaluated if the value from the left-hand side determines the
+logical operator's value.  For example, in the following code,
+<tt class="docutils literal">array[index]</tt> won't be evaluated for values of <tt class="docutils literal">index</tt> that are
+greater than or equal to <tt class="docutils literal">NUM_ITEMS</tt>.</p>
+<pre class="literal-block">
+if (index &lt; NUM_ITEMS &amp;&amp; array[index] &gt; 0) {
+    // ...
+}
+</pre>
+</div>
+<div class="section" id="dynamic-memory-allocation">
+<h2>Dynamic Memory Allocation</h2>
+<p><tt class="docutils literal">ispc</tt> programs can dynamically allocate (and free) memory, using syntax
+based on C++'s <tt class="docutils literal">new</tt> and <tt class="docutils literal">delete</tt> operators:</p>
+<pre class="literal-block">
+int count = ...;
+int *ptr = new uniform int[count];
+// use ptr...
+delete[] ptr;
+</pre>
+<p>In the above code, each program instance allocates its own <tt class="docutils literal"><span class="pre">count`-sized</span>
+array of ``uniform int</tt> values, uses that memory, and then deallocates
+that memory.  Uses of <tt class="docutils literal">new</tt> and <tt class="docutils literal">delete</tt> in <tt class="docutils literal">ispc</tt> programs are
+serviced by corresponding calls the system C library's <tt class="docutils literal">malloc()</tt> and
+<tt class="docutils literal">free()</tt> functions.</p>
+<p>After a pointer has been deleted, it is illegal to access the memory it
+points to.  However, note that deletion happens on a per-program-instance
+basis.  In other words, consider the following code:</p>
+<pre class="literal-block">
+int *ptr = new uniform int[count];
+// use ptr
+if (count &gt; 1000)
+    delete[] ptr;
+// ...
+</pre>
+<p>Here, the program instances where <tt class="docutils literal">count</tt> is greater than 1000 have
+deleted the dynamically allocated memory pointed to by <tt class="docutils literal">ptr</tt>, but the
+other program instances have not.  As such, it's illegal for the former set
+of program instances to access <tt class="docutils literal">*ptr</tt>, but it's perfectly fine for the
+latter set to continue to use the memory <tt class="docutils literal">ptr</tt> points to.  Note that it
+is illegal to delete a pointer value returned by <tt class="docutils literal">new</tt> more than one
+time.</p>
+<p>Sometimes, it's useful to be able to do a single allocation for the entire
+gang of program instances.  A <tt class="docutils literal">new</tt> statement can be qualified with
+<tt class="docutils literal">uniform</tt> to indicate a single memory allocation:</p>
+<pre class="literal-block">
+float * uniform ptr = uniform new float[10];
+</pre>
+<p>While a regular call to <tt class="docutils literal">new</tt> returns a <tt class="docutils literal">varying</tt> pointer (i.e. a
+distinct pointer to separately-allocated memory for each program instance),
+a <tt class="docutils literal">uniform new</tt> performs a single allocation and returns a <tt class="docutils literal">uniform</tt>
+pointer.</p>
+<p>When using <tt class="docutils literal">uniform new</tt>, it's important to be aware of a subtlety; if
+the returned pointer is stored in a varying pointer variable (as may be
+appropriate and useful for the particular program being written), then the
+varying pointer may inadvertently be passed to a subsequent <tt class="docutils literal">delete</tt>
+statement, which is an error: effectively</p>
+<pre class="literal-block">
+float *ptr = uniform new float[10];
+// use ptr...
+delete ptr;  // ERROR: varying pointer is deleted
+</pre>
+<p>In this case, <tt class="docutils literal">ptr</tt> will be deleted multiple times, once for each
+executing program instance, which is an error (unless it happens that only
+a single program instance is active in the above code.)</p>
+<p>When using <tt class="docutils literal">new</tt> statements, it's important to make an appropriate choice
+of <tt class="docutils literal">uniform</tt> or <tt class="docutils literal">varying</tt> (as always, the default), for both the
+<tt class="docutils literal">new</tt> operator itself as well as the type of data being allocated, based
+on the program's needs.  Consider the following four memory allocations:</p>
+<pre class="literal-block">
+uniform float * uniform p1 = uniform new uniform float[10];
+float * uniform p2 = uniform new float[10];
+uniform float * p3 = new uniform float[10];
+float * p4 = new float[10];
+</pre>
+<p>Assuming that a <tt class="docutils literal">float</tt> is 4 bytes in memory and if the gang size is 8
+program instances, then the first allocation represents a single allocation
+of 40 bytes, the second is a single allocation of 8*4*10 = 320 bytes, the
+third is 8 allocations of 40 bytes, and the last performs 8 allocations of
+80 bytes each.</p>
+<p>Note in particular that varying allocations of varying data types are rarely
+desirable in practice.  In that case, each program instance is performing a
+separate allocation of <tt class="docutils literal">varying float</tt> memory.  In this case, it's likely
+that the program instances will only access a single element of each
+<tt class="docutils literal">varying float</tt>, which is wasteful.</p>
+<p>Although <tt class="docutils literal">ispc</tt> doesn't support constructors or destructors like C++, it
+is possible to provide initializer values with <tt class="docutils literal">new</tt> statements:</p>
+<pre class="literal-block">
+struct Point { float x, y, z; };
+Point *pptr = new Point(10, 20, 30);
+</pre>
+<p>Here for example, the &quot;x&quot; element of the returned <tt class="docutils literal">Point</tt> is initialized
+to have the value 10 and so forth.  In general, the rules for how
+initializer values provided in <tt class="docutils literal">new</tt> statements are used to initialize
+complex data types follow the same rules as initializers for variables
+described in <a class="reference internal" href="#declarations-and-initializers">Declarations and Initializers</a>.</p>
 </div>
 <div class="section" id="control-flow">
 <h2>Control Flow</h2>
 <p><tt class="docutils literal">ispc</tt> supports most of C's control flow constructs, including <tt class="docutils literal">if</tt>,
-<tt class="docutils literal">for</tt>, <tt class="docutils literal">while</tt>, <tt class="docutils literal">do</tt>.  It also supports variants of C's control flow
+<tt class="docutils literal">switch</tt>, <tt class="docutils literal">for</tt>, <tt class="docutils literal">while</tt>, <tt class="docutils literal">do</tt>.  It has limited support for
+<tt class="docutils literal">goto</tt>, detailed below.  It also supports variants of C's control flow
 constructs that provide hints about the expected runtime coherence of the
 control flow at that statement.  It also provides parallel looping
 constructs, <tt class="docutils literal">foreach</tt> and <tt class="docutils literal">foreach_tiled</tt>, all of which will be
 detailed in this section.</p>
-<p><tt class="docutils literal">ispc</tt> does not currently support <tt class="docutils literal">switch</tt> statements or <tt class="docutils literal">goto</tt>.</p>
 </div>
 <div class="section" id="conditional-statements-if">
 <h2>Conditional Statements: &quot;if&quot;</h2>
@@ -2873,22 +2975,45 @@ uniform int16 float_to_half_fast(uniform float f)
 </div>
 <div class="section" id="atomic-operations-and-memory-fences">
 <h2>Atomic Operations and Memory Fences</h2>
-<p>The usual range of atomic memory operations are provided in <tt class="docutils literal">ispc</tt>,
-including variants to handle both uniform and varying types.  As a first
-example, consider on variant of the 32-bit integer atomic add routine:</p>
+<p>The standard range of atomic memory operations are provided by the standard
+library``ispc``, including variants to handle both uniform and varying
+types as well as &quot;local&quot; and &quot;global&quot; atomics.</p>
+<p>Local atomics provide atomic behavior across the program instances in a
+gang, but not across multiple gangs or memory operations in different
+hardware threads.  To see why they are needed, consider a histogram
+calculation where each program instance in the gang computes which bucket a
+value lies in and then increments a corresponding counter.  If the code is
+written like this:</p>
 <pre class="literal-block">
-int32 atomic_add_global(uniform int32 * uniform ptr, int32 delta)
+uniform int count[N_BUCKETS] = ...;
+float value = ...;
+int bucket = clamp(value / N_BUCKETS, 0, N_BUCKETS);
+++count[bucket];  // ERROR: undefined behavior if collisions
 </pre>
-<p>The semantics are the expected ones for an atomic add function: the pointer
-points to a single location in memory (the same one for all program
-instances), and for each executing program instance, the value stored in
-the location that <tt class="docutils literal">ptr</tt> points to has that program instance's value
-&quot;delta&quot; added to it atomically, and the old value at that location is
-returned from the function.  (Thus, if multiple processors simultaneously
-issue atomic adds to the same memory location, the adds will be serialized
-by the hardware so that the correct result is computed in the end.
-Furthermore, the atomic adds are serialized across the running program
-instances.)</p>
+<p>then the program's behavior is undefined: whenever multiple program
+instances have values that map to the same value of <tt class="docutils literal">bucket</tt>, then the
+effect of the increment is undefined.  (See the discussion in the <a class="reference internal" href="#data-races-within-a-gang">Data
+Races Within a Gang</a> section; in the case here, there isn't a sequence
+point between one program instance updating <tt class="docutils literal">count[bucket]</tt> and the other
+program instance reading its value.)</p>
+<p>The <tt class="docutils literal">atomic_add_local()</tt> function can be used in this case; as a local
+atomic it is atomic across the gang of program instances, such that the
+expected result is computed.</p>
+<pre class="literal-block">
+...
+int bucket = clamp(value / N_BUCKETS, 0, N_BUCKETS);
+atomic_add_local(&amp;count[bucket], 1);
+</pre>
+<p>It uses this variant of the 32-bit integer atomic add routine:</p>
+<pre class="literal-block">
+int32 atomic_add_local(uniform int32 * uniform ptr, int32 delta)
+</pre>
+<p>The semantics of this routine are typical for an atomic add function: the
+pointer here points to a single location in memory (the same one for all
+program instances), and for each executing program instance, the value
+stored in the location that <tt class="docutils literal">ptr</tt> points to has that program instance's
+value &quot;delta&quot; added to it atomically, and the old value at that location is
+returned from the function.</p>
 <p>One thing to note is that that the type of the value being added to a
 <tt class="docutils literal">uniform</tt> integer, while the increment amount and the return value are
 <tt class="docutils literal">varying</tt>.  In other words, the semantics of this call are that each
@@ -2897,41 +3022,65 @@ own <tt class="docutils literal">delta</tt> value and gets the previous value of
 atomics for the running program instances may be issued in arbitrary order;
 it's not guaranteed that they will be issued in <tt class="docutils literal">programIndex</tt> order, for
 example.</p>
+<p>Global atomics are more powerful than local atomics; they are atomic across
+both the program instances in the gang as well as atomic across different
+gangs and different hardware threads.  For example, for the global variant
+of the atomic used above,</p>
+<pre class="literal-block">
+int32 atomic_add_global(uniform int32 * uniform ptr, int32 delta)
+</pre>
+<p>if multiple processors simultaneously issue atomic adds to the same memory
+location, the adds will be serialized by the hardware so that the correct
+result is computed in the end.</p>
 <p>Here are the declarations of the <tt class="docutils literal">int32</tt> variants of these functions.
 There are also <tt class="docutils literal">int64</tt> equivalents as well as variants that take
-<tt class="docutils literal">unsigned</tt> <tt class="docutils literal">int32</tt> and <tt class="docutils literal">int64</tt> values.  (The <tt class="docutils literal">atomic_swap_global()</tt>
-function can be used with <tt class="docutils literal">float</tt> and <tt class="docutils literal">double</tt> types as well.)</p>
+<tt class="docutils literal">unsigned</tt> <tt class="docutils literal">int32</tt> and <tt class="docutils literal">int64</tt> values.</p>
 <pre class="literal-block">
-int32 atomic_add_global(uniform int32 * uniform ptr, int32 value)
-int32 atomic_subtract_global(uniform int32 * uniform ptr, int32 value)
-int32 atomic_min_global(uniform int32 * uniform ptr, int32 value)
-int32 atomic_max_global(uniform int32 * uniform ptr, int32 value)
-int32 atomic_and_global(uniform int32 * uniform ptr, int32 value)
-int32 atomic_or_global(uniform int32 * uniform ptr, int32 value)
-int32 atomic_xor_global(uniform int32 * uniform ptr, int32 value)
-int32 atomic_swap_global(uniform int32 * uniform ptr, int32 value)
+int32 atomic_add_{local,global}(uniform int32 * uniform ptr, int32 value)
+int32 atomic_subtract_{local,global}(uniform int32 * uniform ptr, int32 value)
+int32 atomic_min_{local,global}(uniform int32 * uniform ptr, int32 value)
+int32 atomic_max_{local,global}(uniform int32 * uniform ptr, int32 value)
+int32 atomic_and_{local,global}(uniform int32 * uniform ptr, int32 value)
+int32 atomic_or_{local,global}(uniform int32 * uniform ptr, int32 value)
+int32 atomic_xor_{local,global}(uniform int32 * uniform ptr, int32 value)
+int32 atomic_swap_{local,global}(uniform int32 * uniform ptr, int32 value)
 </pre>
-<p>There are also variants of these functions that take <tt class="docutils literal">uniform</tt> values for
-the operand and return a <tt class="docutils literal">uniform</tt> result.  These correspond to a single
+<p>Support for <tt class="docutils literal">float</tt> and <tt class="docutils literal">double</tt> types is also available.  For local
+atomics, all but the logical operations are available.  (There are
+corresponding <tt class="docutils literal">double</tt> variants of these, not listed here.)</p>
+<pre class="literal-block">
+float atomic_add_local(uniform float * uniform ptr, float value)
+float atomic_subtract_local(uniform float * uniform ptr, float value)
+float atomic_min_local(uniform float * uniform ptr, float value)
+float atomic_max_local(uniform float * uniform ptr, float value)
+float atomic_swap_local(uniform float * uniform ptr, float value)
+</pre>
+<p>For global atomics, only atomic swap is available for these types:</p>
+<pre class="literal-block">
+float atomic_swap_global(uniform float * uniform ptr, float value)
+double atomic_swap_global(uniform double * uniform ptr, double value)
+</pre>
+<p>There are also variants of the atomic that take <tt class="docutils literal">uniform</tt> values for the
+operand and return a <tt class="docutils literal">uniform</tt> result.  These correspond to a single
 atomic operation being performed for the entire gang of program instances,
 rather than one per program instance.</p>
 <pre class="literal-block">
-uniform int32 atomic_add_global(uniform int32 * uniform ptr,
-                                uniform int32 value)
-uniform int32 atomic_subtract_global(uniform int32 * uniform ptr,
-                                     uniform int32 value)
-uniform int32 atomic_min_global(uniform int32 * uniform ptr,
-                                uniform int32 value)
-uniform int32 atomic_max_global(uniform int32 * uniform ptr,
-                                uniform int32 value)
-uniform int32 atomic_and_global(uniform int32 * uniform ptr,
-                                uniform int32 value)
-uniform int32 atomic_or_global(uniform int32 * uniform ptr,
-                                uniform int32 value)
-uniform int32 atomic_xor_global(uniform int32 * uniform ptr,
-                                uniform int32 value)
-uniform int32 atomic_swap_global(uniform int32 * uniform ptr,
-                                 uniform int32 newval)
+uniform int32 atomic_add_{local,global}(uniform int32 * uniform ptr,
+                                        uniform int32 value)
+uniform int32 atomic_subtract_{local,global}(uniform int32 * uniform ptr,
+                                             uniform int32 value)
+uniform int32 atomic_min_{local,global}(uniform int32 * uniform ptr,
+                                        uniform int32 value)
+uniform int32 atomic_max_{local,global}(uniform int32 * uniform ptr,
+                                        uniform int32 value)
+uniform int32 atomic_and_{local,global}(uniform int32 * uniform ptr,
+                                        uniform int32 value)
+uniform int32 atomic_or_{local,global}(uniform int32 * uniform ptr,
+                                        uniform int32 value)
+uniform int32 atomic_xor_{local,global}(uniform int32 * uniform ptr,
+                                        uniform int32 value)
+uniform int32 atomic_swap_{local,global}(uniform int32 * uniform ptr,
+                                         uniform int32 newval)
 </pre>
 <p>Be careful that you use the atomic function that you mean to; consider the
 following code:</p>
@@ -2951,8 +3100,7 @@ converted to a <tt class="docutils literal">varying int32</tt>.)  Writing the co
 will cause the desired atomic add function to be called.</p>
 <pre class="literal-block">
 extern uniform int32 counter;
-int32 one = 1;
-int32 myCounter = atomic_add_global(&amp;counter, one);
+int32 myCounter = atomic_add_global(&amp;counter, (varying int32)1);
 </pre>
 <p>There is a third variant of each of these atomic functions that takes a
 <tt class="docutils literal">varying</tt> pointer; this allows each program instance to issue an atomic
@@ -2960,28 +3108,25 @@ operation to a possibly-different location in memory.  (Of course, the
 proper result is still returned if some or all of them happen to point to
 the same location in memory!)</p>
 <pre class="literal-block">
-int32 atomic_add_global(uniform int32 * varying ptr, int32 value)
-int32 atomic_subtract_global(uniform int32 * varying ptr, int32 value)
-int32 atomic_min_global(uniform int32 * varying ptr, int32 value)
-int32 atomic_max_global(uniform int32 * varying ptr, int32 value)
-int32 atomic_and_global(uniform int32 * varying ptr, int32 value)
-int32 atomic_or_global(uniform int32 * varying ptr, int32 value)
-int32 atomic_xor_global(uniform int32 * varying ptr, int32 value)
-int32 atomic_swap_global(uniform int32 * varying ptr, int32 value)
+int32 atomic_add_{local,global}(uniform int32 * varying ptr, int32 value)
+int32 atomic_subtract_{local,global}(uniform int32 * varying ptr, int32 value)
+int32 atomic_min_{local,global}(uniform int32 * varying ptr, int32 value)
+int32 atomic_max_{local,global}(uniform int32 * varying ptr, int32 value)
+int32 atomic_and_{local,global}(uniform int32 * varying ptr, int32 value)
+int32 atomic_or_{local,global}(uniform int32 * varying ptr, int32 value)
+int32 atomic_xor_{local,global}(uniform int32 * varying ptr, int32 value)
+int32 atomic_swap_{local,global}(uniform int32 * varying ptr, int32 value)
 </pre>
-<p>There are also atomic swap and &quot;compare and exchange&quot; functions.
-Compare and exchange atomically compares the value in &quot;val&quot; to
-&quot;compare&quot;--if they match, it assigns &quot;newval&quot; to &quot;val&quot;.  In either case,
-the old value of &quot;val&quot; is returned.  (As with the other atomic operations,
-there are also <tt class="docutils literal">unsigned</tt> and 64-bit variants of this function.
-Furthermore, there are <tt class="docutils literal">float</tt> and <tt class="docutils literal">double</tt> variants as well.)</p>
+<p>There are also atomic &quot;compare and exchange&quot; functions.  Compare and
+exchange atomically compares the value in &quot;val&quot; to &quot;compare&quot;--if they
+match, it assigns &quot;newval&quot; to &quot;val&quot;.  In either case, the old value of
+&quot;val&quot; is returned.  (As with the other atomic operations, there are also
+<tt class="docutils literal">unsigned</tt> and 64-bit variants of this function.  Furthermore, there are
+<tt class="docutils literal">float</tt> and <tt class="docutils literal">double</tt> variants as well.)</p>
 <pre class="literal-block">
-int32 atomic_swap_global(uniform int32 * uniform ptr, int32 newvalue)
-uniform int32 atomic_swap_global(uniform int32 * uniform ptr,
-                                 uniform int32 newvalue)
-int32 atomic_compare_exchange_global(uniform int32 * uniform ptr,
-                                     int32 compare, int32 newval)
-uniform int32 atomic_compare_exchange_global(uniform int32 * uniform ptr,
+int32 atomic_compare_exchange_{local,global}(uniform int32 * uniform ptr,
+                                             int32 compare, int32 newval)
+uniform int32 atomic_compare_exchange_{local,global}(uniform int32 * uniform ptr,
                                 uniform int32 compare, uniform int32 newval)
 </pre>
 <p><tt class="docutils literal">ispc</tt> also has a standard library routine that inserts a memory barrier
@@ -3023,10 +3168,22 @@ void prefetch_{l1,l2,l3,nt}(void * varying ptr)
 </div>
 <div class="section" id="system-information">
 <h2>System Information</h2>
-<p>A routine is available to find the number of CPU cores available in the
-system:</p>
+<p>The value of a  high-precision hardware clock counter is returned by the
+<tt class="docutils literal">clock()</tt> routine; its value increments by one each processor cycle.
+Thus, taking the difference between the values returned by <tt class="docutils literal">clock()</tt> and
+different points in program execution gives the number of cycles between
+those points in the program.</p>
 <pre class="literal-block">
-int num_cores()
+uniform int64 clock()
+</pre>
+<p>Note that <tt class="docutils literal">clock()</tt> flushes the processor pipeline.  It has an overhead
+of a hundred or so cycles, so for very fine-grained measurements, it may be
+worthwhile to measure the cost of calling <tt class="docutils literal">clock()</tt> and subtracting that
+value from reported results.</p>
+<p>A routine is also available to find the number of CPU cores available in
+the system:</p>
+<pre class="literal-block">
+uniform int num_cores()
 </pre>
 <p>This value can be useful for adapting the granularity of parallel task
 decomposition depending on the number of processors in the system.</p>
