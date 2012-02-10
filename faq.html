@@ -75,6 +75,7 @@ distribution.</p>
 <li><a class="reference internal" href="#how-can-i-supply-an-initial-execution-mask-in-the-call-from-the-application">How can I supply an initial execution mask in the call from the application?</a></li>
 <li><a class="reference internal" href="#how-can-i-generate-a-single-binary-executable-with-support-for-multiple-instruction-sets">How can I generate a single binary executable with support for multiple instruction sets?</a></li>
 <li><a class="reference internal" href="#how-can-i-determine-at-run-time-which-vector-instruction-set-s-instructions-were-selected-to-execute">How can I determine at run-time which vector instruction set's instructions were selected to execute?</a></li>
+<li><a class="reference internal" href="#is-it-possible-to-inline-ispc-functions-in-c-c-code">Is it possible to inline ispc functions in C/C++ code?</a></li>
 </ul>
 </li>
 <li>Programming Techniques<ul>
@@ -357,6 +358,40 @@ executing on, which in turn returns the appropriate value.</p>
 <pre class="literal-block">
 export uniform int width() { return programCount; }
 </pre>
+</div>
+<div class="section" id="is-it-possible-to-inline-ispc-functions-in-c-c-code">
+<h2>Is it possible to inline ispc functions in C/C++ code?</h2>
+<p>If you're willing to use the <tt class="docutils literal">clang</tt> C/C++ compiler that's part of the
+LLVM tool suite, then it is possible to inline <tt class="docutils literal">ispc</tt> code with C/C++
+(and conversely, to inline C/C++ calls in <tt class="docutils literal">ispc</tt>).  Doing so can provide
+performance advantages when calling out to short functions written in the
+&quot;other&quot; language.  Note that you don't need to use <tt class="docutils literal">clang</tt> to compile all
+of your C/C++ code, but only for the files where you want to be able to
+inline.  In order to do this, you must have a full installation of LLVM
+version 3.0 or later, including the <tt class="docutils literal">clang</tt> compiler.</p>
+<p>The basic approach is to have the various compilers emit LLVM intermediate
+representation (IR) code and to then use tools from LLVM to link together
+the IR from the compilers and then re-optimize it, which gives the LLVM
+optimizer the opportunity to do additional inlining and cross-function
+optimizations.  If you have source files <tt class="docutils literal">foo.ispc</tt> and <tt class="docutils literal">foo.cpp</tt>,
+first emit LLVM IR:</p>
+<pre class="literal-block">
+ispc --emit-llvm -o foo_ispc.bc foo.ispc
+clang -O2 -c -emit-llvm -o foo_cpp.bc foo.cpp
+</pre>
+<p>Next, link the two IR files into a single file and run the LLVM optimizer
+on the result:</p>
+<pre class="literal-block">
+llvm-link foo_ispc.bc foo_cpp.bc -o - | opt -O3 -o foo_opt.bc
+</pre>
+<p>And finally, generate a native object file:</p>
+<pre class="literal-block">
+llc -filetype=obj foo_opt.bc -o foo.o
+</pre>
+<p>This file can in turn be linked in with the rest of your object files when
+linking your applicaiton.</p>
+<p>(Note that if you're using the AVX instruction set, you must provide the
+<tt class="docutils literal"><span class="pre">-mattr=+avx</span></tt> flag to <tt class="docutils literal">llc</tt>.)</p>
 </div>
 </div>
 <div class="section" id="programming-techniques">
