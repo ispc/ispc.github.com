@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.1.4</span>
+   &#160;<span id="projectnumber">1.2.0</span>
    </div>
    
   </td>
@@ -89,9 +89,9 @@ Static Public Attributes</h2></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>After earlier optimization passes have run, we are sometimes able to determine that gathers/scatters are actually accessing memory in a more regular fashion and then change the operation to something simpler and more efficient. For example, if all of the lanes in a gather are reading from the same location, we can instead do a scalar load and broadcast. This pass examines gathers and scatters and tries to simplify them if at all possible.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>Currently, this only looks for all program instances going to the same location and all going to a linear sequence of locations in memory. There are a number of other cases that might make sense to look for, including things that could be handled with a vector load + shuffle or things that could be handled with hybrids of e.g. 2 4-wide vector loads with AVX, etc. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Currently, this only looks for all program instances going to the same location and all going to a linear sequence of locations in memory. There are a number of other cases that might make sense to look for, including things that could be handled with a vector load + shuffle or things that could be handled with hybrids of e.g. 2 4-wide vector loads with AVX, etc. </dd></dl>
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l02156">2156</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l02256">2256</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a376f209b05f107a03099639fef2d71bb"></a><!-- doxytag: member="GSToLoadStorePass::GSToLoadStorePass" ref="a376f209b05f107a03099639fef2d71bb" args="()" -->
 <div class="memitem">
@@ -107,7 +107,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l02159">2159</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l02259">2259</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -126,7 +126,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l02161">2161</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l02261">2261</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -145,9 +145,9 @@ Static Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l02426">2426</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l02313">2313</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p>References <a class="el" href="opt_8cpp_source.html#l02385">GatherImpInfo::align</a>, <a class="el" href="opt_8cpp_source.html#l02421">ScatterImpInfo::align</a>, <a class="el" href="ispc_8h_source.html#l00059">Assert</a>, <a class="el" href="util_8cpp_source.html#l00277">Debug()</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8h_source.html#l00095">LLVMTypes::Int16VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00096">LLVMTypes::Int32VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00097">LLVMTypes::Int64VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00090">LLVMTypes::Int64VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00094">LLVMTypes::Int8VectorPointerType</a>, <a class="el" href="opt_8cpp_source.html#l00180">lCallInst()</a>, <a class="el" href="opt_8cpp_source.html#l02390">lComputeCommonPointer()</a>, <a class="el" href="opt_8cpp_source.html#l00112">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l00146">lGetSourcePosFromMetadata()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00204">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00218">LLVMInt64()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00598">LLVMVectorValuesAllEqual()</a>, <a class="el" href="opt_8cpp_source.html#l02383">GatherImpInfo::loadBroadcastFunc</a>, <a class="el" href="opt_8cpp_source.html#l02384">GatherImpInfo::loadMaskedFunc</a>, <a class="el" href="opt_8cpp_source.html#l02266">lVectorIsLinear()</a>, <a class="el" href="opt_8cpp_source.html#l02419">ScatterImpInfo::maskedStoreFunc</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00358">Globals::target</a>, <a class="el" href="opt_8cpp_source.html#l02420">ScatterImpInfo::vecPtrType</a>, <a class="el" href="ispc_8h_source.html#l00225">Target::vectorWidth</a>, and <a class="el" href="util_8cpp_source.html#l00289">Warning()</a>.</p>
+<p>References <a class="el" href="opt_8cpp_source.html#l02283">GatherImpInfo::align</a>, <a class="el" href="opt_8cpp_source.html#l02308">ScatterImpInfo::align</a>, <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="util_8cpp_source.html#l00280">Debug()</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8h_source.html#l00095">LLVMTypes::Int16VectorPointerType</a>, <a class="el" href="parse_8yy_source.html#l310213">int32_t</a>, <a class="el" href="llvmutil_8h_source.html#l00096">LLVMTypes::Int32VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00097">LLVMTypes::Int64VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00090">LLVMTypes::Int64VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00094">LLVMTypes::Int8VectorPointerType</a>, <a class="el" href="opt_8cpp_source.html#l00181">lCallInst()</a>, <a class="el" href="opt_8cpp_source.html#l02288">lComputeCommonPointer()</a>, <a class="el" href="opt_8cpp_source.html#l00113">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l00147">lGetSourcePosFromMetadata()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00207">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00221">LLVMInt64()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01346">LLVMVectorIsLinear()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01076">LLVMVectorValuesAllEqual()</a>, <a class="el" href="opt_8cpp_source.html#l02281">GatherImpInfo::loadBroadcastFunc</a>, <a class="el" href="opt_8cpp_source.html#l02282">GatherImpInfo::loadMaskedFunc</a>, <a class="el" href="opt_8cpp_source.html#l02306">ScatterImpInfo::maskedStoreFunc</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, <a class="el" href="opt_8cpp_source.html#l02307">ScatterImpInfo::vecPtrType</a>, <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>, and <a class="el" href="util_8cpp_source.html#l00292">Warning()</a>.</p>
 
 </div>
 </div>
@@ -163,7 +163,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="opt_8cpp_source.html#l02158">2158</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p>Definition at line <a class="el" href="opt_8cpp_source.html#l02258">2258</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -174,7 +174,7 @@ Static Public Attributes</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 4 2012 15:26:37 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Mar 20 2012 11:56:26 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

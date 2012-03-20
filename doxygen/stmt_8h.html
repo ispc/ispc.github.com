@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.1.4</span>
+   &#160;<span id="projectnumber">1.2.0</span>
    </div>
    
   </td>
@@ -53,7 +53,8 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">stmt.h File Reference</div>  </div>
 </div>
@@ -115,16 +116,66 @@ Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAssertStmt.html">AssertStmt</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Representation of an assert statement in the program.  <a href="classAssertStmt.html#details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDeleteStmt.html">DeleteStmt</a></td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classStmt.html">Stmt</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stmt_8h.html#a0e28f960e6e8995375b7289099ba193d">CreateForeachActiveStmt</a> (<a class="el" href="classSymbol.html">Symbol</a> *iterSym, <a class="el" href="classStmt.html">Stmt</a> *stmts, <a class="el" href="structSourcePos.html">SourcePos</a> pos)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>File with declarations for classes related to statements in the language. </p>
 
 <p>Definition in file <a class="el" href="stmt_8h_source.html">stmt.h</a>.</p>
-</div></div>
+</div><hr/><h2>Function Documentation</h2>
+<a class="anchor" id="a0e28f960e6e8995375b7289099ba193d"></a><!-- doxytag: member="stmt.h::CreateForeachActiveStmt" ref="a0e28f960e6e8995375b7289099ba193d" args="(Symbol *iterSym, Stmt *stmts, SourcePos pos)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classStmt.html">Stmt</a>* CreateForeachActiveStmt </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSymbol.html">Symbol</a> *&#160;</td>
+          <td class="paramname"><em>iterSym</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classStmt.html">Stmt</a> *&#160;</td>
+          <td class="paramname"><em>stmts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSourcePos.html">SourcePos</a>&#160;</td>
+          <td class="paramname"><em>pos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>This generates AST nodes for an __foreach_active statement. This construct can be synthesized ouf of the existing <a class="el" href="classForStmt.html" title="Statement implementation for &#39;for&#39; loops (as well as for &#39;while&#39; loops).">ForStmt</a> (and other AST nodes), so here we just build up the AST that we need rather than having a new <a class="el" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> implementation for __foreach_active.</p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">iterSym</td><td><a class="el" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> for the iteration variable (e.g. "i" in __foreach_active (i) { .. .} </td></tr>
+    <tr><td class="paramname">stmts</td><td>Statements to execute each time through the loop, for each active program instance. </td></tr>
+    <tr><td class="paramname">pos</td><td>Position of the __foreach_active statement in the source file. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="stmt_8cpp_source.html#l02740">2740</a> of file <a class="el" href="stmt_8cpp_source.html">stmt.cpp</a>.</p>
+
+<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="expr_8h_source.html#l00145">BinaryExpr::BitAnd</a>, <a class="el" href="module_8h_source.html#l00129">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="sym_8cpp_source.html#l00164">SymbolTable::LookupFunction()</a>, <a class="el" href="sym_8cpp_source.html#l00133">SymbolTable::LookupVariable()</a>, <a class="el" href="expr_8h_source.html#l00138">BinaryExpr::Lt</a>, <a class="el" href="ispc_8cpp_source.html#l00068">m</a>, <a class="el" href="expr_8h_source.html#l00143">BinaryExpr::NotEqual</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="sym_8h_source.html#l00077">Symbol::pos</a>, <a class="el" href="expr_8h_source.html#l00103">UnaryExpr::PreInc</a>, <a class="el" href="expr_8h_source.html#l00135">BinaryExpr::Shl</a>, <a class="el" href="module_8h_source.html#l00133">Module::symbolTable</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, <a class="el" href="type_8h_source.html#l00298">AtomicType::UniformInt32</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+
+</div>
+</div>
+</div>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 4 2012 15:26:36 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Mar 20 2012 11:56:25 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

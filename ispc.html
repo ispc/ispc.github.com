@@ -33,6 +33,7 @@
       <div id="nbar">
         <ul>
           <li><a href="index.html">Overview</a></li>
+          <li><a href="news.html">News</a></li>
           <li><a href="features.html">Features</a></li>
           <li><a href="downloads.html">Downloads</a></li>
           <li id="selected"><a href="documentation.html">Documentation</a></li>
@@ -141,7 +142,9 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#reference-types">Reference Types</a></li>
 <li><a class="reference internal" href="#enumeration-types">Enumeration Types</a></li>
 <li><a class="reference internal" href="#short-vector-types">Short Vector Types</a></li>
-<li><a class="reference internal" href="#struct-and-array-types">Struct and Array Types</a></li>
+<li><a class="reference internal" href="#array-types">Array Types</a></li>
+<li><a class="reference internal" href="#struct-types">Struct Types</a></li>
+<li><a class="reference internal" href="#structure-of-array-types">Structure of Array Types</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#declarations-and-initializers">Declarations and Initializers</a></li>
@@ -184,8 +187,12 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#reductions">Reductions</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#data-conversions-and-storage">Data Conversions And Storage</a><ul>
+<li><a class="reference internal" href="#data-movement">Data Movement</a><ul>
+<li><a class="reference internal" href="#setting-and-copying-values-in-memory">Setting and Copying Values In Memory</a></li>
 <li><a class="reference internal" href="#packed-load-and-store-operations">Packed Load and Store Operations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#data-conversions">Data Conversions</a><ul>
 <li><a class="reference internal" href="#converting-between-array-of-structures-and-structure-of-arrays-layout">Converting Between Array-of-Structures and Structure-of-Arrays Layout</a></li>
 <li><a class="reference internal" href="#conversions-to-and-from-half-precision-floats">Conversions To and From Half-Precision Floats</a></li>
 </ul>
@@ -203,7 +210,6 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#data-layout">Data Layout</a></li>
 <li><a class="reference internal" href="#data-alignment-and-aliasing">Data Alignment and Aliasing</a></li>
 <li><a class="reference internal" href="#restructuring-existing-programs-to-use-ispc">Restructuring Existing Programs to Use ISPC</a></li>
-<li><a class="reference internal" href="#understanding-how-to-interoperate-with-the-application-s-data">Understanding How to Interoperate With the Application's Data</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#disclaimer-and-legal-information">Disclaimer and Legal Information</a></li>
@@ -812,7 +818,9 @@ pointers are called in this case is undefined.</p>
 single value that is shared across the entire gang.  (In contrast, the
 default variability qualifier for variables in <tt class="docutils literal">ispc</tt>, <tt class="docutils literal">varying</tt>,
 represents a variable that has a distinct storage location for each program
-instance in the gang.)</p>
+instance in the gang.)  (Though see the discussion in <a class="reference internal" href="#struct-types">Struct Types</a> for
+some subtleties related to <tt class="docutils literal">uniform</tt> and <tt class="docutils literal">varying</tt> when used with
+structures.)</p>
 <p>It is an error to try to assign a <tt class="docutils literal">varying</tt> value to a <tt class="docutils literal">uniform</tt>
 variable, though <tt class="docutils literal">uniform</tt> values can be assigned to <tt class="docutils literal">uniform</tt>
 variables.  Assignments to <tt class="docutils literal">uniform</tt> variables are not affected by the
@@ -1415,46 +1423,59 @@ value with <tt class="docutils literal">float[3]</tt> type to a function that ha
 <div class="section" id="pointer-types">
 <h2>Pointer Types</h2>
 <p>It is possible to have pointers to data in memory; pointer arithmetic,
-changing values in memory with pointers, and so forth is supported as in C.</p>
+changing values in memory with pointers, and so forth is supported as in C.
+As with other basic types, pointers can be both <tt class="docutils literal">uniform</tt> and
+<tt class="docutils literal">varying</tt>.</p>
+<p>** Like other types in <tt class="docutils literal">ispc</tt>, pointers are <tt class="docutils literal">varying</tt> by default, if an
+explicit <tt class="docutils literal">uniform</tt> qualifier isn't provided.  However, the default
+variability of the pointed-to type is uniform. ** This rule will be
+illustrated and explained in examples below.</p>
+<p>For example, the <tt class="docutils literal">ptr</tt> variable in the code below is a varying pointer to
+<tt class="docutils literal">uniform float</tt> values.  Each program instance has a separate pointer
+value and the assignment to <tt class="docutils literal">*ptr</tt> generally represents a scatter to
+memory.</p>
 <pre class="literal-block">
-float a = 0;
-float *pa = &amp;a;
-*pa = 1;  // now a == 1
+uniform float a[] = ...;
+int index = ...;
+float * ptr = &amp;a[index];
+*ptr = 1;
+</pre>
+<p>A <tt class="docutils literal">uniform</tt> pointer can be declared with an appropriately-placed
+qualifier:</p>
+<pre class="literal-block">
+float f = 0;
+varying float * uniform pf = &amp;f;  // uniform pointer to a varying float
+*pf = 1;
+</pre>
+<p>The placement of the <tt class="docutils literal">uniform</tt> qualifier to declare a <tt class="docutils literal">uniform</tt> pointer
+may be initially surprising, but it matches the form of how, for example, a
+pointer that is itself <tt class="docutils literal">const</tt> (as opposed to pointing to a <tt class="docutils literal">const</tt>
+type) is declared in C.  (Reading the declaration from right to left gives
+its meaning: a uniform pointer to a float that is varying.)</p>
+<p>A subtlety comes in in cases like the where a uniform pointer points to a
+varying datatype.  In this case, each program instance accesses a distinct
+location in memory (because the underlying varying datatype is itself laid
+out with a separate location in memory for each program instance.)</p>
+<pre class="literal-block">
+float a;
+varying float * uniform pa = &amp;a;
+*pa = programIndex;  // same as (a = programIndex)
 </pre>
 <p>Also as in C, arrays are silently converted into pointers:</p>
 <pre class="literal-block">
 float a[10] = { ... };
-float *pa = a;     // pointer to first element of a
-float *pb = a + 5; // pointer to 5th element of a
-</pre>
-<p>As with other basic types, pointers can be both <tt class="docutils literal">uniform</tt> and
-<tt class="docutils literal">varying</tt>.  By default, they are varying.  The placement of the
-<tt class="docutils literal">uniform</tt> qualifier to declare a <tt class="docutils literal">uniform</tt> pointer may be initially
-surprising, but it matches the form of how for example a pointer that is
-itself <tt class="docutils literal">const</tt> (as opposed to pointing to a <tt class="docutils literal">const</tt> type) is declared
-in C.</p>
-<pre class="literal-block">
-uniform float f = 0;
-uniform float * uniform pf = &amp;f;
-*pf = 1;
-</pre>
-<p>A subtlety comes in when a uniform pointer points to a varying datatype.
-In this case, each program instance accesses a distinct location in memory
-(because the underlying varying datatype is itself laid out with a separate
-location in memory for each program instance.)</p>
-<pre class="literal-block">
-float a;
-float * uniform pa = &amp;a;
-*pa = programIndex;  // same as (a = programIndex)
+varying float * uniform pa = a;     // pointer to first element of a
+varying float * uniform pb = a + 5; // pointer to 5th element of a
 </pre>
 <p>Any pointer type can be explicitly typecast to another pointer type, as
 long as the source type isn't a <tt class="docutils literal">varying</tt> pointer when the destination
-type is a <tt class="docutils literal">uniform</tt> pointer.  Like other types, <tt class="docutils literal">uniform</tt> pointers can
-be typecast to be <tt class="docutils literal">varying</tt> pointers, however.</p>
+type is a <tt class="docutils literal">uniform</tt> pointer.</p>
 <pre class="literal-block">
 float *pa = ...;
 int *pb = (int *)pa;  // legal, but beware
 </pre>
+<p>Like other types, <tt class="docutils literal">uniform</tt> pointers can be typecast to be <tt class="docutils literal">varying</tt>
+pointers, however.</p>
 <p>Any pointer type can be assigned to a <tt class="docutils literal">void</tt> pointer without a type cast:</p>
 <pre class="literal-block">
 float foo(void *);
@@ -1669,17 +1690,15 @@ int8&lt;2&gt; bar = ...;
 foo.yz = bar;   // Error: can't assign to left-hand side of expression
 </pre>
 </div>
-<div class="section" id="struct-and-array-types">
-<h2>Struct and Array Types</h2>
-<p>More complex data structures can be built using <tt class="docutils literal">struct</tt> and arrays.</p>
+<div class="section" id="array-types">
+<h2>Array Types</h2>
+<p>Arrays of any type can be declared just as in C and C++:</p>
 <pre class="literal-block">
-struct Foo {
-    float time;
-    int flags[10];
-};
+float a[10];
+uniform int * varying b[20];
 </pre>
-<p>Like in C, multidimensional arrays can be specified; the following declares
-an array of 5 arrays of 15 floats.</p>
+<p>Multidimensional arrays can be specified as arrays of arrays; the following
+declares an array of 5 arrays of 15 floats.</p>
 <pre class="literal-block">
 float a[5][15];
 </pre>
@@ -1690,6 +1709,22 @@ that functions can be declared to take &quot;unsized arrays&quot; as parameters:
 <pre class="literal-block">
 void foo(float array[], int length);
 </pre>
+<p>Finally, the name of an array will be automatically implicitly converted to
+a uniform pointer to the array type if needed:</p>
+<pre class="literal-block">
+int a[10];
+int * uniform ap = a;
+</pre>
+</div>
+<div class="section" id="struct-types">
+<h2>Struct Types</h2>
+<p>Aggregate data structures can be built using <tt class="docutils literal">struct</tt>.</p>
+<pre class="literal-block">
+struct Foo {
+    float time;
+    int flags[10];
+};
+</pre>
 <p>As in C++, after a <tt class="docutils literal">struct</tt> is declared, an instance can be created using
 the <tt class="docutils literal">struct</tt>'s name:</p>
 <pre class="literal-block">
@@ -1699,6 +1734,107 @@ Foo f;
 <pre class="literal-block">
 struct Foo f;
 </pre>
+<p>Members in a structure declaration may each have <tt class="docutils literal">uniform</tt> or <tt class="docutils literal">varying</tt>
+qualifiers, or may have no rate qualifier, in which case their variability
+is initially &quot;unbound&quot;.</p>
+<pre class="literal-block">
+struct Bar {
+    uniform int a;
+    varying int b;
+    int c;
+};
+</pre>
+<p>In the declaration above, the variability of <tt class="docutils literal">c</tt> is unbound.  The
+variability of struct members that are unbound is resolved when a struct is
+defined; if the <tt class="docutils literal">struct</tt> is <tt class="docutils literal">uniform</tt>, then unbound members are
+<tt class="docutils literal">uniform</tt>, and if the <tt class="docutils literal">struct</tt> is <tt class="docutils literal">varying</tt>, then unbound members are
+varying.</p>
+<pre class="literal-block">
+Bar vb;
+uniform Bar ub;
+</pre>
+<p>Here, <tt class="docutils literal">b</tt> is a <tt class="docutils literal">varying Bar</tt> (since <tt class="docutils literal">varying</tt> is the default
+variability).  If <tt class="docutils literal">Bar</tt> is defined as above, then <tt class="docutils literal">vb.a</tt> is still a
+<tt class="docutils literal">uniform int</tt>, since its varaibility was bound in the original
+declaration of the <tt class="docutils literal">Bar</tt> type.  Similarly, <tt class="docutils literal">vb.b</tt> is <tt class="docutils literal">varying</tt>.  The
+variability fo <tt class="docutils literal">vb.c</tt> is <tt class="docutils literal">varying</tt>, since <tt class="docutils literal">vb</tt> is <tt class="docutils literal">varying</tt>.</p>
+<p>(Similarly, <tt class="docutils literal">ub.a</tt> is <tt class="docutils literal">uniform</tt>, <tt class="docutils literal">ub.b</tt> is <tt class="docutils literal">varying</tt>, and <tt class="docutils literal">ub.c</tt>
+is <tt class="docutils literal">uniform</tt>.)</p>
+<p>In most cases, it's worthwhile to declare <tt class="docutils literal">struct</tt> members with unbound
+variability so that all have the same variability for both <tt class="docutils literal">uniform</tt> and
+<tt class="docutils literal">varying</tt> structs.  In particular, if a <tt class="docutils literal">struct</tt> has a member with
+bound <tt class="docutils literal">uniform</tt> type, it's not possible to index into an array of the
+struct type with a <tt class="docutils literal">varying</tt> index.  Consider the following example:</p>
+<pre class="literal-block">
+struct Foo { uniform int a; };
+uniform Foo f[...] = ...;
+int index = ...;
+Foo fv = f[index];  // ERROR
+</pre>
+<p>Here, the <tt class="docutils literal">Foo</tt> type has a member with bound <tt class="docutils literal">uniform</tt> variability.
+Because <tt class="docutils literal">index</tt> has a different value for each program instance in the
+above code, the value of <tt class="docutils literal">f[index]</tt> needs to be able to store a different
+value of <tt class="docutils literal"><span class="pre">Foo::a</span></tt> for each program instance.  However, a <tt class="docutils literal">varying Foo</tt>
+still has only a single <tt class="docutils literal">a</tt> member, since <tt class="docutils literal">a</tt> was declared with
+<tt class="docutils literal">uniform</tt> variability in the declaration of <tt class="docutils literal">Foo</tt>.  Therefore, the
+indexing operation in the last line results in an error.</p>
+</div>
+<div class="section" id="structure-of-array-types">
+<h2>Structure of Array Types</h2>
+<p>If data can be laid out in memory so that the executing program instances
+access it via loads and stores of contiguous sections of memory, overall
+performance can be improved noticably.  One way to improve this memory
+access coherence is to lay out structures in &quot;structure of arrays&quot; (SOA)
+format in memory; the benefits from SOA layout are discussed in more detail
+in the <a class="reference external" href="perf.html#use-structure-of-arrays-layout-when-possible">Use &quot;Structure of Arrays&quot; Layout When Possible</a> section in the
+ispc Performance Guide.</p>
+<p><tt class="docutils literal">ispc</tt> provides two key language-level capabilities for laying out and
+accessing data in SOA format:</p>
+<ul class="simple">
+<li>An <tt class="docutils literal">soa</tt> keyword that transforms a regular <tt class="docutils literal">struct</tt> into an SOA version
+of the struct.</li>
+<li>Array indexing syntax for SOA arrays that transparently handles SOA
+indexing.</li>
+</ul>
+<p>As an example, consider a simple struct declaration:</p>
+<pre class="literal-block">
+struct Point { float x, y, z; };
+</pre>
+<p>With the <tt class="docutils literal">soa</tt> rate qualifier, an array of SOA variants of this structure
+can be declared:</p>
+<pre class="literal-block">
+soa&lt;8&gt; Point pts[...];
+</pre>
+<p>The in-memory layout of the <tt class="docutils literal"><span class="pre">Point``s</span> has had the SOA transformation
+applied, such that there are 8 ``x</tt> values in memory followed by 8 <tt class="docutils literal">y</tt>
+values, and so forth.  Here is the effective declaration of <tt class="docutils literal">soa&lt;8&gt;
+Point</tt>:</p>
+<pre class="literal-block">
+struct { uniform float x[8], y[8], z[8]; };
+</pre>
+<p>Given an array of SOA data, array indexing (and pointer arithmetic) is done
+so that the appropriate values from the SOA array are accessed.  For
+example, given:</p>
+<pre class="literal-block">
+soa&lt;8&gt; Point pts[...];
+uniform float x = pts[10].x;
+</pre>
+<p>The generated code effectively accesses the second 8-wide SOA structure and
+then loads the third <tt class="docutils literal">x</tt> value from it.  In general, one can write the
+same code to access arrays of SOA elements as one would write to access
+them in AOS layout.</p>
+<p>Note that it directly follows from SOA layout that the layout of a single
+element of the array isn't contiguous in memory--<tt class="docutils literal"><span class="pre">pts[1].x</span></tt> and
+<tt class="docutils literal"><span class="pre">pts[1].y</span></tt> are separated by 7 <tt class="docutils literal">float</tt> values in the above example.</p>
+<p>There are a few limitations to the current implementation of SOA types in
+<tt class="docutils literal">ispc</tt>; these may be relaxed in future releases:</p>
+<ul class="simple">
+<li>It's illegal to typecast to <tt class="docutils literal">soa</tt> data to <tt class="docutils literal">void</tt> pointers.</li>
+<li>Reference types are illegal in SOA structures</li>
+<li>All members of SOA structures must have no rate qualifiers--specifically,
+it's illegal to have an explicitly-qualified <tt class="docutils literal">uniform</tt> or <tt class="docutils literal">varying</tt>
+member of a structure that has <tt class="docutils literal">soa</tt> applied to it.</li>
+</ul>
 </div>
 <div class="section" id="declarations-and-initializers">
 <h2>Declarations and Initializers</h2>
@@ -1803,7 +1939,7 @@ if (index &lt; NUM_ITEMS &amp;&amp; array[index] &gt; 0) {
 based on C++'s <tt class="docutils literal">new</tt> and <tt class="docutils literal">delete</tt> operators:</p>
 <pre class="literal-block">
 int count = ...;
-int *ptr = new uniform int[count];
+int *ptr = new int[count];
 // use ptr...
 delete[] ptr;
 </pre>
@@ -1812,11 +1948,19 @@ array of ``uniform int</tt> values, uses that memory, and then deallocates
 that memory.  Uses of <tt class="docutils literal">new</tt> and <tt class="docutils literal">delete</tt> in <tt class="docutils literal">ispc</tt> programs are
 serviced by corresponding calls the system C library's <tt class="docutils literal">malloc()</tt> and
 <tt class="docutils literal">free()</tt> functions.</p>
+<p>Note that the rules for <tt class="docutils literal">uniform</tt> and <tt class="docutils literal">varying</tt> for <tt class="docutils literal">new</tt> are
+analogous to the corresponding rules are for pointers (as described in
+<a class="reference internal" href="#pointer-types">Pointer Types</a>.)  Specifically, if a specific rate qualifier isn't
+provided with the <tt class="docutils literal">new</tt> expression, then the default is that a &quot;varying&quot;
+<tt class="docutils literal">new</tt> is performed, where each program instance performs a unique
+allocation.  The allocated type, in turn, is by default <tt class="docutils literal">uniform</tt> for
+<tt class="docutils literal">varying</tt> <tt class="docutils literal">new</tt> expressions, and <tt class="docutils literal">varying</tt> for <tt class="docutils literal">uniform</tt> new
+expressions.</p>
 <p>After a pointer has been deleted, it is illegal to access the memory it
-points to.  However, note that deletion happens on a per-program-instance
-basis.  In other words, consider the following code:</p>
+points to.  However, that deletion happens on a per-program-instance basis.
+In other words, consider the following code:</p>
 <pre class="literal-block">
-int *ptr = new uniform int[count];
+int *ptr = new int[count];
 // use ptr
 if (count &gt; 1000)
     delete[] ptr;
@@ -1838,14 +1982,16 @@ float * uniform ptr = uniform new float[10];
 <p>While a regular call to <tt class="docutils literal">new</tt> returns a <tt class="docutils literal">varying</tt> pointer (i.e. a
 distinct pointer to separately-allocated memory for each program instance),
 a <tt class="docutils literal">uniform new</tt> performs a single allocation and returns a <tt class="docutils literal">uniform</tt>
-pointer.</p>
+pointer.  Recall that with a <tt class="docutils literal">uniform</tt> <tt class="docutils literal">new</tt>, the default variability
+of the allocated type is <tt class="docutils literal">varying</tt>, so the above code is allocating an
+array of ten <tt class="docutils literal">varying float</tt> values.</p>
 <p>When using <tt class="docutils literal">uniform new</tt>, it's important to be aware of a subtlety; if
 the returned pointer is stored in a varying pointer variable (as may be
 appropriate and useful for the particular program being written), then the
 varying pointer may inadvertently be passed to a subsequent <tt class="docutils literal">delete</tt>
 statement, which is an error: effectively</p>
 <pre class="literal-block">
-float *ptr = uniform new float[10];
+varying float * ptr = uniform new float[10];
 // use ptr...
 delete ptr;  // ERROR: varying pointer is deleted
 </pre>
@@ -1853,25 +1999,28 @@ delete ptr;  // ERROR: varying pointer is deleted
 executing program instance, which is an error (unless it happens that only
 a single program instance is active in the above code.)</p>
 <p>When using <tt class="docutils literal">new</tt> statements, it's important to make an appropriate choice
-of <tt class="docutils literal">uniform</tt> or <tt class="docutils literal">varying</tt> (as always, the default), for both the
-<tt class="docutils literal">new</tt> operator itself as well as the type of data being allocated, based
-on the program's needs.  Consider the following four memory allocations:</p>
+of <tt class="docutils literal">uniform</tt> or <tt class="docutils literal">varying</tt>, for both the <tt class="docutils literal">new</tt> operator itself as well
+as the type of data being allocated, based on the program's needs.
+Consider the following four memory allocations:</p>
 <pre class="literal-block">
 uniform float * uniform p1 = uniform new uniform float[10];
 float * uniform p2 = uniform new float[10];
-uniform float * p3 = new uniform float[10];
-float * p4 = new float[10];
+float * p3 = new float[10];
+varying float * p4 = new varying float[10];
 </pre>
 <p>Assuming that a <tt class="docutils literal">float</tt> is 4 bytes in memory and if the gang size is 8
 program instances, then the first allocation represents a single allocation
-of 40 bytes, the second is a single allocation of 8*4*10 = 320 bytes, the
-third is 8 allocations of 40 bytes, and the last performs 8 allocations of
-80 bytes each.</p>
+of 10 <tt class="docutils literal">uniform float</tt> values (40 bytes), the second is a single
+allocation of 10 <tt class="docutils literal">varying float</tt> values (8*4*10 = 320 bytes), the third
+is 8 allocations of 10 <tt class="docutils literal">uniform float</tt> values (8 allocations of 40 bytes
+each), and the last performs 8 allocations of 320 bytes each.</p>
 <p>Note in particular that varying allocations of varying data types are rarely
 desirable in practice.  In that case, each program instance is performing a
 separate allocation of <tt class="docutils literal">varying float</tt> memory.  In this case, it's likely
 that the program instances will only access a single element of each
-<tt class="docutils literal">varying float</tt>, which is wasteful.</p>
+<tt class="docutils literal">varying float</tt>, which is wasteful.  (This in turn is partially why the
+allocated type is uniform by default with both pointers and <tt class="docutils literal">new</tt>
+statements.)</p>
 <p>Although <tt class="docutils literal">ispc</tt> doesn't support constructors or destructors like C++, it
 is possible to provide initializer values with <tt class="docutils literal">new</tt> statements:</p>
 <pre class="literal-block">
@@ -2223,9 +2372,9 @@ a time, with parameters passed to the task to help it determine what part
 of the overall computation it's responsible for:</p>
 <pre class="literal-block">
 for (uniform int i = 0; i &lt; 100; ++i)
-    launch &lt; func(a, i) &gt;;
+    launch func(a, i);
 </pre>
-<p>Note the <tt class="docutils literal">launch</tt> keyword and the brackets around the function call.
+<p>Note the <tt class="docutils literal">launch</tt> keyword before the function call expression.
 This code launches 100 tasks, each of which presumably does some
 computation that is keyed off of given the value <tt class="docutils literal">i</tt>.  In general, one
 should launch many more tasks than there are processors in the system to
@@ -2235,7 +2384,7 @@ and running tasks dominates the computation.</p>
 statement.  We might instead write the above example with a single
 <tt class="docutils literal">launch</tt> like this:</p>
 <pre class="literal-block">
-launch[100] &lt; func2(a) &gt;;
+launch[100] func2(a);
 </pre>
 <p>Where an integer value (not necessarily a compile-time constant) is
 provided to the <tt class="docutils literal">launch</tt> keyword in square brackets; this number of tasks
@@ -2257,7 +2406,7 @@ tasks it has launched within the function without synchronization.  If
 results are needed before function return, a function can use a <tt class="docutils literal">sync</tt>
 statement to wait for all launched tasks to finish:</p>
 <pre class="literal-block">
-launch[100] &lt; func2(a) &gt;;
+launch[100] func2(a);
 sync;
 // now safe to use computed values in a[]...
 </pre>
@@ -2517,18 +2666,22 @@ uniform float cos(uniform float x)
 float tan(float x)
 uniform float tan(uniform float x)
 </pre>
-<p>Arctangent functions are also available:</p>
+<p>The corresponding inverse functions are also available:</p>
 <pre class="literal-block">
+float asin(float x)
+uniform float asin(uniformfloat x)
+float acos(float x)
+uniform float acos(uniform float x)
 float atan(float x)
-float atan2(float x, float y)
 uniform float atan(uniform float x)
+float atan2(float x, float y)
 uniform float atan2(uniform float x, uniform float y)
 </pre>
 <p>If both sine and cosine are needed, then the <tt class="docutils literal">sincos()</tt> call computes
 both more efficiently than two calls to the respective individual
 functions:</p>
 <pre class="literal-block">
-void sincos(float x, float * uniform s, float * uniform c)
+void sincos(float x, varying float * uniform s, varying float * uniform c)
 void sincos(uniform float x, uniform float * uniform s,
             uniform float * uniform c)
 </pre>
@@ -2549,7 +2702,7 @@ normalized exponent as a power of two in the <tt class="docutils literal">pw2</t
 <pre class="literal-block">
 float ldexp(float x, int n)
 uniform float ldexp(uniform float x, uniform int n)
-float frexp(float x, int * uniform pw2)
+float frexp(float x, varying int * uniform pw2)
 uniform float frexp(uniform float x,
                     uniform int * uniform pw2)
 </pre>
@@ -2561,14 +2714,17 @@ library.  State for the RNG is maintained in an instance of the
 <tt class="docutils literal">RNGState</tt> structure, which is seeded with <tt class="docutils literal">seed_rng()</tt>.</p>
 <pre class="literal-block">
 struct RNGState;
-void seed_rng(RNGState * uniform state, uniform int seed)
+void seed_rng(varying RNGState * uniform state, uniform int seed)
+void seed_rng(uniform RNGState * uniform state, uniform int seed)
 </pre>
 <p>After the RNG is seeded, the <tt class="docutils literal">random()</tt> function can be used to get a
 pseudo-random <tt class="docutils literal">unsigned int32</tt> value and the <tt class="docutils literal">frandom()</tt> function can
 be used to get a pseudo-random <tt class="docutils literal">float</tt> value.</p>
 <pre class="literal-block">
-unsigned int32 random(RNGState * uniform state)
-float frandom(RNGState * uniform state)
+unsigned int32 random(varying RNGState * uniform state)
+float frandom(varying RNGState * uniform state)
+uniform unsigned int32 random(RNGState * uniform state)
+uniform float frandom(uniform RNGState * uniform state)
 </pre>
 </div>
 <div class="section" id="output-functions">
@@ -2820,8 +2976,44 @@ unsigned int64 exclusive_scan_or(unsigned int64 v)
 <p>The use of exclusive scan to generate variable amounts of output from
 program instances into a compact output buffer is <a class="reference external" href="faq.html#how-can-a-gang-of-program-instances-generate-variable-amounts-of-output-efficiently">discussed in the FAQ</a>.</p>
 </div>
-<div class="section" id="data-conversions-and-storage">
-<h2>Data Conversions And Storage</h2>
+<div class="section" id="data-movement">
+<h2>Data Movement</h2>
+</div>
+<div class="section" id="setting-and-copying-values-in-memory">
+<h2>Setting and Copying Values In Memory</h2>
+<p>There are a few functions for copying blocks of memory and initializing
+values in memory.  Along the lines of the equivalently-named routines in
+the C Standard libary, <tt class="docutils literal">memcpy</tt> copies a given number of bytes starting
+from a source location in memory to a destination locaiton, where the two
+regions of memory are guaranteed by the caller to be non-overlapping.
+Alternatively, <tt class="docutils literal">memmove</tt> can be used to copy data if the buffers may
+overlap.</p>
+<pre class="literal-block">
+void memcpy(void * uniform dst, void * uniform src, uniform int32 count)
+void memmove(void * uniform dst, void * uniform src, uniform int32 count)
+void memcpy(void * varying dst, void * varying src, int32 count)
+void memmove(void * varying dst, void * varying src, int32 count)
+</pre>
+<p>Note that there are variants of these functions that take both <tt class="docutils literal">uniform</tt>
+and <tt class="docutils literal">varying</tt> pointers.</p>
+<p>To initialize values in memory, the <tt class="docutils literal">memset</tt> routine can be used.  (It
+also behaves like the function of the same name in the C Standard Library.)
+It sets the given number of bytes of memory starting at the given location
+to the value provided.</p>
+<pre class="literal-block">
+void memset(void * uniform ptr, uniform int8 val, uniform int32 count)
+void memset(void * varying ptr, int8 val, int32 count)
+</pre>
+<p>There are also variants of all of these functions that take 64-bit values
+for the number of bytes of memory to operate on:</p>
+<pre class="literal-block">
+void memcpy64(void * uniform dst, void * uniform src, uniform int64 count)
+void memcpy64(void * varying dst, void * varying src, int64 count)
+void memmove64(void * uniform dst, void * uniform src, uniform int64 count)
+void memmove64(void * varying dst, void * varying src, int64 count)
+void memset64(void * uniform ptr, uniform int8 val, uniform int64 count)
+void memset64(void * varying ptr, int8 val, int64 count)
+</pre>
 </div>
 <div class="section" id="packed-load-and-store-operations">
 <h2>Packed Load and Store Operations</h2>
@@ -2833,9 +3025,9 @@ program instance and storing it into that program instance's <tt class="docutils
 variable.  They return the total number of values loaded.</p>
 <pre class="literal-block">
 uniform int packed_load_active(uniform int * uniform base,
-                               int * uniform val)
+                               varying int * uniform val)
 uniform int packed_load_active(uniform unsigned int * uniform base,
-                               unsigned int * uniform val)
+                               varying unsigned int * uniform val)
 </pre>
 <p>Similarly, the <tt class="docutils literal">packed_store_active()</tt> functions store the <tt class="docutils literal">val</tt> values
 for each program instances that executed the <tt class="docutils literal">packed_store_active()</tt>
@@ -2871,13 +3063,16 @@ of four negative values, and initializes the first four elements of
 <tt class="docutils literal">indices[]</tt> to the values <tt class="docutils literal">{ 1, 3, 4, 5 }</tt> corresponding to the array
 indices where <tt class="docutils literal">a[i]</tt> was less than zero.</p>
 </div>
+<div class="section" id="data-conversions">
+<h2>Data Conversions</h2>
+</div>
 <div class="section" id="converting-between-array-of-structures-and-structure-of-arrays-layout">
 <h2>Converting Between Array-of-Structures and Structure-of-Arrays Layout</h2>
 <p>Applications often lay data out in memory in &quot;array of structures&quot; form.
 Though convenient in C/C++ code, this layout can make <tt class="docutils literal">ispc</tt> programs
 less efficient than they would be if the data was laid out in &quot;structure of
-arrays&quot; form.  (See the section <a class="reference internal" href="#understanding-how-to-interoperate-with-the-application-s-data">Understanding How to Interoperate With the
-Application's Data</a> for extended discussion of this topic.)</p>
+arrays&quot; form.  (See the section <a class="reference external" href="perf.html#use-structure-of-arrays-layout-when-possible">Use &quot;Structure of Arrays&quot; Layout When
+Possible</a> in the performance guide for extended discussion of this topic.)</p>
 <p>The standard library does provide a few functions that efficiently convert
 between these two formats, for cases where it's not possible to change the
 application to use &quot;structure of arrays layout&quot;.  Consider an array of 3D
@@ -2907,10 +3102,10 @@ aos_to_soa3(&amp;pos[base], x, y, z);
 starting at the given offset, returning three <tt class="docutils literal">varying</tt> results.  There
 are both <tt class="docutils literal">int32</tt> and <tt class="docutils literal">float</tt> variants of this function:</p>
 <pre class="literal-block">
-void aos_to_soa3(uniform float a[], float * uniform v0,
-                 float * uniform v1, float * uniform v2)
-void aos_to_soa3(uniform int32 a[], int32 * uniform v0,
-                 int32 * uniform v1, int32 * uniform v2)
+void aos_to_soa3(uniform float a[], varying float * uniform v0,
+                 varying float * uniform v1, varying float * uniform v2)
+void aos_to_soa3(uniform int32 a[], varying int32 * uniform v0,
+                 varying int32 * uniform v1, varying int32 * uniform v2)
 </pre>
 <p>After computation is done, corresponding functions convert back from the
 SoA values in <tt class="docutils literal">ispc</tt> <tt class="docutils literal">varying</tt> variables and write the values back to
@@ -2934,10 +3129,12 @@ AoS data in memory laid out like <tt class="docutils literal">r0 g0 b0 a0 r1 g1 
 and <tt class="docutils literal">a0 <span class="pre">a1...</span></tt>, reading a total of four times the gang size values from
 the given array, starting at the given offset.</p>
 <pre class="literal-block">
-void aos_to_soa4(uniform float a[], float * uniform v0, float * uniform v1,
-                 float * uniform v2, float * uniform v3)
-void aos_to_soa4(uniform int32 a[], int32 * uniform v0, int32 * uniform v1,
-                 int32 * uniform v2, int32 * uniform v3)
+void aos_to_soa4(uniform float a[], varying float * uniform v0,
+                 varying float * uniform v1, varying float * uniform v2,
+                 varying float * uniform v3)
+void aos_to_soa4(uniform int32 a[], varying int32 * uniform v0,
+                 varying int32 * uniform v1, varying int32 * uniform v2,
+                 varying int32 * uniform v3)
 void soa_to_aos4(float v0, float v1, float v2, float v3, uniform float a[])
 void soa_to_aos4(int32 v0, int32 v1, int32 v2, int32 v3, uniform int32 a[])
 </pre>
@@ -3300,12 +3497,12 @@ equivalents of them.)  For example, given a structure in <tt class="docutils lit
 <pre class="literal-block">
 // ispc code
 struct Node {
-   uniform int count;
-   uniform float pos[3];
+   int count;
+   float pos[3];
 };
 </pre>
-<p>If the <tt class="docutils literal">Node</tt> structure is used in the parameters to an <tt class="docutils literal">export</tt> ed
-function, then the header file generated by the <tt class="docutils literal">ispc</tt> compiler will
+<p>If a <tt class="docutils literal">uniform Node</tt> structure is used in the parameters to an <tt class="docutils literal">export</tt>
+ed function, then the header file generated by the <tt class="docutils literal">ispc</tt> compiler will
 have a declaration like:</p>
 <pre class="literal-block">
 // C/C++ code
@@ -3319,9 +3516,9 @@ program instances, <tt class="docutils literal">ispc</tt> prohibits any varying 
 parameters to functions with the <tt class="docutils literal">export</tt> qualifier.  (<tt class="docutils literal">ispc</tt> also
 prohibits passing structures that themselves have varying types as members,
 etc.)  Thus, all datatypes that is shared with the application must have
-the <tt class="docutils literal">uniform</tt> qualifier applied to them.  (See <a class="reference internal" href="#understanding-how-to-interoperate-with-the-application-s-data">Understanding How to
-Interoperate With the Application's Data</a> for more discussion of how to
-load vectors of SoA or AoSoA data from the application.)</p>
+the <tt class="docutils literal">uniform</tt> or <tt class="docutils literal">soa</tt> rate qualifier applied to them.  (See <a class="reference external" href="perf.html#use-structure-of-arrays-layout-when-possible">Use
+&quot;Structure of Arrays&quot; Layout When Possible</a> in the Performance Guide for
+more discussion of how to load vectors of SOA data from the application.)</p>
 <p>Similarly, <tt class="docutils literal">struct</tt> types shared with the application can also have
 embedded pointers.</p>
 <pre class="literal-block">
@@ -3334,7 +3531,7 @@ struct Foo {
 <pre class="literal-block">
 // ispc
 struct Foo {
-    uniform float * uniform foo, * uniform bar;
+    float * uniform foo, * uniform bar;
 };
 </pre>
 <p>There is one subtlety related to data layout to be aware of: <tt class="docutils literal">ispc</tt>
@@ -3398,131 +3595,6 @@ coherence of control flow across the running SPMD program instances, which
 can also have a significant effect on performance; in general, creating
 groups of work that will tend to do similar computation across the SPMD
 program instances improves performance.</p>
-</div>
-<div class="section" id="understanding-how-to-interoperate-with-the-application-s-data">
-<h2>Understanding How to Interoperate With the Application's Data</h2>
-<p>One of <tt class="docutils literal">ispc</tt>'s key goals is to be able to interoperate with the
-application's data, in whatever layout it is stored in.  You don't need to
-worry about reformatting of data or the overhead of a driver model that
-abstracts the data layout.  This section illustrates some of the
-alternatives with a simple example of computing the length of a large
-number of vectors.</p>
-<p>Consider for starters a <tt class="docutils literal">Vector</tt> data-type, defined in C as:</p>
-<pre class="literal-block">
-struct Vector { float x, y, z; };
-</pre>
-<p>We might have (still in C) an array of <tt class="docutils literal">Vector</tt> s defined like this:</p>
-<pre class="literal-block">
-Vector vectors[1024];
-</pre>
-<p>This is called an &quot;array of structures&quot; (AoS) layout.  To compute the
-lengths of these vectors in parallel, you can write <tt class="docutils literal">ispc</tt> code like
-this:</p>
-<pre class="literal-block">
-export void length(Vector vectors[1024], uniform float len[]) {
-    foreach (index = 0 ... 1024) {
-        float x = vectors[index].x;
-        float y = vectors[index].y;
-        float z = vectors[index].z;
-        float l = sqrt(x*x + y*y + z*z);
-        len[index] = l;
-    }
-}
-</pre>
-<p>The problem with this implementation is that the indexing into the array of
-structures, <tt class="docutils literal"><span class="pre">vectors[index].x</span></tt> is relatively expensive.  On a target
-machine that supports four-wide Intel® SSE, this turns into four loads of
-single <tt class="docutils literal">float</tt> values from non-contiguous memory locations, which are
-then packed into a four-wide register corresponding to <tt class="docutils literal">float x</tt>.  Once the
-values are loaded into the local <tt class="docutils literal">x</tt>, <tt class="docutils literal">y</tt>, and <tt class="docutils literal">z</tt> variables,
-SIMD-efficient computation can proceed; getting to that point is
-relatively inefficient.</p>
-<p>(As described previously in <a class="reference internal" href="#converting-between-array-of-structures-and-structure-of-arrays-layout">Converting Between Array-of-Structures and
-Structure-of-Arrays Layout</a>, this computation could be written more
-efficiently using standard library routines to convert from the AoS layout,
-if we were given a flat array of <tt class="docutils literal">float</tt> values.)</p>
-<p>An alternative data layout would be the &quot;structure of arrays&quot; (SoA).  In C,
-the data would be declared as:</p>
-<pre class="literal-block">
-float x[1024], y[1024], z[1024];
-</pre>
-<p>The <tt class="docutils literal">ispc</tt> code might be:</p>
-<pre class="literal-block">
-export void length(uniform float x[1024], uniform float y[1024],
-                   uniform float z[1024], uniform float len[]) {
-    foreach (index = 0 ... 1024) {
-        float xx = x[index];
-        float yy = y[index];
-        float zz = z[index];
-        float l = sqrt(xx*xx + yy*yy + zz*zz);
-        len[index] = l;
-    }
-}
-</pre>
-<p>In this example, the loads into <tt class="docutils literal">xx</tt>, <tt class="docutils literal">yy</tt>, and <tt class="docutils literal">zz</tt> are single
-vector loads of an entire gang's worth of values into the corresponding
-registers.  This processing is more efficient than the multiple scalar
-loads that are required with the AoS layout above.</p>
-<p>A final alternative is &quot;array of structures of arrays&quot; (AoSoA), a hybrid
-between these two.  A structure is declared that stores a small number of
-<tt class="docutils literal">x</tt>, <tt class="docutils literal">y</tt>, and <tt class="docutils literal">z</tt> values in contiguous memory locations:</p>
-<pre class="literal-block">
-struct Vector16 {
-    float x[16], y[16], z[16];
-};
-</pre>
-<p>The <tt class="docutils literal">ispc</tt> code has an outer loop over <tt class="docutils literal">Vector16</tt> elements and
-then an inner loop that peels off values from the element members:</p>
-<pre class="literal-block">
-#define N_VEC (1024/16)
-export void length(Vector16 v[N_VEC], uniform float len[]) {
-    foreach (i = 0 ... N_VEC, j = 0 ... 16) {
-        float x = v[i].x[j];
-        float y = v[i].y[j];
-        float z = v[i].z[j];
-        float l = sqrt(x*x + y*y + z*z);
-        len[16*i+j] = l;
-        }
-    }
-}
-</pre>
-<p>One advantage of the AoSoA layout is that the memory accesses to load
-values are to nearby memory locations, where as with SoA, each of the three
-loads above is to locations separated by a few thousand bytes.  Thus, AoSoA
-can be more cache friendly.  For structures with many members, this
-difference can lead to a substantial improvement.</p>
-<p>With some additional complexity, <tt class="docutils literal">ispc</tt> can also generate code that
-efficiently processes data in AoSoA layout where the inner array length is
-less than the machine vector width.  For example, consider doing
-computation with this AoSoA structure definition on a machine with an
-8-wide vector unit (for example, an Intel® AVX target):</p>
-<pre class="literal-block">
-struct Vector4 {
-    float x[4], y[4], z[4];
-};
-</pre>
-<p>The <tt class="docutils literal">ispc</tt> code to process this loads elements four at a time from
-<tt class="docutils literal">Vector4</tt> instances until it has a full <tt class="docutils literal">programCount</tt> number of
-elements to work with and then proceeds with the computation.</p>
-<pre class="literal-block">
-#define N_VEC (1024/4)
-export void length(Vector4 v[N_VEC], uniform float len[]) {
-    for (uniform int i = 0; i &lt; N_VEC; i += programCount / 4) {
-        float x, y, z;
-        for (uniform int j = 0; j &lt; programCount / 4; ++j) {
-            if (programIndex &gt;= 4 * j &amp;&amp;
-                programIndex &lt;  4 * (j+1)) {
-                int index = (programIndex &amp; 0x3);
-                x = v[i+j].x[index];
-                y = v[i+j].y[index];
-                z = v[i+j].z[index];
-            }
-        }
-        float l = sqrt(x*x + y*y + z*z);
-        len[4*i + programIndex] = l;
-    }
-}
-</pre>
 </div>
 </div>
 <div class="section" id="disclaimer-and-legal-information">
@@ -3610,7 +3682,7 @@ library; please let us know if you find we do not.</p>
 </div>
 </div>
     <div class="clearfix"></div>
-    <div id="footer"> &copy; 2011 <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
+    <div id="footer"> &copy; 2011-2012 <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
       <!-- Please Do Not remove this link, thank u -->
       </div>
       </div>

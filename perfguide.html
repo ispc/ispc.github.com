@@ -33,6 +33,7 @@
       <div id="nbar">
         <ul>
           <li><a href="index.html">Overview</a></li>
+          <li><a href="news.html">News</a></li>
           <li><a href="features.html">Features</a></li>
           <li><a href="downloads.html">Downloads</a></li>
           <li id="selected"><a href="documentation.html">Documentation</a></li>
@@ -69,6 +70,7 @@ the most out of <tt class="docutils literal">ispc</tt> in practice.</p>
 <li><a class="reference internal" href="#improving-control-flow-coherence-with-foreach-tiled">Improving Control Flow Coherence With &quot;foreach_tiled&quot;</a></li>
 <li><a class="reference internal" href="#using-coherent-control-flow-constructs">Using Coherent Control Flow Constructs</a></li>
 <li><a class="reference internal" href="#use-uniform-whenever-appropriate">Use &quot;uniform&quot; Whenever Appropriate</a></li>
+<li><a class="reference internal" href="#use-structure-of-arrays-layout-when-possible">Use &quot;Structure of Arrays&quot; Layout When Possible</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#tips-and-techniques">Tips and Techniques</a><ul>
@@ -260,6 +262,64 @@ for (uniform int i = 0; i &lt; 10; ++i)
 but it's always best to provide the compiler with as much help as possible
 to understand the actual form of your computation.</p>
 </div>
+<div class="section" id="use-structure-of-arrays-layout-when-possible">
+<h2>Use &quot;Structure of Arrays&quot; Layout When Possible</h2>
+<p>In general, memory access performance (for both reads and writes) is best
+when the running program instances access a contiguous region of memory; in
+this case efficient vector load and store instructions can often be used
+rather than gathers and scatters.  As an example of this issue, consider an
+array of a simple point datatype laid out and accessed in conventional
+&quot;array of structures&quot; (AOS) layout:</p>
+<pre class="literal-block">
+struct Point { float x, y, z; };
+uniform Point pts[...];
+float v = pts[programIndex].x;
+</pre>
+<p>In the above code, the access to <tt class="docutils literal"><span class="pre">pts[programIndex].x</span></tt> accesses
+non-sequential memory locations, due to the <tt class="docutils literal">y</tt> and <tt class="docutils literal">z</tt> values between
+the desired <tt class="docutils literal">x</tt> values in memory.  A &quot;gather&quot; is required to get the
+value of <tt class="docutils literal">v</tt>, with a corresponding decrease in performance.</p>
+<p>If <tt class="docutils literal">Point</tt> was defined as a &quot;structure of arrays&quot; (SOA) type, the access
+can be much more efficient:</p>
+<pre class="literal-block">
+struct Point8 { float x[8], y[8], z[8]; };
+uniform Point8 pts8[...];
+int majorIndex = programIndex / 8;
+int minorIndex = programIndex % 8;
+float v = pts8[majorIndex].x[minorIndex];
+</pre>
+<p>In this case, each <tt class="docutils literal">Point8</tt> has 8 <tt class="docutils literal">x</tt> values contiguous in memory
+before 8 <tt class="docutils literal">y</tt> values and then 8 <tt class="docutils literal">z</tt> values.  If the gang size is 8 or
+less, the access for <tt class="docutils literal">v</tt> will have the same value of <tt class="docutils literal">majorIndex</tt> for
+all program instances and will access consecutive elements of the <tt class="docutils literal">x[8]</tt>
+array with a vector load.  (For larger gang sizes, two 8-wide vector loads
+would be issues, which is also quite efficient.)</p>
+<p>However, the syntax in the above code is messy; accessing SOA data in this
+fashion is much less elegant than the corresponding code for accessing the
+data with AOS layout.  The <tt class="docutils literal">soa</tt> qualifier in <tt class="docutils literal">ispc</tt> can be used to
+cause the corresponding transformation to be made to the <tt class="docutils literal">Point</tt> type,
+while preserving the clean syntax for data access that comes with AOS
+layout:</p>
+<pre class="literal-block">
+soa&lt;8&gt; Point pts[...];
+float v = pts[programIndex].x;
+</pre>
+<p>Thanks to having SOA layout a first-class concept in the language's type
+system, it's easy to write functions that convert data between the
+layouts.  For example, the <tt class="docutils literal">aos_to_soa</tt> function below converts <tt class="docutils literal">count</tt>
+elements of the given <tt class="docutils literal">Point</tt> type from AOS to 8-wide SOA layout.  (It
+assumes that the caller has pre-allocated sufficient space in the
+<tt class="docutils literal">pts_soa</tt> output array.</p>
+<pre class="literal-block">
+void aos_to_soa(uniform Point pts_aos[], uniform int count,
+                soa&lt;8&gt; pts_soa[]) {
+     foreach (i = 0 ... count)
+         pts_soa[i] = pts_aos[i];
+}
+</pre>
+<p>Analogously, a function could be written to convert back from SOA to AOS if
+needed.</p>
+</div>
 </div>
 <div class="section" id="tips-and-techniques">
 <h1>Tips and Techniques</h1>
@@ -336,6 +396,10 @@ doing a gather.  In more complex cases, where a number of accesses are done
 based on the index, it can be worth doing.  See the example
 <tt class="docutils literal">examples/volume_rendering</tt> in the <tt class="docutils literal">ispc</tt> distribution for the use of
 this technique in an instance where it is beneficial to performance.</p>
+</div>
+<div class="section" id="understanding-memory-read-coalescing">
+<h2>Understanding Memory Read Coalescing</h2>
+<p>XXXX todo</p>
 </div>
 <div class="section" id="avoid-64-bit-addressing-calculations-when-possible">
 <h2>Avoid 64-bit Addressing Calculations When Possible</h2>
@@ -659,7 +723,7 @@ library; please let us know if you find we do not.</p>
 </div>
 </div>
     <div class="clearfix"></div>
-    <div id="footer"> &copy; 2011 <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
+    <div id="footer"> &copy; 2011-2012 <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
       <!-- Please Do Not remove this link, thank u -->
       </div>
       </div>

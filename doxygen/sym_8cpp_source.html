@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.1.4</span>
+   &#160;<span id="projectnumber">1.2.0</span>
    </div>
    
   </td>
@@ -411,12 +411,51 @@
 <a name="l00354"></a>00354         depth += 4;
 <a name="l00355"></a>00355     }
 <a name="l00356"></a>00356 }
+<a name="l00357"></a>00357 
+<a name="l00358"></a>00358 
+<a name="l00359"></a><a class="code" href="sym_8cpp.html#a54b7c15e6f8af9e1f6f91bc0325b7eb4">00359</a> <span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code" href="sym_8cpp.html#a54b7c15e6f8af9e1f6f91bc0325b7eb4">ispcRand</a>() {
+<a name="l00360"></a>00360 <span class="preprocessor">#ifdef ISPC_IS_WINDOWS</span>
+<a name="l00361"></a>00361 <span class="preprocessor"></span>    <span class="keywordflow">return</span> rand();
+<a name="l00362"></a>00362 <span class="preprocessor">#else</span>
+<a name="l00363"></a>00363 <span class="preprocessor"></span>    <span class="keywordflow">return</span> lrand48();
+<a name="l00364"></a>00364 <span class="preprocessor">#endif</span>
+<a name="l00365"></a>00365 <span class="preprocessor"></span>}
+<a name="l00366"></a>00366 
+<a name="l00367"></a>00367 
+<a name="l00368"></a>00368 <a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *
+<a name="l00369"></a><a class="code" href="classSymbolTable.html#a8d2502ae8d176fc65f5f3f35a74e8c50">00369</a> <a class="code" href="classSymbolTable.html#a8d2502ae8d176fc65f5f3f35a74e8c50">SymbolTable::RandomSymbol</a>() {
+<a name="l00370"></a>00370     <span class="keywordtype">int</span> v = <a class="code" href="sym_8cpp.html#a54b7c15e6f8af9e1f6f91bc0325b7eb4">ispcRand</a>() % <a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>.size();
+<a name="l00371"></a>00371     <span class="keywordflow">if</span> (<a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>[v]-&gt;size() == 0)
+<a name="l00372"></a>00372         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l00373"></a>00373     <span class="keywordtype">int</span> count = <a class="code" href="sym_8cpp.html#a54b7c15e6f8af9e1f6f91bc0325b7eb4">ispcRand</a>() % <a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>[v]-&gt;size();
+<a name="l00374"></a>00374     SymbolMapType::iterator iter = <a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>[v]-&gt;begin();
+<a name="l00375"></a>00375     <span class="keywordflow">while</span> (count-- &gt; 0) {
+<a name="l00376"></a>00376         ++iter;
+<a name="l00377"></a>00377         <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(iter != <a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>[v]-&gt;end());
+<a name="l00378"></a>00378     }
+<a name="l00379"></a>00379     <span class="keywordflow">return</span> iter-&gt;second;
+<a name="l00380"></a>00380 }
+<a name="l00381"></a>00381 
+<a name="l00382"></a>00382 
+<a name="l00383"></a>00383 <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *
+<a name="l00384"></a><a class="code" href="classSymbolTable.html#abffa882da18fadc3eaedb33c9e6fe0de">00384</a> <a class="code" href="classSymbolTable.html#abffa882da18fadc3eaedb33c9e6fe0de">SymbolTable::RandomType</a>() {
+<a name="l00385"></a>00385     <span class="keywordtype">int</span> v = <a class="code" href="sym_8cpp.html#a54b7c15e6f8af9e1f6f91bc0325b7eb4">ispcRand</a>() % <a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">types</a>.size();
+<a name="l00386"></a>00386     <span class="keywordflow">if</span> (<a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">types</a>[v]-&gt;size() == 0)
+<a name="l00387"></a>00387         <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l00388"></a>00388     <span class="keywordtype">int</span> count = <a class="code" href="sym_8cpp.html#a54b7c15e6f8af9e1f6f91bc0325b7eb4">ispcRand</a>() % <a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">types</a>[v]-&gt;size();
+<a name="l00389"></a>00389     TypeMapType::iterator iter = <a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">types</a>[v]-&gt;begin();
+<a name="l00390"></a>00390     <span class="keywordflow">while</span> (count-- &gt; 0) {
+<a name="l00391"></a>00391         ++iter;
+<a name="l00392"></a>00392         <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(iter != <a class="code" href="classSymbolTable.html#a07d5bfbdbafae7bfe2c6126725fd5558">types</a>[v]-&gt;end());
+<a name="l00393"></a>00393     }
+<a name="l00394"></a>00394     <span class="keywordflow">return</span> iter-&gt;second;
+<a name="l00395"></a>00395 }
 </pre></div></div>
 </div>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 4 2012 15:26:36 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Mar 20 2012 11:56:25 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>
