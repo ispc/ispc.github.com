@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.2.0</span>
+   &#160;<span id="projectnumber">1.2.1</span>
    </div>
    
   </td>
@@ -802,7 +802,7 @@
 <a name="l00745"></a>00745     <a class="code" href="classFunctionType.html#a437497c41b32b75cdd839edd1b6fd062">FunctionType</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *returnType, 
 <a name="l00746"></a>00746                  <span class="keyword">const</span> std::vector&lt;const Type *&gt; &amp;argTypes,
 <a name="l00747"></a>00747                  <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;argNames,
-<a name="l00748"></a>00748                  <span class="keyword">const</span> std::vector&lt;ConstExpr *&gt; &amp;argDefaults,
+<a name="l00748"></a>00748                  <span class="keyword">const</span> std::vector&lt;Expr *&gt; &amp;argDefaults,
 <a name="l00749"></a>00749                  <span class="keyword">const</span> std::vector&lt;SourcePos&gt; &amp;argPos,
 <a name="l00750"></a>00750                  <span class="keywordtype">bool</span> <a class="code" href="classFunctionType.html#a32f0aa9227794002abea1952e6c9f347">isTask</a>, <span class="keywordtype">bool</span> <a class="code" href="classFunctionType.html#ad9be8ddac0b12ed937557b231319052c">isExported</a>, <span class="keywordtype">bool</span> <a class="code" href="classFunctionType.html#a82597ec6f94ce5517506e306953f7eb9">isExternC</a>);
 <a name="l00751"></a>00751 
@@ -832,56 +832,70 @@
 <a name="l00775"></a>00775     llvm::DIType <a class="code" href="classFunctionType.html#a7df9a46d5c710977a8112358d11afd44">GetDIType</a>(llvm::DIDescriptor scope) <span class="keyword">const</span>;
 <a name="l00776"></a>00776 
 <a name="l00777"></a><a class="code" href="classFunctionType.html#a45303f612d6eb85d73fb8cbd785330cf">00777</a>     <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *<a class="code" href="classFunctionType.html#a45303f612d6eb85d73fb8cbd785330cf">GetReturnType</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="classFunctionType.html#a128c817f3a4cfdf64dbb679d7aa8e7bf">returnType</a>; }
-<a name="l00778"></a>00778 <span class="comment"></span>
-<a name="l00779"></a>00779 <span class="comment">    /** This method returns the LLVM FunctionType that corresponds to this</span>
-<a name="l00780"></a>00780 <span class="comment">        function type.  The \c includeMask parameter indicates whether the</span>
-<a name="l00781"></a>00781 <span class="comment">        llvm::FunctionType should have a mask as the last argument in its</span>
-<a name="l00782"></a>00782 <span class="comment">        function signature. */</span>
-<a name="l00783"></a>00783     <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::FunctionType *<a class="code" href="classFunctionType.html#a4e744bd352870ba4ebfb768fa357750f">LLVMFunctionType</a>(llvm::LLVMContext *ctx, 
-<a name="l00784"></a>00784                                                          <span class="keywordtype">bool</span> includeMask = <span class="keyword">false</span>) <span class="keyword">const</span>;
-<a name="l00785"></a>00785 
-<a name="l00786"></a><a class="code" href="classFunctionType.html#aa8626ccd2e745fce66214f69330d6437">00786</a>     <span class="keywordtype">int</span> <a class="code" href="classFunctionType.html#aa8626ccd2e745fce66214f69330d6437">GetNumParameters</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> (<span class="keywordtype">int</span>)<a class="code" href="classFunctionType.html#acecace7c9b99363437672fec40dde61e">paramTypes</a>.size(); }
-<a name="l00787"></a>00787     <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *<a class="code" href="classFunctionType.html#a144e797267311e897311b257421abf7f">GetParameterType</a>(<span class="keywordtype">int</span> i) <span class="keyword">const</span>;
-<a name="l00788"></a>00788     <a class="code" href="classConstExpr.html" title="Expression representing a compile-time constant value.">ConstExpr</a> * <a class="code" href="classFunctionType.html#a805f8ef61d10972112db1fd0b36d2549">GetParameterDefault</a>(<span class="keywordtype">int</span> i) <span class="keyword">const</span>;
-<a name="l00789"></a>00789     <span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> &amp;<a class="code" href="classFunctionType.html#a81ab0e0a223db6730d1e2214bff8f900">GetParameterSourcePos</a>(<span class="keywordtype">int</span> i) <span class="keyword">const</span>;
-<a name="l00790"></a>00790     <span class="keyword">const</span> std::string &amp;<a class="code" href="classFunctionType.html#adf5600047546512f13dbb7dd8d917248">GetParameterName</a>(<span class="keywordtype">int</span> i) <span class="keyword">const</span>;
-<a name="l00791"></a>00791 <span class="comment"></span>
-<a name="l00792"></a>00792 <span class="comment">    /** This value is true if the function had a &#39;task&#39; qualifier in the</span>
-<a name="l00793"></a>00793 <span class="comment">        source program. */</span>
-<a name="l00794"></a><a class="code" href="classFunctionType.html#a32f0aa9227794002abea1952e6c9f347">00794</a>     <span class="keyword">const</span> <span class="keywordtype">bool</span> <a class="code" href="classFunctionType.html#a32f0aa9227794002abea1952e6c9f347">isTask</a>;
-<a name="l00795"></a>00795 <span class="comment"></span>
-<a name="l00796"></a>00796 <span class="comment">    /** This value is true if the function had a &#39;export&#39; qualifier in the</span>
-<a name="l00797"></a>00797 <span class="comment">        source program. */</span>
-<a name="l00798"></a><a class="code" href="classFunctionType.html#ad9be8ddac0b12ed937557b231319052c">00798</a>     <span class="keyword">const</span> <span class="keywordtype">bool</span> <a class="code" href="classFunctionType.html#ad9be8ddac0b12ed937557b231319052c">isExported</a>;
-<a name="l00799"></a>00799 <span class="comment"></span>
-<a name="l00800"></a>00800 <span class="comment">    /** This value is true if the function was declared as an &#39;extern &quot;C&quot;&#39;</span>
-<a name="l00801"></a>00801 <span class="comment">        function in the source program. */</span>
-<a name="l00802"></a><a class="code" href="classFunctionType.html#a82597ec6f94ce5517506e306953f7eb9">00802</a>     <span class="keyword">const</span> <span class="keywordtype">bool</span> <a class="code" href="classFunctionType.html#a82597ec6f94ce5517506e306953f7eb9">isExternC</a>;
-<a name="l00803"></a>00803 
-<a name="l00804"></a>00804 <span class="keyword">private</span>:
-<a name="l00805"></a><a class="code" href="classFunctionType.html#a128c817f3a4cfdf64dbb679d7aa8e7bf">00805</a>     <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> * <span class="keyword">const</span> <a class="code" href="classFunctionType.html#a128c817f3a4cfdf64dbb679d7aa8e7bf">returnType</a>;
-<a name="l00806"></a>00806 
-<a name="l00807"></a>00807     <span class="comment">// The following four vectors should all have the same length (which is</span>
-<a name="l00808"></a>00808     <span class="comment">// in turn the length returned by GetNumParameters()).</span>
-<a name="l00809"></a><a class="code" href="classFunctionType.html#acecace7c9b99363437672fec40dde61e">00809</a>     <span class="keyword">const</span> std::vector&lt;const Type *&gt; <a class="code" href="classFunctionType.html#acecace7c9b99363437672fec40dde61e">paramTypes</a>;
-<a name="l00810"></a><a class="code" href="classFunctionType.html#a391be65a57258ed65d7d495fd68f4c19">00810</a>     <span class="keyword">const</span> std::vector&lt;std::string&gt; <a class="code" href="classFunctionType.html#a391be65a57258ed65d7d495fd68f4c19">paramNames</a>;<span class="comment"></span>
-<a name="l00811"></a>00811 <span class="comment">    /** Default values of the function&#39;s arguments.  For arguments without</span>
-<a name="l00812"></a>00812 <span class="comment">        default values provided, NULL is stored. */</span>
-<a name="l00813"></a><a class="code" href="classFunctionType.html#ae64c78de9891020648f1bc37809782a4">00813</a>     <span class="keyword">mutable</span> std::vector&lt;ConstExpr *&gt; <a class="code" href="classFunctionType.html#ae64c78de9891020648f1bc37809782a4">paramDefaults</a>;<span class="comment"></span>
-<a name="l00814"></a>00814 <span class="comment">    /** The names provided (if any) with the function arguments in the</span>
-<a name="l00815"></a>00815 <span class="comment">        function&#39;s signature.  These should only be used for error messages</span>
-<a name="l00816"></a>00816 <span class="comment">        and the like and so not affect testing function types for equality,</span>
-<a name="l00817"></a>00817 <span class="comment">        etc. */</span>
-<a name="l00818"></a><a class="code" href="classFunctionType.html#a6a5fb1fbb12940810d7f9ceeec1655a5">00818</a>     <span class="keyword">const</span> std::vector&lt;SourcePos&gt; <a class="code" href="classFunctionType.html#a6a5fb1fbb12940810d7f9ceeec1655a5">paramPositions</a>;
-<a name="l00819"></a>00819 };
-<a name="l00820"></a>00820 
-<a name="l00821"></a>00821 <span class="preprocessor">#endif // ISPC_TYPE_H</span>
+<a name="l00778"></a>00778 
+<a name="l00779"></a>00779     <span class="keyword">const</span> std::string <a class="code" href="classFunctionType.html#a6966c36fb0b5dfeee023bee7b458f870">GetReturnTypeString</a>() <span class="keyword">const</span>;
+<a name="l00780"></a>00780 <span class="comment"></span>
+<a name="l00781"></a>00781 <span class="comment">    /** This method returns the LLVM FunctionType that corresponds to this</span>
+<a name="l00782"></a>00782 <span class="comment">        function type.  The \c includeMask parameter indicates whether the</span>
+<a name="l00783"></a>00783 <span class="comment">        llvm::FunctionType should have a mask as the last argument in its</span>
+<a name="l00784"></a>00784 <span class="comment">        function signature. */</span>
+<a name="l00785"></a>00785     <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::FunctionType *<a class="code" href="classFunctionType.html#a4e744bd352870ba4ebfb768fa357750f">LLVMFunctionType</a>(llvm::LLVMContext *ctx, 
+<a name="l00786"></a>00786                                                          <span class="keywordtype">bool</span> includeMask = <span class="keyword">false</span>) <span class="keyword">const</span>;
+<a name="l00787"></a>00787 
+<a name="l00788"></a><a class="code" href="classFunctionType.html#aa8626ccd2e745fce66214f69330d6437">00788</a>     <span class="keywordtype">int</span> <a class="code" href="classFunctionType.html#aa8626ccd2e745fce66214f69330d6437">GetNumParameters</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> (<span class="keywordtype">int</span>)<a class="code" href="classFunctionType.html#acecace7c9b99363437672fec40dde61e">paramTypes</a>.size(); }
+<a name="l00789"></a>00789     <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *<a class="code" href="classFunctionType.html#a144e797267311e897311b257421abf7f">GetParameterType</a>(<span class="keywordtype">int</span> i) <span class="keyword">const</span>;
+<a name="l00790"></a>00790     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> * <a class="code" href="classFunctionType.html#ace8cef8f3a21e7e40560c1a69325eb47">GetParameterDefault</a>(<span class="keywordtype">int</span> i) <span class="keyword">const</span>;
+<a name="l00791"></a>00791     <span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> &amp;<a class="code" href="classFunctionType.html#a81ab0e0a223db6730d1e2214bff8f900">GetParameterSourcePos</a>(<span class="keywordtype">int</span> i) <span class="keyword">const</span>;
+<a name="l00792"></a>00792     <span class="keyword">const</span> std::string &amp;<a class="code" href="classFunctionType.html#adf5600047546512f13dbb7dd8d917248">GetParameterName</a>(<span class="keywordtype">int</span> i) <span class="keyword">const</span>;
+<a name="l00793"></a>00793 <span class="comment"></span>
+<a name="l00794"></a>00794 <span class="comment">    /** This value is true if the function had a &#39;task&#39; qualifier in the</span>
+<a name="l00795"></a>00795 <span class="comment">        source program. */</span>
+<a name="l00796"></a><a class="code" href="classFunctionType.html#a32f0aa9227794002abea1952e6c9f347">00796</a>     <span class="keyword">const</span> <span class="keywordtype">bool</span> <a class="code" href="classFunctionType.html#a32f0aa9227794002abea1952e6c9f347">isTask</a>;
+<a name="l00797"></a>00797 <span class="comment"></span>
+<a name="l00798"></a>00798 <span class="comment">    /** This value is true if the function had a &#39;export&#39; qualifier in the</span>
+<a name="l00799"></a>00799 <span class="comment">        source program. */</span>
+<a name="l00800"></a><a class="code" href="classFunctionType.html#ad9be8ddac0b12ed937557b231319052c">00800</a>     <span class="keyword">const</span> <span class="keywordtype">bool</span> <a class="code" href="classFunctionType.html#ad9be8ddac0b12ed937557b231319052c">isExported</a>;
+<a name="l00801"></a>00801 <span class="comment"></span>
+<a name="l00802"></a>00802 <span class="comment">    /** This value is true if the function was declared as an &#39;extern &quot;C&quot;&#39;</span>
+<a name="l00803"></a>00803 <span class="comment">        function in the source program. */</span>
+<a name="l00804"></a><a class="code" href="classFunctionType.html#a82597ec6f94ce5517506e306953f7eb9">00804</a>     <span class="keyword">const</span> <span class="keywordtype">bool</span> <a class="code" href="classFunctionType.html#a82597ec6f94ce5517506e306953f7eb9">isExternC</a>;
+<a name="l00805"></a>00805 <span class="comment"></span>
+<a name="l00806"></a>00806 <span class="comment">    /** Indicates whether this function has been declared to be safe to run</span>
+<a name="l00807"></a>00807 <span class="comment">        with an all-off mask. */</span>
+<a name="l00808"></a><a class="code" href="classFunctionType.html#a4b3d1eb3cbf748d0c0837fbd4990d8bd">00808</a>     <span class="keywordtype">bool</span> <a class="code" href="classFunctionType.html#a4b3d1eb3cbf748d0c0837fbd4990d8bd">isSafe</a>;
+<a name="l00809"></a>00809 <span class="comment"></span>
+<a name="l00810"></a>00810 <span class="comment">    /** If non-negative, this provides a user-supplied override to the cost</span>
+<a name="l00811"></a>00811 <span class="comment">        function estimate for the function. */</span> 
+<a name="l00812"></a><a class="code" href="classFunctionType.html#a06c86736884b68abdcf8151a5c2fd669">00812</a>     <span class="keywordtype">int</span> <a class="code" href="classFunctionType.html#a06c86736884b68abdcf8151a5c2fd669">costOverride</a>;
+<a name="l00813"></a>00813 
+<a name="l00814"></a>00814 <span class="keyword">private</span>:
+<a name="l00815"></a><a class="code" href="classFunctionType.html#a128c817f3a4cfdf64dbb679d7aa8e7bf">00815</a>     <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> * <span class="keyword">const</span> <a class="code" href="classFunctionType.html#a128c817f3a4cfdf64dbb679d7aa8e7bf">returnType</a>;
+<a name="l00816"></a>00816 
+<a name="l00817"></a>00817     <span class="comment">// The following four vectors should all have the same length (which is</span>
+<a name="l00818"></a>00818     <span class="comment">// in turn the length returned by GetNumParameters()).</span>
+<a name="l00819"></a><a class="code" href="classFunctionType.html#acecace7c9b99363437672fec40dde61e">00819</a>     <span class="keyword">const</span> std::vector&lt;const Type *&gt; <a class="code" href="classFunctionType.html#acecace7c9b99363437672fec40dde61e">paramTypes</a>;
+<a name="l00820"></a><a class="code" href="classFunctionType.html#a391be65a57258ed65d7d495fd68f4c19">00820</a>     <span class="keyword">const</span> std::vector&lt;std::string&gt; <a class="code" href="classFunctionType.html#a391be65a57258ed65d7d495fd68f4c19">paramNames</a>;<span class="comment"></span>
+<a name="l00821"></a>00821 <span class="comment">    /** Default values of the function&#39;s arguments.  For arguments without</span>
+<a name="l00822"></a>00822 <span class="comment">        default values provided, NULL is stored. */</span>
+<a name="l00823"></a><a class="code" href="classFunctionType.html#a31f049bd756f444503cc4b8139716ab0">00823</a>     <span class="keyword">mutable</span> std::vector&lt;Expr *&gt; <a class="code" href="classFunctionType.html#a31f049bd756f444503cc4b8139716ab0">paramDefaults</a>;<span class="comment"></span>
+<a name="l00824"></a>00824 <span class="comment">    /** The names provided (if any) with the function arguments in the</span>
+<a name="l00825"></a>00825 <span class="comment">        function&#39;s signature.  These should only be used for error messages</span>
+<a name="l00826"></a>00826 <span class="comment">        and the like and so not affect testing function types for equality,</span>
+<a name="l00827"></a>00827 <span class="comment">        etc. */</span>
+<a name="l00828"></a><a class="code" href="classFunctionType.html#a6a5fb1fbb12940810d7f9ceeec1655a5">00828</a>     <span class="keyword">const</span> std::vector&lt;SourcePos&gt; <a class="code" href="classFunctionType.html#a6a5fb1fbb12940810d7f9ceeec1655a5">paramPositions</a>;
+<a name="l00829"></a>00829 };
+<a name="l00830"></a>00830 
+<a name="l00831"></a><a class="code" href="type_8h.html#a6284c44db26e6917a2aa252a6c9fe3b0">00831</a> <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="type_8h.html#a6284c44db26e6917a2aa252a6c9fe3b0">IsReferenceType</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *t) {
+<a name="l00832"></a>00832     <span class="keywordflow">return</span> <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classReferenceType.html" title="Type representing a reference to another (non-reference) type.">ReferenceType</a> *<span class="keyword">&gt;</span>(t) != <a class="code" href="parse_8yy.html">NULL</a>;
+<a name="l00833"></a>00833 }
+<a name="l00834"></a>00834 
+<a name="l00835"></a>00835 <span class="preprocessor">#endif // ISPC_TYPE_H</span>
 </pre></div></div>
 </div>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Mar 20 2012 11:56:25 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 6 2012 16:03:14 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.2.0</span>
+   &#160;<span id="projectnumber">1.2.1</span>
    </div>
    
   </td>
@@ -361,7 +361,7 @@
 <a name="l00304"></a>00304         <span class="keywordtype">int</span> flags = llvm::DIDescriptor::FlagPrototyped; <span class="comment">// ??</span>
 <a name="l00305"></a>00305         <a class="code" href="classFunctionEmitContext.html#ae16dadc4bdea63ee392db443df9bc498">diFunction</a> = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>-&gt;createFunction(<a class="code" href="classFunctionEmitContext.html#a6b538b64e366e5f8b1cd2b337bb3e58e">diFile</a>, <span class="comment">/* scope */</span>
 <a name="l00306"></a>00306                                                   <a class="code" href="classFunctionEmitContext.html#aeda11df4fbba5b94b545f0433ae60026">llvmFunction</a>-&gt;getName(), <span class="comment">// mangled</span>
-<a name="l00307"></a>00307                                                   funSym-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>,
+<a name="l00307"></a>00307                                                   funSym-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>,
 <a name="l00308"></a>00308                                                   <a class="code" href="classFunctionEmitContext.html#a6b538b64e366e5f8b1cd2b337bb3e58e">diFile</a>,
 <a name="l00309"></a>00309                                                   <a class="code" href="classFunctionEmitContext.html#a38e62fbe39f859de6af6850b7c25ceb7">funcStartPos</a>.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>,
 <a name="l00310"></a>00310                                                   retType,
@@ -376,7 +376,7 @@
 <a name="l00319"></a>00319         llvm::DIFile file = <a class="code" href="classFunctionEmitContext.html#a38e62fbe39f859de6af6850b7c25ceb7">funcStartPos</a>.<a class="code" href="structSourcePos.html#a57433eabbd210646542327733061bc3a">GetDIFile</a>();
 <a name="l00320"></a>00320         <a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *programIndexSymbol = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a66a01f1bae4f9c26eb1bc95780865954">symbolTable</a>-&gt;<a class="code" href="classSymbolTable.html#a4c89545a31f6a562bb10089b79fa5c08">LookupVariable</a>(<span class="stringliteral">&quot;programIndex&quot;</span>);
 <a name="l00321"></a>00321         <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(programIndexSymbol &amp;&amp; programIndexSymbol-&gt;<a class="code" href="classSymbol.html#a4857bc9af1093c7bf2765030607693bb">storagePtr</a>);
-<a name="l00322"></a>00322         <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>-&gt;createGlobalVariable(programIndexSymbol-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>, 
+<a name="l00322"></a>00322         <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>-&gt;createGlobalVariable(programIndexSymbol-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>, 
 <a name="l00323"></a>00323                                            file,
 <a name="l00324"></a>00324                                            <a class="code" href="classFunctionEmitContext.html#a38e62fbe39f859de6af6850b7c25ceb7">funcStartPos</a>.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>,
 <a name="l00325"></a>00325                                            programIndexSymbol-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>-&gt;<a class="code" href="classType.html#a8b6ded269378020c769915bbbff3d73c">GetDIType</a>(file),
@@ -385,7 +385,7 @@
 <a name="l00328"></a>00328 
 <a name="l00329"></a>00329         <a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *programCountSymbol = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a66a01f1bae4f9c26eb1bc95780865954">symbolTable</a>-&gt;<a class="code" href="classSymbolTable.html#a4c89545a31f6a562bb10089b79fa5c08">LookupVariable</a>(<span class="stringliteral">&quot;programCount&quot;</span>);
 <a name="l00330"></a>00330         <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(programCountSymbol);
-<a name="l00331"></a>00331         <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>-&gt;createGlobalVariable(programCountSymbol-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>, 
+<a name="l00331"></a>00331         <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>-&gt;createGlobalVariable(programCountSymbol-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>, 
 <a name="l00332"></a>00332                                            file,
 <a name="l00333"></a>00333                                            <a class="code" href="classFunctionEmitContext.html#a38e62fbe39f859de6af6850b7c25ceb7">funcStartPos</a>.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>,
 <a name="l00334"></a>00334                                            programCountSymbol-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>-&gt;<a class="code" href="classType.html#a8b6ded269378020c769915bbbff3d73c">GetDIType</a>(file),
@@ -1518,7 +1518,7 @@
 <a name="l01461"></a>01461     llvm::DIVariable var = 
 <a name="l01462"></a>01462         <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>-&gt;createLocalVariable(llvm::dwarf::DW_TAG_auto_variable,
 <a name="l01463"></a>01463                                           scope,
-<a name="l01464"></a>01464                                           sym-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>,
+<a name="l01464"></a>01464                                           sym-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>,
 <a name="l01465"></a>01465                                           sym-&gt;<a class="code" href="classSymbol.html#a46a82d43e88a9a90211bcf420c91ebfb">pos</a>.<a class="code" href="structSourcePos.html#a57433eabbd210646542327733061bc3a">GetDIFile</a>(),
 <a name="l01466"></a>01466                                           sym-&gt;<a class="code" href="classSymbol.html#a46a82d43e88a9a90211bcf420c91ebfb">pos</a>.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>,
 <a name="l01467"></a>01467                                           sym-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>-&gt;<a class="code" href="classType.html#a8b6ded269378020c769915bbbff3d73c">GetDIType</a>(scope),
@@ -1538,7 +1538,7 @@
 <a name="l01481"></a>01481     llvm::DIVariable var = 
 <a name="l01482"></a>01482         <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>-&gt;createLocalVariable(llvm::dwarf::DW_TAG_arg_variable,
 <a name="l01483"></a>01483                                           scope,
-<a name="l01484"></a>01484                                           sym-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>,
+<a name="l01484"></a>01484                                           sym-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>,
 <a name="l01485"></a>01485                                           sym-&gt;<a class="code" href="classSymbol.html#a46a82d43e88a9a90211bcf420c91ebfb">pos</a>.<a class="code" href="structSourcePos.html#a57433eabbd210646542327733061bc3a">GetDIFile</a>(),
 <a name="l01486"></a>01486                                           sym-&gt;<a class="code" href="classSymbol.html#a46a82d43e88a9a90211bcf420c91ebfb">pos</a>.<a class="code" href="structSourcePos.html#a7892d48597fde53a09ca7c835325e34b">first_line</a>,
 <a name="l01487"></a>01487                                           sym-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>-&gt;<a class="code" href="classType.html#a8b6ded269378020c769915bbbff3d73c">GetDIType</a>(scope),
@@ -3507,7 +3507,7 @@
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Mar 20 2012 11:56:24 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 6 2012 16:03:13 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

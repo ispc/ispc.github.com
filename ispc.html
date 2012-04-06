@@ -174,9 +174,13 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 </ul>
 </li>
 <li><a class="reference internal" href="#the-ispc-standard-library">The ISPC Standard Library</a><ul>
+<li><a class="reference internal" href="#basic-operations-on-data">Basic Operations On Data</a><ul>
+<li><a class="reference internal" href="#logical-and-selection-operations">Logical and Selection Operations</a></li>
+<li><a class="reference internal" href="#bit-operations">Bit Operations</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#math-functions">Math Functions</a><ul>
 <li><a class="reference internal" href="#basic-math-functions">Basic Math Functions</a></li>
-<li><a class="reference internal" href="#bit-level-operations">Bit-Level Operations</a></li>
 <li><a class="reference internal" href="#transcendental-functions">Transcendental Functions</a></li>
 <li><a class="reference internal" href="#pseudo-random-numbers">Pseudo-Random Numbers</a></li>
 </ul>
@@ -528,7 +532,7 @@ preprocessor runs:</p>
 <td>1</td>
 <td>Detecting that the <tt class="docutils literal">ispc</tt> compiler is processing the file</td>
 </tr>
-<tr><td>ISPC_TARGET_{SSE2,SSE4,AVX}</td>
+<tr><td>ISPC_TARGET_{SSE2,SSE4,AVX,AVX2}</td>
 <td>1</td>
 <td>One of these will be set, depending on the compilation target.</td>
 </tr>
@@ -1932,6 +1936,11 @@ if (index &lt; NUM_ITEMS &amp;&amp; array[index] &gt; 0) {
     // ...
 }
 </pre>
+<p>Short-circuiting may impose some overhead in the generated code; for cases
+where short-circuiting is undesirable due to performance impact, see
+the section <a class="reference internal" href="#logical-and-selection-operations">Logical and Selection Operations</a>, which introduces helper
+functions in the standard library that provide these operations without
+short-circuiting.</p>
 </div>
 <div class="section" id="dynamic-memory-allocation">
 <h2>Dynamic Memory Allocation</h2>
@@ -2508,6 +2517,100 @@ of the set of launched tasks is running.</p>
 <p><tt class="docutils literal">ispc</tt> has a standard library that is automatically available when
 compiling <tt class="docutils literal">ispc</tt> programs.  (To disable the standard library, pass the
 <tt class="docutils literal"><span class="pre">--nostdlib</span></tt> command-line flag to the compiler.)</p>
+<div class="section" id="basic-operations-on-data">
+<h2>Basic Operations On Data</h2>
+</div>
+<div class="section" id="logical-and-selection-operations">
+<h2>Logical and Selection Operations</h2>
+<p>Recall from <a class="reference internal" href="#expressions">Expressions</a> that <tt class="docutils literal">ispc</tt> short-circuits the evaluation of
+logical and selection operators: given an expression like <tt class="docutils literal">(index &lt; count
+&amp;&amp; array[index] == 0)</tt>, then <tt class="docutils literal">array[index] == 0</tt> is only evaluated if
+<tt class="docutils literal">index &lt; count</tt> is true.  This property is useful for writing expressions
+like the preceeding one, where the second expression may not be safe to
+evaluate in some cases.</p>
+<p>This short-circuiting can impose overhead in the generated code; additional
+operations are required to test the first value and to conditionally jump
+over the code that evaluates the second value.  The <tt class="docutils literal">ispc</tt> compiler does
+try to mitigate this cost by detecting cases where it is both safe and
+inexpensive to evaluate both expressions, and skips short-circuiting in the
+generated code in this case (without there being any programmer-visible
+change in program behavior.)</p>
+<p>For cases where the compiler can't detect this case but the programmer
+wants to avoid short-circuiting behavior, the standard library provides a
+few helper functions.  First, <tt class="docutils literal">and()</tt> and <tt class="docutils literal">or()</tt> provide
+non-short-circuiting logical AND and OR operations.</p>
+<pre class="literal-block">
+bool and(bool a, bool b)
+bool or(bool a, bool b)
+uniform bool and(uniform bool a, uniform bool b)
+uniform bool or(uniform bool a, uniform bool b)
+</pre>
+<p>And there are three variants of <tt class="docutils literal">select()</tt> that select between two values
+based on a boolean condition.  These are the variants of <tt class="docutils literal">select()</tt> for
+the <tt class="docutils literal">int8</tt> type:</p>
+<pre class="literal-block">
+int8 select(bool v, int8 a, int8 b)
+int8 select(uniform bool v, int8 a, int8 b)
+uniform int8 select(uniform bool v, uniform int8 a, uniform int8 b)
+</pre>
+<p>There are also variants for <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">float</tt>, and
+<tt class="docutils literal">double</tt> types.</p>
+</div>
+<div class="section" id="bit-operations">
+<h2>Bit Operations</h2>
+<p>The various variants of <tt class="docutils literal">popcnt()</tt> return the population count--the
+number of bits set in the given value.</p>
+<pre class="literal-block">
+uniform int popcnt(uniform int v)
+int popcnt(int v)
+uniform int popcnt(bool v)
+</pre>
+<p>A few functions determine how many leading bits in the given value are zero
+and how many of the trailing bits are zero; there are also <tt class="docutils literal">unsigned</tt>
+variants of these functions and variants that take <tt class="docutils literal">int64</tt> and <tt class="docutils literal">unsigned
+int64</tt> types.</p>
+<pre class="literal-block">
+int32 count_leading_zeros(int32 v)
+uniform int32 count_leading_zeros(uniform int32 v)
+int32 count_trailing_zeros(int32 v)
+uniform int32 count_trailing_zeros(uniform int32 v)
+</pre>
+<p>Sometimes it's useful to convert a <tt class="docutils literal">bool</tt> value to an integer using sign
+extension so that the integer's bits are all on if the <tt class="docutils literal">bool</tt> has the
+value <tt class="docutils literal">true</tt> (rather than just having the value one).  The
+<tt class="docutils literal">sign_extend()</tt> functions provide this functionality:</p>
+<pre class="literal-block">
+int sign_extend(bool value)
+uniform int sign_extend(uniform bool value)
+</pre>
+<p>The <tt class="docutils literal">intbits()</tt> and <tt class="docutils literal">floatbits()</tt> functions can be used to implement
+low-level floating-point bit twiddling.  For example, <tt class="docutils literal">intbits()</tt> returns
+an <tt class="docutils literal">unsigned int</tt> that is a bit-for-bit copy of the given <tt class="docutils literal">float</tt>
+value.  (Note: it is <strong>not</strong> the same as <tt class="docutils literal">(int)a</tt>, but corresponds to
+something like <tt class="docutils literal"><span class="pre">*((int</span> <span class="pre">*)&amp;a)</span></tt> in C.</p>
+<pre class="literal-block">
+float floatbits(unsigned int a);
+uniform float floatbits(uniform unsigned int a);
+unsigned int intbits(float a);
+uniform unsigned int intbits(uniform float a);
+</pre>
+<p>The <tt class="docutils literal">intbits()</tt> and <tt class="docutils literal">floatbits()</tt> functions have no cost at runtime;
+they just let the compiler know how to interpret the bits of the given
+value.  They make it possible to efficiently write functions that take
+advantage of the low-level bit representation of floating-point values.</p>
+<p>For example, the <tt class="docutils literal">abs()</tt> function in the standard library is implemented
+as follows:</p>
+<pre class="literal-block">
+float abs(float a) {
+    unsigned int i = intbits(a);
+    i &amp;= 0x7fffffff;
+    return floatbits(i);
+}
+</pre>
+<p>This code directly clears the high order bit to ensure that the given
+floating-point value is positive.  This compiles down to a single <tt class="docutils literal">andps</tt>
+instruction when used with an Intel® SSE target, for example.</p>
+</div>
 <div class="section" id="math-functions">
 <h2>Math Functions</h2>
 <p>The math functions in the standard library provide a relatively standard
@@ -2589,61 +2692,6 @@ uniform unsigned int clamp(uniform unsigned int v,
                            uniform unsigned int high)
 </pre>
 </div>
-<div class="section" id="bit-level-operations">
-<h2>Bit-Level Operations</h2>
-<p>The various variants of <tt class="docutils literal">popcnt()</tt> return the population count--the
-number of bits set in the given value.</p>
-<pre class="literal-block">
-uniform int popcnt(uniform int v)
-int popcnt(int v)
-uniform int popcnt(bool v)
-</pre>
-<p>A few functions determine how many leading bits in the given value are zero
-and how many of the trailing bits are zero; there are also <tt class="docutils literal">unsigned</tt>
-variants of these functions and variants that take <tt class="docutils literal">int64</tt> and <tt class="docutils literal">unsigned
-int64</tt> types.</p>
-<pre class="literal-block">
-int32 count_leading_zeros(int32 v)
-uniform int32 count_leading_zeros(uniform int32 v)
-int32 count_trailing_zeros(int32 v)
-uniform int32 count_trailing_zeros(uniform int32 v)
-</pre>
-<p>Sometimes it's useful to convert a <tt class="docutils literal">bool</tt> value to an integer using sign
-extension so that the integer's bits are all on if the <tt class="docutils literal">bool</tt> has the
-value <tt class="docutils literal">true</tt> (rather than just having the value one).  The
-<tt class="docutils literal">sign_extend()</tt> functions provide this functionality:</p>
-<pre class="literal-block">
-int sign_extend(bool value)
-uniform int sign_extend(uniform bool value)
-</pre>
-<p>The <tt class="docutils literal">intbits()</tt> and <tt class="docutils literal">floatbits()</tt> functions can be used to implement
-low-level floating-point bit twiddling.  For example, <tt class="docutils literal">intbits()</tt> returns
-an <tt class="docutils literal">unsigned int</tt> that is a bit-for-bit copy of the given <tt class="docutils literal">float</tt>
-value.  (Note: it is <strong>not</strong> the same as <tt class="docutils literal">(int)a</tt>, but corresponds to
-something like <tt class="docutils literal"><span class="pre">*((int</span> <span class="pre">*)&amp;a)</span></tt> in C.</p>
-<pre class="literal-block">
-float floatbits(unsigned int a);
-uniform float floatbits(uniform unsigned int a);
-unsigned int intbits(float a);
-uniform unsigned int intbits(uniform float a);
-</pre>
-<p>The <tt class="docutils literal">intbits()</tt> and <tt class="docutils literal">floatbits()</tt> functions have no cost at runtime;
-they just let the compiler know how to interpret the bits of the given
-value.  They make it possible to efficiently write functions that take
-advantage of the low-level bit representation of floating-point values.</p>
-<p>For example, the <tt class="docutils literal">abs()</tt> function in the standard library is implemented
-as follows:</p>
-<pre class="literal-block">
-float abs(float a) {
-    unsigned int i = intbits(a);
-    i &amp;= 0x7fffffff;
-    return floatbits(i);
-}
-</pre>
-<p>This code directly clears the high order bit to ensure that the given
-floating-point value is positive.  This compiles down to a single <tt class="docutils literal">andps</tt>
-instruction when used with an Intel® SSE target, for example.</p>
-</div>
 <div class="section" id="transcendental-functions">
 <h2>Transcendental Functions</h2>
 <p>The square root of a given value can be computed with <tt class="docutils literal">sqrt()</tt>, which
@@ -2674,8 +2722,8 @@ float acos(float x)
 uniform float acos(uniform float x)
 float atan(float x)
 uniform float atan(uniform float x)
-float atan2(float x, float y)
-uniform float atan2(uniform float x, uniform float y)
+float atan2(float y, float x)
+uniform float atan2(uniform float y, uniform float x)
 </pre>
 <p>If both sine and cosine are needed, then the <tt class="docutils literal">sincos()</tt> call computes
 both more efficiently than two calls to the respective individual

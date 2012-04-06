@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.2.0</span>
+   &#160;<span id="projectnumber">1.2.1</span>
    </div>
    
   </td>
@@ -56,7 +56,7 @@
 </div>
 <div class="contents">
 <a href="stmt_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/*</span>
-<a name="l00002"></a>00002 <span class="comment">  Copyright (c) 2010-2011, Intel Corporation</span>
+<a name="l00002"></a>00002 <span class="comment">  Copyright (c) 2010-2012, Intel Corporation</span>
 <a name="l00003"></a>00003 <span class="comment">  All rights reserved.</span>
 <a name="l00004"></a>00004 <span class="comment"></span>
 <a name="l00005"></a>00005 <span class="comment">  Redistribution and use in source and binary forms, with or without</span>
@@ -322,7 +322,7 @@
 <a name="l00265"></a>00265 <span class="comment">    statement in the program. */</span>
 <a name="l00266"></a><a class="code" href="classReturnStmt.html">00266</a> <span class="keyword">class </span><a class="code" href="classReturnStmt.html" title="Statement implementation for a &#39;return&#39; or &#39;coherent&#39; return statement in the program.">ReturnStmt</a> : <span class="keyword">public</span> <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> {
 <a name="l00267"></a>00267 <span class="keyword">public</span>:
-<a name="l00268"></a>00268     <a class="code" href="classReturnStmt.html#ac4dd247758265be8d6f5c4746816ddd2">ReturnStmt</a>(<a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *v, <span class="keywordtype">bool</span> cc, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p);
+<a name="l00268"></a>00268     <a class="code" href="classReturnStmt.html#a3ebd72ae03ac662cb4d10c539c279939">ReturnStmt</a>(<a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *e, <span class="keywordtype">bool</span> cc, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> p);
 <a name="l00269"></a>00269 
 <a name="l00270"></a>00270     <span class="keywordtype">void</span> <a class="code" href="classReturnStmt.html#a08405cf4f1f86da07fad615b21a3fe41">EmitCode</a>(<a class="code" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx) <span class="keyword">const</span>;
 <a name="l00271"></a>00271     <span class="keywordtype">void</span> <a class="code" href="classReturnStmt.html#a1e42d228e5ef2b03cf5736672ffc5cc9">Print</a>(<span class="keywordtype">int</span> indent) <span class="keyword">const</span>;
@@ -330,7 +330,7 @@
 <a name="l00273"></a>00273     <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *<a class="code" href="classReturnStmt.html#a6d5dcd5d56cb94cdb1898eb3e590882d">TypeCheck</a>();
 <a name="l00274"></a>00274     <span class="keywordtype">int</span> <a class="code" href="classReturnStmt.html#a75d5ff847bc4250b436ed14e81c92151">EstimateCost</a>() <span class="keyword">const</span>;
 <a name="l00275"></a>00275 
-<a name="l00276"></a><a class="code" href="classReturnStmt.html#a310e4537325bdab9dfb7937f6c966885">00276</a>     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classReturnStmt.html#a310e4537325bdab9dfb7937f6c966885">val</a>;<span class="comment"></span>
+<a name="l00276"></a><a class="code" href="classReturnStmt.html#aa52f885c1a437592bfd500dadccd92f7">00276</a>     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *<a class="code" href="classReturnStmt.html#aa52f885c1a437592bfd500dadccd92f7">expr</a>;<span class="comment"></span>
 <a name="l00277"></a>00277 <span class="comment">    /** This indicates whether the generated code will check to see if no</span>
 <a name="l00278"></a>00278 <span class="comment">        more program instances are currently running after the return, in</span>
 <a name="l00279"></a>00279 <span class="comment">        which case the code can possibly jump to the end of the current</span>
@@ -525,7 +525,7 @@
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Mar 20 2012 11:56:25 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 6 2012 16:03:14 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

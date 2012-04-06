@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.2.0</span>
+   &#160;<span id="projectnumber">1.2.1</span>
    </div>
    
   </td>
@@ -115,7 +115,7 @@
 <a name="l00058"></a>00058 
 <a name="l00059"></a>00059 std::string
 <a name="l00060"></a><a class="code" href="classSymbol.html#ab953ef9aa7177ca120712d5d8d4d91ab">00060</a> <a class="code" href="classSymbol.html#ab953ef9aa7177ca120712d5d8d4d91ab">Symbol::MangledName</a>()<span class="keyword"> const </span>{
-<a name="l00061"></a>00061     <span class="keywordflow">return</span> <a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a> + <a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>-&gt;<a class="code" href="classType.html#a7bd23bd909d493d271dbe1024d212c06">Mangle</a>();
+<a name="l00061"></a>00061     <span class="keywordflow">return</span> <a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a> + <a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>-&gt;<a class="code" href="classType.html#a7bd23bd909d493d271dbe1024d212c06">Mangle</a>();
 <a name="l00062"></a>00062 }
 <a name="l00063"></a>00063 
 <a name="l00064"></a>00064 <span class="comment"></span>
@@ -160,12 +160,12 @@
 <a name="l00103"></a>00103     <span class="comment">// Check to see if a symbol of the same name has already been declared.</span>
 <a name="l00104"></a>00104     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = (<span class="keywordtype">int</span>)<a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>.size() - 1; i &gt;= 0; --i) {
 <a name="l00105"></a>00105         <a class="code" href="classSymbolTable.html#aef2544e5039654a9583a927e73995d1b">SymbolMapType</a> &amp;sm = *(<a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>[i]);
-<a name="l00106"></a>00106         <span class="keywordflow">if</span> (sm.find(symbol-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>) != sm.end()) {
+<a name="l00106"></a>00106         <span class="keywordflow">if</span> (sm.find(symbol-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>) != sm.end()) {
 <a name="l00107"></a>00107             <span class="keywordflow">if</span> (i == (<span class="keywordtype">int</span>)<a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>.size()-1) {
 <a name="l00108"></a>00108                 <span class="comment">// If a symbol of the same name was declared in the</span>
 <a name="l00109"></a>00109                 <span class="comment">// same scope, it&#39;s an error.</span>
 <a name="l00110"></a>00110                 <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(symbol-&gt;<a class="code" href="classSymbol.html#a46a82d43e88a9a90211bcf420c91ebfb">pos</a>, <span class="stringliteral">&quot;Ignoring redeclaration of symbol \&quot;%s\&quot;.&quot;</span>, 
-<a name="l00111"></a>00111                       symbol-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>.c_str());
+<a name="l00111"></a>00111                       symbol-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>.c_str());
 <a name="l00112"></a>00112                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
 <a name="l00113"></a>00113             }
 <a name="l00114"></a>00114             <span class="keywordflow">else</span> {
@@ -173,15 +173,15 @@
 <a name="l00116"></a>00116                 <span class="comment">// is legal but dangerous..</span>
 <a name="l00117"></a>00117                 <a class="code" href="util_8h.html#a275b270b25136f73009802382cf0e6f2">Warning</a>(symbol-&gt;<a class="code" href="classSymbol.html#a46a82d43e88a9a90211bcf420c91ebfb">pos</a>, 
 <a name="l00118"></a>00118                         <span class="stringliteral">&quot;Symbol \&quot;%s\&quot; shadows symbol declared in outer scope.&quot;</span>,
-<a name="l00119"></a>00119                         symbol-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>.c_str());
-<a name="l00120"></a>00120                 (*<a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>.back())[symbol-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>] = symbol;
+<a name="l00119"></a>00119                         symbol-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>.c_str());
+<a name="l00120"></a>00120                 (*<a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>.back())[symbol-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>] = symbol;
 <a name="l00121"></a>00121                 <span class="keywordflow">return</span> <span class="keyword">true</span>;
 <a name="l00122"></a>00122             }
 <a name="l00123"></a>00123         }
 <a name="l00124"></a>00124     }
 <a name="l00125"></a>00125 
 <a name="l00126"></a>00126     <span class="comment">// No matches, so go ahead and add it...</span>
-<a name="l00127"></a>00127     (*<a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>.back())[symbol-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>] = symbol;
+<a name="l00127"></a>00127     (*<a class="code" href="classSymbolTable.html#aabcd388428ccc659020d47e9cb441606">variables</a>.back())[symbol-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>] = symbol;
 <a name="l00128"></a>00128     <span class="keywordflow">return</span> <span class="keyword">true</span>;
 <a name="l00129"></a>00129 }
 <a name="l00130"></a>00130 
@@ -206,12 +206,12 @@
 <a name="l00149"></a><a class="code" href="classSymbolTable.html#ab49a5dd3c4f49a5c1a2b7882dd1af736">00149</a> <a class="code" href="classSymbolTable.html#ab49a5dd3c4f49a5c1a2b7882dd1af736">SymbolTable::AddFunction</a>(<a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *symbol) {
 <a name="l00150"></a>00150     <span class="keyword">const</span> <a class="code" href="classFunctionType.html" title="Type representing a function (return type + argument types)">FunctionType</a> *ft = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="classFunctionType.html" title="Type representing a function (return type + argument types)">FunctionType</a> *<span class="keyword">&gt;</span>(symbol-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>);
 <a name="l00151"></a>00151     <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(ft != <a class="code" href="parse_8yy.html">NULL</a>);
-<a name="l00152"></a>00152     <span class="keywordflow">if</span> (<a class="code" href="classSymbolTable.html#a9f0b950e01362dd2d954c53158cd2167">LookupFunction</a>(symbol-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>.c_str(), ft) != <a class="code" href="parse_8yy.html">NULL</a>)
+<a name="l00152"></a>00152     <span class="keywordflow">if</span> (<a class="code" href="classSymbolTable.html#a9f0b950e01362dd2d954c53158cd2167">LookupFunction</a>(symbol-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>.c_str(), ft) != <a class="code" href="parse_8yy.html">NULL</a>)
 <a name="l00153"></a>00153         <span class="comment">// A function of the same name and type has already been added to</span>
 <a name="l00154"></a>00154         <span class="comment">// the symbol table</span>
 <a name="l00155"></a>00155         <span class="keywordflow">return</span> <span class="keyword">false</span>;
 <a name="l00156"></a>00156 
-<a name="l00157"></a>00157     std::vector&lt;Symbol *&gt; &amp;funOverloads = <a class="code" href="classSymbolTable.html#a6a9ed3c8090d2ef62ec1af29c7980848">functions</a>[symbol-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>];
+<a name="l00157"></a>00157     std::vector&lt;Symbol *&gt; &amp;funOverloads = <a class="code" href="classSymbolTable.html#a6a9ed3c8090d2ef62ec1af29c7980848">functions</a>[symbol-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>];
 <a name="l00158"></a>00158     funOverloads.push_back(symbol);
 <a name="l00159"></a>00159     <span class="keywordflow">return</span> <span class="keyword">true</span>;
 <a name="l00160"></a>00160 }
@@ -300,9 +300,9 @@
 <a name="l00243"></a>00243         SymbolMapType::const_iterator iter;
 <a name="l00244"></a>00244         <span class="keywordflow">for</span> (iter = sv.begin(); iter != sv.end(); ++iter) {
 <a name="l00245"></a>00245             <span class="keyword">const</span> <a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *sym = iter-&gt;second;
-<a name="l00246"></a>00246             <span class="keywordtype">int</span> dist = <a class="code" href="util_8h.html#acb5ab8e22924ec15ddd21cdf098e87bd">StringEditDistance</a>(str, sym-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>, maxDelta+1);
+<a name="l00246"></a>00246             <span class="keywordtype">int</span> dist = <a class="code" href="util_8h.html#acb5ab8e22924ec15ddd21cdf098e87bd">StringEditDistance</a>(str, sym-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>, maxDelta+1);
 <a name="l00247"></a>00247             <span class="keywordflow">if</span> (dist &lt;= maxDelta)
-<a name="l00248"></a>00248                 matches[dist].push_back(sym-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>);
+<a name="l00248"></a>00248                 matches[dist].push_back(sym-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>);
 <a name="l00249"></a>00249         }
 <a name="l00250"></a>00250     }
 <a name="l00251"></a>00251 
@@ -380,7 +380,7 @@
 <a name="l00323"></a>00323         <span class="keywordflow">for</span> (iter = sm.begin(); iter != sm.end(); ++iter) {
 <a name="l00324"></a>00324             fprintf(<a class="code" href="parse_8yy.html">stderr</a>, <span class="stringliteral">&quot;%*c&quot;</span>, depth, <span class="charliteral">&#39; &#39;</span>);
 <a name="l00325"></a>00325             <a class="code" href="classSymbol.html" title="Representation of a program symbol.">Symbol</a> *sym = iter-&gt;second;
-<a name="l00326"></a>00326             fprintf(<a class="code" href="parse_8yy.html">stderr</a>, <span class="stringliteral">&quot;%s [%s]&quot;</span>, sym-&gt;<a class="code" href="classSymbol.html#a97347908468e17d1fcad94e2587d0a55">name</a>.c_str(), 
+<a name="l00326"></a>00326             fprintf(<a class="code" href="parse_8yy.html">stderr</a>, <span class="stringliteral">&quot;%s [%s]&quot;</span>, sym-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>.c_str(), 
 <a name="l00327"></a>00327                     sym-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str());
 <a name="l00328"></a>00328         }
 <a name="l00329"></a>00329         fprintf(<a class="code" href="parse_8yy.html">stderr</a>, <span class="stringliteral">&quot;\n&quot;</span>);
@@ -455,7 +455,7 @@
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Mar 20 2012 11:56:25 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 6 2012 16:03:14 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>
