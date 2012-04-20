@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.2.1</span>
+   &#160;<span id="projectnumber">1.2.2</span>
    </div>
    
   </td>
@@ -246,13 +246,13 @@
 <a name="l00189"></a>00189             }
 <a name="l00190"></a>00190         }
 <a name="l00191"></a>00191 
-<a name="l00192"></a>00192         <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *llvmType = sym-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>-&gt;<a class="code" href="classType.html#aa7b08bf258938faa7e12b580b623621a">LLVMType</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>);
+<a name="l00192"></a>00192         llvm::Type *llvmType = sym-&gt;<a class="code" href="classSymbol.html#a4e540dd41e44a0a34743526d70743257">type</a>-&gt;<a class="code" href="classType.html#a04eb42d850a697fc181b388688b6393e">LLVMType</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>);
 <a name="l00193"></a>00193         <span class="keywordflow">if</span> (llvmType == <a class="code" href="parse_8yy.html">NULL</a>) {
 <a name="l00194"></a>00194             <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);
 <a name="l00195"></a>00195             <span class="keywordflow">return</span>;
 <a name="l00196"></a>00196         }
 <a name="l00197"></a>00197 
-<a name="l00198"></a>00198         <span class="keywordflow">if</span> (sym-&gt;<a class="code" href="classSymbol.html#a50599ca060f67be9a00a9849c285fa05">storageClass</a> == <a class="code" href="decl_8h.html#a2a63df6185e7d96d170157df151d91caafb90f17a19da6ea56a5b079a7e4ace15">SC_STATIC</a>) {
+<a name="l00198"></a>00198         <span class="keywordflow">if</span> (sym-&gt;<a class="code" href="classSymbol.html#a50599ca060f67be9a00a9849c285fa05">storageClass</a> == <a class="code" href="ispc_8h.html#a2a63df6185e7d96d170157df151d91caafb90f17a19da6ea56a5b079a7e4ace15">SC_STATIC</a>) {
 <a name="l00199"></a>00199             <span class="comment">// For static variables, we need a compile-time constant value</span>
 <a name="l00200"></a>00200             <span class="comment">// for its initializer; if there&#39;s no initializer, we use a</span>
 <a name="l00201"></a>00201             <span class="comment">// zero value.</span>
@@ -294,7 +294,7 @@
 <a name="l00237"></a>00237         }
 <a name="l00238"></a>00238         <span class="keywordflow">else</span> {
 <a name="l00239"></a>00239             <span class="comment">// For non-static variables, allocate storage on the stack</span>
-<a name="l00240"></a>00240             sym-&gt;<a class="code" href="classSymbol.html#a4857bc9af1093c7bf2765030607693bb">storagePtr</a> = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa21be6e3fb27438472f5f153bbec75b9">AllocaInst</a>(llvmType, sym-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>.c_str());
+<a name="l00240"></a>00240             sym-&gt;<a class="code" href="classSymbol.html#a4857bc9af1093c7bf2765030607693bb">storagePtr</a> = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a712048038c99d9cb8cab808033426248">AllocaInst</a>(llvmType, sym-&gt;<a class="code" href="classSymbol.html#aae414c7ddc8c0cfcd3678d5142490f11">name</a>.c_str());
 <a name="l00241"></a>00241 
 <a name="l00242"></a>00242             <span class="comment">// Tell the FunctionEmitContext about the variable; must do</span>
 <a name="l00243"></a>00243             <span class="comment">// this before the initializer stuff.</span>
@@ -1072,7 +1072,7 @@
 <a name="l01015"></a>01015         <span class="keywordflow">if</span> (<a class="code" href="classForStmt.html#a00927da2b4ecbafb5015942ce609b7f9">doCoherentCheck</a>)
 <a name="l01016"></a>01016             <a class="code" href="util_8h.html#a275b270b25136f73009802382cf0e6f2">Warning</a>(<a class="code" href="classForStmt.html#ac48abc8c66ad755e7b7dd30f48591777">test</a>-&gt;pos, <span class="stringliteral">&quot;Uniform condition supplied to cfor/cwhile &quot;</span>
 <a name="l01017"></a>01017                     <span class="stringliteral">&quot;statement.&quot;</span>);
-<a name="l01018"></a>01018         <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(ltest-&gt;getType() == <a class="code" href="structLLVMTypes.html#a368aa87e3edcd8ea9ef0c820f429536b">LLVMTypes::BoolType</a>);
+<a name="l01018"></a>01018         <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(ltest-&gt;getType() == <a class="code" href="structLLVMTypes.html#ae0b4fb924ae112367c5d254e7eac0ab2">LLVMTypes::BoolType</a>);
 <a name="l01019"></a>01019         ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a7bc697a10788fbc50dc03ba9cd9a384f">BranchInst</a>(bloop, bexit, ltest);
 <a name="l01020"></a>01020     }
 <a name="l01021"></a>01021     <span class="keywordflow">else</span> {
@@ -1313,7 +1313,7 @@
 <a name="l01256"></a>01256     <span class="comment">// Smear the uniform counter value out to be varying</span>
 <a name="l01257"></a>01257     llvm::Value *counter = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a14537ef88f939a69ab58073b7390e95c">LoadInst</a>(uniformCounterPtr);
 <a name="l01258"></a>01258     llvm::Value *smearCounter = 
-<a name="l01259"></a>01259         llvm::UndefValue::get(<a class="code" href="structLLVMTypes.html#aea40bc8dda3af477414fac57aa20a16a">LLVMTypes::Int32VectorType</a>);
+<a name="l01259"></a>01259         llvm::UndefValue::get(<a class="code" href="structLLVMTypes.html#a4710a642b27c8103331a3650e1a720f1">LLVMTypes::Int32VectorType</a>);
 <a name="l01260"></a>01260     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>; ++i)
 <a name="l01261"></a>01261         smearCounter = 
 <a name="l01262"></a>01262             ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">InsertInst</a>(smearCounter, counter, i, <span class="stringliteral">&quot;smear_counter&quot;</span>);
@@ -1472,7 +1472,7 @@
 <a name="l01415"></a>01415         <span class="comment">// goes from startVal to endVal, in steps of the span for this</span>
 <a name="l01416"></a>01416         <span class="comment">// dimension.  Its value is only used internally here for looping</span>
 <a name="l01417"></a>01417         <span class="comment">// logic and isn&#39;t directly available in the user&#39;s program code.</span>
-<a name="l01418"></a>01418         uniformCounterPtrs.push_back(ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa21be6e3fb27438472f5f153bbec75b9">AllocaInst</a>(<a class="code" href="structLLVMTypes.html#a7f7a98b38c903b08b3bc87f58cbb81cc">LLVMTypes::Int32Type</a>, 
+<a name="l01418"></a>01418         uniformCounterPtrs.push_back(ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a712048038c99d9cb8cab808033426248">AllocaInst</a>(<a class="code" href="structLLVMTypes.html#acbc1a9ecda1bd59f50a644be0663be8f">LLVMTypes::Int32Type</a>, 
 <a name="l01419"></a>01419                                                      <span class="stringliteral">&quot;counter&quot;</span>));
 <a name="l01420"></a>01420         ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a1676c10e5aabbd6854b4a78f13522198">StoreInst</a>(startVals[i], uniformCounterPtrs[i]);
 <a name="l01421"></a>01421 
@@ -1480,7 +1480,7 @@
 <a name="l01423"></a>01423         <span class="comment">// values for each dimension in the current loop iteration; this is</span>
 <a name="l01424"></a>01424         <span class="comment">// the value that is program-visible.</span>
 <a name="l01425"></a>01425         <a class="code" href="classForeachStmt.html#abfb887b06b983fb34daaeee8c451ab9c">dimVariables</a>[i]-&gt;storagePtr = 
-<a name="l01426"></a>01426             ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa21be6e3fb27438472f5f153bbec75b9">AllocaInst</a>(<a class="code" href="structLLVMTypes.html#aea40bc8dda3af477414fac57aa20a16a">LLVMTypes::Int32VectorType</a>, 
+<a name="l01426"></a>01426             ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a712048038c99d9cb8cab808033426248">AllocaInst</a>(<a class="code" href="structLLVMTypes.html#a4710a642b27c8103331a3650e1a720f1">LLVMTypes::Int32VectorType</a>, 
 <a name="l01427"></a>01427                             <a class="code" href="classForeachStmt.html#abfb887b06b983fb34daaeee8c451ab9c">dimVariables</a>[i]-&gt;name.c_str());
 <a name="l01428"></a>01428         <a class="code" href="classForeachStmt.html#abfb887b06b983fb34daaeee8c451ab9c">dimVariables</a>[i]-&gt;parentFunction = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a8b54bbfbc42e82f1902180f1a0b479f6">GetFunction</a>();
 <a name="l01429"></a>01429         ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a77bb3ec58ee6b665615911cebee4491a">EmitVariableDebugInfo</a>(<a class="code" href="classForeachStmt.html#abfb887b06b983fb34daaeee8c451ab9c">dimVariables</a>[i]);
@@ -1489,7 +1489,7 @@
 <a name="l01432"></a>01432         <span class="comment">// the varying elements in the current iteration should be</span>
 <a name="l01433"></a>01433         <span class="comment">// processed.  (i.e. this is used to disable the lanes that have</span>
 <a name="l01434"></a>01434         <span class="comment">// out-of-bounds offsets.)</span>
-<a name="l01435"></a>01435         extrasMaskPtrs.push_back(ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa21be6e3fb27438472f5f153bbec75b9">AllocaInst</a>(<a class="code" href="structLLVMTypes.html#a16787367d57f72291b61968ca5d3a791">LLVMTypes::MaskType</a>, <span class="stringliteral">&quot;extras mask&quot;</span>));
+<a name="l01435"></a>01435         extrasMaskPtrs.push_back(ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a712048038c99d9cb8cab808033426248">AllocaInst</a>(<a class="code" href="structLLVMTypes.html#afc41ccd46bf370858cab188d24bdcbaa">LLVMTypes::MaskType</a>, <span class="stringliteral">&quot;extras mask&quot;</span>));
 <a name="l01436"></a>01436         ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a1676c10e5aabbd6854b4a78f13522198">StoreInst</a>(<a class="code" href="llvmutil_8h.html#abfdfa735e1a5647158f77a226c9acc3a">LLVMMaskAllOn</a>, extrasMaskPtrs[i]);
 <a name="l01437"></a>01437     }
 <a name="l01438"></a>01438 
@@ -1557,7 +1557,7 @@
 <a name="l01500"></a>01500             <a class="code" href="stmt_8cpp.html#aa689136ed11760019cdd6a4603eac88e">lUpdateVaryingCounter</a>(i, nDims, ctx, uniformCounterPtrs[i], 
 <a name="l01501"></a>01501                                   <a class="code" href="classForeachStmt.html#abfb887b06b983fb34daaeee8c451ab9c">dimVariables</a>[i]-&gt;storagePtr, span);
 <a name="l01502"></a>01502 
-<a name="l01503"></a>01503         llvm::Value *smearEnd = llvm::UndefValue::get(<a class="code" href="structLLVMTypes.html#aea40bc8dda3af477414fac57aa20a16a">LLVMTypes::Int32VectorType</a>);
+<a name="l01503"></a>01503         llvm::Value *smearEnd = llvm::UndefValue::get(<a class="code" href="structLLVMTypes.html#a4710a642b27c8103331a3650e1a720f1">LLVMTypes::Int32VectorType</a>);
 <a name="l01504"></a>01504         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>; ++j)
 <a name="l01505"></a>01505             smearEnd = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">InsertInst</a>(smearEnd, endVals[i], j, <span class="stringliteral">&quot;smear_end&quot;</span>);
 <a name="l01506"></a>01506         <span class="comment">// Do a vector compare of its value to the end value to generate a</span>
@@ -1676,7 +1676,7 @@
 <a name="l01619"></a>01619     <span class="comment">// should step the loop counter for the next enclosing dimension</span>
 <a name="l01620"></a>01620     <span class="comment">// instead.</span>
 <a name="l01621"></a>01621     llvm::Value *stepIndexAfterMaskedBodyPtr =
-<a name="l01622"></a>01622         ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa21be6e3fb27438472f5f153bbec75b9">AllocaInst</a>(<a class="code" href="structLLVMTypes.html#a368aa87e3edcd8ea9ef0c820f429536b">LLVMTypes::BoolType</a>, <span class="stringliteral">&quot;step_index&quot;</span>);
+<a name="l01622"></a>01622         ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a712048038c99d9cb8cab808033426248">AllocaInst</a>(<a class="code" href="structLLVMTypes.html#ae0b4fb924ae112367c5d254e7eac0ab2">LLVMTypes::BoolType</a>, <span class="stringliteral">&quot;step_index&quot;</span>);
 <a name="l01623"></a>01623 <span class="comment"></span>
 <a name="l01624"></a>01624 <span class="comment">    ///////////////////////////////////////////////////////////////////////////</span>
 <a name="l01625"></a>01625 <span class="comment"></span>    <span class="comment">// We&#39;re in the inner loop part where the only masking is due to outer</span>
@@ -1701,7 +1701,7 @@
 <a name="l01644"></a>01644     ctx-&gt;<a class="code" href="classFunctionEmitContext.html#ad011bee1c33448a2e962ceb00a01d0c2">SetCurrentBasicBlock</a>(bbPartial); {
 <a name="l01645"></a>01645         llvm::Value *varyingCounter = 
 <a name="l01646"></a>01646             ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a14537ef88f939a69ab58073b7390e95c">LoadInst</a>(<a class="code" href="classForeachStmt.html#abfb887b06b983fb34daaeee8c451ab9c">dimVariables</a>[nDims-1]-&gt;storagePtr);
-<a name="l01647"></a>01647         llvm::Value *smearEnd = llvm::UndefValue::get(<a class="code" href="structLLVMTypes.html#aea40bc8dda3af477414fac57aa20a16a">LLVMTypes::Int32VectorType</a>);
+<a name="l01647"></a>01647         llvm::Value *smearEnd = llvm::UndefValue::get(<a class="code" href="structLLVMTypes.html#a4710a642b27c8103331a3650e1a720f1">LLVMTypes::Int32VectorType</a>);
 <a name="l01648"></a>01648         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>; ++j)
 <a name="l01649"></a>01649             smearEnd = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">InsertInst</a>(smearEnd, endVals[nDims-1], j, <span class="stringliteral">&quot;smear_end&quot;</span>);
 <a name="l01650"></a>01650         llvm::Value *emask = 
@@ -1795,7 +1795,7 @@
 <a name="l01738"></a>01738         llvm::Value *varyingCounter = 
 <a name="l01739"></a>01739             <a class="code" href="stmt_8cpp.html#aa689136ed11760019cdd6a4603eac88e">lUpdateVaryingCounter</a>(nDims-1, nDims, ctx, uniformCounterPtrs[nDims-1], 
 <a name="l01740"></a>01740                                   <a class="code" href="classForeachStmt.html#abfb887b06b983fb34daaeee8c451ab9c">dimVariables</a>[nDims-1]-&gt;storagePtr, span);
-<a name="l01741"></a>01741         llvm::Value *smearEnd = llvm::UndefValue::get(<a class="code" href="structLLVMTypes.html#aea40bc8dda3af477414fac57aa20a16a">LLVMTypes::Int32VectorType</a>);
+<a name="l01741"></a>01741         llvm::Value *smearEnd = llvm::UndefValue::get(<a class="code" href="structLLVMTypes.html#a4710a642b27c8103331a3650e1a720f1">LLVMTypes::Int32VectorType</a>);
 <a name="l01742"></a>01742         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a47de80a0cda3b5e473ddaaff1d6420b9">vectorWidth</a>; ++j)
 <a name="l01743"></a>01743             smearEnd = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa197b63c35af297822b7eb3d35053e13">InsertInst</a>(smearEnd, endVals[nDims-1], j, <span class="stringliteral">&quot;smear_end&quot;</span>);
 <a name="l01744"></a>01744         llvm::Value *emask = 
@@ -2554,14 +2554,14 @@
 <a name="l02497"></a>02497     <span class="keywordflow">else</span> {
 <a name="l02498"></a>02498         argTypes.push_back(t);
 <a name="l02499"></a>02499 
-<a name="l02500"></a>02500         <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *llvmExprType = type-&gt;<a class="code" href="classType.html#aa7b08bf258938faa7e12b580b623621a">LLVMType</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>);
-<a name="l02501"></a>02501         llvm::Value *ptr = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa21be6e3fb27438472f5f153bbec75b9">AllocaInst</a>(llvmExprType, <span class="stringliteral">&quot;print_arg&quot;</span>);
+<a name="l02500"></a>02500         llvm::Type *llvmExprType = type-&gt;<a class="code" href="classType.html#a04eb42d850a697fc181b388688b6393e">LLVMType</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>);
+<a name="l02501"></a>02501         llvm::Value *ptr = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a712048038c99d9cb8cab808033426248">AllocaInst</a>(llvmExprType, <span class="stringliteral">&quot;print_arg&quot;</span>);
 <a name="l02502"></a>02502         llvm::Value *val = expr-&gt;<a class="code" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">GetValue</a>(ctx);
 <a name="l02503"></a>02503         <span class="keywordflow">if</span> (!val)
 <a name="l02504"></a>02504             <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html">NULL</a>;
 <a name="l02505"></a>02505         ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a1676c10e5aabbd6854b4a78f13522198">StoreInst</a>(val, ptr);
 <a name="l02506"></a>02506 
-<a name="l02507"></a>02507         ptr = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aae63d1b9a48bab086bf7b2ed3a3e72a2">BitCastInst</a>(ptr, <a class="code" href="structLLVMTypes.html#a006e6061ce47f085f9ef6cc58c3ab0cf">LLVMTypes::VoidPointerType</a>);
+<a name="l02507"></a>02507         ptr = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#abb15bca28ff940f725ae0def06e1d70b">BitCastInst</a>(ptr, <a class="code" href="structLLVMTypes.html#a4c43f41348ec9d7c6dd2a622a4a4a3a4">LLVMTypes::VoidPointerType</a>);
 <a name="l02508"></a>02508         <span class="keywordflow">return</span> ptr;
 <a name="l02509"></a>02509     }
 <a name="l02510"></a>02510 }
@@ -2594,8 +2594,8 @@
 <a name="l02537"></a>02537     std::string argTypes;
 <a name="l02538"></a>02538 
 <a name="l02539"></a>02539     <span class="keywordflow">if</span> (<a class="code" href="classPrintStmt.html#a36654e706db08a1948f83b39b53ae84d">values</a> == <a class="code" href="parse_8yy.html">NULL</a>) {
-<a name="l02540"></a>02540         <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *ptrPtrType = 
-<a name="l02541"></a>02541             llvm::PointerType::get(<a class="code" href="structLLVMTypes.html#a006e6061ce47f085f9ef6cc58c3ab0cf">LLVMTypes::VoidPointerType</a>, 0);
+<a name="l02540"></a>02540         llvm::Type *ptrPtrType = 
+<a name="l02541"></a>02541             llvm::PointerType::get(<a class="code" href="structLLVMTypes.html#a4c43f41348ec9d7c6dd2a622a4a4a3a4">LLVMTypes::VoidPointerType</a>, 0);
 <a name="l02542"></a>02542         args[4] = llvm::Constant::getNullValue(ptrPtrType);
 <a name="l02543"></a>02543     }
 <a name="l02544"></a>02544     <span class="keywordflow">else</span> {
@@ -2606,14 +2606,14 @@
 <a name="l02549"></a>02549         <span class="keywordtype">int</span> nArgs = elist ? elist-&gt;<a class="code" href="classExprList.html#a701a2dc534fd40e2255bdb1b397daa5e">exprs</a>.size() : 1;
 <a name="l02550"></a>02550 
 <a name="l02551"></a>02551         <span class="comment">// Allocate space for the array of pointers to values to be printed </span>
-<a name="l02552"></a>02552         <a class="code" href="ispc_8h.html#a7d51dd330ac4ead1a536897865150e62">LLVM_TYPE_CONST</a> llvm::Type *argPtrArrayType = 
-<a name="l02553"></a>02553             llvm::ArrayType::get(<a class="code" href="structLLVMTypes.html#a006e6061ce47f085f9ef6cc58c3ab0cf">LLVMTypes::VoidPointerType</a>, nArgs);
-<a name="l02554"></a>02554         llvm::Value *argPtrArray = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aa21be6e3fb27438472f5f153bbec75b9">AllocaInst</a>(argPtrArrayType,
+<a name="l02552"></a>02552         llvm::Type *argPtrArrayType = 
+<a name="l02553"></a>02553             llvm::ArrayType::get(<a class="code" href="structLLVMTypes.html#a4c43f41348ec9d7c6dd2a622a4a4a3a4">LLVMTypes::VoidPointerType</a>, nArgs);
+<a name="l02554"></a>02554         llvm::Value *argPtrArray = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a712048038c99d9cb8cab808033426248">AllocaInst</a>(argPtrArrayType,
 <a name="l02555"></a>02555                                                    <span class="stringliteral">&quot;print_arg_ptrs&quot;</span>);
 <a name="l02556"></a>02556         <span class="comment">// Store the array pointer as a void **, which is what __do_print()</span>
 <a name="l02557"></a>02557         <span class="comment">// expects</span>
-<a name="l02558"></a>02558         args[4] = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aae63d1b9a48bab086bf7b2ed3a3e72a2">BitCastInst</a>(argPtrArray, 
-<a name="l02559"></a>02559                                    llvm::PointerType::get(<a class="code" href="structLLVMTypes.html#a006e6061ce47f085f9ef6cc58c3ab0cf">LLVMTypes::VoidPointerType</a>, 0));
+<a name="l02558"></a>02558         args[4] = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#abb15bca28ff940f725ae0def06e1d70b">BitCastInst</a>(argPtrArray, 
+<a name="l02559"></a>02559                                    llvm::PointerType::get(<a class="code" href="structLLVMTypes.html#a4c43f41348ec9d7c6dd2a622a4a4a3a4">LLVMTypes::VoidPointerType</a>, 0));
 <a name="l02560"></a>02560 
 <a name="l02561"></a>02561         <span class="comment">// Now, for each of the arguments, emit code to evaluate its value</span>
 <a name="l02562"></a>02562         <span class="comment">// and store the value into alloca&#39;d storage.  Then store the</span>
@@ -2783,7 +2783,7 @@
 <a name="l02726"></a>02726         <span class="comment">// For deletion of a uniform pointer, we just need to cast the</span>
 <a name="l02727"></a>02727         <span class="comment">// pointer type to a void pointer type, to match what</span>
 <a name="l02728"></a>02728         <span class="comment">// __delete_uniform() from the builtins expects.</span>
-<a name="l02729"></a>02729         exprValue = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#aae63d1b9a48bab086bf7b2ed3a3e72a2">BitCastInst</a>(exprValue, <a class="code" href="structLLVMTypes.html#a006e6061ce47f085f9ef6cc58c3ab0cf">LLVMTypes::VoidPointerType</a>,
+<a name="l02729"></a>02729         exprValue = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#abb15bca28ff940f725ae0def06e1d70b">BitCastInst</a>(exprValue, <a class="code" href="structLLVMTypes.html#a4c43f41348ec9d7c6dd2a622a4a4a3a4">LLVMTypes::VoidPointerType</a>,
 <a name="l02730"></a>02730                                      <span class="stringliteral">&quot;ptr_to_void&quot;</span>);
 <a name="l02731"></a>02731         llvm::Function *func = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__delete_uniform&quot;</span>);
 <a name="l02732"></a>02732         <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(func != <a class="code" href="parse_8yy.html">NULL</a>);
@@ -2798,7 +2798,7 @@
 <a name="l02741"></a>02741         llvm::Function *func = <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>-&gt;getFunction(<span class="stringliteral">&quot;__delete_varying&quot;</span>);
 <a name="l02742"></a>02742         <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(func != <a class="code" href="parse_8yy.html">NULL</a>);
 <a name="l02743"></a>02743         <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a020c3a918fec5062c174266db0e36720">is32Bit</a>)
-<a name="l02744"></a>02744             exprValue = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#abc9285fe1c5c9bc01c7769bca769e948">ZExtInst</a>(exprValue, <a class="code" href="structLLVMTypes.html#ae2005028c77c0599634f9e3dd0d6ac9b">LLVMTypes::Int64VectorType</a>,
+<a name="l02744"></a>02744             exprValue = ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a9d66d61525aad58b807c36c0a4a7250a">ZExtInst</a>(exprValue, <a class="code" href="structLLVMTypes.html#a132dfba8004c9bd222d2e356ac2362d2">LLVMTypes::Int64VectorType</a>,
 <a name="l02745"></a>02745                                       <span class="stringliteral">&quot;ptr_to_64&quot;</span>);
 <a name="l02746"></a>02746         ctx-&gt;<a class="code" href="classFunctionEmitContext.html#a57f601842634e3992869eda0fd1b0813">CallInst</a>(func, <a class="code" href="parse_8yy.html">NULL</a>, exprValue, <span class="stringliteral">&quot;&quot;</span>);
 <a name="l02747"></a>02747     }
@@ -2880,7 +2880,7 @@
 <a name="l02823"></a>02823     <a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *maskVecExpr = <span class="keyword">new</span> <a class="code" href="classSymbolExpr.html" title="Expression representing a symbol reference in the program.">SymbolExpr</a>(maskSym, pos);
 <a name="l02824"></a>02824     std::vector&lt;Symbol *&gt; mmFuns;
 <a name="l02825"></a>02825     <a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a66a01f1bae4f9c26eb1bc95780865954">symbolTable</a>-&gt;<a class="code" href="classSymbolTable.html#a9f0b950e01362dd2d954c53158cd2167">LookupFunction</a>(<span class="stringliteral">&quot;__movmsk&quot;</span>, &amp;mmFuns);
-<a name="l02826"></a>02826     <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(mmFuns.size() == (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a3ca3d78d8240b68881e00af656df2951">isa</a> == <a class="code" href="structTarget.html#aa48340cc9786270d1ddcf046d577512fa98594465f020e3d53bddf2e0740728fd">Target::GENERIC</a> ? 1 : 2));
+<a name="l02826"></a>02826     <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(mmFuns.size() == (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a0834ae476a8d04932344781738184331">target</a>.<a class="code" href="structTarget.html#a78a17ae3b7e5120de4010edc1e493b53">maskBitCount</a> == 32 ? 2 : 1));
 <a name="l02827"></a>02827     <a class="code" href="classFunctionSymbolExpr.html" title="Expression representing a function symbol in the program (generally used for a function call)...">FunctionSymbolExpr</a> *movmskFunc = <span class="keyword">new</span> <a class="code" href="classFunctionSymbolExpr.html" title="Expression representing a function symbol in the program (generally used for a function call)...">FunctionSymbolExpr</a>(<span class="stringliteral">&quot;__movmsk&quot;</span>, mmFuns,
 <a name="l02828"></a>02828                                                             pos);
 <a name="l02829"></a>02829     <a class="code" href="classExprList.html" title="A list of expressions.">ExprList</a> *movmskArgs = <span class="keyword">new</span> <a class="code" href="classExprList.html" title="A list of expressions.">ExprList</a>(maskVecExpr, pos);
@@ -2914,7 +2914,7 @@
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 6 2012 16:03:14 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 20 2012 14:30:30 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

@@ -1332,8 +1332,8 @@ for control flow constructs.</td>
 </div>
 <div class="section" id="basic-types-and-type-qualifiers">
 <h2>Basic Types and Type Qualifiers</h2>
-<p><tt class="docutils literal">ispc</tt> is a statically-typed language.  It supports a variety of basic
-types.</p>
+<p><tt class="docutils literal">ispc</tt> is a statically-typed language.  It supports a variety of core
+basic types:</p>
 <ul class="simple">
 <li><tt class="docutils literal">void</tt>: &quot;empty&quot; type representing no value.</li>
 <li><tt class="docutils literal">bool</tt>: boolean value; may be assigned <tt class="docutils literal">true</tt>, <tt class="docutils literal">false</tt>, or the
@@ -1349,6 +1349,15 @@ value of a boolean expression.</li>
 <li><tt class="docutils literal">int64</tt>: 64-bit signed integer.</li>
 <li><tt class="docutils literal">unsigned int64</tt>: 64-bit unsigned integer.</li>
 <li><tt class="docutils literal">double</tt>: 64-bit double-precision floating point value.</li>
+</ul>
+<p>There are also a few built-in types related to pointers and memory:</p>
+<ul class="simple">
+<li><tt class="docutils literal">size_t</tt>: the maximum size of any object (structure or array)</li>
+<li><tt class="docutils literal">ptrdiff_t</tt>: an integer type large enough to represent the difference
+between two pointers</li>
+<li><tt class="docutils literal">intptr_t</tt>: signed integer type that is large enough to represent
+a pointer value</li>
+<li><tt class="docutils literal">uintptr_t</tt>: unsigned integer type large enough to represent a pointer</li>
 </ul>
 <p>Implicit type conversion between values of different types is done
 automatically by the <tt class="docutils literal">ispc</tt> compiler.  Thus, a value of <tt class="docutils literal">float</tt> type
@@ -3305,6 +3314,11 @@ float atomic_swap_local(uniform float * uniform ptr, float value)
 float atomic_swap_global(uniform float * uniform ptr, float value)
 double atomic_swap_global(uniform double * uniform ptr, double value)
 </pre>
+<p>Finally, &quot;swap&quot; (but none of these other atomics) is available for pointer
+types:</p>
+<pre class="literal-block">
+void *atomic_swap_{local,global}(void * * uniform ptr, void * value)
+</pre>
 <p>There are also variants of the atomic that take <tt class="docutils literal">uniform</tt> values for the
 operand and return a <tt class="docutils literal">uniform</tt> result.  These correspond to a single
 atomic operation being performed for the entire gang of program instances,
@@ -3326,6 +3340,11 @@ uniform int32 atomic_xor_{local,global}(uniform int32 * uniform ptr,
                                         uniform int32 value)
 uniform int32 atomic_swap_{local,global}(uniform int32 * uniform ptr,
                                          uniform int32 newval)
+</pre>
+<p>And similarly for pointers:</p>
+<pre class="literal-block">
+uniform void *atomic_swap_{local,global}(void * * uniform ptr,
+                                         void *newval)
 </pre>
 <p>Be careful that you use the atomic function that you mean to; consider the
 following code:</p>
@@ -3362,12 +3381,16 @@ int32 atomic_or_{local,global}(uniform int32 * varying ptr, int32 value)
 int32 atomic_xor_{local,global}(uniform int32 * varying ptr, int32 value)
 int32 atomic_swap_{local,global}(uniform int32 * varying ptr, int32 value)
 </pre>
+<p>And:</p>
+<pre class="literal-block">
+void *atomic_swap_{local,global}(void * * ptr, void *value)
+</pre>
 <p>There are also atomic &quot;compare and exchange&quot; functions.  Compare and
 exchange atomically compares the value in &quot;val&quot; to &quot;compare&quot;--if they
 match, it assigns &quot;newval&quot; to &quot;val&quot;.  In either case, the old value of
 &quot;val&quot; is returned.  (As with the other atomic operations, there are also
 <tt class="docutils literal">unsigned</tt> and 64-bit variants of this function.  Furthermore, there are
-<tt class="docutils literal">float</tt> and <tt class="docutils literal">double</tt> variants as well.)</p>
+<tt class="docutils literal">float</tt>, <tt class="docutils literal">double</tt>, and <tt class="docutils literal">void *</tt> variants as well.)</p>
 <pre class="literal-block">
 int32 atomic_compare_exchange_{local,global}(uniform int32 * uniform ptr,
                                              int32 compare, int32 newval)
@@ -3383,6 +3406,11 @@ code.</p>
 <pre class="literal-block">
 void memory_barrier();
 </pre>
+<p>Note that this barrier is <em>not</em> needed for coordinating reads and writes
+among the program instances in a gang; it's only needed for coordinating
+between multiple hardware threads running on different cores.  See the
+section <a class="reference internal" href="#data-races-within-a-gang">Data Races Within a Gang</a> for the guarantees provided about
+memory read/write ordering across a gang.</p>
 </div>
 <div class="section" id="prefetches">
 <h2>Prefetches</h2>

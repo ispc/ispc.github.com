@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.2.1</span>
+   &#160;<span id="projectnumber">1.2.2</span>
    </div>
    
   </td>
@@ -114,8 +114,8 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::Constant *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#a85e4b84475e536ff3b063a57f5f4a5f1">LLVMUInt64Vector</a> (const uint64_t *ivec)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::Constant *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#aaea7cba9df4e42f858e65a12195cff11">LLVMBoolVector</a> (bool b)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::Constant *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#ae1ca18179f52efcad570fbedabaddc73">LLVMBoolVector</a> (const bool *bvec)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">llvm::Constant *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#a284d29ad66fb104165405d6bfdc94959">LLVMIntAsType</a> (int64_t val, LLVM_TYPE_CONST llvm::Type *type)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">llvm::Constant *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#a23b993cdb0674053be969c22b4249139">LLVMUIntAsType</a> (uint64_t val, LLVM_TYPE_CONST llvm::Type *type)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">llvm::Constant *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#a5ac951f18d2fe8474e8301f2173a5671">LLVMIntAsType</a> (int64_t val, llvm::Type *type)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">llvm::Constant *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#ac2c720b34a6ea695fbb9a589c1b5558d">LLVMUIntAsType</a> (uint64_t val, llvm::Type *type)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#afff0cc190757c3fa9b6cc085c5dd2419">lValuesAreEqual</a> (llvm::Value *v0, llvm::Value *v1, std::vector&lt; llvm::PHINode * &gt; &amp;seenPhi0, std::vector&lt; llvm::PHINode * &gt; &amp;seenPhi1)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#ae5c5520872f54d9b3b6843288b3a51d7">lGetIntValue</a> (llvm::Value *offset)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#a33cbf1dd7b0ba450ff90aed9142b4877">LLVMFlattenInsertChain</a> (llvm::InsertElementInst *ie, int vectorWidth, llvm::Value **elements)</td></tr>
@@ -133,10 +133,12 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#a90f7875bca1cd3b22931cae1981ad611">LLVMVectorIsLinear</a> (llvm::Value *v, int stride)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#a598cd587867e1d1c572e6d327c903c3c">lDumpValue</a> (llvm::Value *v, std::set&lt; llvm::Value * &gt; &amp;done)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#af2ea5fb708473897ea3eb7fb5a0d956f">LLVMDumpValue</a> (llvm::Value *v)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#a6f245a419b1a8c4c4acc0b78db33db26">lExtractFirstVectorElement</a> (llvm::Value *v, llvm::Instruction *insertBefore, std::map&lt; llvm::PHINode *, llvm::PHINode * &gt; &amp;phiMap)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#a79636d32a3e6c80c223d78c407ded05b">LLVMExtractFirstVectorElement</a> (llvm::Value *v, llvm::Instruction *insertBefore)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8">lExtractFirstVectorElement</a> (llvm::Value *v, std::map&lt; llvm::PHINode *, llvm::PHINode * &gt; &amp;phiMap)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#ac74c93c0de2de4b6b73f3a5fa9b45a6d">LLVMExtractFirstVectorElement</a> (llvm::Value *v)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#a9e52dbf98a2e38869b743b0c403b3145">LLVMConcatVectors</a> (llvm::Value *v1, llvm::Value *v2, llvm::Instruction *insertBefore)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#a0422a9c91b6a83630d891efc779b007c">LLVMShuffleVectors</a> (llvm::Value *v1, llvm::Value *v2, <a class="el" href="parse_8yy.html#a10e8b2d266b06d06f972396bf71af292">int32_t</a> shuf[], int shufSize, llvm::Instruction *insertBefore)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#a37171b0a1649a97558634a0876e1cb09">LLVMGetName</a> (llvm::Value *v, const char *<a class="el" href="parse_8yy.html#a670da3e561356241efb8054bd91b88a8">s</a>)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#a4162014721d3052c88bfed23f36edd0f">LLVMGetName</a> (const char *op, llvm::Value *v1, llvm::Value *v2)</td></tr>
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">llvm::Constant *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="llvmutil_8cpp.html#a4f814344ca29a4f0c37a07b7439c6347">LLVMTrue</a> = NULL</td></tr>
@@ -176,9 +178,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00092">92</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="llvmutil_8h_source.html#l00067">LLVMTypes::BoolType</a>, <a class="el" href="llvmutil_8h_source.html#l00085">LLVMTypes::BoolVectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00081">LLVMTypes::DoublePointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00074">LLVMTypes::DoubleType</a>, <a class="el" href="llvmutil_8h_source.html#l00099">LLVMTypes::DoubleVectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00092">LLVMTypes::DoubleVectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00080">LLVMTypes::FloatPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00073">LLVMTypes::FloatType</a>, <a class="el" href="llvmutil_8h_source.html#l00098">LLVMTypes::FloatVectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00091">LLVMTypes::FloatVectorType</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8h_source.html#l00077">LLVMTypes::Int16PointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00070">LLVMTypes::Int16Type</a>, <a class="el" href="llvmutil_8h_source.html#l00095">LLVMTypes::Int16VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00088">LLVMTypes::Int16VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00086">LLVMTypes::Int1VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00078">LLVMTypes::Int32PointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00071">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00096">LLVMTypes::Int32VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00089">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00079">LLVMTypes::Int64PointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00072">LLVMTypes::Int64Type</a>, <a class="el" href="llvmutil_8h_source.html#l00097">LLVMTypes::Int64VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00090">LLVMTypes::Int64VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00076">LLVMTypes::Int8PointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00069">LLVMTypes::Int8Type</a>, <a class="el" href="llvmutil_8h_source.html#l00094">LLVMTypes::Int8VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00087">LLVMTypes::Int8VectorType</a>, <a class="el" href="ispc_8h_source.html#l00212">Target::is32Bit</a>, <a class="el" href="llvmutil_8cpp_source.html#l00086">LLVMFalse</a>, <a class="el" href="llvmutil_8cpp_source.html#l00088">LLVMMaskAllOff</a>, <a class="el" href="llvmutil_8cpp_source.html#l00087">LLVMMaskAllOn</a>, <a class="el" href="llvmutil_8cpp_source.html#l00085">LLVMTrue</a>, <a class="el" href="ispc_8h_source.html#l00248">Target::maskBitCount</a>, <a class="el" href="llvmutil_8h_source.html#l00083">LLVMTypes::MaskType</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="llvmutil_8h_source.html#l00066">LLVMTypes::PointerIntType</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>, <a class="el" href="llvmutil_8h_source.html#l00065">LLVMTypes::VoidPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00101">LLVMTypes::VoidPointerVectorType</a>, and <a class="el" href="llvmutil_8h_source.html#l00064">LLVMTypes::VoidType</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="llvmutil_8h_source.html#l00060">LLVMTypes::BoolType</a>, <a class="el" href="llvmutil_8h_source.html#l00078">LLVMTypes::BoolVectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00074">LLVMTypes::DoublePointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00067">LLVMTypes::DoubleType</a>, <a class="el" href="llvmutil_8h_source.html#l00092">LLVMTypes::DoubleVectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00085">LLVMTypes::DoubleVectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00073">LLVMTypes::FloatPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00066">LLVMTypes::FloatType</a>, <a class="el" href="llvmutil_8h_source.html#l00091">LLVMTypes::FloatVectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00084">LLVMTypes::FloatVectorType</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8h_source.html#l00070">LLVMTypes::Int16PointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00063">LLVMTypes::Int16Type</a>, <a class="el" href="llvmutil_8h_source.html#l00088">LLVMTypes::Int16VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00081">LLVMTypes::Int16VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00079">LLVMTypes::Int1VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00071">LLVMTypes::Int32PointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00064">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00089">LLVMTypes::Int32VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00082">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00072">LLVMTypes::Int64PointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00065">LLVMTypes::Int64Type</a>, <a class="el" href="llvmutil_8h_source.html#l00090">LLVMTypes::Int64VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00083">LLVMTypes::Int64VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00069">LLVMTypes::Int8PointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00062">LLVMTypes::Int8Type</a>, <a class="el" href="llvmutil_8h_source.html#l00087">LLVMTypes::Int8VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00080">LLVMTypes::Int8VectorType</a>, <a class="el" href="ispc_8h_source.html#l00215">Target::is32Bit</a>, <a class="el" href="llvmutil_8cpp_source.html#l00086">LLVMFalse</a>, <a class="el" href="llvmutil_8cpp_source.html#l00088">LLVMMaskAllOff</a>, <a class="el" href="llvmutil_8cpp_source.html#l00087">LLVMMaskAllOn</a>, <a class="el" href="llvmutil_8cpp_source.html#l00085">LLVMTrue</a>, <a class="el" href="ispc_8h_source.html#l00251">Target::maskBitCount</a>, <a class="el" href="llvmutil_8h_source.html#l00076">LLVMTypes::MaskType</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="llvmutil_8h_source.html#l00059">LLVMTypes::PointerIntType</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>, <a class="el" href="llvmutil_8h_source.html#l00058">LLVMTypes::VoidPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00094">LLVMTypes::VoidPointerVectorType</a>, and <a class="el" href="llvmutil_8h_source.html#l00057">LLVMTypes::VoidType</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00094">Module::Module()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00112">Module::Module()</a>.</p>
 
 </div>
 </div>
@@ -371,7 +373,7 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a6f245a419b1a8c4c4acc0b78db33db26"></a><!-- doxytag: member="llvmutil.cpp::lExtractFirstVectorElement" ref="a6f245a419b1a8c4c4acc0b78db33db26" args="(llvm::Value *v, llvm::Instruction *insertBefore, std::map&lt; llvm::PHINode *, llvm::PHINode * &gt; &amp;phiMap)" -->
+<a class="anchor" id="ae0156a4b21ef8b67d21d5562e7241fe8"></a><!-- doxytag: member="llvmutil.cpp::lExtractFirstVectorElement" ref="ae0156a4b21ef8b67d21d5562e7241fe8" args="(llvm::Value *v, std::map&lt; llvm::PHINode *, llvm::PHINode * &gt; &amp;phiMap)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -380,12 +382,6 @@ Variables</h2></td></tr>
           <td>(</td>
           <td class="paramtype">llvm::Value *&#160;</td>
           <td class="paramname"><em>v</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">llvm::Instruction *&#160;</td>
-          <td class="paramname"><em>insertBefore</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -404,9 +400,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l01393">1393</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="ispc_8h_source.html#l00074">ISPC_MAX_NVEC</a>, <a class="el" href="ispc_8h_source.html#l00099">LLVM_TYPE_CONST</a>, <a class="el" href="llvmutil_8cpp_source.html#l00599">LLVMFlattenInsertChain()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00207">LLVMInt32()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="ispc_8h_source.html#l00074">ISPC_MAX_NVEC</a>, <a class="el" href="llvmutil_8cpp_source.html#l00599">LLVMFlattenInsertChain()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00207">LLVMInt32()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="llvmutil_8cpp_source.html#l01478">LLVMExtractFirstVectorElement()</a>.</p>
+<p>Referenced by <a class="el" href="llvmutil_8cpp_source.html#l01504">LLVMExtractFirstVectorElement()</a>.</p>
 
 </div>
 </div>
@@ -474,7 +470,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00697">697</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="ispc_8h_source.html#l00074">ISPC_MAX_NVEC</a>, <a class="el" href="llvmutil_8cpp_source.html#l00599">LLVMFlattenInsertChain()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01076">LLVMVectorValuesAllEqual()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="ispc_8h_source.html#l00074">ISPC_MAX_NVEC</a>, <a class="el" href="llvmutil_8cpp_source.html#l00599">LLVMFlattenInsertChain()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01076">LLVMVectorValuesAllEqual()</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
 <p>Referenced by <a class="el" href="llvmutil_8cpp_source.html#l00780">lAllDivBaseEqual()</a>.</p>
 
@@ -498,9 +494,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00437">437</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="llvmutil_8h_source.html#l00085">LLVMTypes::BoolVectorType</a>, <a class="el" href="ispc_8h_source.html#l00424">Globals::ctx</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8h_source.html#l00071">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00089">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8cpp_source.html#l00086">LLVMFalse</a>, <a class="el" href="llvmutil_8cpp_source.html#l00085">LLVMTrue</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="llvmutil_8h_source.html#l00078">LLVMTypes::BoolVectorType</a>, <a class="el" href="ispc_8h_source.html#l00427">Globals::ctx</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8h_source.html#l00064">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00082">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8cpp_source.html#l00086">LLVMFalse</a>, <a class="el" href="llvmutil_8cpp_source.html#l00085">LLVMTrue</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00969">ForStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00969">ForStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>.</p>
 
 </div>
 </div>
@@ -522,7 +518,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00456">456</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="llvmutil_8h_source.html#l00085">LLVMTypes::BoolVectorType</a>, <a class="el" href="ispc_8h_source.html#l00424">Globals::ctx</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8h_source.html#l00071">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00089">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8cpp_source.html#l00086">LLVMFalse</a>, <a class="el" href="llvmutil_8cpp_source.html#l00085">LLVMTrue</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="llvmutil_8h_source.html#l00078">LLVMTypes::BoolVectorType</a>, <a class="el" href="ispc_8h_source.html#l00427">Globals::ctx</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8h_source.html#l00064">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00082">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8cpp_source.html#l00086">LLVMFalse</a>, <a class="el" href="llvmutil_8cpp_source.html#l00085">LLVMTrue</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
 </div>
 </div>
@@ -558,11 +554,11 @@ Variables</h2></td></tr>
 <div class="memdoc">
 <p>Given two vectors of the same type, concatenate them into a vector that has twice as many elements, where the first half has the elements from the first vector and the second half has the elements from the second vector. </p>
 
-<p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l01491">1491</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l01517">1517</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="parse_8yy_source.html#l310290">int32_t</a>, <a class="el" href="ispc_8h_source.html#l00074">ISPC_MAX_NVEC</a>, <a class="el" href="ispc_8h_source.html#l00099">LLVM_TYPE_CONST</a>, <a class="el" href="llvmutil_8cpp_source.html#l01514">LLVMShuffleVectors()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="parse_8yy_source.html#l310385">int32_t</a>, <a class="el" href="ispc_8h_source.html#l00074">ISPC_MAX_NVEC</a>, <a class="el" href="llvmutil_8cpp_source.html#l01540">LLVMShuffleVectors()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="opt_8cpp_source.html#l03241">lAssembleResultVectors()</a>.</p>
+<p>Referenced by <a class="el" href="opt_8cpp_source.html#l03246">lAssembleResultVectors()</a>.</p>
 
 </div>
 </div>
@@ -584,9 +580,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00241">241</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00424">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00427">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00380">LLVMDoubleVector()</a>, and <a class="el" href="expr_8cpp_source.html#l05772">lTypeConvAtomic()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00380">LLVMDoubleVector()</a>, and <a class="el" href="expr_8cpp_source.html#l05842">lTypeConvAtomic()</a>.</p>
 
 </div>
 </div>
@@ -608,9 +604,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00380">380</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00241">LLVMDouble()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00241">LLVMDouble()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, and <a class="el" href="expr_8cpp_source.html#l05772">lTypeConvAtomic()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, and <a class="el" href="expr_8cpp_source.html#l05842">lTypeConvAtomic()</a>.</p>
 
 </div>
 </div>
@@ -632,7 +628,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00390">390</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00241">LLVMDouble()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00241">LLVMDouble()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
 </div>
 </div>
@@ -656,11 +652,11 @@ Variables</h2></td></tr>
 
 <p>References <a class="el" href="llvmutil_8cpp_source.html#l01364">lDumpValue()</a>, and <a class="el" href="parse_8yy.html">stderr</a>.</p>
 
-<p>Referenced by <a class="el" href="opt_8cpp_source.html#l01152">lGetBasePtrAndOffsets()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01346">LLVMVectorIsLinear()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01076">LLVMVectorValuesAllEqual()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00906">lVectorShiftRightAllEqual()</a>, and <a class="el" href="opt_8cpp_source.html#l03448">GatherCoalescePass::runOnBasicBlock()</a>.</p>
+<p>Referenced by <a class="el" href="opt_8cpp_source.html#l01138">lGetBasePtrAndOffsets()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01346">LLVMVectorIsLinear()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01076">LLVMVectorValuesAllEqual()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00906">lVectorShiftRightAllEqual()</a>, and <a class="el" href="opt_8cpp_source.html#l03448">GatherCoalescePass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a79636d32a3e6c80c223d78c407ded05b"></a><!-- doxytag: member="llvmutil.cpp::LLVMExtractFirstVectorElement" ref="a79636d32a3e6c80c223d78c407ded05b" args="(llvm::Value *v, llvm::Instruction *insertBefore)" -->
+<a class="anchor" id="ac74c93c0de2de4b6b73f3a5fa9b45a6d"></a><!-- doxytag: member="llvmutil.cpp::LLVMExtractFirstVectorElement" ref="ac74c93c0de2de4b6b73f3a5fa9b45a6d" args="(llvm::Value *v)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -668,29 +664,19 @@ Variables</h2></td></tr>
           <td class="memname">llvm::Value* LLVMExtractFirstVectorElement </td>
           <td>(</td>
           <td class="paramtype">llvm::Value *&#160;</td>
-          <td class="paramname"><em>v</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>v</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">llvm::Instruction *&#160;</td>
-          <td class="paramname"><em>insertBefore</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 <p>Given a vector-typed value, this function returns the value of its first element. Rather than just doing the straightforward thing of using a single extractelement instruction to do this, this function tries to rewrite the computation for the first element in scalar form; this is generally more efficient than computing the entire vector's worth of values just to extract the first element, in cases where only the first element's value is needed. </p>
 
-<p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l01478">1478</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l01504">1504</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
 <p>References <a class="el" href="llvmutil_8cpp_source.html#l01393">lExtractFirstVectorElement()</a>.</p>
 
-<p>Referenced by <a class="el" href="opt_8cpp_source.html#l03290">lComputeBasePtr()</a>, and <a class="el" href="opt_8cpp_source.html#l02305">lComputeCommonPointer()</a>.</p>
+<p>Referenced by <a class="el" href="opt_8cpp_source.html#l03295">lComputeBasePtr()</a>, and <a class="el" href="opt_8cpp_source.html#l02306">lComputeCommonPointer()</a>.</p>
 
 </div>
 </div>
@@ -728,9 +714,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00643">643</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="ispc_8h_source.html#l00099">LLVM_TYPE_CONST</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="llvmutil_8cpp_source.html#l00780">lAllDivBaseEqual()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01191">lCheckAndForLinear()</a>, <a class="el" href="opt_8cpp_source.html#l03319">lExtractConstOffsets()</a>, <a class="el" href="opt_8cpp_source.html#l01666">lVectorIs32BitInts()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00906">lVectorShiftRightAllEqual()</a>.</p>
+<p>Referenced by <a class="el" href="llvmutil_8cpp_source.html#l00780">lAllDivBaseEqual()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01191">lCheckAndForLinear()</a>, <a class="el" href="opt_8cpp_source.html#l03323">lExtractConstOffsets()</a>, <a class="el" href="opt_8cpp_source.html#l01648">lVectorIs32BitInts()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00906">lVectorShiftRightAllEqual()</a>.</p>
 
 </div>
 </div>
@@ -771,9 +757,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00599">599</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="parse_8yy_source.html#l310290">int32_t</a>, <a class="el" href="llvmutil_8cpp_source.html#l00590">lGetIntValue()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="parse_8yy_source.html#l310385">int32_t</a>, <a class="el" href="llvmutil_8cpp_source.html#l00590">lGetIntValue()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="llvmutil_8cpp_source.html#l01393">lExtractFirstVectorElement()</a>, <a class="el" href="opt_8cpp_source.html#l01076">lGetBasePointer()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00697">lIsExactMultiple()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00938">lVectorValuesAllEqual()</a>.</p>
+<p>Referenced by <a class="el" href="llvmutil_8cpp_source.html#l01393">lExtractFirstVectorElement()</a>, <a class="el" href="opt_8cpp_source.html#l01066">lGetBasePointer()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00697">lIsExactMultiple()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00938">lVectorValuesAllEqual()</a>.</p>
 
 </div>
 </div>
@@ -795,9 +781,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00235">235</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00424">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00427">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00361">LLVMFloatVector()</a>, and <a class="el" href="expr_8cpp_source.html#l05772">lTypeConvAtomic()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00361">LLVMFloatVector()</a>, and <a class="el" href="expr_8cpp_source.html#l05842">lTypeConvAtomic()</a>.</p>
 
 </div>
 </div>
@@ -819,9 +805,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00361">361</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00235">LLVMFloat()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00235">LLVMFloat()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, and <a class="el" href="expr_8cpp_source.html#l05772">lTypeConvAtomic()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, and <a class="el" href="expr_8cpp_source.html#l05842">lTypeConvAtomic()</a>.</p>
 
 </div>
 </div>
@@ -843,7 +829,76 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00371">371</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00235">LLVMFloat()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00235">LLVMFloat()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a37171b0a1649a97558634a0876e1cb09"></a><!-- doxytag: member="llvmutil.cpp::LLVMGetName" ref="a37171b0a1649a97558634a0876e1cb09" args="(llvm::Value *v, const char *s)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* LLVMGetName </td>
+          <td>(</td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Utility routines to concat strings with the names of existing values to create meaningful new names for instruction values. </p>
+
+<p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l01558">1558</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
+
+<p>References <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="parse_8yy_source.html#l310335">s</a>.</p>
+
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01244">FunctionEmitContext::All()</a>, <a class="el" href="ctx_8cpp_source.html#l01236">FunctionEmitContext::Any()</a>, <a class="el" href="ctx_8cpp_source.html#l01872">FunctionEmitContext::applyVaryingGEP()</a>, <a class="el" href="ctx_8cpp_source.html#l01668">FunctionEmitContext::BitCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01789">FunctionEmitContext::CastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l02986">FunctionEmitContext::ExtractInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01809">FunctionEmitContext::FPCastInst()</a>, <a class="el" href="ctx_8cpp_source.html#l02438">FunctionEmitContext::gather()</a>, <a class="el" href="expr_8cpp_source.html#l04114">IndexExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l01097">UnaryExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04790">MemberExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l08059">NewExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04636">VectorMemberExpr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l01320">FunctionEmitContext::I1VecToBoolVec()</a>, <a class="el" href="ctx_8cpp_source.html#l03009">FunctionEmitContext::InsertInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01737">FunctionEmitContext::IntToPtrInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01261">FunctionEmitContext::LaneMask()</a>, <a class="el" href="expr_8cpp_source.html#l04040">lConvertToSlicePointer()</a>, <a class="el" href="expr_8cpp_source.html#l01501">lEmitBinaryArith()</a>, <a class="el" href="expr_8cpp_source.html#l01560">lEmitBinaryCmp()</a>, <a class="el" href="expr_8cpp_source.html#l01070">lEmitNegate()</a>, <a class="el" href="opt_8cpp_source.html#l01274">lExtractConstantOffset()</a>, <a class="el" href="ctx_8cpp_source.html#l02312">lFinalSliceOffset()</a>, <a class="el" href="ctx_8cpp_source.html#l02279">FunctionEmitContext::LoadInst()</a>, <a class="el" href="opt_8cpp_source.html#l01666">lOffsets32BitSafe()</a>, <a class="el" href="expr_8cpp_source.html#l05842">lTypeConvAtomic()</a>, <a class="el" href="ctx_8cpp_source.html#l02010">FunctionEmitContext::MakeSlicePointer()</a>, <a class="el" href="ctx_8cpp_source.html#l02598">FunctionEmitContext::maskedStore()</a>, <a class="el" href="ctx_8cpp_source.html#l01279">FunctionEmitContext::MasksAllEqual()</a>, <a class="el" href="ctx_8cpp_source.html#l01253">FunctionEmitContext::None()</a>, <a class="el" href="ctx_8cpp_source.html#l01685">FunctionEmitContext::PtrToIntInst()</a>, <a class="el" href="opt_8cpp_source.html#l00729">IntrinsicsOpt::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l01733">DetectGSBaseOffsetsPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l02330">GSToLoadStorePass::runOnBasicBlock()</a>, <a class="el" href="ctx_8cpp_source.html#l03044">FunctionEmitContext::SelectInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01828">FunctionEmitContext::SExtInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01770">FunctionEmitContext::TruncInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l01847">FunctionEmitContext::ZExtInst()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4162014721d3052c88bfed23f36edd0f"></a><!-- doxytag: member="llvmutil.cpp::LLVMGetName" ref="a4162014721d3052c88bfed23f36edd0f" args="(const char *op, llvm::Value *v1, llvm::Value *v2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* LLVMGetName </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>v1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>v2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l01567">1567</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
 </div>
 </div>
@@ -865,9 +920,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00193">193</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00424">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00427">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00285">LLVMInt16Vector()</a>, and <a class="el" href="expr_8cpp_source.html#l05772">lTypeConvAtomic()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00285">LLVMInt16Vector()</a>, and <a class="el" href="expr_8cpp_source.html#l05842">lTypeConvAtomic()</a>.</p>
 
 </div>
 </div>
@@ -889,9 +944,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00285">285</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00193">LLVMInt16()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00193">LLVMInt16()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, and <a class="el" href="expr_8cpp_source.html#l05772">lTypeConvAtomic()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, and <a class="el" href="expr_8cpp_source.html#l05842">lTypeConvAtomic()</a>.</p>
 
 </div>
 </div>
@@ -913,7 +968,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00295">295</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00193">LLVMInt16()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00193">LLVMInt16()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
 </div>
 </div>
@@ -935,9 +990,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00207">207</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00424">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00427">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l02172">FunctionEmitContext::AddElementOffset()</a>, <a class="el" href="ctx_8cpp_source.html#l02522">FunctionEmitContext::addGSMetadata()</a>, <a class="el" href="ctx_8cpp_source.html#l01373">FunctionEmitContext::AddInstrumentationPoint()</a>, <a class="el" href="ctx_8cpp_source.html#l03377">FunctionEmitContext::addVaryingOffsetsIfNeeded()</a>, <a class="el" href="ctx_8cpp_source.html#l01244">FunctionEmitContext::All()</a>, <a class="el" href="ctx_8cpp_source.html#l01236">FunctionEmitContext::Any()</a>, <a class="el" href="stmt_8cpp_source.html#l01349">ForeachStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02520">PrintStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l02976">FunctionEmitContext::ExtractInst()</a>, <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l04057">IndexExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l03869">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l06313">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l07928">NewExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00625">InitSymbol()</a>, <a class="el" href="ctx_8cpp_source.html#l02995">FunctionEmitContext::InsertInst()</a>, <a class="el" href="expr_8cpp_source.html#l03773">lAddVaryingOffsetsIfNeeded()</a>, <a class="el" href="opt_8cpp_source.html#l02936">lApplyLoad1()</a>, <a class="el" href="opt_8cpp_source.html#l02961">lApplyLoad2()</a>, <a class="el" href="ctx_8cpp_source.html#l03275">FunctionEmitContext::LaunchInst()</a>, <a class="el" href="builtins_8cpp_source.html#l00640">lDefineConstantInt()</a>, <a class="el" href="builtins_8cpp_source.html#l00657">lDefineConstantIntFunc()</a>, <a class="el" href="opt_8cpp_source.html#l01446">lExtract248Scale()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01393">lExtractFirstVectorElement()</a>, <a class="el" href="opt_8cpp_source.html#l01496">lExtractOffsetVector248Scale()</a>, <a class="el" href="opt_8cpp_source.html#l01152">lGetBasePtrAndOffsets()</a>, <a class="el" href="ctx_8cpp_source.html#l01351">lGetStringAsValue()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00323">LLVMInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01514">LLVMShuffleVectors()</a>, <a class="el" href="expr_8cpp_source.html#l05772">lTypeConvAtomic()</a>, <a class="el" href="ctx_8cpp_source.html#l02924">FunctionEmitContext::MemcpyInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01252">FunctionEmitContext::None()</a>, <a class="el" href="opt_8cpp_source.html#l00748">IntrinsicsOpt::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l00955">VSelMovmskOpt::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l02330">GSToLoadStorePass::runOnBasicBlock()</a>, <a class="el" href="ispc_8cpp_source.html#l00494">Target::SizeOf()</a>, <a class="el" href="ispc_8cpp_source.html#l00530">Target::StructOffset()</a>, and <a class="el" href="ctx_8cpp_source.html#l01040">FunctionEmitContext::SwitchInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l02174">FunctionEmitContext::AddElementOffset()</a>, <a class="el" href="ctx_8cpp_source.html#l02524">FunctionEmitContext::addGSMetadata()</a>, <a class="el" href="ctx_8cpp_source.html#l01369">FunctionEmitContext::AddInstrumentationPoint()</a>, <a class="el" href="ctx_8cpp_source.html#l03389">FunctionEmitContext::addVaryingOffsetsIfNeeded()</a>, <a class="el" href="ctx_8cpp_source.html#l01244">FunctionEmitContext::All()</a>, <a class="el" href="ctx_8cpp_source.html#l01236">FunctionEmitContext::Any()</a>, <a class="el" href="stmt_8cpp_source.html#l01349">ForeachStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02520">PrintStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l02986">FunctionEmitContext::ExtractInst()</a>, <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l04114">IndexExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l03926">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l06400">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l08059">NewExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00626">InitSymbol()</a>, <a class="el" href="ctx_8cpp_source.html#l03009">FunctionEmitContext::InsertInst()</a>, <a class="el" href="expr_8cpp_source.html#l03830">lAddVaryingOffsetsIfNeeded()</a>, <a class="el" href="opt_8cpp_source.html#l02941">lApplyLoad1()</a>, <a class="el" href="opt_8cpp_source.html#l02966">lApplyLoad2()</a>, <a class="el" href="ctx_8cpp_source.html#l03287">FunctionEmitContext::LaunchInst()</a>, <a class="el" href="builtins_8cpp_source.html#l00638">lDefineConstantInt()</a>, <a class="el" href="builtins_8cpp_source.html#l00655">lDefineConstantIntFunc()</a>, <a class="el" href="opt_8cpp_source.html#l01428">lExtract248Scale()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01393">lExtractFirstVectorElement()</a>, <a class="el" href="opt_8cpp_source.html#l01478">lExtractOffsetVector248Scale()</a>, <a class="el" href="opt_8cpp_source.html#l01138">lGetBasePtrAndOffsets()</a>, <a class="el" href="ctx_8cpp_source.html#l01352">lGetStringAsValue()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00323">LLVMInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01540">LLVMShuffleVectors()</a>, <a class="el" href="expr_8cpp_source.html#l05842">lTypeConvAtomic()</a>, <a class="el" href="ctx_8cpp_source.html#l02934">FunctionEmitContext::MemcpyInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01253">FunctionEmitContext::None()</a>, <a class="el" href="opt_8cpp_source.html#l00729">IntrinsicsOpt::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l00941">VSelMovmskOpt::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l02330">GSToLoadStorePass::runOnBasicBlock()</a>, <a class="el" href="ispc_8cpp_source.html#l00494">Target::SizeOf()</a>, <a class="el" href="ispc_8cpp_source.html#l00532">Target::StructOffset()</a>, and <a class="el" href="ctx_8cpp_source.html#l01040">FunctionEmitContext::SwitchInst()</a>.</p>
 
 </div>
 </div>
@@ -959,9 +1014,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00323">323</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00207">LLVMInt32()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00207">LLVMInt32()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00988">FunctionEmitContext::EmitCaseLabel()</a>, <a class="el" href="ctx_8cpp_source.html#l00925">FunctionEmitContext::EmitDefaultLabel()</a>, <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l06313">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l07928">NewExpr::GetValue()</a>, <a class="el" href="builtins_8cpp_source.html#l00676">lDefineProgramIndex()</a>, <a class="el" href="opt_8cpp_source.html#l01446">lExtract248Scale()</a>, <a class="el" href="opt_8cpp_source.html#l01152">lGetBasePtrAndOffsets()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, <a class="el" href="expr_8cpp_source.html#l05772">lTypeConvAtomic()</a>, and <a class="el" href="stmt_8cpp_source.html#l01252">lUpdateVaryingCounter()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00988">FunctionEmitContext::EmitCaseLabel()</a>, <a class="el" href="ctx_8cpp_source.html#l00925">FunctionEmitContext::EmitDefaultLabel()</a>, <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l06400">TypeCastExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l08059">NewExpr::GetValue()</a>, <a class="el" href="builtins_8cpp_source.html#l00674">lDefineProgramIndex()</a>, <a class="el" href="opt_8cpp_source.html#l01428">lExtract248Scale()</a>, <a class="el" href="opt_8cpp_source.html#l01138">lGetBasePtrAndOffsets()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, <a class="el" href="expr_8cpp_source.html#l05842">lTypeConvAtomic()</a>, and <a class="el" href="stmt_8cpp_source.html#l01252">lUpdateVaryingCounter()</a>.</p>
 
 </div>
 </div>
@@ -983,7 +1038,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00333">333</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00207">LLVMInt32()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00207">LLVMInt32()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
 </div>
 </div>
@@ -1005,9 +1060,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00221">221</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00424">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00427">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l02172">FunctionEmitContext::AddElementOffset()</a>, <a class="el" href="ctx_8cpp_source.html#l03377">FunctionEmitContext::addVaryingOffsetsIfNeeded()</a>, <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l07928">NewExpr::GetValue()</a>, <a class="el" href="opt_8cpp_source.html#l02840">lEmitLoads()</a>, <a class="el" href="opt_8cpp_source.html#l02824">lGEPAndLoad()</a>, <a class="el" href="opt_8cpp_source.html#l01152">lGetBasePtrAndOffsets()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00399">LLVMInt64Vector()</a>, <a class="el" href="expr_8cpp_source.html#l05772">lTypeConvAtomic()</a>, <a class="el" href="opt_8cpp_source.html#l02330">GSToLoadStorePass::runOnBasicBlock()</a>, <a class="el" href="ispc_8cpp_source.html#l00494">Target::SizeOf()</a>, <a class="el" href="ispc_8cpp_source.html#l00530">Target::StructOffset()</a>, and <a class="el" href="ctx_8cpp_source.html#l01040">FunctionEmitContext::SwitchInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l02174">FunctionEmitContext::AddElementOffset()</a>, <a class="el" href="ctx_8cpp_source.html#l03389">FunctionEmitContext::addVaryingOffsetsIfNeeded()</a>, <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l08059">NewExpr::GetValue()</a>, <a class="el" href="opt_8cpp_source.html#l02845">lEmitLoads()</a>, <a class="el" href="opt_8cpp_source.html#l02829">lGEPAndLoad()</a>, <a class="el" href="opt_8cpp_source.html#l01138">lGetBasePtrAndOffsets()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00399">LLVMInt64Vector()</a>, <a class="el" href="expr_8cpp_source.html#l05842">lTypeConvAtomic()</a>, <a class="el" href="opt_8cpp_source.html#l02330">GSToLoadStorePass::runOnBasicBlock()</a>, <a class="el" href="ispc_8cpp_source.html#l00494">Target::SizeOf()</a>, <a class="el" href="ispc_8cpp_source.html#l00532">Target::StructOffset()</a>, and <a class="el" href="ctx_8cpp_source.html#l01040">FunctionEmitContext::SwitchInst()</a>.</p>
 
 </div>
 </div>
@@ -1029,9 +1084,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00399">399</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00221">LLVMInt64()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00221">LLVMInt64()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00988">FunctionEmitContext::EmitCaseLabel()</a>, <a class="el" href="ctx_8cpp_source.html#l00925">FunctionEmitContext::EmitDefaultLabel()</a>, <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l07928">NewExpr::GetValue()</a>, <a class="el" href="opt_8cpp_source.html#l01446">lExtract248Scale()</a>, <a class="el" href="opt_8cpp_source.html#l01152">lGetBasePtrAndOffsets()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, and <a class="el" href="expr_8cpp_source.html#l05772">lTypeConvAtomic()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00988">FunctionEmitContext::EmitCaseLabel()</a>, <a class="el" href="ctx_8cpp_source.html#l00925">FunctionEmitContext::EmitDefaultLabel()</a>, <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l08059">NewExpr::GetValue()</a>, <a class="el" href="opt_8cpp_source.html#l01428">lExtract248Scale()</a>, <a class="el" href="opt_8cpp_source.html#l01138">lGetBasePtrAndOffsets()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, and <a class="el" href="expr_8cpp_source.html#l05842">lTypeConvAtomic()</a>.</p>
 
 </div>
 </div>
@@ -1053,7 +1108,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00409">409</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00221">LLVMInt64()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00221">LLVMInt64()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
 </div>
 </div>
@@ -1075,9 +1130,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00179">179</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00424">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00427">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00247">LLVMInt8Vector()</a>, and <a class="el" href="expr_8cpp_source.html#l05772">lTypeConvAtomic()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00247">LLVMInt8Vector()</a>, and <a class="el" href="expr_8cpp_source.html#l05842">lTypeConvAtomic()</a>.</p>
 
 </div>
 </div>
@@ -1099,9 +1154,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00247">247</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00179">LLVMInt8()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00179">LLVMInt8()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, and <a class="el" href="expr_8cpp_source.html#l05772">lTypeConvAtomic()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, and <a class="el" href="expr_8cpp_source.html#l05842">lTypeConvAtomic()</a>.</p>
 
 </div>
 </div>
@@ -1123,11 +1178,11 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00257">257</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00179">LLVMInt8()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00179">LLVMInt8()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a284d29ad66fb104165405d6bfdc94959"></a><!-- doxytag: member="llvmutil.cpp::LLVMIntAsType" ref="a284d29ad66fb104165405d6bfdc94959" args="(int64_t val, LLVM_TYPE_CONST llvm::Type *type)" -->
+<a class="anchor" id="a5ac951f18d2fe8474e8301f2173a5671"></a><!-- doxytag: member="llvmutil.cpp::LLVMIntAsType" ref="a5ac951f18d2fe8474e8301f2173a5671" args="(int64_t val, llvm::Type *type)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1140,7 +1195,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">LLVM_TYPE_CONST llvm::Type *&#160;</td>
+          <td class="paramtype">llvm::Type *&#160;</td>
           <td class="paramname"><em>t</em>&#160;</td>
         </tr>
         <tr>
@@ -1155,9 +1210,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00476">476</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00099">LLVM_TYPE_CONST</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01958">lComputeSliceIndex()</a>, <a class="el" href="expr_8cpp_source.html#l01382">lEmitBinaryPointerArith()</a>, and <a class="el" href="opt_8cpp_source.html#l01750">DetectGSBaseOffsetsPass::runOnBasicBlock()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l01972">lComputeSliceIndex()</a>, <a class="el" href="expr_8cpp_source.html#l01398">lEmitBinaryPointerArith()</a>, and <a class="el" href="opt_8cpp_source.html#l01733">DetectGSBaseOffsetsPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -1205,11 +1260,11 @@ Variables</h2></td></tr>
 <div class="memdoc">
 <p>Shuffle two vectors together with a ShuffleVectorInst, returning a vector with shufSize elements, where the shuf[] array offsets are used to determine which element from the two given vectors is used for each result element. </p>
 
-<p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l01514">1514</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l01540">1540</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="llvmutil_8h_source.html#l00071">LLVMTypes::Int32Type</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00207">LLVMInt32()</a>.</p>
+<p>References <a class="el" href="llvmutil_8h_source.html#l00064">LLVMTypes::Int32Type</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00207">LLVMInt32()</a>.</p>
 
-<p>Referenced by <a class="el" href="opt_8cpp_source.html#l03028">lApplyLoad4()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01491">LLVMConcatVectors()</a>, and <a class="el" href="opt_8cpp_source.html#l02906">lSplit8WideLoads()</a>.</p>
+<p>Referenced by <a class="el" href="opt_8cpp_source.html#l03033">lApplyLoad4()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01517">LLVMConcatVectors()</a>, and <a class="el" href="opt_8cpp_source.html#l02911">lSplit8WideLoads()</a>.</p>
 
 </div>
 </div>
@@ -1231,9 +1286,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00200">200</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00424">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00427">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00304">LLVMUInt16Vector()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00304">LLVMUInt16Vector()</a>.</p>
 
 </div>
 </div>
@@ -1255,9 +1310,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00304">304</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00200">LLVMUInt16()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00200">LLVMUInt16()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>.</p>
 
 </div>
 </div>
@@ -1279,7 +1334,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00314">314</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00200">LLVMUInt16()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00200">LLVMUInt16()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
 </div>
 </div>
@@ -1301,9 +1356,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00214">214</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00424">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00427">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00342">LLVMUInt32Vector()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00342">LLVMUInt32Vector()</a>.</p>
 
 </div>
 </div>
@@ -1325,9 +1380,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00342">342</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00214">LLVMUInt32()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00214">LLVMUInt32()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>.</p>
 
 </div>
 </div>
@@ -1349,7 +1404,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00352">352</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00214">LLVMUInt32()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00214">LLVMUInt32()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
 </div>
 </div>
@@ -1371,9 +1426,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00228">228</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00424">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00427">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00418">LLVMUInt64Vector()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00418">LLVMUInt64Vector()</a>.</p>
 
 </div>
 </div>
@@ -1395,9 +1450,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00418">418</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMUInt64()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMUInt64()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>.</p>
 
 </div>
 </div>
@@ -1419,7 +1474,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00428">428</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMUInt64()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMUInt64()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
 </div>
 </div>
@@ -1441,9 +1496,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00186">186</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00424">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00427">Globals::ctx</a>, and <a class="el" href="ispc_8cpp_source.html#l00067">g</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00266">LLVMUInt8Vector()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00266">LLVMUInt8Vector()</a>.</p>
 
 </div>
 </div>
@@ -1465,9 +1520,9 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00266">266</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00186">LLVMUInt8()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00186">LLVMUInt8()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>.</p>
 
 </div>
 </div>
@@ -1489,11 +1544,11 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00276">276</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00186">LLVMUInt8()</a>, <a class="el" href="ispc_8h_source.html#l00365">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00228">Target::vectorWidth</a>.</p>
+<p>References <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00186">LLVMUInt8()</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a23b993cdb0674053be969c22b4249139"></a><!-- doxytag: member="llvmutil.cpp::LLVMUIntAsType" ref="a23b993cdb0674053be969c22b4249139" args="(uint64_t val, LLVM_TYPE_CONST llvm::Type *type)" -->
+<a class="anchor" id="ac2c720b34a6ea695fbb9a589c1b5558d"></a><!-- doxytag: member="llvmutil.cpp::LLVMUIntAsType" ref="ac2c720b34a6ea695fbb9a589c1b5558d" args="(uint64_t val, llvm::Type *type)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1506,7 +1561,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">LLVM_TYPE_CONST llvm::Type *&#160;</td>
+          <td class="paramtype">llvm::Type *&#160;</td>
           <td class="paramname"><em>t</em>&#160;</td>
         </tr>
         <tr>
@@ -1521,7 +1576,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00494">494</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00099">LLVM_TYPE_CONST</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
 </div>
 </div>
@@ -1553,7 +1608,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l01346">1346</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="util_8cpp_source.html#l00280">Debug()</a>, <a class="el" href="ispc_8h_source.html#l00382">Globals::debugPrint</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="ispc_8h_source.html#l00099">LLVM_TYPE_CONST</a>, <a class="el" href="llvmutil_8cpp_source.html#l01385">LLVMDumpValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01225">lVectorIsLinear()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="util_8cpp_source.html#l00369">Debug()</a>, <a class="el" href="ispc_8h_source.html#l00385">Globals::debugPrint</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l01385">LLVMDumpValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01225">lVectorIsLinear()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
 <p>Referenced by <a class="el" href="opt_8cpp_source.html#l02330">GSToLoadStorePass::runOnBasicBlock()</a>.</p>
 
@@ -1577,7 +1632,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l01076">1076</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="util_8cpp_source.html#l00280">Debug()</a>, <a class="el" href="ispc_8h_source.html#l00382">Globals::debugPrint</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="ispc_8h_source.html#l00099">LLVM_TYPE_CONST</a>, <a class="el" href="llvmutil_8cpp_source.html#l01385">LLVMDumpValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00938">lVectorValuesAllEqual()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="util_8cpp_source.html#l00369">Debug()</a>, <a class="el" href="ispc_8h_source.html#l00385">Globals::debugPrint</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l01385">LLVMDumpValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00938">lVectorValuesAllEqual()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
 <p>Referenced by <a class="el" href="llvmutil_8cpp_source.html#l00697">lIsExactMultiple()</a>, <a class="el" href="opt_8cpp_source.html#l02330">GSToLoadStorePass::runOnBasicBlock()</a>, and <a class="el" href="opt_8cpp_source.html#l03448">GatherCoalescePass::runOnBasicBlock()</a>.</p>
 
@@ -1829,7 +1884,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00086">86</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01349">ForeachStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00092">InitLLVMUtil()</a>, <a class="el" href="expr_8cpp_source.html#l01598">lEmitLogicalOp()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00437">LLVMBoolVector()</a>, <a class="el" href="ctx_8cpp_source.html#l02924">FunctionEmitContext::MemcpyInst()</a>, and <a class="el" href="opt_8cpp_source.html#l03753">IsCompileTimeConstantPass::runOnBasicBlock()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l01349">ForeachStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00092">InitLLVMUtil()</a>, <a class="el" href="expr_8cpp_source.html#l01628">lEmitLogicalOp()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00437">LLVMBoolVector()</a>, <a class="el" href="ctx_8cpp_source.html#l02934">FunctionEmitContext::MemcpyInst()</a>, and <a class="el" href="opt_8cpp_source.html#l03762">IsCompileTimeConstantPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -1847,7 +1902,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00088">88</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00646">FunctionEmitContext::Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00720">FunctionEmitContext::Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l01160">FunctionEmitContext::CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l01349">ForeachStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00481">FunctionEmitContext::EndIf()</a>, <a class="el" href="ctx_8cpp_source.html#l00209">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00092">InitLLVMUtil()</a>, <a class="el" href="expr_8cpp_source.html#l01598">lEmitLogicalOp()</a>, <a class="el" href="ctx_8cpp_source.html#l00837">FunctionEmitContext::RestoreContinuedLanes()</a>, <a class="el" href="ctx_8cpp_source.html#l00586">FunctionEmitContext::StartForeach()</a>, <a class="el" href="ctx_8cpp_source.html#l00542">FunctionEmitContext::StartLoop()</a>, <a class="el" href="ctx_8cpp_source.html#l00855">FunctionEmitContext::StartSwitch()</a>, and <a class="el" href="ctx_8cpp_source.html#l01040">FunctionEmitContext::SwitchInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00646">FunctionEmitContext::Break()</a>, <a class="el" href="ctx_8cpp_source.html#l00720">FunctionEmitContext::Continue()</a>, <a class="el" href="ctx_8cpp_source.html#l01160">FunctionEmitContext::CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l01349">ForeachStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00481">FunctionEmitContext::EndIf()</a>, <a class="el" href="ctx_8cpp_source.html#l00209">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00092">InitLLVMUtil()</a>, <a class="el" href="expr_8cpp_source.html#l01628">lEmitLogicalOp()</a>, <a class="el" href="ctx_8cpp_source.html#l00837">FunctionEmitContext::RestoreContinuedLanes()</a>, <a class="el" href="ctx_8cpp_source.html#l00586">FunctionEmitContext::StartForeach()</a>, <a class="el" href="ctx_8cpp_source.html#l00542">FunctionEmitContext::StartLoop()</a>, <a class="el" href="ctx_8cpp_source.html#l00855">FunctionEmitContext::StartSwitch()</a>, and <a class="el" href="ctx_8cpp_source.html#l01040">FunctionEmitContext::SwitchInst()</a>.</p>
 
 </div>
 </div>
@@ -1865,7 +1920,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00087">87</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00646">FunctionEmitContext::Break()</a>, <a class="el" href="ctx_8cpp_source.html#l03068">FunctionEmitContext::CallInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00720">FunctionEmitContext::Continue()</a>, <a class="el" href="stmt_8cpp_source.html#l00788">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00969">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01349">ForeachStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00583">IfStmt::emitMaskAllOn()</a>, <a class="el" href="stmt_8cpp_source.html#l00495">IfStmt::emitVaryingIf()</a>, <a class="el" href="ctx_8cpp_source.html#l00209">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="ctx_8cpp_source.html#l00378">FunctionEmitContext::GetFullMask()</a>, <a class="el" href="expr_8cpp_source.html#l03869">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04723">MemberExpr::GetValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00092">InitLLVMUtil()</a>, <a class="el" href="expr_8cpp_source.html#l01598">lEmitLogicalOp()</a>, <a class="el" href="expr_8cpp_source.html#l00957">lStoreAssignResult()</a>, <a class="el" href="ctx_8cpp_source.html#l02596">FunctionEmitContext::maskedStore()</a>, <a class="el" href="ctx_8cpp_source.html#l00426">FunctionEmitContext::SetInternalMaskAndNot()</a>, and <a class="el" href="ctx_8cpp_source.html#l02850">FunctionEmitContext::StoreInst()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00646">FunctionEmitContext::Break()</a>, <a class="el" href="ctx_8cpp_source.html#l03086">FunctionEmitContext::CallInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00720">FunctionEmitContext::Continue()</a>, <a class="el" href="stmt_8cpp_source.html#l00788">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00969">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01349">ForeachStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00583">IfStmt::emitMaskAllOn()</a>, <a class="el" href="stmt_8cpp_source.html#l00495">IfStmt::emitVaryingIf()</a>, <a class="el" href="ctx_8cpp_source.html#l00209">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="ctx_8cpp_source.html#l00378">FunctionEmitContext::GetFullMask()</a>, <a class="el" href="expr_8cpp_source.html#l03926">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04790">MemberExpr::GetValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00092">InitLLVMUtil()</a>, <a class="el" href="expr_8cpp_source.html#l01628">lEmitLogicalOp()</a>, <a class="el" href="expr_8cpp_source.html#l00962">lStoreAssignResult()</a>, <a class="el" href="ctx_8cpp_source.html#l02598">FunctionEmitContext::maskedStore()</a>, <a class="el" href="ctx_8cpp_source.html#l00426">FunctionEmitContext::SetInternalMaskAndNot()</a>, and <a class="el" href="ctx_8cpp_source.html#l02860">FunctionEmitContext::StoreInst()</a>.</p>
 
 </div>
 </div>
@@ -1883,7 +1938,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="llvmutil_8cpp_source.html#l00085">85</a> of file <a class="el" href="llvmutil_8cpp_source.html">llvmutil.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00969">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01349">ForeachStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l05555">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05220">ConstExpr::GetValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00092">InitLLVMUtil()</a>, <a class="el" href="expr_8cpp_source.html#l01598">lEmitLogicalOp()</a>, <a class="el" href="expr_8cpp_source.html#l00817">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00437">LLVMBoolVector()</a>, and <a class="el" href="opt_8cpp_source.html#l03753">IsCompileTimeConstantPass::runOnBasicBlock()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00969">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01349">ForeachStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l05625">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05290">ConstExpr::GetValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00092">InitLLVMUtil()</a>, <a class="el" href="expr_8cpp_source.html#l01628">lEmitLogicalOp()</a>, <a class="el" href="expr_8cpp_source.html#l00822">lLLVMConstantValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00437">LLVMBoolVector()</a>, and <a class="el" href="opt_8cpp_source.html#l03762">IsCompileTimeConstantPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -1891,7 +1946,7 @@ Variables</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 6 2012 16:03:14 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 20 2012 14:30:30 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

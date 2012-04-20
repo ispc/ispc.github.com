@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.2.1</span>
+   &#160;<span id="projectnumber">1.2.2</span>
    </div>
    
   </td>
@@ -53,7 +53,8 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">type.cpp File Reference</div>  </div>
 </div>
@@ -67,6 +68,7 @@
 <code>#include &quot;<a class="el" href="llvmutil_8h_source.html">llvmutil.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="module_8h_source.html">module.h</a>&quot;</code><br/>
 <code>#include &lt;stdio.h&gt;</code><br/>
+<code>#include &lt;map&gt;</code><br/>
 <code>#include &lt;llvm/Value.h&gt;</code><br/>
 <code>#include &lt;llvm/Module.h&gt;</code><br/>
 <code>#include &lt;llvm/Analysis/DIBuilder.h&gt;</code><br/>
@@ -77,7 +79,7 @@ Include dependency graph for type.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="type_8cpp__incl.png" border="0" usemap="#type_8cpp" alt=""/></div>
 <map name="type_8cpp" id="type_8cpp">
-<area shape="rect" id="node3" href="type_8h.html" title="File with declarations for classes related to type representation." alt="" coords="258,161,323,189"/><area shape="rect" id="node24" href="expr_8h.html" title="Expr abstract base class and expression implementations." alt="" coords="132,83,196,111"/><area shape="rect" id="node30" href="sym_8h.html" title="header file with declarations for symbol and symbol table classes." alt="" coords="948,161,1010,189"/><area shape="rect" id="node38" href="llvmutil_8h.html" title="Header file with declarations for various LLVM utility stuff." alt="" coords="584,161,670,189"/><area shape="rect" id="node46" href="module_8h.html" title="Declaration of the Module class, which is the ispc&#45;side representation of the results of compiling a ..." alt="" coords="7,83,92,111"/><area shape="rect" id="node5" href="ispc_8h.html" title="Main ispc.header file." alt="" coords="160,315,222,343"/><area shape="rect" id="node17" href="util_8h.html" title="util.h" alt="" coords="163,238,219,266"/><area shape="rect" id="node33" href="decl_8h.html" title="Declarations related to type declarations; the parser basically creates instances of these classes..." alt="" coords="1017,238,1079,266"/></map>
+<area shape="rect" id="node3" href="type_8h.html" title="File with declarations for classes related to type representation." alt="" coords="251,161,316,189"/><area shape="rect" id="node24" href="expr_8h.html" title="Expr abstract base class and expression implementations." alt="" coords="208,83,272,111"/><area shape="rect" id="node30" href="sym_8h.html" title="header file with declarations for symbol and symbol table classes." alt="" coords="844,83,906,111"/><area shape="rect" id="node38" href="llvmutil_8h.html" title="Header file with declarations for various LLVM utility stuff." alt="" coords="574,161,660,189"/><area shape="rect" id="node46" href="module_8h.html" title="Declaration of the Module class, which is the ispc&#45;side representation of the results of compiling a ..." alt="" coords="6,83,92,111"/><area shape="rect" id="node5" href="ispc_8h.html" title="Main ispc.header file." alt="" coords="174,315,236,343"/><area shape="rect" id="node17" href="util_8h.html" title="util.h" alt="" coords="112,238,168,266"/><area shape="rect" id="node33" href="decl_8h.html" title="Declarations related to type declarations; the parser basically creates instances of these classes..." alt="" coords="911,161,973,189"/></map>
 </div>
 </div>
 <p><a href="type_8cpp_source.html">Go to the source code of this file.</a></p>
@@ -86,8 +88,14 @@ Include dependency graph for type.cpp:</div>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type_8cpp.html#a3e627d073c89dce263558a9aed2ee77a">lShouldPrintName</a> (const std::string &amp;name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static llvm::DIType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type_8cpp.html#a4da0b4906ed2dcecb37b4d5df8a3b6e6">lCreateDIArray</a> (llvm::DIType eltType, int count)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type_8cpp.html#ab1b841d553c4d5c71599ceb195d33a2b">lMangleStructName</a> (const std::string &amp;name, <a class="el" href="structVariability.html">Variability</a> variability)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type_8cpp.html#a1fce3b0a9cc1183d9b0bee4b7821b9cb">lMangleStruct</a> (<a class="el" href="structVariability.html">Variability</a> variability, bool isConst, const std::string &amp;name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classType.html">Type</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type_8cpp.html#ac8e867fccbfcc62156868428624b1c00">lVectorConvert</a> (const <a class="el" href="classType.html">Type</a> *type, <a class="el" href="structSourcePos.html">SourcePos</a> pos, const char *reason, int vecSize)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a> (const <a class="el" href="classType.html">Type</a> *a, const <a class="el" href="classType.html">Type</a> *b, bool ignoreConst)</td></tr>
+<tr><td colspan="2"><h2><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static std::map&lt; std::string, <br class="typebreak"/>
+llvm::StructType * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type_8cpp.html#a8b18d361511404cd151dc0db45baff4a">lStructTypeMap</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Definitions for classes related to type representation. </p>
@@ -125,11 +133,11 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l02870">2870</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l03094">3094</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8h_source.html#l00293">AtomicType::basicType</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00900">PointerType::GetBaseType()</a>, <a class="el" href="type_8cpp_source.html#l01345">ArrayType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l01640">VectorType::GetElementCount()</a>, <a class="el" href="type_8h_source.html#l00661">StructType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l01351">ArrayType::GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l01646">VectorType::GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l02031">StructType::GetElementType()</a>, <a class="el" href="type_8h_source.html#l00788">FunctionType::GetNumParameters()</a>, <a class="el" href="type_8cpp_source.html#l02621">FunctionType::GetParameterType()</a>, <a class="el" href="type_8cpp_source.html#l02146">ReferenceType::GetReferenceTarget()</a>, <a class="el" href="type_8h_source.html#l00777">FunctionType::GetReturnType()</a>, <a class="el" href="type_8h_source.html#l00666">StructType::GetStructName()</a>, <a class="el" href="type_8cpp_source.html#l00195">AtomicType::GetVariability()</a>, <a class="el" href="type_8cpp_source.html#l00558">EnumType::GetVariability()</a>, <a class="el" href="type_8cpp_source.html#l01757">StructType::GetVariability()</a>, <a class="el" href="classType.html#a9a6d77fb89abc534e2ee1726cc13cf05">Type::IsConstType()</a>, <a class="el" href="type_8h_source.html#l00800">FunctionType::isExported</a>, <a class="el" href="type_8h_source.html#l00804">FunctionType::isExternC</a>, <a class="el" href="type_8h_source.html#l00408">PointerType::IsFrozenSlice()</a>, <a class="el" href="type_8h_source.html#l00407">PointerType::IsSlice()</a>, <a class="el" href="type_8h_source.html#l00796">FunctionType::isTask</a>, <a class="el" href="type_8h_source.html#l00112">Type::IsUniformType()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="type_8h_source.html#l00356">EnumType::pos</a>.</p>
+<p>References <a class="el" href="type_8h_source.html#l00293">AtomicType::basicType</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00881">PointerType::GetBaseType()</a>, <a class="el" href="type_8cpp_source.html#l01311">ArrayType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l01606">VectorType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l01317">ArrayType::GetElementType()</a>, <a class="el" href="type_8cpp_source.html#l01612">VectorType::GetElementType()</a>, <a class="el" href="type_8h_source.html#l00833">FunctionType::GetNumParameters()</a>, <a class="el" href="type_8cpp_source.html#l02845">FunctionType::GetParameterType()</a>, <a class="el" href="type_8cpp_source.html#l02357">ReferenceType::GetReferenceTarget()</a>, <a class="el" href="type_8h_source.html#l00822">FunctionType::GetReturnType()</a>, <a class="el" href="type_8h_source.html#l00665">StructType::GetStructName()</a>, <a class="el" href="type_8h_source.html#l00728">UndefinedStructType::GetStructName()</a>, <a class="el" href="classType.html#a619effc9d2d2517bd884076eb9559b65">Type::GetVariability()</a>, <a class="el" href="type_8cpp_source.html#l00192">AtomicType::GetVariability()</a>, <a class="el" href="type_8cpp_source.html#l00550">EnumType::GetVariability()</a>, <a class="el" href="classType.html#a9a6d77fb89abc534e2ee1726cc13cf05">Type::IsConstType()</a>, <a class="el" href="type_8h_source.html#l00845">FunctionType::isExported</a>, <a class="el" href="type_8h_source.html#l00849">FunctionType::isExternC</a>, <a class="el" href="type_8h_source.html#l00408">PointerType::IsFrozenSlice()</a>, <a class="el" href="type_8h_source.html#l00407">PointerType::IsSlice()</a>, <a class="el" href="type_8h_source.html#l00841">FunctionType::isTask</a>, <a class="el" href="type_8h_source.html#l00112">Type::IsUniformType()</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="type_8h_source.html#l00356">EnumType::pos</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l02977">Type::Equal()</a>, and <a class="el" href="type_8cpp_source.html#l02983">Type::EqualIgnoringConst()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l03200">Type::Equal()</a>, and <a class="el" href="type_8cpp_source.html#l03206">Type::EqualIgnoringConst()</a>.</p>
 
 </div>
 </div>
@@ -159,11 +167,85 @@ Functions</h2></td></tr>
 <div class="memdoc">
 <p>Utility routine to create a llvm DIArray type of the given number of the given element type. </p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00072">72</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00073">73</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="module_8h_source.html#l00139">Module::diBuilder</a>, and <a class="el" href="ispc_8cpp_source.html#l00068">m</a>.</p>
+<p>References <a class="el" href="module_8h_source.html#l00142">Module::diBuilder</a>, and <a class="el" href="ispc_8cpp_source.html#l00068">m</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l00758">EnumType::GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l01152">PointerType::GetDIType()</a>, and <a class="el" href="type_8cpp_source.html#l01442">ArrayType::GetDIType()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l00750">EnumType::GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l01116">PointerType::GetDIType()</a>, and <a class="el" href="type_8cpp_source.html#l01408">ArrayType::GetDIType()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1fce3b0a9cc1183d9b0bee4b7821b9cb"></a><!-- doxytag: member="type.cpp::lMangleStruct" ref="a1fce3b0a9cc1183d9b0bee4b7821b9cb" args="(Variability variability, bool isConst, const std::string &amp;name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::string lMangleStruct </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structVariability.html">Variability</a>&#160;</td>
+          <td class="paramname"><em>variability</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isConst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Mangle a struct name for use in function name mangling. </p>
+
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01959">1959</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+
+<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="type_8cpp_source.html#l00116">Variability::MangleString()</a>, and <a class="el" href="type_8h_source.html#l00053">Variability::Unbound</a>.</p>
+
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l01974">StructType::Mangle()</a>, and <a class="el" href="type_8cpp_source.html#l02250">UndefinedStructType::Mangle()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab1b841d553c4d5c71599ceb195d33a2b"></a><!-- doxytag: member="type.cpp::lMangleStructName" ref="ab1b841d553c4d5c71599ceb195d33a2b" args="(const std::string &amp;name, Variability variability)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::string lMangleStructName </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structVariability.html">Variability</a>&#160;</td>
+          <td class="paramname"><em>variability</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Using a struct's name, its variability, and the vector width for the current compilation target, this function generates a string that encodes that full structure type, for use in the lStructTypeMap. Note that the vector width is needed in order to differentiate between 'varying' structs with different compilation targets, which have different memory layouts... </p>
+
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01723">1723</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+
+<p>References <a class="el" href="util_8h_source.html#l00113">FATAL</a>, <a class="el" href="ispc_8cpp_source.html#l00067">g</a>, <a class="el" href="type_8h_source.html#l00053">Variability::SOA</a>, <a class="el" href="type_8h_source.html#l00071">Variability::soaWidth</a>, <a class="el" href="ispc_8h_source.html#l00368">Globals::target</a>, <a class="el" href="type_8h_source.html#l00070">Variability::type</a>, <a class="el" href="type_8h_source.html#l00053">Variability::Uniform</a>, <a class="el" href="type_8h_source.html#l00053">Variability::Varying</a>, and <a class="el" href="ispc_8h_source.html#l00231">Target::vectorWidth</a>.</p>
+
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l02001">StructType::LLVMType()</a>, <a class="el" href="type_8cpp_source.html#l02267">UndefinedStructType::LLVMType()</a>, <a class="el" href="type_8cpp_source.html#l01753">StructType::StructType()</a>, and <a class="el" href="type_8cpp_source.html#l02127">UndefinedStructType::UndefinedStructType()</a>.</p>
 
 </div>
 </div>
@@ -183,9 +265,9 @@ Functions</h2></td></tr>
 <div class="memdoc">
 <p>Utility routine used in code that prints out declarations; returns true if the given name should be printed, false otherwise. This allows us to omit the names for various internal things (whose names start with double underscores) and emit anonymous declarations for them instead. </p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l00059">59</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l00060">60</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l00381">AtomicType::GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00709">EnumType::GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l01922">StructType::GetCDeclaration()</a>, and <a class="el" href="type_8cpp_source.html#l02265">ReferenceType::GetCDeclaration()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l00378">AtomicType::GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00701">EnumType::GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l01980">StructType::GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l02256">UndefinedStructType::GetCDeclaration()</a>, and <a class="el" href="type_8cpp_source.html#l02476">ReferenceType::GetCDeclaration()</a>.</p>
 
 </div>
 </div>
@@ -227,11 +309,27 @@ Functions</h2></td></tr>
 <div class="memdoc">
 <p>Given an atomic or vector type, return a vector type of the given vecSize. Issue an error if given a vector type that isn't already that size. </p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l02670">2670</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l02894">2894</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p>References <a class="el" href="util_8cpp_source.html#l00267">Error()</a>, <a class="el" href="type_8cpp_source.html#l01640">VectorType::GetElementCount()</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
+<p>References <a class="el" href="util_8cpp_source.html#l00356">Error()</a>, <a class="el" href="type_8cpp_source.html#l01606">VectorType::GetElementCount()</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="type_8cpp_source.html#l02694">Type::MoreGeneralType()</a>.</p>
+<p>Referenced by <a class="el" href="type_8cpp_source.html#l02918">Type::MoreGeneralType()</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Variable Documentation</h2>
+<a class="anchor" id="a8b18d361511404cd151dc0db45baff4a"></a><!-- doxytag: member="type.cpp::lStructTypeMap" ref="a8b18d361511404cd151dc0db45baff4a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;std::string, llvm::StructType *&gt; <a class="el" href="type_8cpp.html#a8b18d361511404cd151dc0db45baff4a">lStructTypeMap</a><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01713">1713</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
 </div>
 </div>
@@ -239,7 +337,7 @@ Functions</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 6 2012 16:03:14 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 20 2012 14:30:30 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>
