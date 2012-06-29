@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.2.2</span>
+   &#160;<span id="projectnumber">1.3.0</span>
    </div>
    
   </td>
@@ -53,10 +53,10 @@
 <div class="textblock"><dl class="reflist">
 <dt><a class="anchor" id="_todo000002"></a>Class <a class="el" href="classFunctionType.html">FunctionType</a>  </dt>
 <dd>This class has a fair number of methods inherited from <a class="el" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> that don't make sense here (e.g. IsUniformType(), GetBaseType(), LLVMType(), etc. Would be nice to refactor the inheritance hierarchy to move most of those interface methods to a sub-class of <a class="el" href="classType.html" title="Interface class that defines the type abstraction.">Type</a>, which in turn all of the other <a class="el" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> implementations inherit from.  </dd>
-<dt><a class="anchor" id="_todo000007"></a>Class <a class="el" href="classGSToLoadStorePass.html">GSToLoadStorePass</a>  </dt>
-<dd>Currently, this only looks for all program instances going to the same location and all going to a linear sequence of locations in memory. There are a number of other cases that might make sense to look for, including things that could be handled with a vector load + shuffle or things that could be handled with hybrids of e.g. 2 4-wide vector loads with AVX, etc.  </dd>
 <dt><a class="anchor" id="_todo000004"></a>Class <a class="el" href="classIntrinsicsOpt.html">IntrinsicsOpt</a>  </dt>
 <dd>The better thing to do would be to submit a patch to LLVM to get these; they're presumably pretty simple patterns to match.  </dd>
+<dt><a class="anchor" id="_todo000007"></a>Member <a class="el" href="opt_8cpp.html#a483d09d1f5b53eab2fe5f2e1c2597e3a">lGSToLoadStore</a>  (llvm::CallInst *callInst)</dt>
+<dd>Currently, this only looks for all program instances going to the same location and all going to a linear sequence of locations in memory. There are a number of other cases that might make sense to look for, including things that could be handled with a vector load + shuffle or things that could be handled with hybrids of e.g. 2 4-wide vector loads with AVX, etc.  </dd>
 <dt><a class="anchor" id="_todo000005"></a>Member <a class="el" href="opt_8cpp.html#a22173061ee4fe22a8ed7f20e32b40ad8">lIsUndef</a>  (llvm::Value *value)</dt>
 <dd>Is it worth working harder to find more of these? It starts to get tricky, since having an undef operand doesn't necessarily mean that the result will be undefined. (And for that matter, is there an LLVM call that will do this for us?)  </dd>
 <dt><a class="anchor" id="_todo000001"></a>Class <a class="el" href="classSymbol.html">Symbol</a>  </dt>
@@ -70,7 +70,7 @@
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 20 2012 14:30:30 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jun 29 2012 08:42:26 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

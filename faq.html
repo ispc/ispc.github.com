@@ -38,6 +38,7 @@
           <li><a href="downloads.html">Downloads</a></li>
           <li id="selected"><a href="documentation.html">Documentation</a></li>
           <li><a href="perf.html">Performance</a></li>
+          <li><a href="contrib.html">Contributors</a></li>
         </ul>
       </div>
     </div>
@@ -91,6 +92,8 @@ distribution.</p>
 <li><a class="reference internal" href="#how-can-a-gang-of-program-instances-generate-variable-amounts-of-output-efficiently">How can a gang of program instances generate variable amounts of output efficiently?</a></li>
 <li><a class="reference internal" href="#is-it-possible-to-use-ispc-for-explicit-vector-programming">Is it possible to use ispc for explicit vector programming?</a></li>
 <li><a class="reference internal" href="#how-can-i-debug-my-ispc-programs-using-valgrind">How can I debug my ispc programs using Valgrind?</a></li>
+<li><a class="reference internal" href="#foreach-statements-generate-more-complex-assembly-than-i-d-expect-what-s-going-on">foreach statements generate more complex assembly than I'd expect; what's going on?</a></li>
+<li><a class="reference internal" href="#how-do-i-launch-an-individual-task-for-each-active-program-instance">How do I launch an individual task for each active program instance?</a></li>
 </ul>
 </li>
 </ul>
@@ -642,6 +645,111 @@ set; if you're using that version (and your system supports SSE4.2), then
 you can use <tt class="docutils literal"><span class="pre">--target=sse4</span></tt> when compiling to run with <tt class="docutils literal">valgrind</tt>.</p>
 <p>Note that <tt class="docutils literal">valgrind</tt> does not yet support programs that use the AVX
 instruction set.</p>
+</div>
+<div class="section" id="foreach-statements-generate-more-complex-assembly-than-i-d-expect-what-s-going-on">
+<h2>foreach statements generate more complex assembly than I'd expect; what's going on?</h2>
+<p>Given a simple <tt class="docutils literal">foreach</tt> loop like the following:</p>
+<pre class="literal-block">
+void foo(uniform float a[], uniform int count) {
+    foreach (i = 0 ... count)
+        a[i] *= 2;
+}
+</pre>
+<p>the <tt class="docutils literal">ispc</tt> compiler generates approximately 40 instructions--why isn't
+the generated code simpler?</p>
+<p>There are two main components to the code: one handles
+<tt class="docutils literal">programCount</tt>-sized chunks of elements of the array, and the other
+handles any excess elements at the end of the array that don't completely
+fill a gang.  The code for the main loop is essentially what one would
+expect: a vector of values are laoded from the array, the multiply is done,
+and the result is stored.</p>
+<pre class="literal-block">
+LBB0_2:                                 ## %foreach_full_body
+    movslq  %edx, %rdx
+    vmovups (%rdi,%rdx), %ymm1
+    vmulps  %ymm0, %ymm1, %ymm1
+    vmovups %ymm1, (%rdi,%rdx)
+    addl    $32, %edx
+    addl    $8, %eax
+    cmpl    %ecx, %eax
+    jl      LBB0_2
+</pre>
+<p>Then, there is a sequence of instructions that handles any additional
+elements at the end of the array.  (These instructions don't execute if
+there aren't any left-over values to process, but they do lengthen the
+amount of generated code.)</p>
+<pre class="literal-block">
+## BB#4:                                ## %partial_inner_only
+      vmovd   %eax, %xmm0
+      vinsertf128     $1, %xmm0, %ymm0, %ymm0
+      vpermilps       $0, %ymm0, %ymm0 ## ymm0 = ymm0[0,0,0,0,4,4,4,4]
+      vextractf128    $1, %ymm0, %xmm3
+      vmovd   %esi, %xmm2
+      vmovaps LCPI0_1(%rip), %ymm1
+      vextractf128    $1, %ymm1, %xmm4
+      vpaddd  %xmm4, %xmm3, %xmm3
+      # ....
+      vmulps  LCPI0_0(%rip), %ymm1, %ymm1
+      vmaskmovps      %ymm1, %ymm0, (%rdi,%rax)
+</pre>
+<p>If you know that the number of elements to be processed will always be an
+exact multiple of the 8, 16, etc., then adding a simple assignment to
+<tt class="docutils literal">count</tt> like the one below gives the compiler enough information to be
+able to eliminate the code for the additional array elements.</p>
+<pre class="literal-block">
+void foo(uniform float a[], uniform int count) {
+    // This assignment doesn't change the value of count
+    // if it's a multiple of 16, but it gives the compiler
+    // insight into this fact, allowing for simpler code to
+    // be generated for the foreach loop.
+    count = (count &amp; ~(16-1));
+    foreach (i = 0 ... count)
+        a[i] *= 2;
+}
+</pre>
+<p>With this new version of <tt class="docutils literal">foo()</tt>, only the code for the first loop above
+is generated.</p>
+</div>
+<div class="section" id="how-do-i-launch-an-individual-task-for-each-active-program-instance">
+<h2>How do I launch an individual task for each active program instance?</h2>
+<p>Recall from the <a class="reference external" href="ispc.html#task-parallelism-launch-and-sync-statements">discussion of &quot;launch&quot; in the ispc User's Guide</a> that a
+<tt class="docutils literal">launch</tt> statement launches a single task corresponding to a single gang
+of executing program instances, where the indices of the active program
+instances are the same as were active when the <tt class="docutils literal">launch</tt> statement
+executed.</p>
+<p>In some situations, it's desirable to be able to launch an individual task
+for each executing program instance.  For example, we might be performing
+an iterative computation where a subset of the program instances determine
+that an item they are responsible for requires additional processing.</p>
+<pre class="literal-block">
+bool itemNeedsMoreProcessing(int);
+int itemNum = ...;
+if (itemNeedsMoreProcessing(itemNum)) {
+    // do additional work
+}
+</pre>
+<p>For performance reasons, it may be desirable to apply an entire gang's
+worth of comptuation to each item that needs additional processing;
+there may be available parallelism in this computation such that we'd like
+to process each of the items with SPMD computation.</p>
+<p>In this case, the <tt class="docutils literal">foreach_active</tt> and <tt class="docutils literal">unmasked</tt> constructs can be
+applied together to accomplish this goal.</p>
+<pre class="literal-block">
+// do additional work
+task void doWork(uniform int index);
+foreach_active (index) {
+    unmasked {
+        launch doWork(extract(itemNum, index));
+    }
+}
+</pre>
+<p>Recall that the body of the <tt class="docutils literal">foreach_active</tt> loop runs once for each
+active program instance, with each active program instance's
+<tt class="docutils literal">programIndex</tt> value available in <tt class="docutils literal">index</tt> in the above.  In the loop,
+we can re-establish an &quot;all on&quot; execution mask, enabling execution in all
+of the program instances in the gang, such that execution in <tt class="docutils literal">doWork()</tt>
+starts with all instances running.  (Alternatively, the <tt class="docutils literal">unmasked</tt> block
+could be in the definition of <tt class="docutils literal">doWork()</tt>.)</p>
 </div>
 </div>
 </div>

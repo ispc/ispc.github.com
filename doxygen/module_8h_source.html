@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.2.2</span>
+   &#160;<span id="projectnumber">1.3.0</span>
    </div>
    
   </td>
@@ -137,94 +137,111 @@
 <a name="l00080"></a>00080     <span class="keywordtype">void</span> <a class="code" href="classModule.html#afd6243ce106ef1c39c0614ac925888f3">AddFunctionDefinition</a>(<span class="keyword">const</span> std::string &amp;name,
 <a name="l00081"></a>00081                                <span class="keyword">const</span> <a class="code" href="classFunctionType.html" title="Type representing a function (return type + argument types)">FunctionType</a> *ftype, <a class="code" href="classStmt.html" title="Interface class for statements in the ispc language.">Stmt</a> *code);
 <a name="l00082"></a>00082 <span class="comment"></span>
-<a name="l00083"></a>00083 <span class="comment">    /** After a source file has been compiled, output can be generated in a</span>
-<a name="l00084"></a>00084 <span class="comment">        number of different formats. */</span>
-<a name="l00085"></a><a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">00085</a>     <span class="keyword">enum</span> <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> { <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a4cc66c9913b9cf518de07fa0b9eba2ab">Asm</a>,      <span class="comment">/** Generate text assembly language output */</span>
-<a name="l00086"></a><a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16ae8863b243bc8a917cf50fce1e9066e40">00086</a>                       <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16ae8863b243bc8a917cf50fce1e9066e40">Bitcode</a>,  <span class="comment">/** Generate LLVM IR bitcode output */</span>
-<a name="l00087"></a><a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a05b2f887873eb944be6de4399afedf74">00087</a>                       <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a05b2f887873eb944be6de4399afedf74">Object</a>,   <span class="comment">/** Generate a native object file */</span>
-<a name="l00088"></a><a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a78fd219f97c7a3e26c6e22234cdeba04">00088</a>                       <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a78fd219f97c7a3e26c6e22234cdeba04">CXX</a>,      <span class="comment">/** Generate a C++ file */</span>
-<a name="l00089"></a><a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16aa363d09f10db3dba3593abbf5b0b38c6">00089</a>                       <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16aa363d09f10db3dba3593abbf5b0b38c6">Header</a>    <span class="comment">/** Generate a C/C++ header file with </span>
-<a name="l00090"></a>00090 <span class="comment">                                    declarations of &#39;export&#39;ed functions, global</span>
-<a name="l00091"></a>00091 <span class="comment">                                    variables, and the types used by them. */</span>
-<a name="l00092"></a>00092     };
-<a name="l00093"></a>00093 <span class="comment"></span>
-<a name="l00094"></a>00094 <span class="comment">    /** Compile the given source file, generating assembly, object file, or</span>
-<a name="l00095"></a>00095 <span class="comment">        LLVM bitcode output, as well as (optionally) a header file with</span>
-<a name="l00096"></a>00096 <span class="comment">        declarations of functions and types used in the ispc/application</span>
-<a name="l00097"></a>00097 <span class="comment">        interface.</span>
-<a name="l00098"></a>00098 <span class="comment">        @param srcFile      Pathname to ispc source file to compile</span>
-<a name="l00099"></a>00099 <span class="comment">        @param arch         Target architecture (e.g. &quot;x86-64&quot;)</span>
-<a name="l00100"></a>00100 <span class="comment">        @param cpu          Target CPU (e.g. &quot;core-i7&quot;)</span>
-<a name="l00101"></a>00101 <span class="comment">        @param targets      Target ISAs; this parameter may give a single target</span>
-<a name="l00102"></a>00102 <span class="comment">                            ISA, or may give a comma-separated list of them in</span>
-<a name="l00103"></a>00103 <span class="comment">                            case we are compiling to multiple ISAs.</span>
-<a name="l00104"></a>00104 <span class="comment">        @param generatePIC  Indicates whether position-independent code should</span>
-<a name="l00105"></a>00105 <span class="comment">                            be generated.</span>
-<a name="l00106"></a>00106 <span class="comment">        @param outputType   Type of output to generate (object files, assembly,</span>
-<a name="l00107"></a>00107 <span class="comment">                            LLVM bitcode.)</span>
-<a name="l00108"></a>00108 <span class="comment">        @param outFileName  Base name of output filename for object files, etc.</span>
-<a name="l00109"></a>00109 <span class="comment">                            If for example the multiple targets &quot;sse2&quot; and &quot;avx&quot;</span>
-<a name="l00110"></a>00110 <span class="comment">                            are specified in the &quot;targets&quot; parameter and if this</span>
-<a name="l00111"></a>00111 <span class="comment">                            parameter is &quot;foo.o&quot;, then we&#39;ll generate multiple</span>
-<a name="l00112"></a>00112 <span class="comment">                            output files, like &quot;foo.o&quot;, &quot;foo_sse2.o&quot;, &quot;foo_avx.o&quot;.</span>
-<a name="l00113"></a>00113 <span class="comment">        @param headerFileName If non-NULL, emit a header file suitable for</span>
-<a name="l00114"></a>00114 <span class="comment">                              inclusion from C/C++ code with declarations of</span>
-<a name="l00115"></a>00115 <span class="comment">                              types and functions exported from the given ispc</span>
-<a name="l00116"></a>00116 <span class="comment">                              source file.</span>
-<a name="l00117"></a>00117 <span class="comment">        @param includeFileName If non-NULL, gives the filename for the C++ </span>
-<a name="l00118"></a>00118 <span class="comment">                               backend to emit in an #include statement to</span>
-<a name="l00119"></a>00119 <span class="comment">                               get definitions of the builtins for the generic</span>
-<a name="l00120"></a>00120 <span class="comment">                               target.</span>
-<a name="l00121"></a>00121 <span class="comment">        @return             Number of errors encountered when compiling</span>
-<a name="l00122"></a>00122 <span class="comment">                            srcFile.</span>
-<a name="l00123"></a>00123 <span class="comment">     */</span>
-<a name="l00124"></a>00124     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classModule.html#aeafddae9cb0809fb131e21f0c9304e02">CompileAndOutput</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *srcFile, <span class="keyword">const</span> <span class="keywordtype">char</span> *arch, 
-<a name="l00125"></a>00125                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *cpu, <span class="keyword">const</span> <span class="keywordtype">char</span> *targets, 
-<a name="l00126"></a>00126                                 <span class="keywordtype">bool</span> generatePIC, <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> outputType, 
-<a name="l00127"></a>00127                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *outFileName, 
-<a name="l00128"></a>00128                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *headerFileName, 
-<a name="l00129"></a>00129                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *includeFileName);
-<a name="l00130"></a>00130 <span class="comment"></span>
-<a name="l00131"></a>00131 <span class="comment">    /** Total number of errors encountered during compilation. */</span>
-<a name="l00132"></a><a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">00132</a>     <span class="keywordtype">int</span> <a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a>;
-<a name="l00133"></a>00133 <span class="comment"></span>
-<a name="l00134"></a>00134 <span class="comment">    /** Symbol table to hold symbols visible in the current scope during</span>
-<a name="l00135"></a>00135 <span class="comment">        compilation. */</span>
-<a name="l00136"></a><a class="code" href="classModule.html#a66a01f1bae4f9c26eb1bc95780865954">00136</a>     <a class="code" href="classSymbolTable.html" title="Symbol table that holds all known symbols during parsing and compilation.">SymbolTable</a> *<a class="code" href="classModule.html#a66a01f1bae4f9c26eb1bc95780865954">symbolTable</a>;
-<a name="l00137"></a>00137 <span class="comment"></span>
-<a name="l00138"></a>00138 <span class="comment">    /** llvm Module object into which globals and functions are added. */</span>
-<a name="l00139"></a><a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">00139</a>     llvm::Module *<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>; 
-<a name="l00140"></a>00140 <span class="comment"></span>
-<a name="l00141"></a>00141 <span class="comment">    /** The diBuilder manages generating debugging information */</span>
-<a name="l00142"></a><a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">00142</a>     llvm::DIBuilder *<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>;
-<a name="l00143"></a>00143 
-<a name="l00144"></a>00144 <span class="keyword">private</span>:
-<a name="l00145"></a><a class="code" href="classModule.html#a423fde49a388b68fc95d354ca9891f99">00145</a>     <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="classModule.html#a423fde49a388b68fc95d354ca9891f99">filename</a>;
-<a name="l00146"></a><a class="code" href="classModule.html#a2f65ea2445b5675c2cfcc6773f6d71f8">00146</a>     AST *<a class="code" href="classModule.html#a2f65ea2445b5675c2cfcc6773f6d71f8">ast</a>;
-<a name="l00147"></a>00147 <span class="comment"></span>
-<a name="l00148"></a>00148 <span class="comment">    /** Write the corresponding output type to the given file.  Returns</span>
-<a name="l00149"></a>00149 <span class="comment">        true on success, false if there has been an error.  The given</span>
-<a name="l00150"></a>00150 <span class="comment">        filename may be NULL, indicating that output should go to standard</span>
-<a name="l00151"></a>00151 <span class="comment">        output. */</span>
-<a name="l00152"></a>00152     <span class="keywordtype">bool</span> <a class="code" href="classModule.html#aa6ada7654655967e39eb2a6133468d24">writeOutput</a>(<a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> ot, <span class="keyword">const</span> <span class="keywordtype">char</span> *filename,
-<a name="l00153"></a>00153                      <span class="keyword">const</span> <span class="keywordtype">char</span> *includeFileName = NULL);
-<a name="l00154"></a>00154     <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a307501ecd6f5e09dbc3d6467c2eb0abe">writeHeader</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename);
-<a name="l00155"></a>00155     <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a6cdcea5baae8b781325a46f4397af4f1">writeObjectFileOrAssembly</a>(<a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> outputType, <span class="keyword">const</span> <span class="keywordtype">char</span> *filename);
-<a name="l00156"></a>00156     <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a6cdcea5baae8b781325a46f4397af4f1">writeObjectFileOrAssembly</a>(llvm::TargetMachine *targetMachine,
-<a name="l00157"></a>00157                                           llvm::Module *<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>, <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> outputType, 
-<a name="l00158"></a>00158                                           <span class="keyword">const</span> <span class="keywordtype">char</span> *outFileName);
-<a name="l00159"></a>00159     <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classModule.html#ae4d74e8025773c7266e0ffb5d8ef5227">writeBitcode</a>(llvm::Module *<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>, <span class="keyword">const</span> <span class="keywordtype">char</span> *outFileName);
-<a name="l00160"></a>00160 
-<a name="l00161"></a>00161     <span class="keywordtype">void</span> <a class="code" href="classModule.html#a0b22b6e47f5ae32ca0ee762054fa3b2b">execPreprocessor</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *infilename, llvm::raw_string_ostream* ostream) <span class="keyword">const</span>;
-<a name="l00162"></a>00162 };
-<a name="l00163"></a>00163 
-<a name="l00164"></a>00164 <span class="preprocessor">#endif // ISPC_MODULE_H</span>
+<a name="l00083"></a>00083 <span class="comment">    /** Adds the given type to the set of types that have their definitions</span>
+<a name="l00084"></a>00084 <span class="comment">        included in automatically generated header files. */</span>
+<a name="l00085"></a>00085     <span class="keywordtype">void</span> <a class="code" href="classModule.html#aade75b24707761dd6102a98f96b046cf">AddExportedTypes</a>(<span class="keyword">const</span> std::vector&lt;std::pair&lt;<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *, 
+<a name="l00086"></a>00086                                                       <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a>&gt; &gt; &amp;types);
+<a name="l00087"></a>00087 <span class="comment"></span>
+<a name="l00088"></a>00088 <span class="comment">    /** After a source file has been compiled, output can be generated in a</span>
+<a name="l00089"></a>00089 <span class="comment">        number of different formats. */</span>
+<a name="l00090"></a><a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">00090</a>     <span class="keyword">enum</span> <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> { <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a4cc66c9913b9cf518de07fa0b9eba2ab">Asm</a>,      <span class="comment">/** Generate text assembly language output */</span>
+<a name="l00091"></a><a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16ae8863b243bc8a917cf50fce1e9066e40">00091</a>                       <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16ae8863b243bc8a917cf50fce1e9066e40">Bitcode</a>,  <span class="comment">/** Generate LLVM IR bitcode output */</span>
+<a name="l00092"></a><a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a05b2f887873eb944be6de4399afedf74">00092</a>                       <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a05b2f887873eb944be6de4399afedf74">Object</a>,   <span class="comment">/** Generate a native object file */</span>
+<a name="l00093"></a><a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a78fd219f97c7a3e26c6e22234cdeba04">00093</a>                       <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a78fd219f97c7a3e26c6e22234cdeba04">CXX</a>,      <span class="comment">/** Generate a C++ file */</span>
+<a name="l00094"></a><a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16aa363d09f10db3dba3593abbf5b0b38c6">00094</a>                       <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16aa363d09f10db3dba3593abbf5b0b38c6">Header</a>,   <span class="comment">/** Generate a C/C++ header file with </span>
+<a name="l00095"></a>00095 <span class="comment">                                    declarations of &#39;export&#39;ed functions, global</span>
+<a name="l00096"></a>00096 <span class="comment">                                    variables, and the types used by them. */</span>
+<a name="l00097"></a><a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a8817bb575bc7e088f8e5016563f8326e">00097</a>                       <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a8817bb575bc7e088f8e5016563f8326e">Deps</a>,     <span class="comment">/** generate dependencies */</span>
+<a name="l00098"></a><a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16ad6d9be109bff53aac96925252ad40b6a">00098</a>                       <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16ad6d9be109bff53aac96925252ad40b6a">DevStub</a>,  <span class="comment">/** generate device-side offload stubs */</span>
+<a name="l00099"></a><a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a5308d61aca339cb451835468d6863868">00099</a>                       <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16a5308d61aca339cb451835468d6863868">HostStub</a>  <span class="comment">/** generate host-side offload stubs */</span>
+<a name="l00100"></a>00100     };
+<a name="l00101"></a>00101 <span class="comment"></span>
+<a name="l00102"></a>00102 <span class="comment">    /** Compile the given source file, generating assembly, object file, or</span>
+<a name="l00103"></a>00103 <span class="comment">        LLVM bitcode output, as well as (optionally) a header file with</span>
+<a name="l00104"></a>00104 <span class="comment">        declarations of functions and types used in the ispc/application</span>
+<a name="l00105"></a>00105 <span class="comment">        interface.</span>
+<a name="l00106"></a>00106 <span class="comment">        @param srcFile      Pathname to ispc source file to compile</span>
+<a name="l00107"></a>00107 <span class="comment">        @param arch         Target architecture (e.g. &quot;x86-64&quot;)</span>
+<a name="l00108"></a>00108 <span class="comment">        @param cpu          Target CPU (e.g. &quot;core-i7&quot;)</span>
+<a name="l00109"></a>00109 <span class="comment">        @param targets      Target ISAs; this parameter may give a single target</span>
+<a name="l00110"></a>00110 <span class="comment">                            ISA, or may give a comma-separated list of them in</span>
+<a name="l00111"></a>00111 <span class="comment">                            case we are compiling to multiple ISAs.</span>
+<a name="l00112"></a>00112 <span class="comment">        @param generatePIC  Indicates whether position-independent code should</span>
+<a name="l00113"></a>00113 <span class="comment">                            be generated.</span>
+<a name="l00114"></a>00114 <span class="comment">        @param outputType   Type of output to generate (object files, assembly,</span>
+<a name="l00115"></a>00115 <span class="comment">                            LLVM bitcode.)</span>
+<a name="l00116"></a>00116 <span class="comment">        @param outFileName  Base name of output filename for object files, etc.</span>
+<a name="l00117"></a>00117 <span class="comment">                            If for example the multiple targets &quot;sse2&quot; and &quot;avx&quot;</span>
+<a name="l00118"></a>00118 <span class="comment">                            are specified in the &quot;targets&quot; parameter and if this</span>
+<a name="l00119"></a>00119 <span class="comment">                            parameter is &quot;foo.o&quot;, then we&#39;ll generate multiple</span>
+<a name="l00120"></a>00120 <span class="comment">                            output files, like &quot;foo.o&quot;, &quot;foo_sse2.o&quot;, &quot;foo_avx.o&quot;.</span>
+<a name="l00121"></a>00121 <span class="comment">        @param headerFileName If non-NULL, emit a header file suitable for</span>
+<a name="l00122"></a>00122 <span class="comment">                              inclusion from C/C++ code with declarations of</span>
+<a name="l00123"></a>00123 <span class="comment">                              types and functions exported from the given ispc</span>
+<a name="l00124"></a>00124 <span class="comment">                              source file.</span>
+<a name="l00125"></a>00125 <span class="comment">        @param includeFileName If non-NULL, gives the filename for the C++ </span>
+<a name="l00126"></a>00126 <span class="comment">                               backend to emit in an #include statement to</span>
+<a name="l00127"></a>00127 <span class="comment">                               get definitions of the builtins for the generic</span>
+<a name="l00128"></a>00128 <span class="comment">                               target.</span>
+<a name="l00129"></a>00129 <span class="comment">        @return             Number of errors encountered when compiling</span>
+<a name="l00130"></a>00130 <span class="comment">                            srcFile.</span>
+<a name="l00131"></a>00131 <span class="comment">     */</span>
+<a name="l00132"></a>00132     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classModule.html#a26cf21766238cdbf9694219a1a68168d">CompileAndOutput</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *srcFile, <span class="keyword">const</span> <span class="keywordtype">char</span> *arch, 
+<a name="l00133"></a>00133                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *cpu, <span class="keyword">const</span> <span class="keywordtype">char</span> *targets, 
+<a name="l00134"></a>00134                                 <span class="keywordtype">bool</span> generatePIC, 
+<a name="l00135"></a>00135                                 <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> outputType, 
+<a name="l00136"></a>00136                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *outFileName, 
+<a name="l00137"></a>00137                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *headerFileName,
+<a name="l00138"></a>00138                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *includeFileName,
+<a name="l00139"></a>00139                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *depsFileName,
+<a name="l00140"></a>00140                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *hostStubFileName,
+<a name="l00141"></a>00141                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *devStubFileName);
+<a name="l00142"></a>00142 <span class="comment"></span>
+<a name="l00143"></a>00143 <span class="comment">    /** Total number of errors encountered during compilation. */</span>
+<a name="l00144"></a><a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">00144</a>     <span class="keywordtype">int</span> <a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a>;
+<a name="l00145"></a>00145 <span class="comment"></span>
+<a name="l00146"></a>00146 <span class="comment">    /** Symbol table to hold symbols visible in the current scope during</span>
+<a name="l00147"></a>00147 <span class="comment">        compilation. */</span>
+<a name="l00148"></a><a class="code" href="classModule.html#a66a01f1bae4f9c26eb1bc95780865954">00148</a>     <a class="code" href="classSymbolTable.html" title="Symbol table that holds all known symbols during parsing and compilation.">SymbolTable</a> *<a class="code" href="classModule.html#a66a01f1bae4f9c26eb1bc95780865954">symbolTable</a>;
+<a name="l00149"></a>00149 <span class="comment"></span>
+<a name="l00150"></a>00150 <span class="comment">    /** llvm Module object into which globals and functions are added. */</span>
+<a name="l00151"></a><a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">00151</a>     llvm::Module *<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>; 
+<a name="l00152"></a>00152 <span class="comment"></span>
+<a name="l00153"></a>00153 <span class="comment">    /** The diBuilder manages generating debugging information */</span>
+<a name="l00154"></a><a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">00154</a>     llvm::DIBuilder *<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>;
+<a name="l00155"></a>00155 
+<a name="l00156"></a>00156 <span class="keyword">private</span>:
+<a name="l00157"></a><a class="code" href="classModule.html#a423fde49a388b68fc95d354ca9891f99">00157</a>     <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="classModule.html#a423fde49a388b68fc95d354ca9891f99">filename</a>;
+<a name="l00158"></a><a class="code" href="classModule.html#a2f65ea2445b5675c2cfcc6773f6d71f8">00158</a>     AST *<a class="code" href="classModule.html#a2f65ea2445b5675c2cfcc6773f6d71f8">ast</a>;
+<a name="l00159"></a>00159 
+<a name="l00160"></a><a class="code" href="classModule.html#afb3d55fee6b8e7298c4d2958f64b0973">00160</a>     std::vector&lt;std::pair&lt;const Type *, SourcePos&gt; &gt; <a class="code" href="classModule.html#afb3d55fee6b8e7298c4d2958f64b0973">exportedTypes</a>;
+<a name="l00161"></a>00161 <span class="comment"></span>
+<a name="l00162"></a>00162 <span class="comment">    /** Write the corresponding output type to the given file.  Returns</span>
+<a name="l00163"></a>00163 <span class="comment">        true on success, false if there has been an error.  The given</span>
+<a name="l00164"></a>00164 <span class="comment">        filename may be NULL, indicating that output should go to standard</span>
+<a name="l00165"></a>00165 <span class="comment">        output. */</span>
+<a name="l00166"></a>00166     <span class="keywordtype">bool</span> <a class="code" href="classModule.html#aa6ada7654655967e39eb2a6133468d24">writeOutput</a>(<a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> ot, <span class="keyword">const</span> <span class="keywordtype">char</span> *filename,
+<a name="l00167"></a>00167                      <span class="keyword">const</span> <span class="keywordtype">char</span> *includeFileName = NULL);
+<a name="l00168"></a>00168     <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a307501ecd6f5e09dbc3d6467c2eb0abe">writeHeader</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename);
+<a name="l00169"></a>00169     <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a3bfdbc168d9fc2cd75a9143fc67f03f9">writeDeps</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename);
+<a name="l00170"></a>00170     <span class="keywordtype">bool</span> <a class="code" href="classModule.html#aba56c6829134019097b66d3193cfecef">writeDevStub</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename);
+<a name="l00171"></a>00171     <span class="keywordtype">bool</span> <a class="code" href="classModule.html#aeda3525705ad7d87e21c854ffd1b8edf">writeHostStub</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename);
+<a name="l00172"></a>00172     <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a6cdcea5baae8b781325a46f4397af4f1">writeObjectFileOrAssembly</a>(<a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> outputType, <span class="keyword">const</span> <span class="keywordtype">char</span> *filename);
+<a name="l00173"></a>00173     <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a6cdcea5baae8b781325a46f4397af4f1">writeObjectFileOrAssembly</a>(llvm::TargetMachine *targetMachine,
+<a name="l00174"></a>00174                                           llvm::Module *<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>, <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> outputType, 
+<a name="l00175"></a>00175                                           <span class="keyword">const</span> <span class="keywordtype">char</span> *outFileName);
+<a name="l00176"></a>00176     <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classModule.html#ae4d74e8025773c7266e0ffb5d8ef5227">writeBitcode</a>(llvm::Module *<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>, <span class="keyword">const</span> <span class="keywordtype">char</span> *outFileName);
+<a name="l00177"></a>00177 
+<a name="l00178"></a>00178     <span class="keywordtype">void</span> <a class="code" href="classModule.html#a0b22b6e47f5ae32ca0ee762054fa3b2b">execPreprocessor</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *infilename, llvm::raw_string_ostream* ostream) <span class="keyword">const</span>;
+<a name="l00179"></a>00179 };
+<a name="l00180"></a>00180 
+<a name="l00181"></a>00181 <span class="preprocessor">#endif // ISPC_MODULE_H</span>
 </pre></div></div>
 </div>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 20 2012 14:30:29 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jun 29 2012 08:42:25 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.2.2</span>
+   &#160;<span id="projectnumber">1.3.0</span>
    </div>
    
   </td>
@@ -54,6 +54,7 @@
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">type.h File Reference</div>  </div>
@@ -66,6 +67,7 @@
 <code>#include &quot;<a class="el" href="util_8h_source.html">util.h</a>&quot;</code><br/>
 <code>#include &lt;llvm/Type.h&gt;</code><br/>
 <code>#include &lt;llvm/DerivedTypes.h&gt;</code><br/>
+<code>#include &lt;llvm/ADT/SmallVector.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for type.h:</div>
 <div class="dyncontent">
@@ -109,15 +111,120 @@ Classes</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> representing a reference to another (non-reference) type.  <a href="classReferenceType.html#details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFunctionType.html">FunctionType</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> representing a function (return type + argument types)  <a href="classFunctionType.html#details">More...</a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type_8h.html#ae3b8b91f7f6754d1ef7fd67c1bdaa501">TypeId</a> { <br/>
+&#160;&#160;<a class="el" href="type_8h.html#ae3b8b91f7f6754d1ef7fd67c1bdaa501a854b75d25398375faf6428f2f9439501">ATOMIC_TYPE</a>, 
+<a class="el" href="type_8h.html#ae3b8b91f7f6754d1ef7fd67c1bdaa501a278c7199471a757507d913b2814aaaf5">ENUM_TYPE</a>, 
+<a class="el" href="type_8h.html#ae3b8b91f7f6754d1ef7fd67c1bdaa501a36b9c7131ba4dc7c2a4b364813fe0ece">POINTER_TYPE</a>, 
+<a class="el" href="type_8h.html#ae3b8b91f7f6754d1ef7fd67c1bdaa501ac37637ee4663a906834f9339da404cef">ARRAY_TYPE</a>, 
+<br/>
+&#160;&#160;<a class="el" href="type_8h.html#ae3b8b91f7f6754d1ef7fd67c1bdaa501aa1ab150fdc5a61724653f0d6ff7de177">VECTOR_TYPE</a>, 
+<a class="el" href="type_8h.html#ae3b8b91f7f6754d1ef7fd67c1bdaa501ad8a1ad072e03b97846af414df3278f3f">STRUCT_TYPE</a>, 
+<a class="el" href="type_8h.html#ae3b8b91f7f6754d1ef7fd67c1bdaa501aeedd43bbc80aafac9d35b1da8684817e">UNDEFINED_STRUCT_TYPE</a>, 
+<a class="el" href="type_8h.html#ae3b8b91f7f6754d1ef7fd67c1bdaa501a910765a813e823c940bffebf004cd76f">REFERENCE_TYPE</a>, 
+<br/>
+&#160;&#160;<a class="el" href="type_8h.html#ae3b8b91f7f6754d1ef7fd67c1bdaa501a61d892b3314b923bbcb759eff6a4505b">FUNCTION_TYPE</a>
+<br/>
+ }</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr><td class="memTemplItemLeft" align="right" valign="top">const T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="type_8h.html#a7744a150d745fd7bfb677a0b6b73b7d3">CastType</a> (const <a class="el" href="classType.html">Type</a> *type)</td></tr>
+<tr><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classAtomicType.html">AtomicType</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="type_8h.html#a60e01dc3582f600e7042b54278e2cfbc">CastType</a> (const <a class="el" href="classType.html">Type</a> *type)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type_8h.html#a6284c44db26e6917a2aa252a6c9fe3b0">IsReferenceType</a> (const <a class="el" href="classType.html">Type</a> *t)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>File with declarations for classes related to type representation. </p>
 
 <p>Definition in file <a class="el" href="type_8h_source.html">type.h</a>.</p>
-</div><hr/><h2>Function Documentation</h2>
+</div><hr/><h2>Enumeration Type Documentation</h2>
+<a class="anchor" id="ae3b8b91f7f6754d1ef7fd67c1bdaa501"></a><!-- doxytag: member="type.h::TypeId" ref="ae3b8b91f7f6754d1ef7fd67c1bdaa501" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="type_8h.html#ae3b8b91f7f6754d1ef7fd67c1bdaa501">TypeId</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Enumerant that records each of the types that inherit from the <a class="el" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> baseclass. </p>
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="ae3b8b91f7f6754d1ef7fd67c1bdaa501a854b75d25398375faf6428f2f9439501"></a><!-- doxytag: member="ATOMIC_TYPE" ref="ae3b8b91f7f6754d1ef7fd67c1bdaa501a854b75d25398375faf6428f2f9439501" args="" -->ATOMIC_TYPE</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae3b8b91f7f6754d1ef7fd67c1bdaa501a278c7199471a757507d913b2814aaaf5"></a><!-- doxytag: member="ENUM_TYPE" ref="ae3b8b91f7f6754d1ef7fd67c1bdaa501a278c7199471a757507d913b2814aaaf5" args="" -->ENUM_TYPE</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae3b8b91f7f6754d1ef7fd67c1bdaa501a36b9c7131ba4dc7c2a4b364813fe0ece"></a><!-- doxytag: member="POINTER_TYPE" ref="ae3b8b91f7f6754d1ef7fd67c1bdaa501a36b9c7131ba4dc7c2a4b364813fe0ece" args="" -->POINTER_TYPE</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae3b8b91f7f6754d1ef7fd67c1bdaa501ac37637ee4663a906834f9339da404cef"></a><!-- doxytag: member="ARRAY_TYPE" ref="ae3b8b91f7f6754d1ef7fd67c1bdaa501ac37637ee4663a906834f9339da404cef" args="" -->ARRAY_TYPE</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae3b8b91f7f6754d1ef7fd67c1bdaa501aa1ab150fdc5a61724653f0d6ff7de177"></a><!-- doxytag: member="VECTOR_TYPE" ref="ae3b8b91f7f6754d1ef7fd67c1bdaa501aa1ab150fdc5a61724653f0d6ff7de177" args="" -->VECTOR_TYPE</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae3b8b91f7f6754d1ef7fd67c1bdaa501ad8a1ad072e03b97846af414df3278f3f"></a><!-- doxytag: member="STRUCT_TYPE" ref="ae3b8b91f7f6754d1ef7fd67c1bdaa501ad8a1ad072e03b97846af414df3278f3f" args="" -->STRUCT_TYPE</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae3b8b91f7f6754d1ef7fd67c1bdaa501aeedd43bbc80aafac9d35b1da8684817e"></a><!-- doxytag: member="UNDEFINED_STRUCT_TYPE" ref="ae3b8b91f7f6754d1ef7fd67c1bdaa501aeedd43bbc80aafac9d35b1da8684817e" args="" -->UNDEFINED_STRUCT_TYPE</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae3b8b91f7f6754d1ef7fd67c1bdaa501a910765a813e823c940bffebf004cd76f"></a><!-- doxytag: member="REFERENCE_TYPE" ref="ae3b8b91f7f6754d1ef7fd67c1bdaa501a910765a813e823c940bffebf004cd76f" args="" -->REFERENCE_TYPE</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae3b8b91f7f6754d1ef7fd67c1bdaa501a61d892b3314b923bbcb759eff6a4505b"></a><!-- doxytag: member="FUNCTION_TYPE" ref="ae3b8b91f7f6754d1ef7fd67c1bdaa501a61d892b3314b923bbcb759eff6a4505b" args="" -->FUNCTION_TYPE</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+<p>Definition at line <a class="el" href="type_8h_source.html#l00078">78</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="a7744a150d745fd7bfb677a0b6b73b7d3"></a><!-- doxytag: member="type.h::CastType" ref="a7744a150d745fd7bfb677a0b6b73b7d3" args="(const Type *type)" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const T* CastType </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classType.html">Type</a> *&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="type_8h_source.html#l00935">935</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+
+<p>References <a class="el" href="parse_8yy.html">NULL</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a60e01dc3582f600e7042b54278e2cfbc"></a><!-- doxytag: member="type.h::CastType" ref="a60e01dc3582f600e7042b54278e2cfbc" args="(const Type *type)" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classFunctionType.html">FunctionType</a> * CastType </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classType.html">Type</a> *&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="type_8h_source.html#l00945">945</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+
+<p>References <a class="el" href="type_8h_source.html#l00079">ATOMIC_TYPE</a>, <a class="el" href="parse_8yy.html">NULL</a>, and <a class="el" href="type_8h_source.html#l00266">Type::typeId</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a6284c44db26e6917a2aa252a6c9fe3b0"></a><!-- doxytag: member="type.h::IsReferenceType" ref="a6284c44db26e6917a2aa252a6c9fe3b0" args="(const Type *t)" -->
 <div class="memitem">
 <div class="memproto">
@@ -133,11 +240,11 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="type_8h_source.html#l00876">876</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p>Definition at line <a class="el" href="type_8h_source.html#l01040">1040</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 
 <p>References <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00137">DeclStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l02198">ReturnStmt::EmitCode()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00137">DeclStmt::EmitCode()</a>, and <a class="el" href="stmt_8cpp_source.html#l02694">ReturnStmt::EmitCode()</a>.</p>
 
 </div>
 </div>
@@ -145,7 +252,7 @@ Functions</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 20 2012 14:30:30 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jun 29 2012 08:42:26 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

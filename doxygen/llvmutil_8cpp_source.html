@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.2.2</span>
+   &#160;<span id="projectnumber">1.3.0</span>
    </div>
    
   </td>
@@ -714,7 +714,7 @@
 <a name="l00657"></a>00657 
 <a name="l00658"></a>00658     <span class="comment">// Deal with the fact that LLVM3.1 and previous versions have different</span>
 <a name="l00659"></a>00659     <span class="comment">// representations for vectors of constant ints...</span>
-<a name="l00660"></a>00660 <span class="preprocessor">#ifdef LLVM_3_1svn</span>
+<a name="l00660"></a>00660 <span class="preprocessor">#ifndef LLVM_3_0</span>
 <a name="l00661"></a>00661 <span class="preprocessor"></span>    llvm::ConstantDataVector *cv = llvm::dyn_cast&lt;llvm::ConstantDataVector&gt;(v);
 <a name="l00662"></a>00662     <span class="keywordflow">if</span> (cv == <a class="code" href="parse_8yy.html">NULL</a>)
 <a name="l00663"></a>00663         <span class="keywordflow">return</span> <span class="keyword">false</span>;
@@ -735,7 +735,7 @@
 <a name="l00678"></a>00678          ret[i] = ci-&gt;getSExtValue();
 <a name="l00679"></a>00679      }
 <a name="l00680"></a>00680      <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00681"></a>00681 <span class="preprocessor">#endif // LLVM_3_1svn</span>
+<a name="l00681"></a>00681 <span class="preprocessor">#endif // !LLVM_3_0</span>
 <a name="l00682"></a>00682 <span class="preprocessor"></span>}
 <a name="l00683"></a>00683 
 <a name="l00684"></a>00684 
@@ -1004,7 +1004,7 @@
 <a name="l00947"></a>00947     <span class="keywordflow">if</span> (cv != <a class="code" href="parse_8yy.html">NULL</a>)
 <a name="l00948"></a>00948         <span class="keywordflow">return</span> (cv-&gt;getSplatValue() != <a class="code" href="parse_8yy.html">NULL</a>);
 <a name="l00949"></a>00949 
-<a name="l00950"></a>00950 <span class="preprocessor">#ifdef LLVM_3_1svn</span>
+<a name="l00950"></a>00950 <span class="preprocessor">#ifndef LLVM_3_0</span>
 <a name="l00951"></a>00951 <span class="preprocessor"></span>    llvm::ConstantDataVector *cdv = llvm::dyn_cast&lt;llvm::ConstantDataVector&gt;(v);
 <a name="l00952"></a>00952     <span class="keywordflow">if</span> (cdv != <a class="code" href="parse_8yy.html">NULL</a>)
 <a name="l00953"></a>00953         <span class="keywordflow">return</span> (cdv-&gt;getSplatValue() != <a class="code" href="parse_8yy.html">NULL</a>);
@@ -1158,8 +1158,8 @@
 <a name="l01101"></a>01101 <span class="comment">    elements.</span>
 <a name="l01102"></a>01102 <span class="comment"> */</span>
 <a name="l01103"></a>01103 <span class="keyword">static</span> <span class="keywordtype">bool</span>
-<a name="l01104"></a><a class="code" href="llvmutil_8cpp.html#a4df2503b61941de507d4c287fc781829">01104</a> <a class="code" href="llvmutil_8cpp.html#a4df2503b61941de507d4c287fc781829">lVectorIsLinearConstantInts</a>(
-<a name="l01105"></a>01105 #ifdef LLVM_3_1svn
+<a name="l01104"></a><a class="code" href="llvmutil_8cpp.html#a5bea0cd5d8429dbb156e3750d02abd44">01104</a> <a class="code" href="llvmutil_8cpp.html#a5bea0cd5d8429dbb156e3750d02abd44">lVectorIsLinearConstantInts</a>(
+<a name="l01105"></a>01105 #ifndef LLVM_3_0
 <a name="l01106"></a>01106                             llvm::ConstantDataVector *cv, 
 <a name="l01107"></a>01107 #<span class="keywordflow">else</span>
 <a name="l01108"></a>01108                             llvm::ConstantVector *cv, 
@@ -1168,7 +1168,7 @@
 <a name="l01111"></a>01111                             <span class="keywordtype">int</span> stride) {
 <a name="l01112"></a>01112     <span class="comment">// Flatten the vector out into the elements array</span>
 <a name="l01113"></a>01113     llvm::SmallVector&lt;llvm::Constant *, ISPC_MAX_NVEC&gt; elements;
-<a name="l01114"></a>01114 <span class="preprocessor">#ifdef LLVM_3_1svn</span>
+<a name="l01114"></a>01114 <span class="preprocessor">#ifndef LLVM_3_0</span>
 <a name="l01115"></a>01115 <span class="preprocessor"></span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int)cv-&gt;getNumElements(); ++i)
 <a name="l01116"></a>01116         elements.push_back(cv-&gt;getElementAsConstant(i));
 <a name="l01117"></a>01117 <span class="preprocessor">#else</span>
@@ -1209,7 +1209,7 @@
 <a name="l01152"></a>01152                    <span class="keywordtype">int</span> stride, std::vector&lt;llvm::PHINode *&gt; &amp;seenPhis) {
 <a name="l01153"></a>01153     <span class="comment">// Is the first operand a constant integer value splatted across all of</span>
 <a name="l01154"></a>01154     <span class="comment">// the lanes?</span>
-<a name="l01155"></a>01155 <span class="preprocessor">#ifdef LLVM_3_1svn</span>
+<a name="l01155"></a>01155 <span class="preprocessor">#ifndef LLVM_3_0</span>
 <a name="l01156"></a>01156 <span class="preprocessor"></span>    llvm::ConstantDataVector *cv = llvm::dyn_cast&lt;llvm::ConstantDataVector&gt;(op0);
 <a name="l01157"></a>01157 <span class="preprocessor">#else</span>
 <a name="l01158"></a>01158 <span class="preprocessor"></span>    llvm::ConstantVector *cv = llvm::dyn_cast&lt;llvm::ConstantVector&gt;(op0);
@@ -1283,13 +1283,13 @@
 <a name="l01226"></a>01226                 std::vector&lt;llvm::PHINode *&gt; &amp;seenPhis) {
 <a name="l01227"></a>01227     <span class="comment">// First try the easy case: if the values are all just constant</span>
 <a name="l01228"></a>01228     <span class="comment">// integers and have the expected stride between them, then we&#39;re done.</span>
-<a name="l01229"></a>01229 <span class="preprocessor">#ifdef LLVM_3_1svn</span>
+<a name="l01229"></a>01229 <span class="preprocessor">#ifndef LLVM_3_0</span>
 <a name="l01230"></a>01230 <span class="preprocessor"></span>    llvm::ConstantDataVector *cv = llvm::dyn_cast&lt;llvm::ConstantDataVector&gt;(v);
 <a name="l01231"></a>01231 <span class="preprocessor">#else</span>
 <a name="l01232"></a>01232 <span class="preprocessor"></span>    llvm::ConstantVector *cv = llvm::dyn_cast&lt;llvm::ConstantVector&gt;(v);
 <a name="l01233"></a>01233 <span class="preprocessor">#endif</span>
 <a name="l01234"></a>01234 <span class="preprocessor"></span>    <span class="keywordflow">if</span> (cv != <a class="code" href="parse_8yy.html">NULL</a>)
-<a name="l01235"></a>01235         <span class="keywordflow">return</span> <a class="code" href="llvmutil_8cpp.html#a4df2503b61941de507d4c287fc781829">lVectorIsLinearConstantInts</a>(cv, vectorLength, stride);
+<a name="l01235"></a>01235         <span class="keywordflow">return</span> <a class="code" href="llvmutil_8cpp.html#a5bea0cd5d8429dbb156e3750d02abd44">lVectorIsLinearConstantInts</a>(cv, vectorLength, stride);
 <a name="l01236"></a>01236 
 <a name="l01237"></a>01237     llvm::BinaryOperator *bop = llvm::dyn_cast&lt;llvm::BinaryOperator&gt;(v);
 <a name="l01238"></a>01238     <span class="keywordflow">if</span> (bop != <a class="code" href="parse_8yy.html">NULL</a>) {
@@ -1460,19 +1460,19 @@
 <a name="l01403"></a>01403         <span class="keywordflow">return</span> llvm::ConstantInt::get(vt-&gt;getElementType(), 0);
 <a name="l01404"></a>01404     }
 <a name="l01405"></a>01405     <span class="keywordflow">if</span> (llvm::ConstantVector *cv = llvm::dyn_cast&lt;llvm::ConstantVector&gt;(v)) {
-<a name="l01406"></a>01406 <span class="preprocessor">#ifdef LLVM_3_1svn</span>
+<a name="l01406"></a>01406 <span class="preprocessor">#ifndef LLVM_3_0</span>
 <a name="l01407"></a>01407 <span class="preprocessor"></span>        <span class="keywordflow">return</span> cv-&gt;getOperand(0);
 <a name="l01408"></a>01408 <span class="preprocessor">#else</span>
 <a name="l01409"></a>01409 <span class="preprocessor"></span>        llvm::SmallVector&lt;llvm::Constant *, ISPC_MAX_NVEC&gt; elements;
 <a name="l01410"></a>01410         cv-&gt;getVectorElements(elements);
 <a name="l01411"></a>01411         <span class="keywordflow">return</span> elements[0];
-<a name="l01412"></a>01412 <span class="preprocessor">#endif // LLVM_3_1</span>
+<a name="l01412"></a>01412 <span class="preprocessor">#endif // !LLVM_3_0</span>
 <a name="l01413"></a>01413 <span class="preprocessor"></span>    }
-<a name="l01414"></a>01414 <span class="preprocessor">#ifdef LLVM_3_1svn</span>
+<a name="l01414"></a>01414 <span class="preprocessor">#ifndef LLVM_3_0</span>
 <a name="l01415"></a>01415 <span class="preprocessor"></span>    <span class="keywordflow">if</span> (llvm::ConstantDataVector *cdv = 
 <a name="l01416"></a>01416         llvm::dyn_cast&lt;llvm::ConstantDataVector&gt;(v))
 <a name="l01417"></a>01417         <span class="keywordflow">return</span> cdv-&gt;getElementAsConstant(0);
-<a name="l01418"></a>01418 <span class="preprocessor">#endif  // LLVM_3_1</span>
+<a name="l01418"></a>01418 <span class="preprocessor">#endif  // !LLVM_3_0</span>
 <a name="l01419"></a>01419 <span class="preprocessor"></span>
 <a name="l01420"></a>01420     <span class="comment">// Otherwise, all that we should have at this point is an instruction</span>
 <a name="l01421"></a>01421     <span class="comment">// of some sort</span>
@@ -1635,7 +1635,7 @@
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 20 2012 14:30:29 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jun 29 2012 08:42:25 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

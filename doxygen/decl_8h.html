@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.2.2</span>
+   &#160;<span id="projectnumber">1.3.0</span>
    </div>
    
   </td>
@@ -65,6 +65,7 @@
 <p>Declarations related to type declarations; the parser basically creates instances of these classes, which are then turned into actual Types.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="ispc_8h_source.html">ispc.h</a>&quot;</code><br/>
+<code>#include &lt;llvm/ADT/SmallVector.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for decl.h:</div>
 <div class="dyncontent">
@@ -102,6 +103,7 @@ Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decl_8h.html#a2fbc33f7f56450a1b16955ce0f276162">TYPEQUAL_UNSIGNED</a>&#160;&#160;&#160;(1&lt;&lt;5)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decl_8h.html#a9914b850e24aeb47939669d4b6f82e76">TYPEQUAL_INLINE</a>&#160;&#160;&#160;(1&lt;&lt;6)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decl_8h.html#a800526a33436e47fa0d2547683755135">TYPEQUAL_EXPORT</a>&#160;&#160;&#160;(1&lt;&lt;7)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decl_8h.html#a4658e972ad924dd4a46a096c09b6a570">TYPEQUAL_UNMASKED</a>&#160;&#160;&#160;(1&lt;&lt;8)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8yy.html#a058f0f369cf796c31fb73bc9ba9b60c3">TYPEQUAL_NONE</a>&#160;&#160;&#160;0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8yy.html#ac13a98aa2d38017496b910137c57deaf">TYPEQUAL_CONST</a>&#160;&#160;&#160;(1&lt;&lt;0)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8yy.html#a4e1d46f163dbd13f9fe27a6b5074b8ea">TYPEQUAL_UNIFORM</a>&#160;&#160;&#160;(1&lt;&lt;1)</td></tr>
@@ -111,6 +113,7 @@ Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8yy.html#a2fbc33f7f56450a1b16955ce0f276162">TYPEQUAL_UNSIGNED</a>&#160;&#160;&#160;(1&lt;&lt;5)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8yy.html#a9914b850e24aeb47939669d4b6f82e76">TYPEQUAL_INLINE</a>&#160;&#160;&#160;(1&lt;&lt;6)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8yy.html#a800526a33436e47fa0d2547683755135">TYPEQUAL_EXPORT</a>&#160;&#160;&#160;(1&lt;&lt;7)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8yy.html#a4658e972ad924dd4a46a096c09b6a570">TYPEQUAL_UNMASKED</a>&#160;&#160;&#160;(1&lt;&lt;8)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8yy.html#a058f0f369cf796c31fb73bc9ba9b60c3">TYPEQUAL_NONE</a>&#160;&#160;&#160;0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8yy.html#ac13a98aa2d38017496b910137c57deaf">TYPEQUAL_CONST</a>&#160;&#160;&#160;(1&lt;&lt;0)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8yy.html#a4e1d46f163dbd13f9fe27a6b5074b8ea">TYPEQUAL_UNIFORM</a>&#160;&#160;&#160;(1&lt;&lt;1)</td></tr>
@@ -120,6 +123,7 @@ Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8yy.html#a2fbc33f7f56450a1b16955ce0f276162">TYPEQUAL_UNSIGNED</a>&#160;&#160;&#160;(1&lt;&lt;5)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8yy.html#a9914b850e24aeb47939669d4b6f82e76">TYPEQUAL_INLINE</a>&#160;&#160;&#160;(1&lt;&lt;6)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8yy.html#a800526a33436e47fa0d2547683755135">TYPEQUAL_EXPORT</a>&#160;&#160;&#160;(1&lt;&lt;7)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8yy.html#a4658e972ad924dd4a46a096c09b6a570">TYPEQUAL_UNMASKED</a>&#160;&#160;&#160;(1&lt;&lt;8)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lex_8ll.html#a058f0f369cf796c31fb73bc9ba9b60c3">TYPEQUAL_NONE</a>&#160;&#160;&#160;0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lex_8ll.html#ac13a98aa2d38017496b910137c57deaf">TYPEQUAL_CONST</a>&#160;&#160;&#160;(1&lt;&lt;0)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lex_8ll.html#a4e1d46f163dbd13f9fe27a6b5074b8ea">TYPEQUAL_UNIFORM</a>&#160;&#160;&#160;(1&lt;&lt;1)</td></tr>
@@ -129,6 +133,7 @@ Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lex_8ll.html#a2fbc33f7f56450a1b16955ce0f276162">TYPEQUAL_UNSIGNED</a>&#160;&#160;&#160;(1&lt;&lt;5)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lex_8ll.html#a9914b850e24aeb47939669d4b6f82e76">TYPEQUAL_INLINE</a>&#160;&#160;&#160;(1&lt;&lt;6)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lex_8ll.html#a800526a33436e47fa0d2547683755135">TYPEQUAL_EXPORT</a>&#160;&#160;&#160;(1&lt;&lt;7)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lex_8ll.html#a4658e972ad924dd4a46a096c09b6a570">TYPEQUAL_UNMASKED</a>&#160;&#160;&#160;(1&lt;&lt;8)</td></tr>
 <tr><td colspan="2"><h2><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decl_8h.html#a6242f4c10b3c504eb3dbd5569379798d">DeclaratorKind</a> { <br/>
@@ -142,7 +147,7 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decl_8h.html#a7766386a3e586e29665f3b2cdbfc2d20">GetStructTypesNamesPositions</a> (const std::vector&lt; <a class="el" href="structStructDeclaration.html">StructDeclaration</a> * &gt; &amp;sd, std::vector&lt; const <a class="el" href="classType.html">Type</a> * &gt; *elementTypes, std::vector&lt; std::string &gt; *elementNames, std::vector&lt; <a class="el" href="structSourcePos.html">SourcePos</a> &gt; *elementPositions)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decl_8h.html#a9bdff84ef73a123b051e98ea74e48513">GetStructTypesNamesPositions</a> (const std::vector&lt; <a class="el" href="structStructDeclaration.html">StructDeclaration</a> * &gt; &amp;sd, llvm::SmallVector&lt; const <a class="el" href="classType.html">Type</a> *, 8 &gt; *elementTypes, llvm::SmallVector&lt; std::string, 8 &gt; *elementNames, llvm::SmallVector&lt; <a class="el" href="structSourcePos.html">SourcePos</a>, 8 &gt; *elementPositions)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Declarations related to type declarations; the parser basically creates instances of these classes, which are then turned into actual Types. </p>
@@ -163,9 +168,9 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="decl_8h_source.html#l00068">68</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
+<p>Definition at line <a class="el" href="decl_8h_source.html#l00069">69</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
 
-<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00293">Declarator::InitFromType()</a>, <a class="el" href="decl_8cpp_source.html#l00067">lApplyTypeQualifiers()</a>, and <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>.</p>
+<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00294">Declarator::InitFromType()</a>, <a class="el" href="decl_8cpp_source.html#l00068">lApplyTypeQualifiers()</a>, and <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>.</p>
 
 </div>
 </div>
@@ -240,6 +245,49 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">#define TYPEQUAL_EXPORT&#160;&#160;&#160;(1&lt;&lt;7)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="decl_8h_source.html#l00076">76</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
+
+<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00294">Declarator::InitFromType()</a>, and <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a800526a33436e47fa0d2547683755135"></a><!-- doxytag: member="decl.h::TYPEQUAL_EXPORT" ref="a800526a33436e47fa0d2547683755135" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_EXPORT&#160;&#160;&#160;(1&lt;&lt;7)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9914b850e24aeb47939669d4b6f82e76"></a><!-- doxytag: member="decl.h::TYPEQUAL_INLINE" ref="a9914b850e24aeb47939669d4b6f82e76" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_INLINE&#160;&#160;&#160;(1&lt;&lt;6)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9914b850e24aeb47939669d4b6f82e76"></a><!-- doxytag: member="decl.h::TYPEQUAL_INLINE" ref="a9914b850e24aeb47939669d4b6f82e76" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_INLINE&#160;&#160;&#160;(1&lt;&lt;6)</td>
         </tr>
       </table>
 </div>
@@ -247,20 +295,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="decl_8h_source.html#l00075">75</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
 
-<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00293">Declarator::InitFromType()</a>, and <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a800526a33436e47fa0d2547683755135"></a><!-- doxytag: member="decl.h::TYPEQUAL_EXPORT" ref="a800526a33436e47fa0d2547683755135" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TYPEQUAL_EXPORT&#160;&#160;&#160;(1&lt;&lt;7)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
+<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00623">Declaration::DeclareFunctions()</a>, and <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>.</p>
 
 </div>
 </div>
@@ -274,36 +309,6 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a9914b850e24aeb47939669d4b6f82e76"></a><!-- doxytag: member="decl.h::TYPEQUAL_INLINE" ref="a9914b850e24aeb47939669d4b6f82e76" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TYPEQUAL_INLINE&#160;&#160;&#160;(1&lt;&lt;6)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a9914b850e24aeb47939669d4b6f82e76"></a><!-- doxytag: member="decl.h::TYPEQUAL_INLINE" ref="a9914b850e24aeb47939669d4b6f82e76" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TYPEQUAL_INLINE&#160;&#160;&#160;(1&lt;&lt;6)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="decl_8h_source.html#l00074">74</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
-
-<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00613">Declaration::DeclareFunctions()</a>, and <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>.</p>
 
 </div>
 </div>
@@ -331,6 +336,8 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>Definition at line <a class="el" href="decl_8h_source.html#l00068">68</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a058f0f369cf796c31fb73bc9ba9b60c3"></a><!-- doxytag: member="decl.h::TYPEQUAL_NONE" ref="a058f0f369cf796c31fb73bc9ba9b60c3" args="" -->
@@ -343,8 +350,6 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-
-<p>Definition at line <a class="el" href="decl_8h_source.html#l00067">67</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
 
 </div>
 </div>
@@ -398,10 +403,6 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="decl_8h_source.html#l00072">72</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
-
-<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00067">lApplyTypeQualifiers()</a>, and <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a502cd652842f83afe6c7736550cde8ec"></a><!-- doxytag: member="decl.h::TYPEQUAL_SIGNED" ref="a502cd652842f83afe6c7736550cde8ec" args="" -->
@@ -410,157 +411,6 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">#define TYPEQUAL_SIGNED&#160;&#160;&#160;(1&lt;&lt;4)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a502cd652842f83afe6c7736550cde8ec"></a><!-- doxytag: member="decl.h::TYPEQUAL_SIGNED" ref="a502cd652842f83afe6c7736550cde8ec" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TYPEQUAL_SIGNED&#160;&#160;&#160;(1&lt;&lt;4)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a840dd265ddc0d310fca5215d87c79bd5"></a><!-- doxytag: member="decl.h::TYPEQUAL_TASK" ref="a840dd265ddc0d310fca5215d87c79bd5" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TYPEQUAL_TASK&#160;&#160;&#160;(1&lt;&lt;3)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a840dd265ddc0d310fca5215d87c79bd5"></a><!-- doxytag: member="decl.h::TYPEQUAL_TASK" ref="a840dd265ddc0d310fca5215d87c79bd5" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TYPEQUAL_TASK&#160;&#160;&#160;(1&lt;&lt;3)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="decl_8h_source.html#l00071">71</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
-
-<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00293">Declarator::InitFromType()</a>, and <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a840dd265ddc0d310fca5215d87c79bd5"></a><!-- doxytag: member="decl.h::TYPEQUAL_TASK" ref="a840dd265ddc0d310fca5215d87c79bd5" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TYPEQUAL_TASK&#160;&#160;&#160;(1&lt;&lt;3)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a840dd265ddc0d310fca5215d87c79bd5"></a><!-- doxytag: member="decl.h::TYPEQUAL_TASK" ref="a840dd265ddc0d310fca5215d87c79bd5" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TYPEQUAL_TASK&#160;&#160;&#160;(1&lt;&lt;3)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a4e1d46f163dbd13f9fe27a6b5074b8ea"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNIFORM" ref="a4e1d46f163dbd13f9fe27a6b5074b8ea" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TYPEQUAL_UNIFORM&#160;&#160;&#160;(1&lt;&lt;1)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a4e1d46f163dbd13f9fe27a6b5074b8ea"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNIFORM" ref="a4e1d46f163dbd13f9fe27a6b5074b8ea" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TYPEQUAL_UNIFORM&#160;&#160;&#160;(1&lt;&lt;1)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a4e1d46f163dbd13f9fe27a6b5074b8ea"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNIFORM" ref="a4e1d46f163dbd13f9fe27a6b5074b8ea" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TYPEQUAL_UNIFORM&#160;&#160;&#160;(1&lt;&lt;1)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a4e1d46f163dbd13f9fe27a6b5074b8ea"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNIFORM" ref="a4e1d46f163dbd13f9fe27a6b5074b8ea" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TYPEQUAL_UNIFORM&#160;&#160;&#160;(1&lt;&lt;1)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="decl_8h_source.html#l00069">69</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
-
-<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00649">GetStructTypesNamesPositions()</a>, <a class="el" href="decl_8cpp_source.html#l00293">Declarator::InitFromType()</a>, <a class="el" href="decl_8cpp_source.html#l00067">lApplyTypeQualifiers()</a>, <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>, and <a class="el" href="expr_8cpp_source.html#l08027">NewExpr::NewExpr()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a2fbc33f7f56450a1b16955ce0f276162"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNSIGNED" ref="a2fbc33f7f56450a1b16955ce0f276162" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TYPEQUAL_UNSIGNED&#160;&#160;&#160;(1&lt;&lt;5)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a2fbc33f7f56450a1b16955ce0f276162"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNSIGNED" ref="a2fbc33f7f56450a1b16955ce0f276162" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TYPEQUAL_UNSIGNED&#160;&#160;&#160;(1&lt;&lt;5)</td>
         </tr>
       </table>
 </div>
@@ -568,16 +418,16 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="decl_8h_source.html#l00073">73</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
 
-<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00067">lApplyTypeQualifiers()</a>, and <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>.</p>
+<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00068">lApplyTypeQualifiers()</a>, and <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a2fbc33f7f56450a1b16955ce0f276162"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNSIGNED" ref="a2fbc33f7f56450a1b16955ce0f276162" args="" -->
+<a class="anchor" id="a502cd652842f83afe6c7736550cde8ec"></a><!-- doxytag: member="decl.h::TYPEQUAL_SIGNED" ref="a502cd652842f83afe6c7736550cde8ec" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TYPEQUAL_UNSIGNED&#160;&#160;&#160;(1&lt;&lt;5)</td>
+          <td class="memname">#define TYPEQUAL_SIGNED&#160;&#160;&#160;(1&lt;&lt;4)</td>
         </tr>
       </table>
 </div>
@@ -585,12 +435,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a2fbc33f7f56450a1b16955ce0f276162"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNSIGNED" ref="a2fbc33f7f56450a1b16955ce0f276162" args="" -->
+<a class="anchor" id="a840dd265ddc0d310fca5215d87c79bd5"></a><!-- doxytag: member="decl.h::TYPEQUAL_TASK" ref="a840dd265ddc0d310fca5215d87c79bd5" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TYPEQUAL_UNSIGNED&#160;&#160;&#160;(1&lt;&lt;5)</td>
+          <td class="memname">#define TYPEQUAL_TASK&#160;&#160;&#160;(1&lt;&lt;3)</td>
         </tr>
       </table>
 </div>
@@ -598,12 +448,29 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1b7c547c3ec2c68546466f0ea2312224"></a><!-- doxytag: member="decl.h::TYPEQUAL_VARYING" ref="a1b7c547c3ec2c68546466f0ea2312224" args="" -->
+<a class="anchor" id="a840dd265ddc0d310fca5215d87c79bd5"></a><!-- doxytag: member="decl.h::TYPEQUAL_TASK" ref="a840dd265ddc0d310fca5215d87c79bd5" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TYPEQUAL_VARYING&#160;&#160;&#160;(1&lt;&lt;2)</td>
+          <td class="memname">#define TYPEQUAL_TASK&#160;&#160;&#160;(1&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="decl_8h_source.html#l00072">72</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
+
+<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00294">Declarator::InitFromType()</a>, and <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a840dd265ddc0d310fca5215d87c79bd5"></a><!-- doxytag: member="decl.h::TYPEQUAL_TASK" ref="a840dd265ddc0d310fca5215d87c79bd5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_TASK&#160;&#160;&#160;(1&lt;&lt;3)</td>
         </tr>
       </table>
 </div>
@@ -611,12 +478,38 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1b7c547c3ec2c68546466f0ea2312224"></a><!-- doxytag: member="decl.h::TYPEQUAL_VARYING" ref="a1b7c547c3ec2c68546466f0ea2312224" args="" -->
+<a class="anchor" id="a840dd265ddc0d310fca5215d87c79bd5"></a><!-- doxytag: member="decl.h::TYPEQUAL_TASK" ref="a840dd265ddc0d310fca5215d87c79bd5" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TYPEQUAL_VARYING&#160;&#160;&#160;(1&lt;&lt;2)</td>
+          <td class="memname">#define TYPEQUAL_TASK&#160;&#160;&#160;(1&lt;&lt;3)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4e1d46f163dbd13f9fe27a6b5074b8ea"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNIFORM" ref="a4e1d46f163dbd13f9fe27a6b5074b8ea" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_UNIFORM&#160;&#160;&#160;(1&lt;&lt;1)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4e1d46f163dbd13f9fe27a6b5074b8ea"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNIFORM" ref="a4e1d46f163dbd13f9fe27a6b5074b8ea" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_UNIFORM&#160;&#160;&#160;(1&lt;&lt;1)</td>
         </tr>
       </table>
 </div>
@@ -624,7 +517,145 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="decl_8h_source.html#l00070">70</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
 
-<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00649">GetStructTypesNamesPositions()</a>, <a class="el" href="decl_8cpp_source.html#l00293">Declarator::InitFromType()</a>, <a class="el" href="decl_8cpp_source.html#l00067">lApplyTypeQualifiers()</a>, <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>, and <a class="el" href="expr_8cpp_source.html#l08027">NewExpr::NewExpr()</a>.</p>
+<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00658">GetStructTypesNamesPositions()</a>, <a class="el" href="decl_8cpp_source.html#l00294">Declarator::InitFromType()</a>, <a class="el" href="decl_8cpp_source.html#l00068">lApplyTypeQualifiers()</a>, <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>, and <a class="el" href="expr_8cpp_source.html#l08077">NewExpr::NewExpr()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4e1d46f163dbd13f9fe27a6b5074b8ea"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNIFORM" ref="a4e1d46f163dbd13f9fe27a6b5074b8ea" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_UNIFORM&#160;&#160;&#160;(1&lt;&lt;1)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4e1d46f163dbd13f9fe27a6b5074b8ea"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNIFORM" ref="a4e1d46f163dbd13f9fe27a6b5074b8ea" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_UNIFORM&#160;&#160;&#160;(1&lt;&lt;1)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4658e972ad924dd4a46a096c09b6a570"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNMASKED" ref="a4658e972ad924dd4a46a096c09b6a570" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_UNMASKED&#160;&#160;&#160;(1&lt;&lt;8)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4658e972ad924dd4a46a096c09b6a570"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNMASKED" ref="a4658e972ad924dd4a46a096c09b6a570" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_UNMASKED&#160;&#160;&#160;(1&lt;&lt;8)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4658e972ad924dd4a46a096c09b6a570"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNMASKED" ref="a4658e972ad924dd4a46a096c09b6a570" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_UNMASKED&#160;&#160;&#160;(1&lt;&lt;8)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="decl_8h_source.html#l00077">77</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
+
+<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00294">Declarator::InitFromType()</a>, and <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4658e972ad924dd4a46a096c09b6a570"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNMASKED" ref="a4658e972ad924dd4a46a096c09b6a570" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_UNMASKED&#160;&#160;&#160;(1&lt;&lt;8)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2fbc33f7f56450a1b16955ce0f276162"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNSIGNED" ref="a2fbc33f7f56450a1b16955ce0f276162" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_UNSIGNED&#160;&#160;&#160;(1&lt;&lt;5)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2fbc33f7f56450a1b16955ce0f276162"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNSIGNED" ref="a2fbc33f7f56450a1b16955ce0f276162" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_UNSIGNED&#160;&#160;&#160;(1&lt;&lt;5)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2fbc33f7f56450a1b16955ce0f276162"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNSIGNED" ref="a2fbc33f7f56450a1b16955ce0f276162" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_UNSIGNED&#160;&#160;&#160;(1&lt;&lt;5)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="decl_8h_source.html#l00074">74</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
+
+<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00068">lApplyTypeQualifiers()</a>, and <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2fbc33f7f56450a1b16955ce0f276162"></a><!-- doxytag: member="decl.h::TYPEQUAL_UNSIGNED" ref="a2fbc33f7f56450a1b16955ce0f276162" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_UNSIGNED&#160;&#160;&#160;(1&lt;&lt;5)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>
@@ -638,6 +669,36 @@ Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1b7c547c3ec2c68546466f0ea2312224"></a><!-- doxytag: member="decl.h::TYPEQUAL_VARYING" ref="a1b7c547c3ec2c68546466f0ea2312224" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_VARYING&#160;&#160;&#160;(1&lt;&lt;2)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1b7c547c3ec2c68546466f0ea2312224"></a><!-- doxytag: member="decl.h::TYPEQUAL_VARYING" ref="a1b7c547c3ec2c68546466f0ea2312224" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TYPEQUAL_VARYING&#160;&#160;&#160;(1&lt;&lt;2)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="decl_8h_source.html#l00071">71</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
+
+<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00658">GetStructTypesNamesPositions()</a>, <a class="el" href="decl_8cpp_source.html#l00294">Declarator::InitFromType()</a>, <a class="el" href="decl_8cpp_source.html#l00068">lApplyTypeQualifiers()</a>, <a class="el" href="decl_8cpp_source.html#l00051">lPrintTypeQualifiers()</a>, and <a class="el" href="expr_8cpp_source.html#l08077">NewExpr::NewExpr()</a>.</p>
 
 </div>
 </div>
@@ -680,12 +741,12 @@ Functions</h2></td></tr>
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="decl_8h_source.html#l00117">117</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
+<p>Definition at line <a class="el" href="decl_8h_source.html#l00119">119</a> of file <a class="el" href="decl_8h_source.html">decl.h</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Function Documentation</h2>
-<a class="anchor" id="a7766386a3e586e29665f3b2cdbfc2d20"></a><!-- doxytag: member="decl.h::GetStructTypesNamesPositions" ref="a7766386a3e586e29665f3b2cdbfc2d20" args="(const std::vector&lt; StructDeclaration * &gt; &amp;sd, std::vector&lt; const Type * &gt; *elementTypes, std::vector&lt; std::string &gt; *elementNames, std::vector&lt; SourcePos &gt; *elementPositions)" -->
+<a class="anchor" id="a9bdff84ef73a123b051e98ea74e48513"></a><!-- doxytag: member="decl.h::GetStructTypesNamesPositions" ref="a9bdff84ef73a123b051e98ea74e48513" args="(const std::vector&lt; StructDeclaration * &gt; &amp;sd, llvm::SmallVector&lt; const Type *, 8 &gt; *elementTypes, llvm::SmallVector&lt; std::string, 8 &gt; *elementNames, llvm::SmallVector&lt; SourcePos, 8 &gt; *elementPositions)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -698,19 +759,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; const <a class="el" href="classType.html">Type</a> * &gt; *&#160;</td>
+          <td class="paramtype">llvm::SmallVector&lt; const <a class="el" href="classType.html">Type</a> *, 8 &gt; *&#160;</td>
           <td class="paramname"><em>elementTypes</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; std::string &gt; *&#160;</td>
+          <td class="paramtype">llvm::SmallVector&lt; std::string, 8 &gt; *&#160;</td>
           <td class="paramname"><em>elementNames</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="structSourcePos.html">SourcePos</a> &gt; *&#160;</td>
+          <td class="paramtype">llvm::SmallVector&lt; <a class="el" href="structSourcePos.html">SourcePos</a>, 8 &gt; *&#160;</td>
           <td class="paramname"><em>elementPositions</em>&#160;</td>
         </tr>
         <tr>
@@ -723,9 +784,9 @@ Functions</h2></td></tr>
 <div class="memdoc">
 <p>Given a set of <a class="el" href="structStructDeclaration.html">StructDeclaration</a> instances, this returns the types of the elements of the corresponding struct and their names. </p>
 
-<p>Definition at line <a class="el" href="decl_8cpp_source.html#l00649">649</a> of file <a class="el" href="decl_8cpp_source.html">decl.cpp</a>.</p>
+<p>Definition at line <a class="el" href="decl_8cpp_source.html#l00658">658</a> of file <a class="el" href="decl_8cpp_source.html">decl.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8cpp_source.html#l03200">Type::Equal()</a>, <a class="el" href="util_8cpp_source.html#l00356">Error()</a>, <a class="el" href="type_8cpp_source.html#l01311">ArrayType::GetElementCount()</a>, <a class="el" href="type_8h_source.html#l00127">Type::GetSOAWidth()</a>, <a class="el" href="parse_8yy.html#a801facd0a7a4df1fc1589b4e5456b2a7">if()</a>, <a class="el" href="decl_8cpp_source.html#l00229">Declarator::InitFromDeclSpecs()</a>, <a class="el" href="type_8h_source.html#l00112">Type::IsUniformType()</a>, <a class="el" href="type_8h_source.html#l00117">Type::IsVaryingType()</a>, <a class="el" href="decl_8h_source.html#l00167">Declarator::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="decl_8h_source.html#l00144">Declarator::pos</a>, <a class="el" href="decl_8h_source.html#l00111">DeclSpecs::soaWidth</a>, <a class="el" href="decl_8h_source.html#l00174">Declarator::type</a>, <a class="el" href="decl_8h_source.html#l00069">TYPEQUAL_UNIFORM</a>, <a class="el" href="decl_8h_source.html#l00070">TYPEQUAL_VARYING</a>, <a class="el" href="decl_8h_source.html#l00092">DeclSpecs::typeQualifiers</a>, and <a class="el" href="type_8h_source.html#l00306">AtomicType::Void</a>.</p>
+<p>References <a class="el" href="type_8cpp_source.html#l03303">Type::Equal()</a>, <a class="el" href="util_8cpp_source.html#l00377">Error()</a>, <a class="el" href="type_8cpp_source.html#l01358">ArrayType::GetElementCount()</a>, <a class="el" href="type_8h_source.html#l00155">Type::GetSOAWidth()</a>, <a class="el" href="parse_8yy.html#a801facd0a7a4df1fc1589b4e5456b2a7">if()</a>, <a class="el" href="decl_8cpp_source.html#l00230">Declarator::InitFromDeclSpecs()</a>, <a class="el" href="type_8h_source.html#l00140">Type::IsUniformType()</a>, <a class="el" href="type_8h_source.html#l00145">Type::IsVaryingType()</a>, <a class="el" href="decl_8h_source.html#l00169">Declarator::name</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="decl_8h_source.html#l00146">Declarator::pos</a>, <a class="el" href="decl_8h_source.html#l00113">DeclSpecs::soaWidth</a>, <a class="el" href="decl_8h_source.html#l00176">Declarator::type</a>, <a class="el" href="decl_8h_source.html#l00070">TYPEQUAL_UNIFORM</a>, <a class="el" href="decl_8h_source.html#l00071">TYPEQUAL_VARYING</a>, <a class="el" href="decl_8h_source.html#l00094">DeclSpecs::typeQualifiers</a>, and <a class="el" href="type_8h_source.html#l00342">AtomicType::Void</a>.</p>
 
 </div>
 </div>
@@ -733,7 +794,7 @@ Functions</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 20 2012 14:30:30 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jun 29 2012 08:42:25 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>

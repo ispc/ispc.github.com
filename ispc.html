@@ -38,6 +38,7 @@
           <li><a href="downloads.html">Downloads</a></li>
           <li id="selected"><a href="documentation.html">Documentation</a></li>
           <li><a href="perf.html">Performance</a></li>
+          <li><a href="contrib.html">Contributors</a></li>
         </ul>
       </div>
     </div>
@@ -97,6 +98,8 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <ul class="simple">
 <li><a class="reference internal" href="#recent-changes-to-ispc">Recent Changes to ISPC</a><ul>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-1">Updating ISPC Programs For Changes In ISPC 1.1</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-2">Updating ISPC Programs For Changes In ISPC 1.2</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-3">Updating ISPC Programs For Changes In ISPC 1.3</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -108,6 +111,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#basic-command-line-options">Basic Command-line Options</a></li>
 <li><a class="reference internal" href="#selecting-the-compilation-target">Selecting The Compilation Target</a></li>
 <li><a class="reference internal" href="#generating-generic-c-output">Generating Generic C++ Output</a></li>
+<li><a class="reference internal" href="#compiling-for-the-intel-xeon-phi-architecture">Compiling For The Intel Xeon Phi Architecture</a></li>
 <li><a class="reference internal" href="#selecting-32-or-64-bit-addressing">Selecting 32 or 64 Bit Addressing</a></li>
 <li><a class="reference internal" href="#the-preprocessor">The Preprocessor</a></li>
 <li><a class="reference internal" href="#debugging">Debugging</a></li>
@@ -155,15 +159,21 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#control-flow">Control Flow</a><ul>
 <li><a class="reference internal" href="#conditional-statements-if">Conditional Statements: &quot;if&quot;</a></li>
 <li><a class="reference internal" href="#conditional-statements-switch">Conditional Statements: &quot;switch&quot;</a></li>
+<li><a class="reference internal" href="#iteration-statements">Iteration Statements</a><ul>
 <li><a class="reference internal" href="#basic-iteration-statements-for-while-and-do">Basic Iteration Statements: &quot;for&quot;, &quot;while&quot;, and &quot;do&quot;</a></li>
-<li><a class="reference internal" href="#unstructured-control-flow-goto">Unstructured Control Flow: &quot;goto&quot;</a></li>
-<li><a class="reference internal" href="#coherent-control-flow-statements-cif-and-friends">&quot;Coherent&quot; Control Flow Statements: &quot;cif&quot; and Friends</a></li>
+<li><a class="reference internal" href="#iteration-over-active-program-instances-foreach-active">Iteration over active program instances: &quot;foreach_active&quot;</a></li>
+<li><a class="reference internal" href="#iteration-over-unique-elements-foreach-unique">Iteration over unique elements: &quot;foreach_unique&quot;</a></li>
 <li><a class="reference internal" href="#parallel-iteration-statements-foreach-and-foreach-tiled">Parallel Iteration Statements: &quot;foreach&quot; and &quot;foreach_tiled&quot;</a></li>
 <li><a class="reference internal" href="#parallel-iteration-with-programindex-and-programcount">Parallel Iteration with &quot;programIndex&quot; and &quot;programCount&quot;</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unstructured-control-flow-goto">Unstructured Control Flow: &quot;goto&quot;</a></li>
+<li><a class="reference internal" href="#coherent-control-flow-statements-cif-and-friends">&quot;Coherent&quot; Control Flow Statements: &quot;cif&quot; and Friends</a></li>
 <li><a class="reference internal" href="#functions-and-function-calls">Functions and Function Calls</a><ul>
 <li><a class="reference internal" href="#function-overloading">Function Overloading</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#re-establishing-the-execution-mask">Re-establishing The Execution Mask</a></li>
 <li><a class="reference internal" href="#task-parallel-execution">Task Parallel Execution</a><ul>
 <li><a class="reference internal" href="#task-parallelism-launch-and-sync-statements">Task Parallelism: &quot;launch&quot; and &quot;sync&quot; Statements</a></li>
 <li><a class="reference internal" href="#task-parallelism-runtime-requirements">Task Parallelism: Runtime Requirements</a></li>
@@ -199,6 +209,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#data-conversions">Data Conversions</a><ul>
 <li><a class="reference internal" href="#converting-between-array-of-structures-and-structure-of-arrays-layout">Converting Between Array-of-Structures and Structure-of-Arrays Layout</a></li>
 <li><a class="reference internal" href="#conversions-to-and-from-half-precision-floats">Conversions To and From Half-Precision Floats</a></li>
+<li><a class="reference internal" href="#converting-to-srgb8">Converting to sRGB8</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#systems-programming-support">Systems Programming Support</a><ul>
@@ -262,6 +273,42 @@ benefits in many cases when iterating over data and mapping it to program
 instances.  See the Section <a class="reference internal" href="#parallel-iteration-statements-foreach-and-foreach-tiled">Parallel Iteration Statements: &quot;foreach&quot; and
 &quot;foreach_tiled&quot;</a> for more information about these.</li>
 </ul>
+</div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-2">
+<h2>Updating ISPC Programs For Changes In ISPC 1.2</h2>
+<p>The following changes were made to the language syntax and semantics for
+the <tt class="docutils literal">ispc</tt> 1.2 release:</p>
+<ul class="simple">
+<li>Syntax for the &quot;launch&quot; keyword has been cleaned up; it's now no longer
+necessary to bracket the launched function call with angle brackets. (In
+other words, now use <tt class="docutils literal">launch <span class="pre">foo();</span></tt>, rather than <tt class="docutils literal">launch &lt; foo() &gt;;</tt>.)</li>
+<li>When using pointers, the pointed-to data type is now &quot;uniform&quot; by
+default.  Use the varying keyword to specify varying pointed-to types
+when needed.  (i.e. <tt class="docutils literal">float *ptr</tt> is a varying pointer to uniform float
+data, whereas previously it was a varying pointer to varying float
+values.) Use <tt class="docutils literal">varying float *</tt> to specify a varying pointer to varying
+float data, and so forth.</li>
+<li>The details of &quot;uniform&quot; and &quot;varying&quot; and how they interact with struct
+types have been cleaned up.  Now, when a struct type is declared, if the
+struct elements don't have explicit &quot;uniform&quot; or &quot;varying&quot; qualifiers,
+they are said to have &quot;unbound&quot; variability.  When a struct type is
+instantiated, any unbound variability elements inherit the variability of
+the parent struct type. See <a class="reference internal" href="#struct-types">Struct Types</a> for more details.</li>
+<li><tt class="docutils literal">ispc</tt> has a new language feature that makes it much easier to use the
+efficient &quot;(array of) structure of arrays&quot; (AoSoA, or SoA) memory layout
+of data.  A new <tt class="docutils literal">soa&lt;n&gt;</tt> qualifier can be applied to structure types to
+specify an n-wide SoA version of the corresponding type.  Array indexing
+and pointer operations with arrays SoA types automatically handles the
+two-stage indexing calculation to access the data.  See <a class="reference internal" href="#structure-of-array-types">Structure of
+Array Types</a> for more details.</li>
+</ul>
+</div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-3">
+<h2>Updating ISPC Programs For Changes In ISPC 1.3</h2>
+<p>This release adds a number of new iteration constructs, which in turn use
+new reserved words: <tt class="docutils literal">unmasked</tt>, <tt class="docutils literal">foreach_unique</tt>, <tt class="docutils literal">foreach_active</tt>,
+and <tt class="docutils literal">in</tt>.  Any program that happens to have a variable or function with
+one of these names must be modified to rename that symbol.</p>
 </div>
 </div>
 <div class="section" id="getting-started-with-ispc">
@@ -435,11 +482,12 @@ CPU.</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.obj --cpu=corei7-avx
 </pre>
-<p>Finally, <tt class="docutils literal"><span class="pre">--target</span></tt> selects between the SSE2, SSE4, and AVX instruction
-sets.  (As general context, SSE2 was first introduced in processors that
-shipped in 2001, SSE4 was introduced in 2007, and processors with AVX
-were introduced in 2010.  Consult your CPU's manual for specifics on which
-vector instruction set it supports.)</p>
+<p>Finally, <tt class="docutils literal"><span class="pre">--target</span></tt> selects between the SSE2, SSE4, and AVX, and AVX2
+instruction sets.  (As general context, SSE2 was first introduced in
+processors that shipped in 2001, SSE4 was introduced in 2007, and
+processors with AVX were introduced in 2010.  AVX2 will be supported on
+future CPUs based on Intel's &quot;Haswell&quot; architecture.  Consult your CPU's
+manual for specifics on which vector instruction set it supports.)</p>
 <p>By default, the target instruction set is chosen based on the most capable
 one supported by the system on which you're running <tt class="docutils literal">ispc</tt>.  You can
 override this choice with the <tt class="docutils literal"><span class="pre">--target</span></tt> flag; for example, to select
@@ -494,6 +542,48 @@ provide the basic context.</p>
 C++ file; this can be used to easily include specific implementations of
 the vector types and functions.</p>
 </div>
+<div class="section" id="compiling-for-the-intel-xeon-phi-architecture">
+<h2>Compiling For The Intel Xeon Phi Architecture</h2>
+<p><tt class="docutils literal">ispc</tt> has beta-level support for compiling for the many-core Intel® Xeon
+Phi architecture (formerly, &quot;Many Integrated Cores&quot; / MIC.)  This support
+is based on the &quot;generic&quot; C++ output, described in the previous section.</p>
+<p>To compile for Xeon Phi, first generate intermediate C++ code:</p>
+<pre class="literal-block">
+ispc foo.ispc --emit-c++ --target=generic-16 -o foo.cpp \
+    --c++-include-file=knc.h
+</pre>
+<p>The <tt class="docutils literal">ispc</tt> distribution now includes a header file,
+<tt class="docutils literal">examples/intrinsics/knc.h</tt>, which maps from the generic C++ output to
+the corresponding intrinsic operations for Intel Xeon Phi.  Thus, to
+generate an object file, use the Intel C Compiler (<tt class="docutils literal">icc</tt>) compile the C++
+code generated by <tt class="docutils literal">ispc</tt>, setting the <tt class="docutils literal">#include</tt> search path so that it
+can find the <tt class="docutils literal">examples/intrinsics/knc.h</tt> header file in the <tt class="docutils literal">ispc</tt>
+distribution.</p>
+<p>With the current beta implementation, complex <tt class="docutils literal">ispc</tt> programs are able to
+run on Xeon Phi, though there are a number of known limitations:</p>
+<ul class="simple">
+<li>The <tt class="docutils literal">examples/intrinsics/knc.h</tt> header file isn’t complete yet; for
+example, vector operations with <tt class="docutils literal">int8</tt> and <tt class="docutils literal">int16</tt> types aren’t yet
+implemented.  Programs that operate on <tt class="docutils literal">varying</tt> <tt class="docutils literal">int32</tt>, <tt class="docutils literal">float</tt>,
+and <tt class="docutils literal">double</tt> data-types (and <tt class="docutils literal">uniform</tt> variables of any data type,
+and arrays and structures of these types), should operate correctly.</li>
+<li>If you use the <tt class="docutils literal">launch</tt> functionality to launch tasks across cores,
+note that the pthreads task system implemented in
+<tt class="docutils literal">examples/tasksys.cpp</tt> hasn’t been tuned for Xeon Phi yet, and has
+known issues with setting thread affinities optimally.</li>
+<li>The compiler currently emits unaligned memory accesses in many cases
+where the memory address is actually aligned.  This may unnecessarily
+impact performance.</li>
+</ul>
+<p>All of these issues are currently actively being addressed and will be
+fixed in future releases.</p>
+<p>If you do use the current version of <tt class="docutils literal">ispc</tt> on Xeon Phi, please let us
+know of any bugs or unexpected results.  (Also, any interesting results!).
+<em>Note that access to Xeon Phi and public discussion of Xeon Phi performance
+is still governed by NDA</em>, so please send email to &quot;matt dot pharr at intel
+dot com&quot; for any issues that shouldn't be filed in the <a class="reference external" href="https://github.com/ispc/ispc/issues">public ispc bug
+tracker</a>.</p>
+</div>
 <div class="section" id="selecting-32-or-64-bit-addressing">
 <h2>Selecting 32 or 64 Bit Addressing</h2>
 <p>By default, <tt class="docutils literal">ispc</tt> uses 32-bit arithmetic for performing addressing
@@ -545,7 +635,7 @@ preprocessor runs:</p>
 <td>Major version of the <tt class="docutils literal">ispc</tt> compiler/language</td>
 </tr>
 <tr><td>ISPC_MINOR_VERSION</td>
-<td>1</td>
+<td>3</td>
 <td>Minor version of the <tt class="docutils literal">ispc</tt> compiler/language</td>
 </tr>
 <tr><td>PI</td>
@@ -557,16 +647,28 @@ preprocessor runs:</p>
 </div>
 <div class="section" id="debugging">
 <h2>Debugging</h2>
-<p>Support for debugging in <tt class="docutils literal">ispc</tt> is in progress.  On Linux* and Mac
-OS*, the <tt class="docutils literal"><span class="pre">-g</span></tt> command-line flag can be supplied to the compiler,
-which causes it to generate debugging symbols.  Running <tt class="docutils literal">ispc</tt> programs
-in the debugger, setting breakpoints, printing out variables and the like
-all generally works, though there is occasional unexpected behavior.</p>
-<p>Another option for debugging (the only current option on Windows*) is to
-use the <tt class="docutils literal">print</tt> statement for <tt class="docutils literal">printf()</tt> style debugging.  (See <a class="reference internal" href="#output-functions">Output
-Functions</a> for more information.)  You can also use the ability to call
-back to application code at particular points in the program, passing a set
-of variable values to be logged or otherwise analyzed from there.</p>
+<p>On Linux* and Mac OS*, the <tt class="docutils literal"><span class="pre">-g</span></tt> command-line flag can be supplied to
+the compiler, which causes it to generate debugging symbols.  Running
+<tt class="docutils literal">ispc</tt> programs in the debugger, setting breakpoints, printing out
+variables is just the same as debugging C/C++ programs.  Similarly, you can
+directly step up and down the call stack between <tt class="docutils literal">ispc</tt> code and C/C++
+code.</p>
+<p>One limitation of the current debugging support is that the debugger
+provides a window into an entire gang's worth of program instances, rather
+than just a single program instance.  (These concepts will be introduced
+shortly, in <cite>Basic Concepts: Program Instances and Gangs of Program
+Instances</cite>).  Thus, when a <tt class="docutils literal">varying</tt> variable is printed, the values for
+each of the program instances are displayed.  Along similar lines, the path
+the debugger follows through program source code passes each statement that
+any program instance wants to execute (see <a class="reference internal" href="#control-flow-within-a-gang">Control Flow Within A Gang</a>
+for more details on control flow in <tt class="docutils literal">ispc</tt>.)</p>
+<p>While debugging, a variable, <tt class="docutils literal">__mask</tt>, is available to provide the
+current program execution mask at the current point in the program</p>
+<p>Another option for debugging (and the only current option on Windows*) is
+to use the <tt class="docutils literal">print</tt> statement for <tt class="docutils literal">printf()</tt> style debugging.  (See
+<a class="reference internal" href="#output-functions">Output Functions</a> for more information.)  You can also use the ability to
+call back to application code at particular points in the program, passing
+a set of variable values to be logged or otherwise analyzed from there.</p>
 </div>
 </div>
 <div class="section" id="the-ispc-parallel-execution-model">
@@ -620,7 +722,7 @@ Rather, the set of program instances is mapped to the SIMD lanes of the
 current processor, leading to excellent utilization of hardware SIMD units
 and high performance.</p>
 <p>The number of program instances in a gang is relatively small; in practice,
-it's no more than twice the native SIMD width of the hardware it is
+it's no more than 2-4x the native SIMD width of the hardware it is
 executing on.  (Thus, four or eight program instances in a gang on a CPU
 using the the 4-wide SSE instruction set, and eight or sixteen on a CPU
 using 8-wide AVX.)</p>
@@ -644,18 +746,18 @@ else {
 program instances in the gang: some of the currently running program
 instances want to execute the statements for the &quot;true&quot; case and some want
 to execute the statements for the &quot;false&quot; case.</p>
-<p>Complex control flow in <tt class="docutils literal">ispc</tt> programs generally &quot;just works&quot;, computing
-the same results for each program instance in a gang as would have been
-computed if the equivalent code ran serially in C to compute each program
-instance's result individually.  However, here we will more precisely
-define the execution model for control flow in order to be able to
-precisely define the language's behavior in specific situations.</p>
+<p>Complex control flow in <tt class="docutils literal">ispc</tt> programs generally works as expected,
+computing the same results for each program instance in a gang as would
+have been computed if the equivalent code ran serially in C to compute each
+program instance's result individually.  However, here we will more
+precisely define the execution model for control flow in order to be able
+to precisely define the language's behavior in specific situations.</p>
 <p>We will specify the notion of a <em>program counter</em> and how it is updated to
 step through the program, and an <em>execution mask</em> that indicates which
 program instances want to execute the instruction at the current program
 counter.  The program counter a single program counter shared by all of the
 program instances in the gang; it points to a single instruction to be
-executed next.  The execution mask is a per-program instance boolean value
+executed next.  The execution mask is a per-program-instance boolean value
 that indicates whether or not side effects from the current instruction
 should effect each program instance.  Thus, for example, if a statement
 were to be executed with an &quot;all off&quot; mask, there should be no observable
@@ -696,40 +798,22 @@ float x = ..., y = ...;
 bool test = (x &lt; y);
 mask originalMask = get_current_mask();
 set_mask(originalMask &amp; test);
-// true statements
+if (any_mask_entries_are_enabled()) {
+  // true statements
+}
 set_mask(originalMask &amp; ~test);
-// false statements
+if (any_mask_entries_are_enabled()) {
+  // false statements
+}
 set_mask(originalMask);
 </pre>
 <p>In other words, the program counter steps through the statements for both
 the &quot;true&quot; case and the &quot;false&quot; case, with the execution mask set so that
 no side-effects from the true statements affect the program instances that
-want to run the false statements, and vice versa.  the execution mask is
-then restored to the value it had before the <tt class="docutils literal">if</tt> statement.</p>
-<p>However, the compiler is free to generate different code for an <tt class="docutils literal">if</tt>
-test, such as:</p>
-<pre class="literal-block">
-   float x = ..., y = ...;
-   bool test = (x &lt; y);
-   mask originalMask = get_current_mask();
-   if (all_off(originalMask &amp; test))
-       goto else_stmts;
-   set_mask(originalMask &amp; test);
-   // true statements
-else_stmts:
-   if (all_off(originalMask &amp; ~test))
-       goto done;
-   set_mask(originalMask &amp; ~test);
-   // false statements
-done:
-   set_mask(originalMask);
-</pre>
-<p>Furthermore, the order in which the program counter steps through the
-code for the &quot;true&quot; and &quot;false&quot; statements is undefined.</p>
-<p>In most cases, there is no programmer-visible difference between these two
-ways of compiling <tt class="docutils literal">if</tt>, though see the <a class="reference internal" href="#uniform-variables-and-varying-control-flow">Uniform Variables and Varying
-Control Flow</a> section for a case where it causes undefined behavior in one
-particular situation.</p>
+want to run the false statements, and vice versa.  However, a block of
+statements does not execute if the mask is &quot;all off&quot; upon entry to that
+block.  The execution mask is then restored to the value it had before the
+<tt class="docutils literal">if</tt> statement.</p>
 </div>
 <div class="section" id="control-flow-example-loops">
 <h2>Control Flow Example: Loops</h2>
@@ -829,8 +913,8 @@ structures.)</p>
 variable, though <tt class="docutils literal">uniform</tt> values can be assigned to <tt class="docutils literal">uniform</tt>
 variables.  Assignments to <tt class="docutils literal">uniform</tt> variables are not affected by the
 execution mask (there's no unambiguous way that they could be); rather,
-they always apply if the program pointer executes a statement that is a
-uniform assignment.</p>
+they always apply if the program counter pointer passes through a statement
+that is a <tt class="docutils literal">uniform</tt> assignment.</p>
 </div>
 <div class="section" id="uniform-control-flow">
 <h2>Uniform Control Flow</h2>
@@ -895,50 +979,29 @@ effects of the instructions masked so that they only apply to the program
 instances that are supposed to be executing the corresponding clause.
 Under this model, we must define the effect of modifying <tt class="docutils literal">uniform</tt>
 variables in the context of varying control flow.</p>
-<p>In most cases, modifying <tt class="docutils literal">uniform</tt> variables under varying control flow
-leads to the <tt class="docutils literal">uniform</tt> variable having an undefined value, except within
-a block where the <tt class="docutils literal">uniform</tt> value had a value assigned to it.</p>
-<p>Consider the following example, which illustrates three cases.</p>
+<p>In general, modifying <tt class="docutils literal">uniform</tt> variables under varying control flow
+leads to the <tt class="docutils literal">uniform</tt> variable having a value that depends on whether
+any of the program instances in the gang followed a particular execution
+path.  Consider the following example:</p>
 <pre class="literal-block">
 float a = ...;
 uniform int b = 0;
 if (a == 0) {
     ++b;
-    // use b: undefined! May be 1 or 11.
+    // b is 1
 }
 else {
     b = 10;
-    // can use b, has value 10
+    // b is 10
 }
-// b is undefined: may be 10 or 11
+// whether b is 1 or 10 depends on whether any of the values
+// of &quot;a&quot; in the executing gang were 0.
 </pre>
-<p>There are three principles of <tt class="docutils literal">ispc</tt>'s execution model that have been
-previously introduced that together explain the results above.  They are:</p>
-<blockquote>
-<ol class="arabic simple">
-<li>Modifications to <tt class="docutils literal">uniform</tt> variables aren't affected by the
-execution mask.</li>
-<li>The &quot;true&quot; and &quot;false&quot; clauses of a varying <tt class="docutils literal">if</tt> statement may be
-executed in either order.</li>
-<li>Varying <tt class="docutils literal">if</tt> statements may in some cases execute the instructions
-for one of their clauses with the execution mask &quot;all off&quot;.</li>
-</ol>
-</blockquote>
-<p>Thus, within the &quot;true&quot; clause, the value of <tt class="docutils literal">b</tt> is undefined since the
-&quot;else&quot; clause may or may not have executed before the clause for the true
-case.</p>
-<p>Within the &quot;else&quot; clause, the assignment <tt class="docutils literal">b = 10</tt> applies, giving <tt class="docutils literal">b</tt> a
-well-defined value within the &quot;else&quot; clause and <tt class="docutils literal">b</tt> can validly be used
-in the remainder of the code in that block.</p>
-<p>Finally, <tt class="docutils literal">b</tt> is undefined after the end of the &quot;else&quot; clause, since it is
-possible (but not necessarily the case) that one the clauses may have
-executed with an &quot;all off&quot; mask.  Thus, even if <tt class="docutils literal">a</tt> had a non-zero value
-for all program instances in the gang, it's possible that the &quot;true&quot; clause
-executed with an &quot;all off&quot; mask and <tt class="docutils literal">b</tt> was modified there.</p>
-<p>If it is important that code never be executed with an &quot;all off&quot; execution
-mask, then the <tt class="docutils literal">cif</tt> statement (documented in the <a class="reference internal" href="#coherent-control-flow-statements-cif-and-friends">&quot;Coherent&quot; Control Flow
-Statements: &quot;cif&quot; and Friends</a> section) can be used in place of a regular
-<tt class="docutils literal">if</tt>, as it guarantees this property.</p>
+<p>Here, if any of the values of <tt class="docutils literal">a</tt> across the gang was non-zero, then
+<tt class="docutils literal">b</tt> will have a value of 10 after the <tt class="docutils literal">if</tt> statement has executed.
+However, if all of the values of <tt class="docutils literal">a</tt> in the currently-executing program
+instances at the start of the <tt class="docutils literal">if</tt> statement had a value of zero, then
+<tt class="docutils literal">b</tt> would have a value of 1.</p>
 </div>
 <div class="section" id="data-races-within-a-gang">
 <h2>Data Races Within a Gang</h2>
@@ -1101,6 +1164,10 @@ C++:</p>
 <ul class="simple">
 <li>Parallel <tt class="docutils literal">foreach</tt> and <tt class="docutils literal">foreach_tiled</tt> iteration constructs (see
 <a class="reference internal" href="#parallel-iteration-statements-foreach-and-foreach-tiled">Parallel Iteration Statements: &quot;foreach&quot; and &quot;foreach_tiled&quot;</a>)</li>
+<li>The <tt class="docutils literal">foreach_active</tt> and <tt class="docutils literal">foreach_unique</tt> iteration constructs, which
+provide ways of iterating over subsets of the program instances in the
+gang.  See <a class="reference internal" href="#iteration-over-active-program-instances-foreach-active">Iteration over active program instances: &quot;foreach_active&quot;</a>
+and <a class="reference internal" href="#iteration-over-unique-elements-foreach-unique">Iteration over unique elements: &quot;foreach_unique&quot;</a>.)</li>
 <li>Language support for task parallelism (see <a class="reference internal" href="#task-parallel-execution">Task Parallel Execution</a>)</li>
 <li>&quot;Coherent&quot; control flow statements that indicate that control flow is
 expected to be coherent across the running program instances (see
@@ -1140,10 +1207,11 @@ currently treated as being <tt class="docutils literal">float</tt> type, not <tt
 <tt class="docutils literal">if</tt>, <tt class="docutils literal">int</tt>, <tt class="docutils literal">NULL</tt>, <tt class="docutils literal">return</tt>, <tt class="docutils literal">signed</tt>, <tt class="docutils literal">sizeof</tt>, <tt class="docutils literal">static</tt>,
 <tt class="docutils literal">struct</tt>, <tt class="docutils literal">switch</tt>, <tt class="docutils literal">typedef</tt>, <tt class="docutils literal">unsigned</tt>, <tt class="docutils literal">void</tt>, and <tt class="docutils literal">while</tt>.</p>
 <p><tt class="docutils literal">ispc</tt> additionally reserves the following words:</p>
-<p><tt class="docutils literal">bool</tt>, <tt class="docutils literal">export</tt>, <tt class="docutils literal">cdo</tt>, <tt class="docutils literal">cfor</tt>, <tt class="docutils literal">cif</tt>, <tt class="docutils literal">cwhile</tt>, <tt class="docutils literal">false</tt>,
-<tt class="docutils literal">foreach</tt>, <tt class="docutils literal">foreach_tiled</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>,
-<tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">reference</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">sync</tt>,
-<tt class="docutils literal">task</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">uniform</tt>, and <tt class="docutils literal">varying</tt>.</p>
+<p><tt class="docutils literal">bool</tt>, <tt class="docutils literal">delete</tt>, <tt class="docutils literal">export</tt>, <tt class="docutils literal">cdo</tt>, <tt class="docutils literal">cfor</tt>, <tt class="docutils literal">cif</tt>, <tt class="docutils literal">cwhile</tt>,
+<tt class="docutils literal">false</tt>, <tt class="docutils literal">foreach</tt>, <tt class="docutils literal">foreach_active</tt>, <tt class="docutils literal">foreach_tiled</tt>,
+<tt class="docutils literal">foreach_unique</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>,
+<tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">new</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>,
+<tt class="docutils literal">true</tt>, <tt class="docutils literal">uniform</tt>, and <tt class="docutils literal">varying</tt>.</p>
 </div>
 <div class="section" id="lexical-structure">
 <h2>Lexical Structure</h2>
@@ -1151,8 +1219,8 @@ currently treated as being <tt class="docutils literal">float</tt> type, not <tt
 white-space characters are the usual set of spaces, tabs, and carriage
 returns/line feeds.  Comments can be delineated with <tt class="docutils literal">//</tt>, which starts a
 comment that continues to the end of the line, or the start of a comment
-can be delineated with <tt class="docutils literal">/*</tt> and the end with <tt class="docutils literal">*/</tt>.  Like C/C++,
-comments can't be nested.</p>
+can be delineated with <tt class="docutils literal">/*</tt> at the start and with <tt class="docutils literal">*/</tt> at the end.
+Like C/C++, comments can't be nested.</p>
 <p>Identifiers in <tt class="docutils literal">ispc</tt> are sequences of characters that start with an
 underscore or an upper-case or lower-case letter, and then followed by
 zero or more letters, numbers, or underscores.  Identifiers that start with
@@ -1200,7 +1268,7 @@ float neg = -0x1.ffep+11;  // -4095.
 </pre>
 <p>Floating-point constants can optionally have a &quot;f&quot; or &quot;F&quot; suffix (<tt class="docutils literal">ispc</tt>
 currently treats all floating-point constants as having 32-bit precision,
-making this suffix unnecessary.)</p>
+making this suffix not currently have an effect.)</p>
 <p>String constants in <tt class="docutils literal">ispc</tt> are denoted by an opening double quote <tt class="docutils literal">&quot;</tt>
 followed by any character other than a newline, up to a closing double
 quote.  Within the string, a number of special escape sequences can be used
@@ -1258,11 +1326,12 @@ doesn't support character constants.</p>
 <tt class="docutils literal">break</tt>, <tt class="docutils literal">case</tt>, <tt class="docutils literal">cdo</tt>, <tt class="docutils literal">cfor</tt>, <tt class="docutils literal">char</tt>, <tt class="docutils literal">cif</tt>, <tt class="docutils literal">cwhile</tt>,
 <tt class="docutils literal">const</tt>, <tt class="docutils literal">continue</tt>, <tt class="docutils literal">default</tt>, <tt class="docutils literal">do</tt>, <tt class="docutils literal">double</tt>, <tt class="docutils literal">else</tt>,
 <tt class="docutils literal">enum</tt>, <tt class="docutils literal">export</tt>, <tt class="docutils literal">extern</tt>, <tt class="docutils literal">false</tt>, <tt class="docutils literal">float</tt>, <tt class="docutils literal">for</tt>,
-<tt class="docutils literal">foreach</tt>, <tt class="docutils literal">foreach_tiled</tt>, <tt class="docutils literal">goto</tt>, <tt class="docutils literal">if</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">int</tt>,
-<tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">NULL</tt>, <tt class="docutils literal">print</tt>,
-<tt class="docutils literal">return</tt>, <tt class="docutils literal">signed</tt>, <tt class="docutils literal">sizeof</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">static</tt>, <tt class="docutils literal">struct</tt>,
-<tt class="docutils literal">switch</tt>, <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">typedef</tt>, <tt class="docutils literal">uniform</tt>,
-<tt class="docutils literal">union</tt>, <tt class="docutils literal">unsigned</tt>, <tt class="docutils literal">varying</tt>, <tt class="docutils literal">void</tt>, <tt class="docutils literal">volatile</tt>, <tt class="docutils literal">while</tt>.</p>
+<tt class="docutils literal">foreach</tt>, <tt class="docutils literal">foreach_active</tt>, <tt class="docutils literal">foreach_tiled</tt>, <tt class="docutils literal">foreach_unique</tt>,
+<tt class="docutils literal">goto</tt>, <tt class="docutils literal">if</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">int</tt>, <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>,
+<tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">NULL</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">return</tt>,
+<tt class="docutils literal">signed</tt>, <tt class="docutils literal">sizeof</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">static</tt>, <tt class="docutils literal">struct</tt>, <tt class="docutils literal">switch</tt>,
+<tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">typedef</tt>, <tt class="docutils literal">uniform</tt>, <tt class="docutils literal">union</tt>,
+<tt class="docutils literal">unsigned</tt>, <tt class="docutils literal">varying</tt>, <tt class="docutils literal">void</tt>, <tt class="docutils literal">volatile</tt>, <tt class="docutils literal">while</tt>.</p>
 <p><tt class="docutils literal">ispc</tt> defines the following operators and punctuation:</p>
 <table border="1" class="docutils">
 <caption>Operators</caption>
@@ -1426,12 +1495,15 @@ memory, while the second declaration corresponds to 10 <tt class="docutils liter
 <h2>Defining New Names For Types</h2>
 <p>The <tt class="docutils literal">typedef</tt> keyword can be used to name types:</p>
 <pre class="literal-block">
-typedef Float3 float[3];
+typedef int64 BigInt;
+typedef float Float3[3];
 </pre>
-<p><tt class="docutils literal">typedef</tt> doesn't create a new type: it just provides an alternative name
-for an existing type.  Thus, in the above example, it is legal to pass a
-value with <tt class="docutils literal">float[3]</tt> type to a function that has been declared to take a
-<tt class="docutils literal">Float3</tt> parameter.</p>
+<p>Following C's syntax, the code above defines <tt class="docutils literal">BigInt</tt> to have <tt class="docutils literal">int64</tt>
+type and <tt class="docutils literal">Float3</tt> to have <tt class="docutils literal">float[3]</tt> type.</p>
+<p>Also as in C, <tt class="docutils literal">typedef</tt> doesn't create a new type: it just provides an
+alternative name for an existing type.  Thus, in the above example, it is
+legal to pass a value with <tt class="docutils literal">float[3]</tt> type to a function that has been
+declared to take a <tt class="docutils literal">Float3</tt> parameter.</p>
 </div>
 <div class="section" id="pointer-types">
 <h2>Pointer Types</h2>
@@ -1799,7 +1871,7 @@ access it via loads and stores of contiguous sections of memory, overall
 performance can be improved noticably.  One way to improve this memory
 access coherence is to lay out structures in &quot;structure of arrays&quot; (SOA)
 format in memory; the benefits from SOA layout are discussed in more detail
-in the <a class="reference external" href="perf.html#use-structure-of-arrays-layout-when-possible">Use &quot;Structure of Arrays&quot; Layout When Possible</a> section in the
+in the <a class="reference external" href="perfguide.html#use-structure-of-arrays-layout-when-possible">Use &quot;Structure of Arrays&quot; Layout When Possible</a> section in the
 ispc Performance Guide.</p>
 <p><tt class="docutils literal">ispc</tt> provides two key language-level capabilities for laying out and
 accessing data in SOA format:</p>
@@ -2098,10 +2170,16 @@ default:
 }
 </pre>
 </div>
+<div class="section" id="iteration-statements">
+<h2>Iteration Statements</h2>
+<p>In addition to the standard iteration statements <tt class="docutils literal">for</tt>, <tt class="docutils literal">while</tt>, and
+<tt class="docutils literal">do</tt>, inherited from C/C++, <tt class="docutils literal">ispc</tt> provides a number of additional
+specialized ways to iterate over data.</p>
+</div>
 <div class="section" id="basic-iteration-statements-for-while-and-do">
 <h2>Basic Iteration Statements: &quot;for&quot;, &quot;while&quot;, and &quot;do&quot;</h2>
 <p><tt class="docutils literal">ispc</tt> supports <tt class="docutils literal">for</tt>, <tt class="docutils literal">while</tt>, and <tt class="docutils literal">do</tt> loops, with the same
-specification as in C.  Like C++, variables can be declared in the <tt class="docutils literal">for</tt>
+specification as in C.  As in C++, variables can be declared in the <tt class="docutils literal">for</tt>
 statement itself:</p>
 <pre class="literal-block">
 for (uniform int i = 0; i &lt; 10; ++i) {
@@ -2119,62 +2197,74 @@ one of them executes a <tt class="docutils literal">continue</tt> statement, oth
 executing code in the loop body that didn't execute the <tt class="docutils literal">continue</tt> will
 be unaffected by it.</p>
 </div>
-<div class="section" id="unstructured-control-flow-goto">
-<h2>Unstructured Control Flow: &quot;goto&quot;</h2>
-<p><tt class="docutils literal">goto</tt> statements are allowed in <tt class="docutils literal">ispc</tt> programs under limited
-circumstances; specifically, only when the compiler can determine that if
-any program instance executes a <tt class="docutils literal">goto</tt> statement, then all of the program
-instances will be running at that statement, such that all will follow the
-<tt class="docutils literal">goto</tt>.</p>
-<p>Put another way: it's illegal for there to be &quot;varying&quot; control flow
-statements in scopes that enclose a <tt class="docutils literal">goto</tt> statement.  An error is issued
-if a <tt class="docutils literal">goto</tt> is used in this situation.</p>
-<p>The syntax for adding labels to <tt class="docutils literal">ispc</tt> programs and jumping to them with
-<tt class="docutils literal">goto</tt> is the same as in C.  The following code shows a <tt class="docutils literal">goto</tt> based
-equivalent of a <tt class="docutils literal">for</tt> loop where the induction variable <tt class="docutils literal">i</tt> goes from
-zero to ten.</p>
+<div class="section" id="iteration-over-active-program-instances-foreach-active">
+<h2>Iteration over active program instances: &quot;foreach_active&quot;</h2>
+<p>The <tt class="docutils literal">foreach_active</tt> construct specifies a loop that serializes over the
+active program instances: the loop body executes once for each active
+program instance, and with only that program instance executing.</p>
+<p>As an example of the use of this construct, consider an application where
+each program instance independently computes an offset into a shared array
+that is being updated:</p>
 <pre class="literal-block">
-  uniform int i = 0;
-check:
-  if (i &gt; 10)
-      goto done;
-  // loop body
-  ++i;
-  goto check;
-done:
-  // ...
+uniform float array[...] = { ... };
+int index = ...;
+++array[index];
 </pre>
-</div>
-<div class="section" id="coherent-control-flow-statements-cif-and-friends">
-<h2>&quot;Coherent&quot; Control Flow Statements: &quot;cif&quot; and Friends</h2>
-<p><tt class="docutils literal">ispc</tt> provides variants of all of the standard control flow constructs
-that allow you to supply a hint that control flow is expected to be
-coherent at a particular point in the program's execution.  These
-mechanisms provide the compiler a hint that it's worth emitting extra code
-to check to see if the control flow is in fact coherent at run-time, in
-which case a simpler code path can often be executed.</p>
-<p>The first of these statements is <tt class="docutils literal">cif</tt>, indicating an <tt class="docutils literal">if</tt> statement
-that is expected to be coherent.  The usage of <tt class="docutils literal">cif</tt> in code is just the
-same as <tt class="docutils literal">if</tt>:</p>
+<p>If more than one active program instance computes the same value for
+<tt class="docutils literal">index</tt>, the above code has undefined behavior (see the section <a class="reference internal" href="#data-races-within-a-gang">Data
+Races Within a Gang</a> for details.)  The increment of <tt class="docutils literal">array[index]</tt>
+could instead be written inside a <tt class="docutils literal">foreach_active</tt> statement:</p>
 <pre class="literal-block">
-cif (x &lt; y) {
-    ...
-} else {
-    ...
+foreach_active (i) {
+    ++array[index];
 }
 </pre>
-<p><tt class="docutils literal">cif</tt> provides a hint to the compiler that you expect that most of the
-executing SPMD programs will all have the same result for the <tt class="docutils literal">if</tt>
-condition.  Furthermore, it guarantees that the code in the &quot;true&quot; and
-&quot;false&quot; clauses of the <tt class="docutils literal">if</tt> statement will never be executed with an &quot;all
-off&quot; execution mask.  (See the <a class="reference internal" href="#control-flow-within-a-gang">Control Flow Within A Gang</a> section for
-more details on why regular <tt class="docutils literal">if</tt> statements may sometimes do this.)</p>
-<p>Along similar lines, <tt class="docutils literal">cfor</tt>, <tt class="docutils literal">cdo</tt>, and <tt class="docutils literal">cwhile</tt> check to see if all
-program instances are running at the start of each loop iteration; if so,
-they can run a specialized code path that has been optimized for the &quot;all
-on&quot; execution mask case.  It is already the case for the regular looping
-constructs in <tt class="docutils literal">ispc</tt> that a loop will never be executed with an &quot;all off&quot;
-execution mask.</p>
+<p>The variable name provided in parenthesis after the <tt class="docutils literal">foreach_active</tt>
+keyword (here, <tt class="docutils literal">index</tt>), causes a <tt class="docutils literal">const uniform int64</tt> local variable
+of that name to be declared, where the variable takes the <tt class="docutils literal">programIndex</tt>
+value of the program instance executing at each loop iteraton.</p>
+<p>In the code above, because only one program instance is executing at a time
+when the loop body executes, the update to <tt class="docutils literal">array</tt> is well-defined.
+Note that for this particular example, the &quot;local atomic&quot; operations in
+the standard library could be used instead to safely update <tt class="docutils literal">array</tt>.
+However, local atomics functions aren't always available or appropriate for
+more complex cases.)</p>
+<p><tt class="docutils literal">continue</tt> statements may be used inside <tt class="docutils literal">foreach_active</tt> loops, though
+<tt class="docutils literal">break</tt> and <tt class="docutils literal">return</tt> are prohibited.  The order in which the active
+program instances are processed in the loop is not defined.</p>
+<p>See the <a class="reference external" href="perfguide.html#using-foreach-active-effectively">Using &quot;foreach_active&quot; Effectively</a> Section in the ispc
+Performance Guide for more details about <tt class="docutils literal">foreach_active</tt>.</p>
+</div>
+<div class="section" id="iteration-over-unique-elements-foreach-unique">
+<h2>Iteration over unique elements: &quot;foreach_unique&quot;</h2>
+<p>It can be useful to iterate over the elements of a varying variable,
+processing the subsets of of them that have the same value together.  For
+example, consider a varying variable <tt class="docutils literal">x</tt> that has the values <tt class="docutils literal">{1, 2, 2,
+1, 1, 0, 0, 0}</tt>, where the program is running on a target with a gang size
+of 8 program instances.  Here, <tt class="docutils literal">x</tt> has three unique values across the
+program instances: <tt class="docutils literal">0</tt>, <tt class="docutils literal">1</tt>, and <tt class="docutils literal">2</tt>.</p>
+<p>The <tt class="docutils literal">foreach_unique</tt> looping construct allows us to iterate over these
+unique values.  In the code below, the <tt class="docutils literal">foreach_unique</tt> loop body
+executes once for each of the three unique values, with execution mask set
+to match the program instances where the varying value matches the current
+unique value being processed.</p>
+<pre class="literal-block">
+int x = ...; // assume {1, 2, 2, 1, 1, 0, 0, 0}
+foreach_unique (val in x) {
+    extern void func(uniform int v);
+    func(val);
+}
+</pre>
+<p>In the above, <tt class="docutils literal">func()</tt> will be called three times, once with value 0,
+once with value 1, and once with value 2.  When it is called for value 0,
+only the last three program instances will be executing, and so forth.  The
+order in which the loop executes for the unique values isn't defined.</p>
+<p>The varying expression that provides the values to be iterated over is only
+evaluated once, and it must be of an atomic type (<tt class="docutils literal">float</tt>, <tt class="docutils literal">int</tt>,
+etc.), an <tt class="docutils literal">enum</tt> type, or a pointer type.  The iteration variable <tt class="docutils literal">val</tt>
+is a variable of <tt class="docutils literal">const uniform</tt> type of the iteration type; it can't be
+modified within the loop.  Finally, <tt class="docutils literal">break</tt> and <tt class="docutils literal">return</tt> statements are
+illegal within the loop body, but <tt class="docutils literal">continue</tt> statements are allowed.</p>
 </div>
 <div class="section" id="parallel-iteration-statements-foreach-and-foreach-tiled">
 <h2>Parallel Iteration Statements: &quot;foreach&quot; and &quot;foreach_tiled&quot;</h2>
@@ -2199,6 +2289,8 @@ nested inside a <tt class="docutils literal">foreach</tt> loop.)  <tt class="doc
 <tt class="docutils literal">foreach</tt> loops; they have the same effect as in regular <tt class="docutils literal">for</tt> loops:
 a program instances that executes a <tt class="docutils literal">continue</tt> statement effectively
 skips over the rest of the loop body for the current iteration.</p>
+<p>It is also currently illegal to have nested <tt class="docutils literal">foreach</tt> statements; this
+limitation will be removed in a future release of <tt class="docutils literal">ispc</tt>.</p>
 <p>As a specific example, consider the following <tt class="docutils literal">foreach</tt> statement:</p>
 <pre class="literal-block">
 foreach (j = 0 ... height, i = 0 ... width) {
@@ -2248,7 +2340,7 @@ compact across all of the dimensions.  For example, on a target with an
 8-wide gang size, the following <tt class="docutils literal">foreach_tiled</tt> statement might process
 the iteration domain in chunks of 2 elements in <tt class="docutils literal">j</tt> and 4 elements in
 <tt class="docutils literal">i</tt> each time.  (The trade-offs between these two constructs are
-discussed in more detail in the <a class="reference external" href="perf.html#improving-control-flow-coherence-with-foreach-tiled">ispc Performance Guide</a>.)</p>
+discussed in more detail in the <a class="reference external" href="perfguide.html#improving-control-flow-coherence-with-foreach-tiled">ispc Performance Guide</a>.)</p>
 <pre class="literal-block">
 foreach_tiled (j = 0 ... height, i = 0 ... width) {
     // loop body--process data element (i,j)
@@ -2291,6 +2383,58 @@ loop would be preferable, as <tt class="docutils literal">foreach</tt> naturally
 <tt class="docutils literal">programCount</tt> doesn't evenly divide the number of elements to be
 processed, while the loop above assumes that case implicitly.</p>
 </div>
+<div class="section" id="unstructured-control-flow-goto">
+<h2>Unstructured Control Flow: &quot;goto&quot;</h2>
+<p><tt class="docutils literal">goto</tt> statements are allowed in <tt class="docutils literal">ispc</tt> programs under limited
+circumstances; specifically, only when the compiler can determine that if
+any program instance executes a <tt class="docutils literal">goto</tt> statement, then all of the program
+instances will be running at that statement, such that all will follow the
+<tt class="docutils literal">goto</tt>.</p>
+<p>Put another way: it's illegal for there to be &quot;varying&quot; control flow
+statements in scopes that enclose a <tt class="docutils literal">goto</tt> statement.  An error is issued
+if a <tt class="docutils literal">goto</tt> is used in this situation.</p>
+<p>The syntax for adding labels to <tt class="docutils literal">ispc</tt> programs and jumping to them with
+<tt class="docutils literal">goto</tt> is the same as in C.  The following code shows a <tt class="docutils literal">goto</tt> based
+equivalent of a <tt class="docutils literal">for</tt> loop where the induction variable <tt class="docutils literal">i</tt> goes from
+zero to ten.</p>
+<pre class="literal-block">
+  uniform int i = 0;
+check:
+  if (i &gt; 10)
+      goto done;
+  // loop body
+  ++i;
+  goto check;
+done:
+  // ...
+</pre>
+</div>
+<div class="section" id="coherent-control-flow-statements-cif-and-friends">
+<h2>&quot;Coherent&quot; Control Flow Statements: &quot;cif&quot; and Friends</h2>
+<p><tt class="docutils literal">ispc</tt> provides variants of all of the standard control flow constructs
+that allow you to supply a hint that control flow is expected to be
+coherent at a particular point in the program's execution.  These
+mechanisms provide the compiler a hint that it's worth emitting extra code
+to check to see if the control flow is in fact coherent at run-time, in
+which case a simpler code path can often be executed.</p>
+<p>The first of these statements is <tt class="docutils literal">cif</tt>, indicating an <tt class="docutils literal">if</tt> statement
+that is expected to be coherent.  The usage of <tt class="docutils literal">cif</tt> in code is just the
+same as <tt class="docutils literal">if</tt>:</p>
+<pre class="literal-block">
+cif (x &lt; y) {
+    ...
+} else {
+    ...
+}
+</pre>
+<p><tt class="docutils literal">cif</tt> provides a hint to the compiler that you expect that most of the
+executing SPMD programs will all have the same result for the <tt class="docutils literal">if</tt>
+condition.</p>
+<p>Along similar lines, <tt class="docutils literal">cfor</tt>, <tt class="docutils literal">cdo</tt>, and <tt class="docutils literal">cwhile</tt> check to see if all
+program instances are running at the start of each loop iteration; if so,
+they can run a specialized code path that has been optimized for the &quot;all
+on&quot; execution mask case.</p>
+</div>
 <div class="section" id="functions-and-function-calls">
 <h2>Functions and Function Calls</h2>
 <p>Like C, functions must be declared in <tt class="docutils literal">ispc</tt> before they are called,
@@ -2317,6 +2461,14 @@ static void lerp(float t, float a, float b) {
 <p>Any function that can be launched with the <tt class="docutils literal">launch</tt> construct in <tt class="docutils literal">ispc</tt>
 must have a <tt class="docutils literal">task</tt> qualifier; see <a class="reference internal" href="#task-parallelism-launch-and-sync-statements">Task Parallelism: &quot;launch&quot; and &quot;sync&quot;
 Statements</a> for more discussion of launching tasks in <tt class="docutils literal">ispc</tt>.</p>
+<p>A function can also be given the <tt class="docutils literal">unmasked</tt> qualifier; this qualifier
+indicates that all program instances should be made active at the start of
+the function execution (or, equivalently, that the current execution mask
+shouldn't be passed to the function from the function call site.)  If it is
+known that a function will always be called when all program instances are
+executing, adding this qualifier can slightly improve performance.  See the
+Section <a class="reference internal" href="#re-establishing-the-execution-mask">Re-establishing The Execution Mask</a> for more discussion of
+<tt class="docutils literal">unmasked</tt> program code.</p>
 <p>Functions that are intended to be called from C/C++ application code must
 have the <tt class="docutils literal">export</tt> qualifier.  This causes them to have regular C linkage
 and to have their declarations included in header files, if the <tt class="docutils literal">ispc</tt>
@@ -2355,6 +2507,84 @@ variability from <tt class="docutils literal">uniform</tt> to <tt class="docutil
 variability from <tt class="docutils literal">uniform</tt> to <tt class="docutils literal">varying</tt> as needed.</li>
 </ul>
 </div>
+<div class="section" id="re-establishing-the-execution-mask">
+<h2>Re-establishing The Execution Mask</h2>
+<p>As discussed in <a class="reference internal" href="#functions-and-function-calls">Functions and Function Calls</a>, a function that is
+declared with an <tt class="docutils literal">unmasked</tt> qualifier starts execution with all program
+instances running, regardless of the execution mask at the site of the
+function call.  A block of statements can also be enclosed with
+<tt class="docutils literal">unmasked</tt> to have the same effect within a function:</p>
+<pre class="literal-block">
+int a = ..., b = ...;
+if (a &lt; b) {
+    // only program instances where a &lt; b are executing here
+    unmasked {
+        // now all program instances are executing
+    }
+    // and again only the a &lt; b instances
+}
+</pre>
+<p><tt class="docutils literal">unmasked</tt> can be useful in cases where the programmer wants to &quot;change
+the axis of parallelism&quot; or use nested parallelism, as shown in the
+following code:</p>
+<pre class="literal-block">
+uniform WorkItem items[...] = ...;
+foreach (itemNum = 0 ... numItems) {
+    // do computation on items[itemNum] to determine if it needs
+    // further processing...
+    if (/* itemNum needs processing */) {
+        foreach_active (i) {
+            unmasked {
+                uniform int uItemNum = extract(itemNum, i);
+                // apply entire gang of program instances to uItemNum
+            }
+        }
+    }
+}
+</pre>
+<p>The general idea is that we are first using SPMD parallelism to determine
+which of the items requires further processing, checking a gang's worth of
+them concurrently inside the <tt class="docutils literal">foreach</tt> loop.  Assuming that only a subset
+of them need further processing, would be wasteful to do this work within
+the <tt class="docutils literal">foreach</tt> loop in the same program instance that made the initial
+determination of whether more work as needed; in this case, all of the
+program instances corresponding to items that didn't need further
+processing would be inactive, with corresponding unused computational
+capability in the system.</p>
+<p>In the above code, this issue is avoided by working on each of the items
+requiring more processing in turn with <tt class="docutils literal">foreach_active</tt> and then using
+<tt class="docutils literal">unmasked</tt> to re-establish execution of all of the program instances.
+The entire gang can in turn be applied to the computation to be done for
+each <tt class="docutils literal">items[itemNum]</tt>.</p>
+<p>The <tt class="docutils literal">unmasked</tt> statement should be used with care; it can lead to a
+number of surprising cases of undefined program behavior.  For example,
+consider the following code:</p>
+<pre class="literal-block">
+void func(float);
+float a = ...;
+float b;
+if (a &lt; 0) {
+    b = 0;
+    unmasked {
+        if (b == 0)
+            func(a);
+    }
+}
+</pre>
+<p>The variable <tt class="docutils literal">a</tt> is initialized to some value and <tt class="docutils literal">b</tt> is declared but
+not initialized, and thus has an undefined value.  Within the <tt class="docutils literal">if</tt> test,
+we have assigned zero to <tt class="docutils literal">b</tt>, though only for the program instances
+currently executing--i.e. those where <tt class="docutils literal">a &lt; 0</tt>.  After re-establishing the
+executing mask with <tt class="docutils literal">unmasked</tt>, we then compare <tt class="docutils literal">b</tt> to zero--this
+comparison is well-defined (and &quot;true&quot;) for the program instances where <tt class="docutils literal">a
+&lt; 0</tt>, but it is undefed for any program instances where that isn't the
+case, since the value of <tt class="docutils literal">b</tt> is undefined for those program instances.
+Similar surprising cases can arise when writing to <tt class="docutils literal">varying</tt> variables
+within <tt class="docutils literal">unmasked</tt> code.</p>
+<p>As a general rule, code within an <tt class="docutils literal">unmasked</tt> block, or a function with
+the <tt class="docutils literal">unmasked</tt> qualifier should use great care when accessing <tt class="docutils literal">varying</tt>
+variables that were declared in an outer scope.</p>
+</div>
 <div class="section" id="task-parallel-execution">
 <h2>Task Parallel Execution</h2>
 <p>In addition to the facilities for using SPMD for parallelism across the
@@ -2384,16 +2614,39 @@ task void func(uniform float a[], uniform int index) {
 </pre>
 <p>Tasks must return <tt class="docutils literal">void</tt>; a compile time error is issued if a
 non-<tt class="docutils literal">void</tt> task is defined.</p>
-<p>Given a task definitions, there are two ways to write code that launches
-tasks, using the <tt class="docutils literal">launch</tt> construct.  First, one task can be launched at
-a time, with parameters passed to the task to help it determine what part
-of the overall computation it's responsible for:</p>
+<p>Given a task declaration, a task can be launched with <tt class="docutils literal">launch</tt>:</p>
+<pre class="literal-block">
+uniform float a[...] = ...;
+launch func(a, 1);
+</pre>
+<p>Program execution continues asynchronously after a <tt class="docutils literal">launch</tt> statement in
+a function; thus, a function shouldn't access values written by a task it
+has launched within the function without synchronization.  A function can
+use a <tt class="docutils literal">sync</tt> statement to wait for all launched tasks to finish:</p>
+<pre class="literal-block">
+launch func(a, 1);
+sync;
+// now safe to use computed values in a[]...
+</pre>
+<p>Alternatively, any function that launches tasks has an automatically-added
+implicit <tt class="docutils literal">sync</tt> statement before it returns, so that functions that call
+a function that launches tasks don't have to worry about outstanding
+asynchronous computation from that function.</p>
+<p>The task generated by a <tt class="docutils literal">launch</tt> statement is a single gang's worth of
+work.  The same program instances are respectively active and inactive at
+the start of the task as were active and inactive when their <tt class="docutils literal">launch</tt>
+statement executed.  To make all program instances in the launched gang be
+active, the <tt class="docutils literal">unmasked</tt> construct can be used (see <a class="reference internal" href="#re-establishing-the-execution-mask">Re-establishing The
+Execution Mask</a>.)</p>
+<p>There are two ways to write code that launches a group multiple tasks.
+First, one task can be launched at a time, with parameters passed to the
+task to help it determine what part of the overall computation it's
+responsible for:</p>
 <pre class="literal-block">
 for (uniform int i = 0; i &lt; 100; ++i)
     launch func(a, i);
 </pre>
-<p>Note the <tt class="docutils literal">launch</tt> keyword before the function call expression.
-This code launches 100 tasks, each of which presumably does some
+<p>This code launches 100 tasks, each of which presumably does some
 computation that is keyed off of given the value <tt class="docutils literal">i</tt>.  In general, one
 should launch many more tasks than there are processors in the system to
 ensure good load-balancing, but not so many that the overhead of scheduling
@@ -2418,20 +2671,6 @@ task void func2(uniform float a[]) {
     a[taskIndex] = ...
 }
 </pre>
-<p>Program execution continues asynchronously after a <tt class="docutils literal">launch</tt> statement in
-a function; thus, a function shouldn't access values being generated by the
-tasks it has launched within the function without synchronization.  If
-results are needed before function return, a function can use a <tt class="docutils literal">sync</tt>
-statement to wait for all launched tasks to finish:</p>
-<pre class="literal-block">
-launch[100] func2(a);
-sync;
-// now safe to use computed values in a[]...
-</pre>
-<p>Alternatively, any function that launches tasks has an automatically-added
-<tt class="docutils literal">sync</tt> statement before it returns, so that functions that call a
-function that launches tasks don't have to worry about outstanding
-asynchronous computation from that function.</p>
 <p>Inside functions with the <tt class="docutils literal">task</tt> qualifier, two additional built-in
 variables are provided in addition to <tt class="docutils literal">taskIndex</tt> and <tt class="docutils literal">taskCount</tt>:
 <tt class="docutils literal">threadIndex</tt> and <tt class="docutils literal">threadCount</tt>.  <tt class="docutils literal">threadCount</tt> gives the total
@@ -2700,6 +2939,14 @@ uniform unsigned int clamp(uniform unsigned int v,
                            uniform unsigned int low,
                            uniform unsigned int high)
 </pre>
+<p>The <tt class="docutils literal">isnan()</tt> functions test whether the given value is a floating-point
+&quot;not a number&quot; value:</p>
+<pre class="literal-block">
+bool isnan(float v)
+uniform bool isnan(uniform float v)
+bool isnan(double v)
+uniform bool isnan(uniform double v)
+</pre>
 </div>
 <div class="section" id="transcendental-functions">
 <h2>Transcendental Functions</h2>
@@ -2771,7 +3018,7 @@ library.  State for the RNG is maintained in an instance of the
 <tt class="docutils literal">RNGState</tt> structure, which is seeded with <tt class="docutils literal">seed_rng()</tt>.</p>
 <pre class="literal-block">
 struct RNGState;
-void seed_rng(varying RNGState * uniform state, uniform int seed)
+void seed_rng(varying RNGState * uniform state, int seed)
 void seed_rng(uniform RNGState * uniform state, uniform int seed)
 </pre>
 <p>After the RNG is seeded, the <tt class="docutils literal">random()</tt> function can be used to get a
@@ -2984,7 +3231,7 @@ uniform bool reduce_equal(double)
 <p>There are also variants of these functions that return the value as a
 <tt class="docutils literal">uniform</tt> in the case where the values are all the same.  (There is
 discussion of an application of this variant to improve memory access
-performance in the <a class="reference external" href="perf.html#understanding-gather-and-scatter">Performance Guide</a>.</p>
+performance in the <a class="reference external" href="perfguide.html#understanding-gather-and-scatter">Performance Guide</a>.</p>
 <pre class="literal-block">
 uniform bool reduce_equal(int32 v, uniform int32 * uniform sameval)
 uniform bool reduce_equal(unsigned int32 v,
@@ -3128,7 +3375,7 @@ indices where <tt class="docutils literal">a[i]</tt> was less than zero.</p>
 <p>Applications often lay data out in memory in &quot;array of structures&quot; form.
 Though convenient in C/C++ code, this layout can make <tt class="docutils literal">ispc</tt> programs
 less efficient than they would be if the data was laid out in &quot;structure of
-arrays&quot; form.  (See the section <a class="reference external" href="perf.html#use-structure-of-arrays-layout-when-possible">Use &quot;Structure of Arrays&quot; Layout When
+arrays&quot; form.  (See the section <a class="reference external" href="perfguide.html#use-structure-of-arrays-layout-when-possible">Use &quot;Structure of Arrays&quot; Layout When
 Possible</a> in the performance guide for extended discussion of this topic.)</p>
 <p>The standard library does provide a few functions that efficiently convert
 between these two formats, for cases where it's not possible to change the
@@ -3222,6 +3469,17 @@ float half_to_float_fast(unsigned int16 h)
 uniform float half_to_float_fast(uniform unsigned int16 h)
 int16 float_to_half_fast(float f)
 uniform int16 float_to_half_fast(uniform float f)
+</pre>
+</div>
+<div class="section" id="converting-to-srgb8">
+<h2>Converting to sRGB8</h2>
+<p>The sRGB color space is used in many applications in graphics and imaging;
+see the <a class="reference external" href="http://en.wikipedia.org/wiki/SRGB">Wikipedia page on sRGB</a> for more information.  The <tt class="docutils literal">ispc</tt>
+standard library provides two functions for converting floating-point color
+values to 8-bit values in the sRGB space.</p>
+<pre class="literal-block">
+int float_to_srgb8(float v)
+uniform int float_to_srgb8(uniform float v)
 </pre>
 </div>
 <div class="section" id="systems-programming-support">
@@ -3523,8 +3781,10 @@ extern &quot;C&quot; uniform int bar(uniform int a);
 </pre>
 <p>It is illegal to overload functions declared with <tt class="docutils literal">extern &quot;C&quot;</tt> linkage;
 <tt class="docutils literal">ispc</tt> issues an error in this case.</p>
-<p>Function calls back to C/C++ are not made if none of the program instances
-want to make the call.  For example, given code like:</p>
+<p><strong>Only a single function call is made back to C++ for the entire gang of
+runing program instances</strong>.  Furthermore, function calls back to C/C++ are not
+made if none of the program instances want to make the call.  For example,
+given code like:</p>
 <pre class="literal-block">
 uniform float foo = ...;
 float x = ...;
@@ -3558,6 +3818,22 @@ float appFunc(float x, int activeLanes) {
         }
 }
 </pre>
+<p>In some cases, it can be desirable to generate a single call for each
+executing program instance, rather than one call for a gang.  For example,
+the code below shows how one might call an existing math library routine
+that takes a scalar parameter.</p>
+<pre class="literal-block">
+extern &quot;C&quot; uniform double erf(uniform double);
+double v = ...;
+double result;
+foreach_active (instance) {
+    uniform double r = erf(extract(v, instance));
+    result = insert(result, instance, r);
+}
+</pre>
+<p>This code calls <tt class="docutils literal">erf()</tt> once for each active program instance, passing it
+the program instance's value of <tt class="docutils literal">v</tt> and storing the result in the
+instance's <tt class="docutils literal">result</tt> value.</p>
 </div>
 <div class="section" id="data-layout">
 <h2>Data Layout</h2>
@@ -3592,7 +3868,7 @@ program instances, <tt class="docutils literal">ispc</tt> prohibits any varying 
 parameters to functions with the <tt class="docutils literal">export</tt> qualifier.  (<tt class="docutils literal">ispc</tt> also
 prohibits passing structures that themselves have varying types as members,
 etc.)  Thus, all datatypes that is shared with the application must have
-the <tt class="docutils literal">uniform</tt> or <tt class="docutils literal">soa</tt> rate qualifier applied to them.  (See <a class="reference external" href="perf.html#use-structure-of-arrays-layout-when-possible">Use
+the <tt class="docutils literal">uniform</tt> or <tt class="docutils literal">soa</tt> rate qualifier applied to them.  (See <a class="reference external" href="perfguide.html#use-structure-of-arrays-layout-when-possible">Use
 &quot;Structure of Arrays&quot; Layout When Possible</a> in the Performance Guide for
 more discussion of how to load vectors of SOA data from the application.)</p>
 <p>Similarly, <tt class="docutils literal">struct</tt> types shared with the application can also have
@@ -3666,7 +3942,7 @@ style is often effective.</p>
 <p>Carefully choose how to do the exact mapping of computation to SPMD program
 instances.  This choice can impact the mix of gather/scatter memory access
 versus coherent memory access, for example.  (See more on this topic in the
-<a class="reference external" href="http://ispc.github.com/perf.html">ispc Performance Tuning Guide</a>.)  This decision can also impact the
+<a class="reference external" href="http://ispc.github.com/perfguide.html">ispc Performance Tuning Guide</a>.)  This decision can also impact the
 coherence of control flow across the running SPMD program instances, which
 can also have a significant effect on performance; in general, creating
 groups of work that will tend to do similar computation across the SPMD

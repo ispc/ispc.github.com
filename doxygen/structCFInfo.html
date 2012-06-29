@@ -22,7 +22,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.2.2</span>
+   &#160;<span id="projectnumber">1.3.0</span>
    </div>
    
   </td>
@@ -76,10 +76,15 @@ Collaboration diagram for CFInfo:</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29">CFType</a> { <a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29a969ff5c81e5be7b661fad1a5a27af99b">If</a>, 
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29">CFType</a> { <br/>
+&#160;&#160;<a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29a969ff5c81e5be7b661fad1a5a27af99b">If</a>, 
 <a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29a764fe9ede7dda6597d916c057ecb5f3a">Loop</a>, 
-<a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29ab6497e206c9d778206afd06cf8cef4d3">Foreach</a>, 
+<a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29a39aa58fff25b8dcf56eaa12cd7b416df">ForeachRegular</a>, 
+<a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29aa9b6fff2f1daf4d8b8e762c57be357ce">ForeachActive</a>, 
+<br/>
+&#160;&#160;<a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29aef639e62e5e3425b7ae1dd9016ba0a69">ForeachUnique</a>, 
 <a class="el" href="structCFInfo.html#a25de504c8fccf132a136f1a039671e29a2f6c3a1a3609445db058ce2f78ed9bc9">Switch</a>
+<br/>
  }</td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -93,7 +98,7 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structCFInfo.html">CFInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#ad8eaa5964cf535407e3aaeb660cf67c8">GetIf</a> (bool <a class="el" href="structCFInfo.html#a50cd1fbf68a8a1d0cda1c997b40c9eca">isUniform</a>, llvm::Value *<a class="el" href="structCFInfo.html#a6d13b4372865208cdcfce9e64636b767">savedMask</a>)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structCFInfo.html">CFInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a28155c0fa8db90b9a95d1af0daff27b0">GetLoop</a> (bool <a class="el" href="structCFInfo.html#a50cd1fbf68a8a1d0cda1c997b40c9eca">isUniform</a>, llvm::BasicBlock *breakTarget, llvm::BasicBlock *continueTarget, llvm::Value *<a class="el" href="structCFInfo.html#ac68d8d9b0ec69da1a71764f3f738c150">savedBreakLanesPtr</a>, llvm::Value *<a class="el" href="structCFInfo.html#a2d14c7daac1289f82378dce9b9b8aaaa">savedContinueLanesPtr</a>, llvm::Value *<a class="el" href="structCFInfo.html#a6d13b4372865208cdcfce9e64636b767">savedMask</a>, llvm::Value *<a class="el" href="structCFInfo.html#af150eebdba9bac1c00ef591e0d3d8e68">savedLoopMask</a>)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structCFInfo.html">CFInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#af9e2f421bf433f2bf71993bdd8af5ee0">GetForeach</a> (llvm::BasicBlock *breakTarget, llvm::BasicBlock *continueTarget, llvm::Value *<a class="el" href="structCFInfo.html#ac68d8d9b0ec69da1a71764f3f738c150">savedBreakLanesPtr</a>, llvm::Value *<a class="el" href="structCFInfo.html#a2d14c7daac1289f82378dce9b9b8aaaa">savedContinueLanesPtr</a>, llvm::Value *<a class="el" href="structCFInfo.html#a6d13b4372865208cdcfce9e64636b767">savedMask</a>, llvm::Value *<a class="el" href="structCFInfo.html#af150eebdba9bac1c00ef591e0d3d8e68">savedLoopMask</a>)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structCFInfo.html">CFInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#a36a7ceaebb99f6fe54fc3c08baef4423">GetForeach</a> (<a class="el" href="classFunctionEmitContext.html#a608fc1a7b12dee2c0f71272022adb615">FunctionEmitContext::ForeachType</a> ft, llvm::BasicBlock *breakTarget, llvm::BasicBlock *continueTarget, llvm::Value *<a class="el" href="structCFInfo.html#ac68d8d9b0ec69da1a71764f3f738c150">savedBreakLanesPtr</a>, llvm::Value *<a class="el" href="structCFInfo.html#a2d14c7daac1289f82378dce9b9b8aaaa">savedContinueLanesPtr</a>, llvm::Value *<a class="el" href="structCFInfo.html#a6d13b4372865208cdcfce9e64636b767">savedMask</a>, llvm::Value *<a class="el" href="structCFInfo.html#af150eebdba9bac1c00ef591e0d3d8e68">savedLoopMask</a>)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structCFInfo.html">CFInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCFInfo.html#ab02f62a60329770b05fc93e907bed928">GetSwitch</a> (bool <a class="el" href="structCFInfo.html#a50cd1fbf68a8a1d0cda1c997b40c9eca">isUniform</a>, llvm::BasicBlock *breakTarget, llvm::BasicBlock *continueTarget, llvm::Value *<a class="el" href="structCFInfo.html#ac68d8d9b0ec69da1a71764f3f738c150">savedBreakLanesPtr</a>, llvm::Value *<a class="el" href="structCFInfo.html#a2d14c7daac1289f82378dce9b9b8aaaa">savedContinueLanesPtr</a>, llvm::Value *<a class="el" href="structCFInfo.html#a6d13b4372865208cdcfce9e64636b767">savedMask</a>, llvm::Value *<a class="el" href="structCFInfo.html#af150eebdba9bac1c00ef591e0d3d8e68">savedLoopMask</a>, llvm::Value *switchExpr, llvm::BasicBlock *bbDefault, const std::vector&lt; std::pair&lt; int, llvm::BasicBlock * &gt; &gt; *bbCases, const std::map&lt; llvm::BasicBlock *, llvm::BasicBlock * &gt; *bbNext, bool scUniform)</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -139,7 +144,11 @@ Private Member Functions</h2></td></tr>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a25de504c8fccf132a136f1a039671e29a764fe9ede7dda6597d916c057ecb5f3a"></a><!-- doxytag: member="Loop" ref="a25de504c8fccf132a136f1a039671e29a764fe9ede7dda6597d916c057ecb5f3a" args="" -->Loop</em>&nbsp;</td><td>
 </td></tr>
-<tr><td valign="top"><em><a class="anchor" id="a25de504c8fccf132a136f1a039671e29ab6497e206c9d778206afd06cf8cef4d3"></a><!-- doxytag: member="Foreach" ref="a25de504c8fccf132a136f1a039671e29ab6497e206c9d778206afd06cf8cef4d3" args="" -->Foreach</em>&nbsp;</td><td>
+<tr><td valign="top"><em><a class="anchor" id="a25de504c8fccf132a136f1a039671e29a39aa58fff25b8dcf56eaa12cd7b416df"></a><!-- doxytag: member="ForeachRegular" ref="a25de504c8fccf132a136f1a039671e29a39aa58fff25b8dcf56eaa12cd7b416df" args="" -->ForeachRegular</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a25de504c8fccf132a136f1a039671e29aa9b6fff2f1daf4d8b8e762c57be357ce"></a><!-- doxytag: member="ForeachActive" ref="a25de504c8fccf132a136f1a039671e29aa9b6fff2f1daf4d8b8e762c57be357ce" args="" -->ForeachActive</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a25de504c8fccf132a136f1a039671e29aef639e62e5e3425b7ae1dd9016ba0a69"></a><!-- doxytag: member="ForeachUnique" ref="a25de504c8fccf132a136f1a039671e29aef639e62e5e3425b7ae1dd9016ba0a69" args="" -->ForeachUnique</em>&nbsp;</td><td>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a25de504c8fccf132a136f1a039671e29a2f6c3a1a3609445db058ce2f78ed9bc9"></a><!-- doxytag: member="Switch" ref="a25de504c8fccf132a136f1a039671e29a2f6c3a1a3609445db058ce2f78ed9bc9" args="" -->Switch</em>&nbsp;</td><td>
 </td></tr>
@@ -147,7 +156,7 @@ Private Member Functions</h2></td></tr>
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00095">95</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00098">98</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
 </div>
 </div>
@@ -183,11 +192,11 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00108">108</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00112">112</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l00095">If</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00098">savedBreakTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00103">savedCaseBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00098">savedContinueTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00102">savedDefaultBlock</a>, <a class="el" href="ctx_8cpp_source.html#l00104">savedNextBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00101">savedSwitchExpr</a>, and <a class="el" href="ctx_8cpp_source.html#l00096">type</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00150">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l00098">If</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00102">savedBreakTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00107">savedCaseBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00102">savedContinueTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00106">savedDefaultBlock</a>, <a class="el" href="ctx_8cpp_source.html#l00108">savedNextBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00105">savedSwitchExpr</a>, and <a class="el" href="ctx_8cpp_source.html#l00100">type</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00180">GetForeach()</a>, <a class="el" href="ctx_8cpp_source.html#l00162">GetIf()</a>, <a class="el" href="ctx_8cpp_source.html#l00168">GetLoop()</a>, and <a class="el" href="ctx_8cpp_source.html#l00192">GetSwitch()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00184">GetForeach()</a>, <a class="el" href="ctx_8cpp_source.html#l00166">GetIf()</a>, <a class="el" href="ctx_8cpp_source.html#l00172">GetLoop()</a>, and <a class="el" href="ctx_8cpp_source.html#l00213">GetSwitch()</a>.</p>
 
 </div>
 </div>
@@ -282,9 +291,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00120">120</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00124">124</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l00095">Loop</a>, <a class="el" href="ctx_8cpp_source.html#l00098">savedBreakTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00103">savedCaseBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00098">savedContinueTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00102">savedDefaultBlock</a>, <a class="el" href="ctx_8cpp_source.html#l00104">savedNextBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00105">savedSwitchConditionWasUniform</a>, <a class="el" href="ctx_8cpp_source.html#l00101">savedSwitchExpr</a>, <a class="el" href="ctx_8cpp_source.html#l00095">Switch</a>, and <a class="el" href="ctx_8cpp_source.html#l00096">type</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00150">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l00098">Loop</a>, <a class="el" href="ctx_8cpp_source.html#l00102">savedBreakTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00107">savedCaseBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00102">savedContinueTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00106">savedDefaultBlock</a>, <a class="el" href="ctx_8cpp_source.html#l00108">savedNextBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00109">savedSwitchConditionWasUniform</a>, <a class="el" href="ctx_8cpp_source.html#l00105">savedSwitchExpr</a>, <a class="el" href="ctx_8cpp_source.html#l00099">Switch</a>, and <a class="el" href="ctx_8cpp_source.html#l00100">type</a>.</p>
 
 </div>
 </div>
@@ -343,20 +352,26 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00141">141</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00145">145</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00061">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l00095">Foreach</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00098">savedBreakTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00103">savedCaseBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00098">savedContinueTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00102">savedDefaultBlock</a>, <a class="el" href="ctx_8cpp_source.html#l00104">savedNextBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00101">savedSwitchExpr</a>, and <a class="el" href="ctx_8cpp_source.html#l00096">type</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00150">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l00098">ForeachActive</a>, <a class="el" href="ctx_8cpp_source.html#l00098">ForeachRegular</a>, <a class="el" href="ctx_8cpp_source.html#l00098">ForeachUnique</a>, <a class="el" href="parse_8yy.html">NULL</a>, <a class="el" href="ctx_8cpp_source.html#l00102">savedBreakTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00107">savedCaseBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00102">savedContinueTarget</a>, <a class="el" href="ctx_8cpp_source.html#l00106">savedDefaultBlock</a>, <a class="el" href="ctx_8cpp_source.html#l00108">savedNextBlocks</a>, <a class="el" href="ctx_8cpp_source.html#l00105">savedSwitchExpr</a>, and <a class="el" href="ctx_8cpp_source.html#l00100">type</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="af9e2f421bf433f2bf71993bdd8af5ee0"></a><!-- doxytag: member="CFInfo::GetForeach" ref="af9e2f421bf433f2bf71993bdd8af5ee0" args="(llvm::BasicBlock *breakTarget, llvm::BasicBlock *continueTarget, llvm::Value *savedBreakLanesPtr, llvm::Value *savedContinueLanesPtr, llvm::Value *savedMask, llvm::Value *savedLoopMask)" -->
+<a class="anchor" id="a36a7ceaebb99f6fe54fc3c08baef4423"></a><!-- doxytag: member="CFInfo::GetForeach" ref="a36a7ceaebb99f6fe54fc3c08baef4423" args="(FunctionEmitContext::ForeachType ft, llvm::BasicBlock *breakTarget, llvm::BasicBlock *continueTarget, llvm::Value *savedBreakLanesPtr, llvm::Value *savedContinueLanesPtr, llvm::Value *savedMask, llvm::Value *savedLoopMask)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structCFInfo.html">CFInfo</a> * CFInfo::GetForeach </td>
           <td>(</td>
+          <td class="paramtype"><a class="el" href="classFunctionEmitContext.html#a608fc1a7b12dee2c0f71272022adb615">FunctionEmitContext::ForeachType</a>&#160;</td>
+          <td class="paramname"><em>ft</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">llvm::BasicBlock *&#160;</td>
           <td class="paramname"><em>breakTarget</em>, </td>
         </tr>
@@ -399,11 +414,11 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00180">180</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00184">184</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>, and <a class="el" href="ctx_8cpp_source.html#l00095">Foreach</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00112">CFInfo()</a>, <a class="el" href="util_8h_source.html#l00113">FATAL</a>, <a class="el" href="ctx_8h_source.html#l00169">FunctionEmitContext::FOREACH_ACTIVE</a>, <a class="el" href="ctx_8h_source.html#l00169">FunctionEmitContext::FOREACH_REGULAR</a>, <a class="el" href="ctx_8h_source.html#l00169">FunctionEmitContext::FOREACH_UNIQUE</a>, <a class="el" href="ctx_8cpp_source.html#l00098">ForeachActive</a>, <a class="el" href="ctx_8cpp_source.html#l00098">ForeachRegular</a>, <a class="el" href="ctx_8cpp_source.html#l00098">ForeachUnique</a>, and <a class="el" href="parse_8yy.html">NULL</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00586">FunctionEmitContext::StartForeach()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00607">FunctionEmitContext::StartForeach()</a>.</p>
 
 </div>
 </div>
@@ -433,11 +448,11 @@ Private Member Functions</h2></td></tr>
 <div class="memdoc">
 <p>Returns a new instance of the structure that represents entering an 'if' statement </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00162">162</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00166">166</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>, and <a class="el" href="ctx_8cpp_source.html#l00095">If</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00112">CFInfo()</a>, and <a class="el" href="ctx_8cpp_source.html#l00098">If</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00469">FunctionEmitContext::StartUniformIf()</a>, and <a class="el" href="ctx_8cpp_source.html#l00475">FunctionEmitContext::StartVaryingIf()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00490">FunctionEmitContext::StartUniformIf()</a>, and <a class="el" href="ctx_8cpp_source.html#l00496">FunctionEmitContext::StartVaryingIf()</a>.</p>
 
 </div>
 </div>
@@ -497,11 +512,11 @@ Private Member Functions</h2></td></tr>
 <div class="memdoc">
 <p>Returns a new instance of the structure that represents entering a loop. </p>
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00168">168</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00172">172</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>, and <a class="el" href="ctx_8cpp_source.html#l00095">Loop</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00112">CFInfo()</a>, and <a class="el" href="ctx_8cpp_source.html#l00098">Loop</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00542">FunctionEmitContext::StartLoop()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00563">FunctionEmitContext::StartLoop()</a>.</p>
 
 </div>
 </div>
@@ -590,11 +605,11 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00192">192</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00213">213</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>, and <a class="el" href="ctx_8cpp_source.html#l00095">Switch</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00112">CFInfo()</a>, and <a class="el" href="ctx_8cpp_source.html#l00099">Switch</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00855">FunctionEmitContext::StartSwitch()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00903">FunctionEmitContext::StartSwitch()</a>.</p>
 
 </div>
 </div>
@@ -612,11 +627,11 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00090">90</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00091">91</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00095">Foreach</a>, and <a class="el" href="ctx_8cpp_source.html#l00096">type</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00098">ForeachActive</a>, <a class="el" href="ctx_8cpp_source.html#l00098">ForeachRegular</a>, <a class="el" href="ctx_8cpp_source.html#l00098">ForeachUnique</a>, and <a class="el" href="ctx_8cpp_source.html#l00100">type</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00605">FunctionEmitContext::EndForeach()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00641">FunctionEmitContext::EndForeach()</a>.</p>
 
 </div>
 </div>
@@ -634,11 +649,11 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00088">88</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00089">89</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00095">If</a>, and <a class="el" href="ctx_8cpp_source.html#l00096">type</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00098">If</a>, and <a class="el" href="ctx_8cpp_source.html#l00100">type</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00481">FunctionEmitContext::EndIf()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00502">FunctionEmitContext::EndIf()</a>.</p>
 
 </div>
 </div>
@@ -656,11 +671,11 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00089">89</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00090">90</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00095">Loop</a>, and <a class="el" href="ctx_8cpp_source.html#l00096">type</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00098">Loop</a>, and <a class="el" href="ctx_8cpp_source.html#l00100">type</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00571">FunctionEmitContext::EndLoop()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00592">FunctionEmitContext::EndLoop()</a>.</p>
 
 </div>
 </div>
@@ -678,9 +693,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00091">91</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00094">94</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00095">Switch</a>, and <a class="el" href="ctx_8cpp_source.html#l00096">type</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00099">Switch</a>, and <a class="el" href="ctx_8cpp_source.html#l00100">type</a>.</p>
 
 </div>
 </div>
@@ -698,11 +713,11 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00093">93</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00096">96</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00097">isUniform</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00101">isUniform</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00481">FunctionEmitContext::EndIf()</a>, and <a class="el" href="ctx_8cpp_source.html#l00571">FunctionEmitContext::EndLoop()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00502">FunctionEmitContext::EndIf()</a>, and <a class="el" href="ctx_8cpp_source.html#l00592">FunctionEmitContext::EndLoop()</a>.</p>
 
 </div>
 </div>
@@ -720,11 +735,11 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00092">92</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00095">95</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l00097">isUniform</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l00101">isUniform</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00881">FunctionEmitContext::EndSwitch()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00929">FunctionEmitContext::EndSwitch()</a>.</p>
 
 </div>
 </div>
@@ -740,9 +755,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00097">97</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00101">101</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00093">IsUniform()</a>, and <a class="el" href="ctx_8cpp_source.html#l00092">IsVarying()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00096">IsUniform()</a>, and <a class="el" href="ctx_8cpp_source.html#l00095">IsVarying()</a>.</p>
 
 </div>
 </div>
@@ -757,7 +772,7 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00099">99</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00103">103</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
 </div>
 </div>
@@ -772,9 +787,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00098">98</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00102">102</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00112">CFInfo()</a>.</p>
 
 </div>
 </div>
@@ -789,9 +804,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00103">103</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00107">107</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00112">CFInfo()</a>.</p>
 
 </div>
 </div>
@@ -806,7 +821,7 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00099">99</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00103">103</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
 </div>
 </div>
@@ -821,9 +836,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00098">98</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00102">102</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00112">CFInfo()</a>.</p>
 
 </div>
 </div>
@@ -838,9 +853,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00102">102</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00106">106</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00112">CFInfo()</a>.</p>
 
 </div>
 </div>
@@ -855,7 +870,7 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00100">100</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00104">104</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
 </div>
 </div>
@@ -870,9 +885,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00100">100</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00104">104</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00481">FunctionEmitContext::EndIf()</a>, <a class="el" href="ctx_8cpp_source.html#l00571">FunctionEmitContext::EndLoop()</a>, and <a class="el" href="ctx_8cpp_source.html#l00881">FunctionEmitContext::EndSwitch()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00502">FunctionEmitContext::EndIf()</a>, <a class="el" href="ctx_8cpp_source.html#l00592">FunctionEmitContext::EndLoop()</a>, and <a class="el" href="ctx_8cpp_source.html#l00929">FunctionEmitContext::EndSwitch()</a>.</p>
 
 </div>
 </div>
@@ -887,9 +902,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00104">104</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00108">108</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00112">CFInfo()</a>.</p>
 
 </div>
 </div>
@@ -904,9 +919,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00105">105</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00109">109</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00120">CFInfo()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00124">CFInfo()</a>.</p>
 
 </div>
 </div>
@@ -921,9 +936,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00101">101</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00105">105</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00112">CFInfo()</a>.</p>
 
 </div>
 </div>
@@ -938,9 +953,9 @@ Private Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00096">96</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ctx_8cpp_source.html#l00100">100</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00108">CFInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l00090">IsForeach()</a>, <a class="el" href="ctx_8cpp_source.html#l00088">IsIf()</a>, <a class="el" href="ctx_8cpp_source.html#l00089">IsLoop()</a>, and <a class="el" href="ctx_8cpp_source.html#l00091">IsSwitch()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l00112">CFInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l00091">IsForeach()</a>, <a class="el" href="ctx_8cpp_source.html#l00089">IsIf()</a>, <a class="el" href="ctx_8cpp_source.html#l00090">IsLoop()</a>, and <a class="el" href="ctx_8cpp_source.html#l00094">IsSwitch()</a>.</p>
 
 </div>
 </div>
@@ -951,7 +966,7 @@ Private Member Functions</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 20 2012 14:30:31 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jun 29 2012 08:42:26 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.5.1
 </small></address>
