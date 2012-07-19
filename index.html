@@ -86,13 +86,14 @@
           more details and examples that illustrate this concept.)</p>
 
         <p><tt>ispc</tt> compiles a C-based SPMD programming language to
-          run on the SIMD units of CPUs; it frequently provides a 3x or
-          more speedup on CPUs with 4-wide vector SSE units and 5x-6x on
-          CPUs with 8-wide AVX vector units, without any of the difficulty
-          of writing intrinsics code.  Parallelization across multiple
-          cores is also supported by <tt>ispc</tt>, making it possible to
-          write programs that achieve performance improvement that scales
-          by both number of cores and vector unit size.
+          run on the SIMD units of CPUs and the Intel Xeon
+          Phi&trade; architecture; it frequently provides a 3x or more
+          speedup on CPUs with 4-wide vector SSE units and 5x-6x on CPUs
+          with 8-wide AVX vector units, without any of the difficulty of
+          writing intrinsics code.  Parallelization across multiple cores
+          is also supported by <tt>ispc</tt>, making it possible to write
+          programs that achieve performance improvement that scales by both
+          number of cores and vector unit size.
         </p>
 
         <p>There are a few key principles in the design of <tt>ispc</tt>:
@@ -121,8 +122,8 @@
           back-end code generation and optimization and
           is <a href="http://github.com/ispc/ispc/">hosted on
           github</a>. It supports Windows, Mac, and Linux, with both x86
-          and x86-64 targets.  It currently supports the SSE2, SSE4, AVX1, and
-          AVX2 instruction sets.
+          and x86-64 targets.  It currently supports the SSE2, SSE4, AVX1, 
+          AVX2, and Xeon Phi "Knight's Corner" instruction sets.
         </p>
         <p>(Please note that <tt>ispc</tt> is separate from
           <a href="http://software.intel.com/en-us/articles/intel-composer-xe/">the Intel
