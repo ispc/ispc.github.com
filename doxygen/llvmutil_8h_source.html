@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.4.2</span>
+   &#160;<span id="projectnumber">1.4.3</span>
    </div>
   </td>
  </tr>
@@ -318,50 +318,54 @@
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="comment">       %broadcast_init.0 = insertelement &lt;4 x i32&gt; undef, i32 %val, i32 0</span></div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="comment">       %broadcast.1 = shufflevector &lt;4 x i32&gt; %smear.0, &lt;4 x i32&gt; undef,</span></div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="comment">                                                  &lt;4 x i32&gt; zeroinitializer</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="llvmutil_8h.html#aa8f75f700fc73f579142b6c7f24962bb">LLVMFlattenInsertChain</a>(llvm::Value *inst, <span class="keywordtype">int</span> vectorWidth,</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                                   llvm::Value **elements);</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="comment">/** This is a utility routine for debugging that dumps out the given LLVM</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="comment">    value as well as (recursively) all of the other values that it depends</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="comment">    on. */</span></div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="llvmutil_8h.html#af2ea5fb708473897ea3eb7fb5a0d956f">LLVMDumpValue</a>(llvm::Value *v);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="comment">/** Given a vector-typed value, this function returns the value of its</span></div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="comment">    first element.  Rather than just doing the straightforward thing of</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment">    using a single extractelement instruction to do this, this function</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="comment">    tries to rewrite the computation for the first element in scalar form;</span></div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">    this is generally more efficient than computing the entire vector&#39;s</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment">    worth of values just to extract the first element, in cases where only</span></div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment">    the first element&#39;s value is needed.</span></div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment">  */</span></div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="keyword">extern</span> llvm::Value *<a class="code" href="llvmutil_8h.html#ac74c93c0de2de4b6b73f3a5fa9b45a6d">LLVMExtractFirstVectorElement</a>(llvm::Value *v);</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment">/** This function takes two vectors, expected to be the same length, and</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">    returns a new vector of twice the length that represents concatenating</span></div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">    the two of them. */</span></div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="keyword">extern</span> llvm::Value *<a class="code" href="llvmutil_8h.html#a9e52dbf98a2e38869b743b0c403b3145">LLVMConcatVectors</a>(llvm::Value *v1, llvm::Value *v2,</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;                                      llvm::Instruction *insertBefore);</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">/** This is a utility function for vector shuffling; it takes two vectors</span></div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">    v1 and v2, and a compile-time constant set of integer permutations in</span></div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">    shuf[] and returns a new vector of length shufSize that represents the</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="comment">    corresponding shufflevector operation. */</span></div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="keyword">extern</span> llvm::Value *<a class="code" href="llvmutil_8h.html#a0422a9c91b6a83630d891efc779b007c">LLVMShuffleVectors</a>(llvm::Value *v1, llvm::Value *v2,</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                                       <a class="code" href="parse_8yy.html#a10e8b2d266b06d06f972396bf71af292">int32_t</a> shuf[], <span class="keywordtype">int</span> shufSize,</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                                       llvm::Instruction *insertBefore);</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment">/** Utility routines to concat strings with the names of existing values to</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment">    create meaningful new names for instruction values.</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="llvmutil_8h.html#a428e1a05bd0d3048104a773764713f63">LLVMGetName</a>(llvm::Value *v, <span class="keyword">const</span> <span class="keywordtype">char</span> *);</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="llvmutil_8h.html#a428e1a05bd0d3048104a773764713f63">LLVMGetName</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *op, llvm::Value *v1, llvm::Value *v2);</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="preprocessor">#endif // ISPC_LLVMUTIL_H</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="comment">    Function returns:</span></div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="comment">    Compare all elements and return one of them if all are equal, otherwise NULL.</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="comment">    If compare argument is false, don&#39;t do compare and return first element instead.</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="comment">    If undef argument is true, ignore undef elements (but all undef yields NULL anyway).</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="keyword">extern</span> llvm::Value * <a class="code" href="llvmutil_8h.html#a988d33ed4cab8ba3cd2178f7a3c8ff8b">LLVMFlattenInsertChain</a> (llvm::Value *inst, <span class="keywordtype">int</span> vectorWidth,</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keywordtype">bool</span> compare = <span class="keyword">true</span>, <span class="keywordtype">bool</span> undef = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="comment">/** This is a utility routine for debugging that dumps out the given LLVM</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="comment">    value as well as (recursively) all of the other values that it depends</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="comment">    on. */</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="llvmutil_8h.html#af2ea5fb708473897ea3eb7fb5a0d956f">LLVMDumpValue</a>(llvm::Value *v);</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">/** Given a vector-typed value, this function returns the value of its</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment">    first element.  Rather than just doing the straightforward thing of</span></div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment">    using a single extractelement instruction to do this, this function</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment">    tries to rewrite the computation for the first element in scalar form;</span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="comment">    this is generally more efficient than computing the entire vector&#39;s</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">    worth of values just to extract the first element, in cases where only</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment">    the first element&#39;s value is needed.</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">  */</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="keyword">extern</span> llvm::Value *<a class="code" href="llvmutil_8h.html#ac74c93c0de2de4b6b73f3a5fa9b45a6d">LLVMExtractFirstVectorElement</a>(llvm::Value *v);</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">/** This function takes two vectors, expected to be the same length, and</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">    returns a new vector of twice the length that represents concatenating</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">    the two of them. */</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="keyword">extern</span> llvm::Value *<a class="code" href="llvmutil_8h.html#a9e52dbf98a2e38869b743b0c403b3145">LLVMConcatVectors</a>(llvm::Value *v1, llvm::Value *v2,</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                                      llvm::Instruction *insertBefore);</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="comment">/** This is a utility function for vector shuffling; it takes two vectors</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="comment">    v1 and v2, and a compile-time constant set of integer permutations in</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">    shuf[] and returns a new vector of length shufSize that represents the</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">    corresponding shufflevector operation. */</span></div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="keyword">extern</span> llvm::Value *<a class="code" href="llvmutil_8h.html#a0422a9c91b6a83630d891efc779b007c">LLVMShuffleVectors</a>(llvm::Value *v1, llvm::Value *v2,</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;                                       <a class="code" href="parse_8yy.html#a10e8b2d266b06d06f972396bf71af292">int32_t</a> shuf[], <span class="keywordtype">int</span> shufSize,</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                                       llvm::Instruction *insertBefore);</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment">/** Utility routines to concat strings with the names of existing values to</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="comment">    create meaningful new names for instruction values.</span></div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="llvmutil_8h.html#a428e1a05bd0d3048104a773764713f63">LLVMGetName</a>(llvm::Value *v, <span class="keyword">const</span> <span class="keywordtype">char</span> *);</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="llvmutil_8h.html#a428e1a05bd0d3048104a773764713f63">LLVMGetName</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *op, llvm::Value *v1, llvm::Value *v2);</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="preprocessor">#endif // ISPC_LLVMUTIL_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jun 11 2013 20:28:51 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jun 25 2013 18:47:49 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
