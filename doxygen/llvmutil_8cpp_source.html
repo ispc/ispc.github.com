@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.4.3</span>
+   &#160;<span id="projectnumber">1.4.4</span>
    </div>
   </td>
  </tr>
@@ -1256,386 +1256,426 @@
 <div class="line"><a name="l01207"></a><span class="lineno"> 1207</span>&#160;}</div>
 <div class="line"><a name="l01208"></a><span class="lineno"> 1208</span>&#160;</div>
 <div class="line"><a name="l01209"></a><span class="lineno"> 1209</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01210"></a><span class="lineno"> 1210</span>&#160;<span class="comment">/** Given (op0 AND op1), try and see if we can determine if the result is a</span></div>
-<div class="line"><a name="l01211"></a><span class="lineno"> 1211</span>&#160;<span class="comment">    linear sequence with a step of &quot;stride&quot; between values.  Returns true</span></div>
-<div class="line"><a name="l01212"></a><span class="lineno"> 1212</span>&#160;<span class="comment">    if so and false otherwise.  This pattern comes up when accessing SOA</span></div>
-<div class="line"><a name="l01213"></a><span class="lineno"> 1213</span>&#160;<span class="comment">    data.</span></div>
-<div class="line"><a name="l01214"></a><span class="lineno"> 1214</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l01215"></a><span class="lineno"> 1215</span>&#160;<span class="keyword">static</span> <span class="keywordtype">bool</span></div>
-<div class="line"><a name="l01216"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a24023726868da8de104a3db0059c967c"> 1216</a></span>&#160;<a class="code" href="llvmutil_8cpp.html#a24023726868da8de104a3db0059c967c">lCheckAndForLinear</a>(llvm::Value *op0, llvm::Value *op1, <span class="keywordtype">int</span> vectorLength,</div>
-<div class="line"><a name="l01217"></a><span class="lineno"> 1217</span>&#160;                   <span class="keywordtype">int</span> stride, std::vector&lt;llvm::PHINode *&gt; &amp;seenPhis) {</div>
-<div class="line"><a name="l01218"></a><span class="lineno"> 1218</span>&#160;    <span class="comment">// Require op1 to be a compile-time constant</span></div>
-<div class="line"><a name="l01219"></a><span class="lineno"> 1219</span>&#160;    int64_t maskValue[<a class="code" href="ispc_8h.html#a4d8b1e3b8361d8b5054fb55225f2c972">ISPC_MAX_NVEC</a>];</div>
-<div class="line"><a name="l01220"></a><span class="lineno"> 1220</span>&#160;    <span class="keywordtype">int</span> nElts;</div>
-<div class="line"><a name="l01221"></a><span class="lineno"> 1221</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="llvmutil_8h.html#ace1036bc9879c0cb415c7eca1f89a557">LLVMExtractVectorInts</a>(op1, maskValue, &amp;nElts) == <span class="keyword">false</span>)</div>
-<div class="line"><a name="l01222"></a><span class="lineno"> 1222</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01223"></a><span class="lineno"> 1223</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(nElts == vectorLength);</div>
-<div class="line"><a name="l01224"></a><span class="lineno"> 1224</span>&#160;</div>
-<div class="line"><a name="l01225"></a><span class="lineno"> 1225</span>&#160;    <span class="comment">// Is op1 a smear of the same value across all lanes?  Give up if not.</span></div>
-<div class="line"><a name="l01226"></a><span class="lineno"> 1226</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; vectorLength; ++i)</div>
-<div class="line"><a name="l01227"></a><span class="lineno"> 1227</span>&#160;        <span class="keywordflow">if</span> (maskValue[i] != maskValue[0])</div>
-<div class="line"><a name="l01228"></a><span class="lineno"> 1228</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01210"></a><span class="lineno"> 1210</span>&#160;<span class="comment">/** Checks to see if (op0 &lt;&lt; op1) is a linear vector where the result is a</span></div>
+<div class="line"><a name="l01211"></a><span class="lineno"> 1211</span>&#160;<span class="comment">    vector with values that increase by stride.</span></div>
+<div class="line"><a name="l01212"></a><span class="lineno"> 1212</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l01213"></a><span class="lineno"> 1213</span>&#160;<span class="keyword">static</span> <span class="keywordtype">bool</span></div>
+<div class="line"><a name="l01214"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a8151f471d094596f00ac21d915a88ffd"> 1214</a></span>&#160;<a class="code" href="llvmutil_8cpp.html#a8151f471d094596f00ac21d915a88ffd">lCheckShlForLinear</a>(llvm::Value *op0, llvm::Value *op1, <span class="keywordtype">int</span> vectorLength,</div>
+<div class="line"><a name="l01215"></a><span class="lineno"> 1215</span>&#160;                   <span class="keywordtype">int</span> stride, std::vector&lt;llvm::PHINode *&gt; &amp;seenPhis) {</div>
+<div class="line"><a name="l01216"></a><span class="lineno"> 1216</span>&#160;    <span class="comment">// Is the second operand a constant integer value splatted across all of</span></div>
+<div class="line"><a name="l01217"></a><span class="lineno"> 1217</span>&#160;    <span class="comment">// the lanes?</span></div>
+<div class="line"><a name="l01218"></a><span class="lineno"> 1218</span>&#160;    llvm::ConstantDataVector *cv = llvm::dyn_cast&lt;llvm::ConstantDataVector&gt;(op1);</div>
+<div class="line"><a name="l01219"></a><span class="lineno"> 1219</span>&#160;    <span class="keywordflow">if</span> (cv == NULL)</div>
+<div class="line"><a name="l01220"></a><span class="lineno"> 1220</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01221"></a><span class="lineno"> 1221</span>&#160;</div>
+<div class="line"><a name="l01222"></a><span class="lineno"> 1222</span>&#160;    llvm::Constant *csplat = cv-&gt;getSplatValue();</div>
+<div class="line"><a name="l01223"></a><span class="lineno"> 1223</span>&#160;    <span class="keywordflow">if</span> (csplat == NULL)</div>
+<div class="line"><a name="l01224"></a><span class="lineno"> 1224</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01225"></a><span class="lineno"> 1225</span>&#160;</div>
+<div class="line"><a name="l01226"></a><span class="lineno"> 1226</span>&#160;    llvm::ConstantInt *splat = llvm::dyn_cast&lt;llvm::ConstantInt&gt;(csplat);</div>
+<div class="line"><a name="l01227"></a><span class="lineno"> 1227</span>&#160;    <span class="keywordflow">if</span> (splat == NULL)</div>
+<div class="line"><a name="l01228"></a><span class="lineno"> 1228</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l01229"></a><span class="lineno"> 1229</span>&#160;</div>
-<div class="line"><a name="l01230"></a><span class="lineno"> 1230</span>&#160;    <span class="comment">// If the op1 value isn&#39;t power of 2 minus one, then also give up.</span></div>
-<div class="line"><a name="l01231"></a><span class="lineno"> 1231</span>&#160;    int64_t maskPlusOne = maskValue[0] + 1;</div>
-<div class="line"><a name="l01232"></a><span class="lineno"> 1232</span>&#160;    <span class="keywordtype">bool</span> isPowTwo = (maskPlusOne &amp; (maskPlusOne - 1)) == 0;</div>
-<div class="line"><a name="l01233"></a><span class="lineno"> 1233</span>&#160;    <span class="keywordflow">if</span> (isPowTwo == <span class="keyword">false</span>)</div>
-<div class="line"><a name="l01234"></a><span class="lineno"> 1234</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01235"></a><span class="lineno"> 1235</span>&#160;</div>
-<div class="line"><a name="l01236"></a><span class="lineno"> 1236</span>&#160;    <span class="comment">// The case we&#39;ll covert here is op0 being a linear vector with desired</span></div>
-<div class="line"><a name="l01237"></a><span class="lineno"> 1237</span>&#160;    <span class="comment">// stride, and where all of the values of op0, when divided by</span></div>
-<div class="line"><a name="l01238"></a><span class="lineno"> 1238</span>&#160;    <span class="comment">// maskPlusOne, have the same value.</span></div>
-<div class="line"><a name="l01239"></a><span class="lineno"> 1239</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(op0, vectorLength, stride, seenPhis) == <span class="keyword">false</span>)</div>
-<div class="line"><a name="l01240"></a><span class="lineno"> 1240</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01241"></a><span class="lineno"> 1241</span>&#160;</div>
-<div class="line"><a name="l01242"></a><span class="lineno"> 1242</span>&#160;    <span class="keywordtype">bool</span> canAdd = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l01243"></a><span class="lineno"> 1243</span>&#160;    <span class="keywordtype">bool</span> isMult = <a class="code" href="llvmutil_8cpp.html#ac2aeaf2d9093d44acf6958c8584e1ac7">lAllDivBaseEqual</a>(op0, maskPlusOne, vectorLength, seenPhis,</div>
-<div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160;                                   canAdd);</div>
-<div class="line"><a name="l01245"></a><span class="lineno"> 1245</span>&#160;    <span class="keywordflow">return</span> isMult;</div>
-<div class="line"><a name="l01246"></a><span class="lineno"> 1246</span>&#160;}</div>
-<div class="line"><a name="l01247"></a><span class="lineno"> 1247</span>&#160;</div>
-<div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160;</div>
+<div class="line"><a name="l01230"></a><span class="lineno"> 1230</span>&#160;    <span class="comment">// If (1 &lt;&lt; the splat value) doesn&#39;t evenly divide the stride we&#39;re</span></div>
+<div class="line"><a name="l01231"></a><span class="lineno"> 1231</span>&#160;    <span class="comment">// looking for, there&#39;s no way that we can get the linear sequence</span></div>
+<div class="line"><a name="l01232"></a><span class="lineno"> 1232</span>&#160;    <span class="comment">// we&#39;re looking or.</span></div>
+<div class="line"><a name="l01233"></a><span class="lineno"> 1233</span>&#160;    int64_t equivalentMul = (1 &lt;&lt; splat-&gt;getSExtValue());</div>
+<div class="line"><a name="l01234"></a><span class="lineno"> 1234</span>&#160;    <span class="keywordflow">if</span> (equivalentMul &gt; stride || (stride % equivalentMul) != 0)</div>
+<div class="line"><a name="l01235"></a><span class="lineno"> 1235</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01236"></a><span class="lineno"> 1236</span>&#160;</div>
+<div class="line"><a name="l01237"></a><span class="lineno"> 1237</span>&#160;    <span class="comment">// Check to see if the first operand is a linear vector with stride</span></div>
+<div class="line"><a name="l01238"></a><span class="lineno"> 1238</span>&#160;    <span class="comment">// given by stride/splatVal.</span></div>
+<div class="line"><a name="l01239"></a><span class="lineno"> 1239</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(op0, vectorLength, (<span class="keywordtype">int</span>)(stride / equivalentMul),</div>
+<div class="line"><a name="l01240"></a><span class="lineno"> 1240</span>&#160;                           seenPhis);</div>
+<div class="line"><a name="l01241"></a><span class="lineno"> 1241</span>&#160;}</div>
+<div class="line"><a name="l01242"></a><span class="lineno"> 1242</span>&#160;</div>
+<div class="line"><a name="l01243"></a><span class="lineno"> 1243</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160;<span class="comment">/** Given (op0 AND op1), try and see if we can determine if the result is a</span></div>
+<div class="line"><a name="l01245"></a><span class="lineno"> 1245</span>&#160;<span class="comment">    linear sequence with a step of &quot;stride&quot; between values.  Returns true</span></div>
+<div class="line"><a name="l01246"></a><span class="lineno"> 1246</span>&#160;<span class="comment">    if so and false otherwise.  This pattern comes up when accessing SOA</span></div>
+<div class="line"><a name="l01247"></a><span class="lineno"> 1247</span>&#160;<span class="comment">    data.</span></div>
+<div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l01249"></a><span class="lineno"> 1249</span>&#160;<span class="keyword">static</span> <span class="keywordtype">bool</span></div>
-<div class="line"><a name="l01250"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc"> 1250</a></span>&#160;<a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(llvm::Value *v, <span class="keywordtype">int</span> vectorLength, <span class="keywordtype">int</span> stride,</div>
-<div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;                std::vector&lt;llvm::PHINode *&gt; &amp;seenPhis) {</div>
-<div class="line"><a name="l01252"></a><span class="lineno"> 1252</span>&#160;    <span class="comment">// First try the easy case: if the values are all just constant</span></div>
-<div class="line"><a name="l01253"></a><span class="lineno"> 1253</span>&#160;    <span class="comment">// integers and have the expected stride between them, then we&#39;re done.</span></div>
-<div class="line"><a name="l01254"></a><span class="lineno"> 1254</span>&#160;    llvm::ConstantDataVector *cv = llvm::dyn_cast&lt;llvm::ConstantDataVector&gt;(v);</div>
-<div class="line"><a name="l01255"></a><span class="lineno"> 1255</span>&#160;    <span class="keywordflow">if</span> (cv != NULL)</div>
-<div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="llvmutil_8cpp.html#a5bea0cd5d8429dbb156e3750d02abd44">lVectorIsLinearConstantInts</a>(cv, vectorLength, stride);</div>
-<div class="line"><a name="l01257"></a><span class="lineno"> 1257</span>&#160;</div>
-<div class="line"><a name="l01258"></a><span class="lineno"> 1258</span>&#160;    llvm::BinaryOperator *bop = llvm::dyn_cast&lt;llvm::BinaryOperator&gt;(v);</div>
-<div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160;    <span class="keywordflow">if</span> (bop != NULL) {</div>
-<div class="line"><a name="l01260"></a><span class="lineno"> 1260</span>&#160;        <span class="comment">// FIXME: is it right to pass the seenPhis to the all equal check as well??</span></div>
-<div class="line"><a name="l01261"></a><span class="lineno"> 1261</span>&#160;        llvm::Value *op0 = bop-&gt;getOperand(0), *op1 = bop-&gt;getOperand(1);</div>
-<div class="line"><a name="l01262"></a><span class="lineno"> 1262</span>&#160;</div>
-<div class="line"><a name="l01263"></a><span class="lineno"> 1263</span>&#160;        <span class="keywordflow">if</span> (bop-&gt;getOpcode() == llvm::Instruction::Add) {</div>
-<div class="line"><a name="l01264"></a><span class="lineno"> 1264</span>&#160;            <span class="comment">// There are two cases to check if we have an add:</span></div>
-<div class="line"><a name="l01265"></a><span class="lineno"> 1265</span>&#160;            <span class="comment">//</span></div>
-<div class="line"><a name="l01266"></a><span class="lineno"> 1266</span>&#160;            <span class="comment">// programIndex + unif -&gt; ascending linear seqeuence</span></div>
-<div class="line"><a name="l01267"></a><span class="lineno"> 1267</span>&#160;            <span class="comment">// unif + programIndex -&gt; ascending linear sequence</span></div>
-<div class="line"><a name="l01268"></a><span class="lineno"> 1268</span>&#160;            <span class="keywordtype">bool</span> l0 = <a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(op0, vectorLength, stride, seenPhis);</div>
-<div class="line"><a name="l01269"></a><span class="lineno"> 1269</span>&#160;            <span class="keywordtype">bool</span> e1 = <a class="code" href="llvmutil_8cpp.html#a65d950812b7d8594015ed887481e43fa">lVectorValuesAllEqual</a>(op1, vectorLength, seenPhis);</div>
-<div class="line"><a name="l01270"></a><span class="lineno"> 1270</span>&#160;            <span class="keywordflow">if</span> (l0 &amp;&amp; e1)</div>
-<div class="line"><a name="l01271"></a><span class="lineno"> 1271</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l01272"></a><span class="lineno"> 1272</span>&#160;</div>
-<div class="line"><a name="l01273"></a><span class="lineno"> 1273</span>&#160;            <span class="keywordtype">bool</span> e0 = <a class="code" href="llvmutil_8cpp.html#a65d950812b7d8594015ed887481e43fa">lVectorValuesAllEqual</a>(op0, vectorLength, seenPhis);</div>
-<div class="line"><a name="l01274"></a><span class="lineno"> 1274</span>&#160;            <span class="keywordtype">bool</span> l1 = <a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(op1, vectorLength, stride, seenPhis);</div>
-<div class="line"><a name="l01275"></a><span class="lineno"> 1275</span>&#160;            <span class="keywordflow">return</span> (e0 &amp;&amp; l1);</div>
-<div class="line"><a name="l01276"></a><span class="lineno"> 1276</span>&#160;        }</div>
-<div class="line"><a name="l01277"></a><span class="lineno"> 1277</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bop-&gt;getOpcode() == llvm::Instruction::Sub)</div>
-<div class="line"><a name="l01278"></a><span class="lineno"> 1278</span>&#160;            <span class="comment">// For subtraction, we only match:</span></div>
-<div class="line"><a name="l01279"></a><span class="lineno"> 1279</span>&#160;            <span class="comment">// programIndex - unif -&gt; ascending linear seqeuence</span></div>
-<div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;            <span class="keywordflow">return</span> (<a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(bop-&gt;getOperand(0), vectorLength,</div>
-<div class="line"><a name="l01281"></a><span class="lineno"> 1281</span>&#160;                                    stride, seenPhis) &amp;&amp;</div>
-<div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;                    <a class="code" href="llvmutil_8cpp.html#a65d950812b7d8594015ed887481e43fa">lVectorValuesAllEqual</a>(bop-&gt;getOperand(1), vectorLength,</div>
-<div class="line"><a name="l01283"></a><span class="lineno"> 1283</span>&#160;                                          seenPhis));</div>
-<div class="line"><a name="l01284"></a><span class="lineno"> 1284</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bop-&gt;getOpcode() == llvm::Instruction::Mul) {</div>
-<div class="line"><a name="l01285"></a><span class="lineno"> 1285</span>&#160;            <span class="comment">// Multiplies are a bit trickier, so are handled in a separate</span></div>
-<div class="line"><a name="l01286"></a><span class="lineno"> 1286</span>&#160;            <span class="comment">// function.</span></div>
-<div class="line"><a name="l01287"></a><span class="lineno"> 1287</span>&#160;            <span class="keywordtype">bool</span> m0 = <a class="code" href="llvmutil_8cpp.html#a1d74628e093fdaf434de36528eb47f2a">lCheckMulForLinear</a>(op0, op1, vectorLength, stride, seenPhis);</div>
-<div class="line"><a name="l01288"></a><span class="lineno"> 1288</span>&#160;            <span class="keywordflow">if</span> (m0)</div>
-<div class="line"><a name="l01289"></a><span class="lineno"> 1289</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l01290"></a><span class="lineno"> 1290</span>&#160;            <span class="keywordtype">bool</span> m1 = <a class="code" href="llvmutil_8cpp.html#a1d74628e093fdaf434de36528eb47f2a">lCheckMulForLinear</a>(op1, op0, vectorLength, stride, seenPhis);</div>
-<div class="line"><a name="l01291"></a><span class="lineno"> 1291</span>&#160;            <span class="keywordflow">return</span> m1;</div>
-<div class="line"><a name="l01292"></a><span class="lineno"> 1292</span>&#160;        }</div>
-<div class="line"><a name="l01293"></a><span class="lineno"> 1293</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bop-&gt;getOpcode() == llvm::Instruction::And) {</div>
-<div class="line"><a name="l01294"></a><span class="lineno"> 1294</span>&#160;            <span class="comment">// Special case for some AND-related patterns that come up when</span></div>
-<div class="line"><a name="l01295"></a><span class="lineno"> 1295</span>&#160;            <span class="comment">// looping over SOA data</span></div>
-<div class="line"><a name="l01296"></a><span class="lineno"> 1296</span>&#160;            <span class="keywordtype">bool</span> linear = <a class="code" href="llvmutil_8cpp.html#a24023726868da8de104a3db0059c967c">lCheckAndForLinear</a>(op0, op1, vectorLength, stride, seenPhis);</div>
-<div class="line"><a name="l01297"></a><span class="lineno"> 1297</span>&#160;            <span class="keywordflow">return</span> linear;</div>
-<div class="line"><a name="l01298"></a><span class="lineno"> 1298</span>&#160;        }</div>
-<div class="line"><a name="l01299"></a><span class="lineno"> 1299</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l01300"></a><span class="lineno"> 1300</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01301"></a><span class="lineno"> 1301</span>&#160;    }</div>
-<div class="line"><a name="l01302"></a><span class="lineno"> 1302</span>&#160;</div>
-<div class="line"><a name="l01303"></a><span class="lineno"> 1303</span>&#160;    llvm::CastInst *ci = llvm::dyn_cast&lt;llvm::CastInst&gt;(v);</div>
-<div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;    <span class="keywordflow">if</span> (ci != NULL)</div>
-<div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(ci-&gt;getOperand(0), vectorLength,</div>
-<div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;                               stride, seenPhis);</div>
-<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;</div>
-<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;    <span class="keywordflow">if</span> (llvm::isa&lt;llvm::CallInst&gt;(v) || llvm::isa&lt;llvm::LoadInst&gt;(v))</div>
-<div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;</div>
-<div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;    llvm::PHINode *phi = llvm::dyn_cast&lt;llvm::PHINode&gt;(v);</div>
-<div class="line"><a name="l01312"></a><span class="lineno"> 1312</span>&#160;    <span class="keywordflow">if</span> (phi != NULL) {</div>
-<div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; seenPhis.size(); ++i)</div>
-<div class="line"><a name="l01314"></a><span class="lineno"> 1314</span>&#160;            <span class="keywordflow">if</span> (seenPhis[i] == phi)</div>
-<div class="line"><a name="l01315"></a><span class="lineno"> 1315</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l01316"></a><span class="lineno"> 1316</span>&#160;</div>
-<div class="line"><a name="l01317"></a><span class="lineno"> 1317</span>&#160;        seenPhis.push_back(phi);</div>
-<div class="line"><a name="l01318"></a><span class="lineno"> 1318</span>&#160;</div>
-<div class="line"><a name="l01319"></a><span class="lineno"> 1319</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numIncoming = phi-&gt;getNumIncomingValues();</div>
-<div class="line"><a name="l01320"></a><span class="lineno"> 1320</span>&#160;        <span class="comment">// Check all of the incoming values: if all of them are all equal,</span></div>
-<div class="line"><a name="l01321"></a><span class="lineno"> 1321</span>&#160;        <span class="comment">// then we&#39;re good.</span></div>
-<div class="line"><a name="l01322"></a><span class="lineno"> 1322</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; numIncoming; ++i) {</div>
-<div class="line"><a name="l01323"></a><span class="lineno"> 1323</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(phi-&gt;getIncomingValue(i), vectorLength, stride,</div>
-<div class="line"><a name="l01324"></a><span class="lineno"> 1324</span>&#160;                                 seenPhis)) {</div>
-<div class="line"><a name="l01325"></a><span class="lineno"> 1325</span>&#160;                seenPhis.pop_back();</div>
-<div class="line"><a name="l01326"></a><span class="lineno"> 1326</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01327"></a><span class="lineno"> 1327</span>&#160;            }</div>
-<div class="line"><a name="l01328"></a><span class="lineno"> 1328</span>&#160;        }</div>
-<div class="line"><a name="l01329"></a><span class="lineno"> 1329</span>&#160;</div>
-<div class="line"><a name="l01330"></a><span class="lineno"> 1330</span>&#160;        seenPhis.pop_back();</div>
-<div class="line"><a name="l01331"></a><span class="lineno"> 1331</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l01332"></a><span class="lineno"> 1332</span>&#160;    }</div>
-<div class="line"><a name="l01333"></a><span class="lineno"> 1333</span>&#160;</div>
-<div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160;    <span class="comment">// TODO: is any reason to worry about these?</span></div>
-<div class="line"><a name="l01335"></a><span class="lineno"> 1335</span>&#160;    <span class="keywordflow">if</span> (llvm::isa&lt;llvm::InsertElementInst&gt;(v))</div>
-<div class="line"><a name="l01336"></a><span class="lineno"> 1336</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01337"></a><span class="lineno"> 1337</span>&#160;</div>
-<div class="line"><a name="l01338"></a><span class="lineno"> 1338</span>&#160;    <span class="comment">// TODO: we could also handle shuffles, but we haven&#39;t yet seen any</span></div>
-<div class="line"><a name="l01339"></a><span class="lineno"> 1339</span>&#160;    <span class="comment">// cases where doing so would detect cases where actually have a linear</span></div>
-<div class="line"><a name="l01340"></a><span class="lineno"> 1340</span>&#160;    <span class="comment">// vector.</span></div>
-<div class="line"><a name="l01341"></a><span class="lineno"> 1341</span>&#160;    llvm::ShuffleVectorInst *shuffle = llvm::dyn_cast&lt;llvm::ShuffleVectorInst&gt;(v);</div>
-<div class="line"><a name="l01342"></a><span class="lineno"> 1342</span>&#160;    <span class="keywordflow">if</span> (shuffle != NULL)</div>
-<div class="line"><a name="l01343"></a><span class="lineno"> 1343</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01344"></a><span class="lineno"> 1344</span>&#160;</div>
-<div class="line"><a name="l01345"></a><span class="lineno"> 1345</span>&#160;<span class="preprocessor">#if 0</span></div>
-<div class="line"><a name="l01346"></a><span class="lineno"> 1346</span>&#160;<span class="preprocessor"></span>    fprintf(stderr, <span class="stringliteral">&quot;linear check: &quot;</span>);</div>
-<div class="line"><a name="l01347"></a><span class="lineno"> 1347</span>&#160;    v-&gt;dump();</div>
-<div class="line"><a name="l01348"></a><span class="lineno"> 1348</span>&#160;    fprintf(stderr, <span class="stringliteral">&quot;\n&quot;</span>);</div>
-<div class="line"><a name="l01349"></a><span class="lineno"> 1349</span>&#160;    llvm::Instruction *inst = llvm::dyn_cast&lt;llvm::Instruction&gt;(v);</div>
-<div class="line"><a name="l01350"></a><span class="lineno"> 1350</span>&#160;    <span class="keywordflow">if</span> (inst) {</div>
-<div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160;        inst-&gt;getParent()-&gt;dump();</div>
-<div class="line"><a name="l01352"></a><span class="lineno"> 1352</span>&#160;        fprintf(stderr, <span class="stringliteral">&quot;\n&quot;</span>);</div>
-<div class="line"><a name="l01353"></a><span class="lineno"> 1353</span>&#160;        fprintf(stderr, <span class="stringliteral">&quot;\n&quot;</span>);</div>
-<div class="line"><a name="l01354"></a><span class="lineno"> 1354</span>&#160;    }</div>
-<div class="line"><a name="l01355"></a><span class="lineno"> 1355</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01356"></a><span class="lineno"> 1356</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l01357"></a><span class="lineno"> 1357</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01358"></a><span class="lineno"> 1358</span>&#160;}</div>
-<div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160;</div>
-<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;<span class="comment">/** Given vector of integer-typed values, see if the elements of the array</span></div>
-<div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;<span class="comment">    have a step of &#39;stride&#39; between their values.  This function tries to</span></div>
-<div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;<span class="comment">    handle as many possibilities as possible, including things like all</span></div>
-<div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160;<span class="comment">    elements equal to some non-constant value plus an integer offset, etc.</span></div>
-<div class="line"><a name="l01365"></a><span class="lineno"> 1365</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l01366"></a><span class="lineno"> 1366</span>&#160;<span class="keywordtype">bool</span></div>
-<div class="line"><a name="l01367"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a90f7875bca1cd3b22931cae1981ad611"> 1367</a></span>&#160;<a class="code" href="llvmutil_8h.html#a90f7875bca1cd3b22931cae1981ad611">LLVMVectorIsLinear</a>(llvm::Value *v, <span class="keywordtype">int</span> stride) {</div>
-<div class="line"><a name="l01368"></a><span class="lineno"> 1368</span>&#160;    llvm::VectorType *vt =</div>
-<div class="line"><a name="l01369"></a><span class="lineno"> 1369</span>&#160;        llvm::dyn_cast&lt;llvm::VectorType&gt;(v-&gt;getType());</div>
-<div class="line"><a name="l01370"></a><span class="lineno"> 1370</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(vt != NULL);</div>
-<div class="line"><a name="l01371"></a><span class="lineno"> 1371</span>&#160;    <span class="keywordtype">int</span> vectorLength = vt-&gt;getNumElements();</div>
-<div class="line"><a name="l01372"></a><span class="lineno"> 1372</span>&#160;</div>
-<div class="line"><a name="l01373"></a><span class="lineno"> 1373</span>&#160;    std::vector&lt;llvm::PHINode *&gt; seenPhis;</div>
-<div class="line"><a name="l01374"></a><span class="lineno"> 1374</span>&#160;    <span class="keywordtype">bool</span> linear = <a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(v, vectorLength, stride, seenPhis);</div>
-<div class="line"><a name="l01375"></a><span class="lineno"> 1375</span>&#160;    <a class="code" href="util_8h.html#a6c6f4d81366b43c0f096911af0ca0d2e">Debug</a>(<a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a>(), <span class="stringliteral">&quot;LLVMVectorIsLinear(%s) -&gt; %s.&quot;</span>,</div>
-<div class="line"><a name="l01376"></a><span class="lineno"> 1376</span>&#160;          v-&gt;getName().str().c_str(), linear ? <span class="stringliteral">&quot;true&quot;</span> : <span class="stringliteral">&quot;false&quot;</span>);</div>
-<div class="line"><a name="l01377"></a><span class="lineno"> 1377</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a>)</div>
-<div class="line"><a name="l01378"></a><span class="lineno"> 1378</span>&#160;        <a class="code" href="llvmutil_8h.html#af2ea5fb708473897ea3eb7fb5a0d956f">LLVMDumpValue</a>(v);</div>
-<div class="line"><a name="l01379"></a><span class="lineno"> 1379</span>&#160;</div>
-<div class="line"><a name="l01380"></a><span class="lineno"> 1380</span>&#160;    <span class="keywordflow">return</span> linear;</div>
-<div class="line"><a name="l01381"></a><span class="lineno"> 1381</span>&#160;}</div>
-<div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;</div>
-<div class="line"><a name="l01383"></a><span class="lineno"> 1383</span>&#160;</div>
-<div class="line"><a name="l01384"></a><span class="lineno"> 1384</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span></div>
-<div class="line"><a name="l01385"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a598cd587867e1d1c572e6d327c903c3c"> 1385</a></span>&#160;<a class="code" href="llvmutil_8cpp.html#a598cd587867e1d1c572e6d327c903c3c">lDumpValue</a>(llvm::Value *v, std::set&lt;llvm::Value *&gt; &amp;done) {</div>
-<div class="line"><a name="l01386"></a><span class="lineno"> 1386</span>&#160;    <span class="keywordflow">if</span> (done.find(v) != done.end())</div>
-<div class="line"><a name="l01387"></a><span class="lineno"> 1387</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l01388"></a><span class="lineno"> 1388</span>&#160;</div>
+<div class="line"><a name="l01250"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a24023726868da8de104a3db0059c967c"> 1250</a></span>&#160;<a class="code" href="llvmutil_8cpp.html#a24023726868da8de104a3db0059c967c">lCheckAndForLinear</a>(llvm::Value *op0, llvm::Value *op1, <span class="keywordtype">int</span> vectorLength,</div>
+<div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;                   <span class="keywordtype">int</span> stride, std::vector&lt;llvm::PHINode *&gt; &amp;seenPhis) {</div>
+<div class="line"><a name="l01252"></a><span class="lineno"> 1252</span>&#160;    <span class="comment">// Require op1 to be a compile-time constant</span></div>
+<div class="line"><a name="l01253"></a><span class="lineno"> 1253</span>&#160;    int64_t maskValue[<a class="code" href="ispc_8h.html#a4d8b1e3b8361d8b5054fb55225f2c972">ISPC_MAX_NVEC</a>];</div>
+<div class="line"><a name="l01254"></a><span class="lineno"> 1254</span>&#160;    <span class="keywordtype">int</span> nElts;</div>
+<div class="line"><a name="l01255"></a><span class="lineno"> 1255</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="llvmutil_8h.html#ace1036bc9879c0cb415c7eca1f89a557">LLVMExtractVectorInts</a>(op1, maskValue, &amp;nElts) == <span class="keyword">false</span>)</div>
+<div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01257"></a><span class="lineno"> 1257</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(nElts == vectorLength);</div>
+<div class="line"><a name="l01258"></a><span class="lineno"> 1258</span>&#160;</div>
+<div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160;    <span class="comment">// Is op1 a smear of the same value across all lanes?  Give up if not.</span></div>
+<div class="line"><a name="l01260"></a><span class="lineno"> 1260</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; vectorLength; ++i)</div>
+<div class="line"><a name="l01261"></a><span class="lineno"> 1261</span>&#160;        <span class="keywordflow">if</span> (maskValue[i] != maskValue[0])</div>
+<div class="line"><a name="l01262"></a><span class="lineno"> 1262</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01263"></a><span class="lineno"> 1263</span>&#160;</div>
+<div class="line"><a name="l01264"></a><span class="lineno"> 1264</span>&#160;    <span class="comment">// If the op1 value isn&#39;t power of 2 minus one, then also give up.</span></div>
+<div class="line"><a name="l01265"></a><span class="lineno"> 1265</span>&#160;    int64_t maskPlusOne = maskValue[0] + 1;</div>
+<div class="line"><a name="l01266"></a><span class="lineno"> 1266</span>&#160;    <span class="keywordtype">bool</span> isPowTwo = (maskPlusOne &amp; (maskPlusOne - 1)) == 0;</div>
+<div class="line"><a name="l01267"></a><span class="lineno"> 1267</span>&#160;    <span class="keywordflow">if</span> (isPowTwo == <span class="keyword">false</span>)</div>
+<div class="line"><a name="l01268"></a><span class="lineno"> 1268</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01269"></a><span class="lineno"> 1269</span>&#160;</div>
+<div class="line"><a name="l01270"></a><span class="lineno"> 1270</span>&#160;    <span class="comment">// The case we&#39;ll covert here is op0 being a linear vector with desired</span></div>
+<div class="line"><a name="l01271"></a><span class="lineno"> 1271</span>&#160;    <span class="comment">// stride, and where all of the values of op0, when divided by</span></div>
+<div class="line"><a name="l01272"></a><span class="lineno"> 1272</span>&#160;    <span class="comment">// maskPlusOne, have the same value.</span></div>
+<div class="line"><a name="l01273"></a><span class="lineno"> 1273</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(op0, vectorLength, stride, seenPhis) == <span class="keyword">false</span>)</div>
+<div class="line"><a name="l01274"></a><span class="lineno"> 1274</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01275"></a><span class="lineno"> 1275</span>&#160;</div>
+<div class="line"><a name="l01276"></a><span class="lineno"> 1276</span>&#160;    <span class="keywordtype">bool</span> canAdd = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l01277"></a><span class="lineno"> 1277</span>&#160;    <span class="keywordtype">bool</span> isMult = <a class="code" href="llvmutil_8cpp.html#ac2aeaf2d9093d44acf6958c8584e1ac7">lAllDivBaseEqual</a>(op0, maskPlusOne, vectorLength, seenPhis,</div>
+<div class="line"><a name="l01278"></a><span class="lineno"> 1278</span>&#160;                                   canAdd);</div>
+<div class="line"><a name="l01279"></a><span class="lineno"> 1279</span>&#160;    <span class="keywordflow">return</span> isMult;</div>
+<div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;}</div>
+<div class="line"><a name="l01281"></a><span class="lineno"> 1281</span>&#160;</div>
+<div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;</div>
+<div class="line"><a name="l01283"></a><span class="lineno"> 1283</span>&#160;<span class="keyword">static</span> <span class="keywordtype">bool</span></div>
+<div class="line"><a name="l01284"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc"> 1284</a></span>&#160;<a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(llvm::Value *v, <span class="keywordtype">int</span> vectorLength, <span class="keywordtype">int</span> stride,</div>
+<div class="line"><a name="l01285"></a><span class="lineno"> 1285</span>&#160;                std::vector&lt;llvm::PHINode *&gt; &amp;seenPhis) {</div>
+<div class="line"><a name="l01286"></a><span class="lineno"> 1286</span>&#160;    <span class="comment">// First try the easy case: if the values are all just constant</span></div>
+<div class="line"><a name="l01287"></a><span class="lineno"> 1287</span>&#160;    <span class="comment">// integers and have the expected stride between them, then we&#39;re done.</span></div>
+<div class="line"><a name="l01288"></a><span class="lineno"> 1288</span>&#160;    llvm::ConstantDataVector *cv = llvm::dyn_cast&lt;llvm::ConstantDataVector&gt;(v);</div>
+<div class="line"><a name="l01289"></a><span class="lineno"> 1289</span>&#160;    <span class="keywordflow">if</span> (cv != NULL)</div>
+<div class="line"><a name="l01290"></a><span class="lineno"> 1290</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="llvmutil_8cpp.html#a5bea0cd5d8429dbb156e3750d02abd44">lVectorIsLinearConstantInts</a>(cv, vectorLength, stride);</div>
+<div class="line"><a name="l01291"></a><span class="lineno"> 1291</span>&#160;</div>
+<div class="line"><a name="l01292"></a><span class="lineno"> 1292</span>&#160;    llvm::BinaryOperator *bop = llvm::dyn_cast&lt;llvm::BinaryOperator&gt;(v);</div>
+<div class="line"><a name="l01293"></a><span class="lineno"> 1293</span>&#160;    <span class="keywordflow">if</span> (bop != NULL) {</div>
+<div class="line"><a name="l01294"></a><span class="lineno"> 1294</span>&#160;        <span class="comment">// FIXME: is it right to pass the seenPhis to the all equal check as well??</span></div>
+<div class="line"><a name="l01295"></a><span class="lineno"> 1295</span>&#160;        llvm::Value *op0 = bop-&gt;getOperand(0), *op1 = bop-&gt;getOperand(1);</div>
+<div class="line"><a name="l01296"></a><span class="lineno"> 1296</span>&#160;</div>
+<div class="line"><a name="l01297"></a><span class="lineno"> 1297</span>&#160;        <span class="keywordflow">if</span> (bop-&gt;getOpcode() == llvm::Instruction::Add) {</div>
+<div class="line"><a name="l01298"></a><span class="lineno"> 1298</span>&#160;            <span class="comment">// There are two cases to check if we have an add:</span></div>
+<div class="line"><a name="l01299"></a><span class="lineno"> 1299</span>&#160;            <span class="comment">//</span></div>
+<div class="line"><a name="l01300"></a><span class="lineno"> 1300</span>&#160;            <span class="comment">// programIndex + unif -&gt; ascending linear seqeuence</span></div>
+<div class="line"><a name="l01301"></a><span class="lineno"> 1301</span>&#160;            <span class="comment">// unif + programIndex -&gt; ascending linear sequence</span></div>
+<div class="line"><a name="l01302"></a><span class="lineno"> 1302</span>&#160;            <span class="keywordtype">bool</span> l0 = <a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(op0, vectorLength, stride, seenPhis);</div>
+<div class="line"><a name="l01303"></a><span class="lineno"> 1303</span>&#160;            <span class="keywordtype">bool</span> e1 = <a class="code" href="llvmutil_8cpp.html#a65d950812b7d8594015ed887481e43fa">lVectorValuesAllEqual</a>(op1, vectorLength, seenPhis);</div>
+<div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;            <span class="keywordflow">if</span> (l0 &amp;&amp; e1)</div>
+<div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;</div>
+<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;            <span class="keywordtype">bool</span> e0 = <a class="code" href="llvmutil_8cpp.html#a65d950812b7d8594015ed887481e43fa">lVectorValuesAllEqual</a>(op0, vectorLength, seenPhis);</div>
+<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;            <span class="keywordtype">bool</span> l1 = <a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(op1, vectorLength, stride, seenPhis);</div>
+<div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;            <span class="keywordflow">return</span> (e0 &amp;&amp; l1);</div>
+<div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;        }</div>
+<div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bop-&gt;getOpcode() == llvm::Instruction::Sub)</div>
+<div class="line"><a name="l01312"></a><span class="lineno"> 1312</span>&#160;            <span class="comment">// For subtraction, we only match:</span></div>
+<div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;            <span class="comment">// programIndex - unif -&gt; ascending linear seqeuence</span></div>
+<div class="line"><a name="l01314"></a><span class="lineno"> 1314</span>&#160;            <span class="keywordflow">return</span> (<a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(bop-&gt;getOperand(0), vectorLength,</div>
+<div class="line"><a name="l01315"></a><span class="lineno"> 1315</span>&#160;                                    stride, seenPhis) &amp;&amp;</div>
+<div class="line"><a name="l01316"></a><span class="lineno"> 1316</span>&#160;                    <a class="code" href="llvmutil_8cpp.html#a65d950812b7d8594015ed887481e43fa">lVectorValuesAllEqual</a>(bop-&gt;getOperand(1), vectorLength,</div>
+<div class="line"><a name="l01317"></a><span class="lineno"> 1317</span>&#160;                                          seenPhis));</div>
+<div class="line"><a name="l01318"></a><span class="lineno"> 1318</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bop-&gt;getOpcode() == llvm::Instruction::Mul) {</div>
+<div class="line"><a name="l01319"></a><span class="lineno"> 1319</span>&#160;            <span class="comment">// Multiplies are a bit trickier, so are handled in a separate</span></div>
+<div class="line"><a name="l01320"></a><span class="lineno"> 1320</span>&#160;            <span class="comment">// function.</span></div>
+<div class="line"><a name="l01321"></a><span class="lineno"> 1321</span>&#160;            <span class="keywordtype">bool</span> m0 = <a class="code" href="llvmutil_8cpp.html#a1d74628e093fdaf434de36528eb47f2a">lCheckMulForLinear</a>(op0, op1, vectorLength, stride, seenPhis);</div>
+<div class="line"><a name="l01322"></a><span class="lineno"> 1322</span>&#160;            <span class="keywordflow">if</span> (m0)</div>
+<div class="line"><a name="l01323"></a><span class="lineno"> 1323</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l01324"></a><span class="lineno"> 1324</span>&#160;            <span class="keywordtype">bool</span> m1 = <a class="code" href="llvmutil_8cpp.html#a1d74628e093fdaf434de36528eb47f2a">lCheckMulForLinear</a>(op1, op0, vectorLength, stride, seenPhis);</div>
+<div class="line"><a name="l01325"></a><span class="lineno"> 1325</span>&#160;            <span class="keywordflow">return</span> m1;</div>
+<div class="line"><a name="l01326"></a><span class="lineno"> 1326</span>&#160;        }</div>
+<div class="line"><a name="l01327"></a><span class="lineno"> 1327</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bop-&gt;getOpcode() == llvm::Instruction::Shl) {</div>
+<div class="line"><a name="l01328"></a><span class="lineno"> 1328</span>&#160;            <span class="comment">// Sometimes multiplies come in as shift lefts (especially in</span></div>
+<div class="line"><a name="l01329"></a><span class="lineno"> 1329</span>&#160;            <span class="comment">// LLVM 3.4+).</span></div>
+<div class="line"><a name="l01330"></a><span class="lineno"> 1330</span>&#160;            <span class="keywordtype">bool</span> linear = <a class="code" href="llvmutil_8cpp.html#a8151f471d094596f00ac21d915a88ffd">lCheckShlForLinear</a>(op0, op1, vectorLength, stride, seenPhis);</div>
+<div class="line"><a name="l01331"></a><span class="lineno"> 1331</span>&#160;            <span class="keywordflow">return</span> linear;</div>
+<div class="line"><a name="l01332"></a><span class="lineno"> 1332</span>&#160;        }</div>
+<div class="line"><a name="l01333"></a><span class="lineno"> 1333</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bop-&gt;getOpcode() == llvm::Instruction::And) {</div>
+<div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160;            <span class="comment">// Special case for some AND-related patterns that come up when</span></div>
+<div class="line"><a name="l01335"></a><span class="lineno"> 1335</span>&#160;            <span class="comment">// looping over SOA data</span></div>
+<div class="line"><a name="l01336"></a><span class="lineno"> 1336</span>&#160;            <span class="keywordtype">bool</span> linear = <a class="code" href="llvmutil_8cpp.html#a24023726868da8de104a3db0059c967c">lCheckAndForLinear</a>(op0, op1, vectorLength, stride, seenPhis);</div>
+<div class="line"><a name="l01337"></a><span class="lineno"> 1337</span>&#160;            <span class="keywordflow">return</span> linear;</div>
+<div class="line"><a name="l01338"></a><span class="lineno"> 1338</span>&#160;        }</div>
+<div class="line"><a name="l01339"></a><span class="lineno"> 1339</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l01340"></a><span class="lineno"> 1340</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01341"></a><span class="lineno"> 1341</span>&#160;    }</div>
+<div class="line"><a name="l01342"></a><span class="lineno"> 1342</span>&#160;</div>
+<div class="line"><a name="l01343"></a><span class="lineno"> 1343</span>&#160;    llvm::CastInst *ci = llvm::dyn_cast&lt;llvm::CastInst&gt;(v);</div>
+<div class="line"><a name="l01344"></a><span class="lineno"> 1344</span>&#160;    <span class="keywordflow">if</span> (ci != NULL)</div>
+<div class="line"><a name="l01345"></a><span class="lineno"> 1345</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(ci-&gt;getOperand(0), vectorLength,</div>
+<div class="line"><a name="l01346"></a><span class="lineno"> 1346</span>&#160;                               stride, seenPhis);</div>
+<div class="line"><a name="l01347"></a><span class="lineno"> 1347</span>&#160;</div>
+<div class="line"><a name="l01348"></a><span class="lineno"> 1348</span>&#160;    <span class="keywordflow">if</span> (llvm::isa&lt;llvm::CallInst&gt;(v) || llvm::isa&lt;llvm::LoadInst&gt;(v))</div>
+<div class="line"><a name="l01349"></a><span class="lineno"> 1349</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01350"></a><span class="lineno"> 1350</span>&#160;</div>
+<div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160;    llvm::PHINode *phi = llvm::dyn_cast&lt;llvm::PHINode&gt;(v);</div>
+<div class="line"><a name="l01352"></a><span class="lineno"> 1352</span>&#160;    <span class="keywordflow">if</span> (phi != NULL) {</div>
+<div class="line"><a name="l01353"></a><span class="lineno"> 1353</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; seenPhis.size(); ++i)</div>
+<div class="line"><a name="l01354"></a><span class="lineno"> 1354</span>&#160;            <span class="keywordflow">if</span> (seenPhis[i] == phi)</div>
+<div class="line"><a name="l01355"></a><span class="lineno"> 1355</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l01356"></a><span class="lineno"> 1356</span>&#160;</div>
+<div class="line"><a name="l01357"></a><span class="lineno"> 1357</span>&#160;        seenPhis.push_back(phi);</div>
+<div class="line"><a name="l01358"></a><span class="lineno"> 1358</span>&#160;</div>
+<div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numIncoming = phi-&gt;getNumIncomingValues();</div>
+<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;        <span class="comment">// Check all of the incoming values: if all of them are all equal,</span></div>
+<div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;        <span class="comment">// then we&#39;re good.</span></div>
+<div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; numIncoming; ++i) {</div>
+<div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(phi-&gt;getIncomingValue(i), vectorLength, stride,</div>
+<div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160;                                 seenPhis)) {</div>
+<div class="line"><a name="l01365"></a><span class="lineno"> 1365</span>&#160;                seenPhis.pop_back();</div>
+<div class="line"><a name="l01366"></a><span class="lineno"> 1366</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01367"></a><span class="lineno"> 1367</span>&#160;            }</div>
+<div class="line"><a name="l01368"></a><span class="lineno"> 1368</span>&#160;        }</div>
+<div class="line"><a name="l01369"></a><span class="lineno"> 1369</span>&#160;</div>
+<div class="line"><a name="l01370"></a><span class="lineno"> 1370</span>&#160;        seenPhis.pop_back();</div>
+<div class="line"><a name="l01371"></a><span class="lineno"> 1371</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l01372"></a><span class="lineno"> 1372</span>&#160;    }</div>
+<div class="line"><a name="l01373"></a><span class="lineno"> 1373</span>&#160;</div>
+<div class="line"><a name="l01374"></a><span class="lineno"> 1374</span>&#160;    <span class="comment">// TODO: is any reason to worry about these?</span></div>
+<div class="line"><a name="l01375"></a><span class="lineno"> 1375</span>&#160;    <span class="keywordflow">if</span> (llvm::isa&lt;llvm::InsertElementInst&gt;(v))</div>
+<div class="line"><a name="l01376"></a><span class="lineno"> 1376</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01377"></a><span class="lineno"> 1377</span>&#160;</div>
+<div class="line"><a name="l01378"></a><span class="lineno"> 1378</span>&#160;    <span class="comment">// TODO: we could also handle shuffles, but we haven&#39;t yet seen any</span></div>
+<div class="line"><a name="l01379"></a><span class="lineno"> 1379</span>&#160;    <span class="comment">// cases where doing so would detect cases where actually have a linear</span></div>
+<div class="line"><a name="l01380"></a><span class="lineno"> 1380</span>&#160;    <span class="comment">// vector.</span></div>
+<div class="line"><a name="l01381"></a><span class="lineno"> 1381</span>&#160;    llvm::ShuffleVectorInst *shuffle = llvm::dyn_cast&lt;llvm::ShuffleVectorInst&gt;(v);</div>
+<div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;    <span class="keywordflow">if</span> (shuffle != NULL)</div>
+<div class="line"><a name="l01383"></a><span class="lineno"> 1383</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01384"></a><span class="lineno"> 1384</span>&#160;</div>
+<div class="line"><a name="l01385"></a><span class="lineno"> 1385</span>&#160;<span class="preprocessor">#if 0</span></div>
+<div class="line"><a name="l01386"></a><span class="lineno"> 1386</span>&#160;<span class="preprocessor"></span>    fprintf(stderr, <span class="stringliteral">&quot;linear check: &quot;</span>);</div>
+<div class="line"><a name="l01387"></a><span class="lineno"> 1387</span>&#160;    v-&gt;dump();</div>
+<div class="line"><a name="l01388"></a><span class="lineno"> 1388</span>&#160;    fprintf(stderr, <span class="stringliteral">&quot;\n&quot;</span>);</div>
 <div class="line"><a name="l01389"></a><span class="lineno"> 1389</span>&#160;    llvm::Instruction *inst = llvm::dyn_cast&lt;llvm::Instruction&gt;(v);</div>
-<div class="line"><a name="l01390"></a><span class="lineno"> 1390</span>&#160;    <span class="keywordflow">if</span> (done.size() &gt; 0 &amp;&amp; inst == NULL)</div>
-<div class="line"><a name="l01391"></a><span class="lineno"> 1391</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l01392"></a><span class="lineno"> 1392</span>&#160;</div>
-<div class="line"><a name="l01393"></a><span class="lineno"> 1393</span>&#160;    fprintf(stderr, <span class="stringliteral">&quot;  &quot;</span>);</div>
-<div class="line"><a name="l01394"></a><span class="lineno"> 1394</span>&#160;    v-&gt;dump();</div>
-<div class="line"><a name="l01395"></a><span class="lineno"> 1395</span>&#160;    done.insert(v);</div>
-<div class="line"><a name="l01396"></a><span class="lineno"> 1396</span>&#160;</div>
-<div class="line"><a name="l01397"></a><span class="lineno"> 1397</span>&#160;    <span class="keywordflow">if</span> (inst == NULL)</div>
-<div class="line"><a name="l01398"></a><span class="lineno"> 1398</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l01390"></a><span class="lineno"> 1390</span>&#160;    <span class="keywordflow">if</span> (inst) {</div>
+<div class="line"><a name="l01391"></a><span class="lineno"> 1391</span>&#160;        inst-&gt;getParent()-&gt;dump();</div>
+<div class="line"><a name="l01392"></a><span class="lineno"> 1392</span>&#160;        fprintf(stderr, <span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><a name="l01393"></a><span class="lineno"> 1393</span>&#160;        fprintf(stderr, <span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><a name="l01394"></a><span class="lineno"> 1394</span>&#160;    }</div>
+<div class="line"><a name="l01395"></a><span class="lineno"> 1395</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01396"></a><span class="lineno"> 1396</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l01397"></a><span class="lineno"> 1397</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01398"></a><span class="lineno"> 1398</span>&#160;}</div>
 <div class="line"><a name="l01399"></a><span class="lineno"> 1399</span>&#160;</div>
-<div class="line"><a name="l01400"></a><span class="lineno"> 1400</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; i &lt; inst-&gt;getNumOperands(); ++i)</div>
-<div class="line"><a name="l01401"></a><span class="lineno"> 1401</span>&#160;        <a class="code" href="llvmutil_8cpp.html#a598cd587867e1d1c572e6d327c903c3c">lDumpValue</a>(inst-&gt;getOperand(i), done);</div>
-<div class="line"><a name="l01402"></a><span class="lineno"> 1402</span>&#160;}</div>
-<div class="line"><a name="l01403"></a><span class="lineno"> 1403</span>&#160;</div>
-<div class="line"><a name="l01404"></a><span class="lineno"> 1404</span>&#160;</div>
-<div class="line"><a name="l01405"></a><span class="lineno"> 1405</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l01406"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#af2ea5fb708473897ea3eb7fb5a0d956f"> 1406</a></span>&#160;<a class="code" href="llvmutil_8h.html#af2ea5fb708473897ea3eb7fb5a0d956f">LLVMDumpValue</a>(llvm::Value *v) {</div>
-<div class="line"><a name="l01407"></a><span class="lineno"> 1407</span>&#160;    std::set&lt;llvm::Value *&gt; done;</div>
-<div class="line"><a name="l01408"></a><span class="lineno"> 1408</span>&#160;    <a class="code" href="llvmutil_8cpp.html#a598cd587867e1d1c572e6d327c903c3c">lDumpValue</a>(v, done);</div>
-<div class="line"><a name="l01409"></a><span class="lineno"> 1409</span>&#160;    fprintf(stderr, <span class="stringliteral">&quot;----\n&quot;</span>);</div>
-<div class="line"><a name="l01410"></a><span class="lineno"> 1410</span>&#160;}</div>
-<div class="line"><a name="l01411"></a><span class="lineno"> 1411</span>&#160;</div>
+<div class="line"><a name="l01400"></a><span class="lineno"> 1400</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01401"></a><span class="lineno"> 1401</span>&#160;<span class="comment">/** Given vector of integer-typed values, see if the elements of the array</span></div>
+<div class="line"><a name="l01402"></a><span class="lineno"> 1402</span>&#160;<span class="comment">    have a step of &#39;stride&#39; between their values.  This function tries to</span></div>
+<div class="line"><a name="l01403"></a><span class="lineno"> 1403</span>&#160;<span class="comment">    handle as many possibilities as possible, including things like all</span></div>
+<div class="line"><a name="l01404"></a><span class="lineno"> 1404</span>&#160;<span class="comment">    elements equal to some non-constant value plus an integer offset, etc.</span></div>
+<div class="line"><a name="l01405"></a><span class="lineno"> 1405</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l01406"></a><span class="lineno"> 1406</span>&#160;<span class="keywordtype">bool</span></div>
+<div class="line"><a name="l01407"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a90f7875bca1cd3b22931cae1981ad611"> 1407</a></span>&#160;<a class="code" href="llvmutil_8h.html#a90f7875bca1cd3b22931cae1981ad611">LLVMVectorIsLinear</a>(llvm::Value *v, <span class="keywordtype">int</span> stride) {</div>
+<div class="line"><a name="l01408"></a><span class="lineno"> 1408</span>&#160;    llvm::VectorType *vt =</div>
+<div class="line"><a name="l01409"></a><span class="lineno"> 1409</span>&#160;        llvm::dyn_cast&lt;llvm::VectorType&gt;(v-&gt;getType());</div>
+<div class="line"><a name="l01410"></a><span class="lineno"> 1410</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(vt != NULL);</div>
+<div class="line"><a name="l01411"></a><span class="lineno"> 1411</span>&#160;    <span class="keywordtype">int</span> vectorLength = vt-&gt;getNumElements();</div>
 <div class="line"><a name="l01412"></a><span class="lineno"> 1412</span>&#160;</div>
-<div class="line"><a name="l01413"></a><span class="lineno"> 1413</span>&#160;<span class="keyword">static</span> llvm::Value *</div>
-<div class="line"><a name="l01414"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8"> 1414</a></span>&#160;<a class="code" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8">lExtractFirstVectorElement</a>(llvm::Value *v,</div>
-<div class="line"><a name="l01415"></a><span class="lineno"> 1415</span>&#160;                           std::map&lt;llvm::PHINode *, llvm::PHINode *&gt; &amp;phiMap) {</div>
-<div class="line"><a name="l01416"></a><span class="lineno"> 1416</span>&#160;    llvm::VectorType *vt =</div>
-<div class="line"><a name="l01417"></a><span class="lineno"> 1417</span>&#160;        llvm::dyn_cast&lt;llvm::VectorType&gt;(v-&gt;getType());</div>
-<div class="line"><a name="l01418"></a><span class="lineno"> 1418</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(vt != NULL);</div>
+<div class="line"><a name="l01413"></a><span class="lineno"> 1413</span>&#160;    std::vector&lt;llvm::PHINode *&gt; seenPhis;</div>
+<div class="line"><a name="l01414"></a><span class="lineno"> 1414</span>&#160;    <span class="keywordtype">bool</span> linear = <a class="code" href="llvmutil_8cpp.html#ae60d89f84e134a3f8151f2c75639c6bc">lVectorIsLinear</a>(v, vectorLength, stride, seenPhis);</div>
+<div class="line"><a name="l01415"></a><span class="lineno"> 1415</span>&#160;    <a class="code" href="util_8h.html#a6c6f4d81366b43c0f096911af0ca0d2e">Debug</a>(<a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a>(), <span class="stringliteral">&quot;LLVMVectorIsLinear(%s) -&gt; %s.&quot;</span>,</div>
+<div class="line"><a name="l01416"></a><span class="lineno"> 1416</span>&#160;          v-&gt;getName().str().c_str(), linear ? <span class="stringliteral">&quot;true&quot;</span> : <span class="stringliteral">&quot;false&quot;</span>);</div>
+<div class="line"><a name="l01417"></a><span class="lineno"> 1417</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a>)</div>
+<div class="line"><a name="l01418"></a><span class="lineno"> 1418</span>&#160;        <a class="code" href="llvmutil_8h.html#af2ea5fb708473897ea3eb7fb5a0d956f">LLVMDumpValue</a>(v);</div>
 <div class="line"><a name="l01419"></a><span class="lineno"> 1419</span>&#160;</div>
-<div class="line"><a name="l01420"></a><span class="lineno"> 1420</span>&#160;    <span class="comment">// First, handle various constant types; do the extraction manually, as</span></div>
-<div class="line"><a name="l01421"></a><span class="lineno"> 1421</span>&#160;    <span class="comment">// appropriate.</span></div>
-<div class="line"><a name="l01422"></a><span class="lineno"> 1422</span>&#160;    <span class="keywordflow">if</span> (llvm::isa&lt;llvm::ConstantAggregateZero&gt;(v) == <span class="keyword">true</span>) {</div>
-<div class="line"><a name="l01423"></a><span class="lineno"> 1423</span>&#160;        <span class="keywordflow">return</span> llvm::Constant::getNullValue(vt-&gt;getElementType());</div>
-<div class="line"><a name="l01424"></a><span class="lineno"> 1424</span>&#160;    }</div>
-<div class="line"><a name="l01425"></a><span class="lineno"> 1425</span>&#160;    <span class="keywordflow">if</span> (llvm::ConstantVector *cv = llvm::dyn_cast&lt;llvm::ConstantVector&gt;(v)) {</div>
-<div class="line"><a name="l01426"></a><span class="lineno"> 1426</span>&#160;        <span class="keywordflow">return</span> cv-&gt;getOperand(0);</div>
-<div class="line"><a name="l01427"></a><span class="lineno"> 1427</span>&#160;    }</div>
-<div class="line"><a name="l01428"></a><span class="lineno"> 1428</span>&#160;    <span class="keywordflow">if</span> (llvm::ConstantDataVector *cdv =</div>
-<div class="line"><a name="l01429"></a><span class="lineno"> 1429</span>&#160;        llvm::dyn_cast&lt;llvm::ConstantDataVector&gt;(v))</div>
-<div class="line"><a name="l01430"></a><span class="lineno"> 1430</span>&#160;        <span class="keywordflow">return</span> cdv-&gt;getElementAsConstant(0);</div>
-<div class="line"><a name="l01431"></a><span class="lineno"> 1431</span>&#160;</div>
-<div class="line"><a name="l01432"></a><span class="lineno"> 1432</span>&#160;    <span class="comment">// Otherwise, all that we should have at this point is an instruction</span></div>
-<div class="line"><a name="l01433"></a><span class="lineno"> 1433</span>&#160;    <span class="comment">// of some sort</span></div>
-<div class="line"><a name="l01434"></a><span class="lineno"> 1434</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(llvm::isa&lt;llvm::Constant&gt;(v) == <span class="keyword">false</span>);</div>
-<div class="line"><a name="l01435"></a><span class="lineno"> 1435</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(llvm::isa&lt;llvm::Instruction&gt;(v) == <span class="keyword">true</span>);</div>
+<div class="line"><a name="l01420"></a><span class="lineno"> 1420</span>&#160;    <span class="keywordflow">return</span> linear;</div>
+<div class="line"><a name="l01421"></a><span class="lineno"> 1421</span>&#160;}</div>
+<div class="line"><a name="l01422"></a><span class="lineno"> 1422</span>&#160;</div>
+<div class="line"><a name="l01423"></a><span class="lineno"> 1423</span>&#160;</div>
+<div class="line"><a name="l01424"></a><span class="lineno"> 1424</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span></div>
+<div class="line"><a name="l01425"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a598cd587867e1d1c572e6d327c903c3c"> 1425</a></span>&#160;<a class="code" href="llvmutil_8cpp.html#a598cd587867e1d1c572e6d327c903c3c">lDumpValue</a>(llvm::Value *v, std::set&lt;llvm::Value *&gt; &amp;done) {</div>
+<div class="line"><a name="l01426"></a><span class="lineno"> 1426</span>&#160;    <span class="keywordflow">if</span> (done.find(v) != done.end())</div>
+<div class="line"><a name="l01427"></a><span class="lineno"> 1427</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l01428"></a><span class="lineno"> 1428</span>&#160;</div>
+<div class="line"><a name="l01429"></a><span class="lineno"> 1429</span>&#160;    llvm::Instruction *inst = llvm::dyn_cast&lt;llvm::Instruction&gt;(v);</div>
+<div class="line"><a name="l01430"></a><span class="lineno"> 1430</span>&#160;    <span class="keywordflow">if</span> (done.size() &gt; 0 &amp;&amp; inst == NULL)</div>
+<div class="line"><a name="l01431"></a><span class="lineno"> 1431</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l01432"></a><span class="lineno"> 1432</span>&#160;</div>
+<div class="line"><a name="l01433"></a><span class="lineno"> 1433</span>&#160;    fprintf(stderr, <span class="stringliteral">&quot;  &quot;</span>);</div>
+<div class="line"><a name="l01434"></a><span class="lineno"> 1434</span>&#160;    v-&gt;dump();</div>
+<div class="line"><a name="l01435"></a><span class="lineno"> 1435</span>&#160;    done.insert(v);</div>
 <div class="line"><a name="l01436"></a><span class="lineno"> 1436</span>&#160;</div>
-<div class="line"><a name="l01437"></a><span class="lineno"> 1437</span>&#160;    std::string newName = v-&gt;getName().str() + std::string(<span class="stringliteral">&quot;.elt0&quot;</span>);</div>
-<div class="line"><a name="l01438"></a><span class="lineno"> 1438</span>&#160;</div>
-<div class="line"><a name="l01439"></a><span class="lineno"> 1439</span>&#160;    <span class="comment">// Rewrite regular binary operators and casts to the scalarized</span></div>
-<div class="line"><a name="l01440"></a><span class="lineno"> 1440</span>&#160;    <span class="comment">// equivalent.</span></div>
-<div class="line"><a name="l01441"></a><span class="lineno"> 1441</span>&#160;    llvm::BinaryOperator *bop = llvm::dyn_cast&lt;llvm::BinaryOperator&gt;(v);</div>
-<div class="line"><a name="l01442"></a><span class="lineno"> 1442</span>&#160;    <span class="keywordflow">if</span> (bop != NULL) {</div>
-<div class="line"><a name="l01443"></a><span class="lineno"> 1443</span>&#160;        llvm::Value *v0 = <a class="code" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8">lExtractFirstVectorElement</a>(bop-&gt;getOperand(0),</div>
-<div class="line"><a name="l01444"></a><span class="lineno"> 1444</span>&#160;                                                     phiMap);</div>
-<div class="line"><a name="l01445"></a><span class="lineno"> 1445</span>&#160;        llvm::Value *v1 = <a class="code" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8">lExtractFirstVectorElement</a>(bop-&gt;getOperand(1),</div>
-<div class="line"><a name="l01446"></a><span class="lineno"> 1446</span>&#160;                                                     phiMap);</div>
-<div class="line"><a name="l01447"></a><span class="lineno"> 1447</span>&#160;        <span class="comment">// Note that the new binary operator is inserted immediately before</span></div>
-<div class="line"><a name="l01448"></a><span class="lineno"> 1448</span>&#160;        <span class="comment">// the previous vector one</span></div>
-<div class="line"><a name="l01449"></a><span class="lineno"> 1449</span>&#160;        <span class="keywordflow">return</span> llvm::BinaryOperator::Create(bop-&gt;getOpcode(), v0, v1,</div>
-<div class="line"><a name="l01450"></a><span class="lineno"> 1450</span>&#160;                                            newName, bop);</div>
-<div class="line"><a name="l01451"></a><span class="lineno"> 1451</span>&#160;    }</div>
+<div class="line"><a name="l01437"></a><span class="lineno"> 1437</span>&#160;    <span class="keywordflow">if</span> (inst == NULL)</div>
+<div class="line"><a name="l01438"></a><span class="lineno"> 1438</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l01439"></a><span class="lineno"> 1439</span>&#160;</div>
+<div class="line"><a name="l01440"></a><span class="lineno"> 1440</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; i &lt; inst-&gt;getNumOperands(); ++i)</div>
+<div class="line"><a name="l01441"></a><span class="lineno"> 1441</span>&#160;        <a class="code" href="llvmutil_8cpp.html#a598cd587867e1d1c572e6d327c903c3c">lDumpValue</a>(inst-&gt;getOperand(i), done);</div>
+<div class="line"><a name="l01442"></a><span class="lineno"> 1442</span>&#160;}</div>
+<div class="line"><a name="l01443"></a><span class="lineno"> 1443</span>&#160;</div>
+<div class="line"><a name="l01444"></a><span class="lineno"> 1444</span>&#160;</div>
+<div class="line"><a name="l01445"></a><span class="lineno"> 1445</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l01446"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#af2ea5fb708473897ea3eb7fb5a0d956f"> 1446</a></span>&#160;<a class="code" href="llvmutil_8h.html#af2ea5fb708473897ea3eb7fb5a0d956f">LLVMDumpValue</a>(llvm::Value *v) {</div>
+<div class="line"><a name="l01447"></a><span class="lineno"> 1447</span>&#160;    std::set&lt;llvm::Value *&gt; done;</div>
+<div class="line"><a name="l01448"></a><span class="lineno"> 1448</span>&#160;    <a class="code" href="llvmutil_8cpp.html#a598cd587867e1d1c572e6d327c903c3c">lDumpValue</a>(v, done);</div>
+<div class="line"><a name="l01449"></a><span class="lineno"> 1449</span>&#160;    fprintf(stderr, <span class="stringliteral">&quot;----\n&quot;</span>);</div>
+<div class="line"><a name="l01450"></a><span class="lineno"> 1450</span>&#160;}</div>
+<div class="line"><a name="l01451"></a><span class="lineno"> 1451</span>&#160;</div>
 <div class="line"><a name="l01452"></a><span class="lineno"> 1452</span>&#160;</div>
-<div class="line"><a name="l01453"></a><span class="lineno"> 1453</span>&#160;    llvm::CastInst *cast = llvm::dyn_cast&lt;llvm::CastInst&gt;(v);</div>
-<div class="line"><a name="l01454"></a><span class="lineno"> 1454</span>&#160;    <span class="keywordflow">if</span> (cast != NULL) {</div>
-<div class="line"><a name="l01455"></a><span class="lineno"> 1455</span>&#160;        llvm::Value *v = <a class="code" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8">lExtractFirstVectorElement</a>(cast-&gt;getOperand(0),</div>
-<div class="line"><a name="l01456"></a><span class="lineno"> 1456</span>&#160;                                                    phiMap);</div>
-<div class="line"><a name="l01457"></a><span class="lineno"> 1457</span>&#160;        <span class="comment">// Similarly, the equivalent scalar cast instruction goes right</span></div>
-<div class="line"><a name="l01458"></a><span class="lineno"> 1458</span>&#160;        <span class="comment">// before the vector cast</span></div>
-<div class="line"><a name="l01459"></a><span class="lineno"> 1459</span>&#160;        <span class="keywordflow">return</span> llvm::CastInst::Create(cast-&gt;getOpcode(), v,</div>
-<div class="line"><a name="l01460"></a><span class="lineno"> 1460</span>&#160;                                      vt-&gt;getElementType(), newName,</div>
-<div class="line"><a name="l01461"></a><span class="lineno"> 1461</span>&#160;                                      cast);</div>
-<div class="line"><a name="l01462"></a><span class="lineno"> 1462</span>&#160;    }</div>
-<div class="line"><a name="l01463"></a><span class="lineno"> 1463</span>&#160;</div>
-<div class="line"><a name="l01464"></a><span class="lineno"> 1464</span>&#160;    llvm::PHINode *phi = llvm::dyn_cast&lt;llvm::PHINode&gt;(v);</div>
-<div class="line"><a name="l01465"></a><span class="lineno"> 1465</span>&#160;    <span class="keywordflow">if</span> (phi != NULL) {</div>
-<div class="line"><a name="l01466"></a><span class="lineno"> 1466</span>&#160;        <span class="comment">// For PHI notes, recursively scalarize them.</span></div>
-<div class="line"><a name="l01467"></a><span class="lineno"> 1467</span>&#160;        <span class="keywordflow">if</span> (phiMap.find(phi) != phiMap.end())</div>
-<div class="line"><a name="l01468"></a><span class="lineno"> 1468</span>&#160;            <span class="keywordflow">return</span> phiMap[phi];</div>
-<div class="line"><a name="l01469"></a><span class="lineno"> 1469</span>&#160;</div>
-<div class="line"><a name="l01470"></a><span class="lineno"> 1470</span>&#160;        <span class="comment">// We need to create the new scalar PHI node immediately, though,</span></div>
-<div class="line"><a name="l01471"></a><span class="lineno"> 1471</span>&#160;        <span class="comment">// and put it in the map&lt;&gt;, so that if we come back to this node</span></div>
-<div class="line"><a name="l01472"></a><span class="lineno"> 1472</span>&#160;        <span class="comment">// via a recursive lExtractFirstVectorElement() call, then we can</span></div>
-<div class="line"><a name="l01473"></a><span class="lineno"> 1473</span>&#160;        <span class="comment">// return the pointer and not get stuck in an infinite loop.</span></div>
-<div class="line"><a name="l01474"></a><span class="lineno"> 1474</span>&#160;        <span class="comment">//</span></div>
-<div class="line"><a name="l01475"></a><span class="lineno"> 1475</span>&#160;        <span class="comment">// The insertion point for the new phi node also has to be the</span></div>
-<div class="line"><a name="l01476"></a><span class="lineno"> 1476</span>&#160;        <span class="comment">// start of the bblock of the original phi node.</span></div>
-<div class="line"><a name="l01477"></a><span class="lineno"> 1477</span>&#160;        llvm::Instruction *phiInsertPos = phi-&gt;getParent()-&gt;begin();</div>
-<div class="line"><a name="l01478"></a><span class="lineno"> 1478</span>&#160;        llvm::PHINode *scalarPhi =</div>
-<div class="line"><a name="l01479"></a><span class="lineno"> 1479</span>&#160;            llvm::PHINode::Create(vt-&gt;getElementType(),</div>
-<div class="line"><a name="l01480"></a><span class="lineno"> 1480</span>&#160;                                  phi-&gt;getNumIncomingValues(),</div>
-<div class="line"><a name="l01481"></a><span class="lineno"> 1481</span>&#160;                                  newName, phiInsertPos);</div>
-<div class="line"><a name="l01482"></a><span class="lineno"> 1482</span>&#160;        phiMap[phi] = scalarPhi;</div>
-<div class="line"><a name="l01483"></a><span class="lineno"> 1483</span>&#160;</div>
-<div class="line"><a name="l01484"></a><span class="lineno"> 1484</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; i &lt; phi-&gt;getNumIncomingValues(); ++i) {</div>
-<div class="line"><a name="l01485"></a><span class="lineno"> 1485</span>&#160;            llvm::Value *v = <a class="code" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8">lExtractFirstVectorElement</a>(phi-&gt;getIncomingValue(i),</div>
-<div class="line"><a name="l01486"></a><span class="lineno"> 1486</span>&#160;                                                        phiMap);</div>
-<div class="line"><a name="l01487"></a><span class="lineno"> 1487</span>&#160;            scalarPhi-&gt;addIncoming(v, phi-&gt;getIncomingBlock(i));</div>
-<div class="line"><a name="l01488"></a><span class="lineno"> 1488</span>&#160;        }</div>
-<div class="line"><a name="l01489"></a><span class="lineno"> 1489</span>&#160;</div>
-<div class="line"><a name="l01490"></a><span class="lineno"> 1490</span>&#160;        <span class="keywordflow">return</span> scalarPhi;</div>
+<div class="line"><a name="l01453"></a><span class="lineno"> 1453</span>&#160;<span class="keyword">static</span> llvm::Value *</div>
+<div class="line"><a name="l01454"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8"> 1454</a></span>&#160;<a class="code" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8">lExtractFirstVectorElement</a>(llvm::Value *v,</div>
+<div class="line"><a name="l01455"></a><span class="lineno"> 1455</span>&#160;                           std::map&lt;llvm::PHINode *, llvm::PHINode *&gt; &amp;phiMap) {</div>
+<div class="line"><a name="l01456"></a><span class="lineno"> 1456</span>&#160;    llvm::VectorType *vt =</div>
+<div class="line"><a name="l01457"></a><span class="lineno"> 1457</span>&#160;        llvm::dyn_cast&lt;llvm::VectorType&gt;(v-&gt;getType());</div>
+<div class="line"><a name="l01458"></a><span class="lineno"> 1458</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(vt != NULL);</div>
+<div class="line"><a name="l01459"></a><span class="lineno"> 1459</span>&#160;</div>
+<div class="line"><a name="l01460"></a><span class="lineno"> 1460</span>&#160;    <span class="comment">// First, handle various constant types; do the extraction manually, as</span></div>
+<div class="line"><a name="l01461"></a><span class="lineno"> 1461</span>&#160;    <span class="comment">// appropriate.</span></div>
+<div class="line"><a name="l01462"></a><span class="lineno"> 1462</span>&#160;    <span class="keywordflow">if</span> (llvm::isa&lt;llvm::ConstantAggregateZero&gt;(v) == <span class="keyword">true</span>) {</div>
+<div class="line"><a name="l01463"></a><span class="lineno"> 1463</span>&#160;        <span class="keywordflow">return</span> llvm::Constant::getNullValue(vt-&gt;getElementType());</div>
+<div class="line"><a name="l01464"></a><span class="lineno"> 1464</span>&#160;    }</div>
+<div class="line"><a name="l01465"></a><span class="lineno"> 1465</span>&#160;    <span class="keywordflow">if</span> (llvm::ConstantVector *cv = llvm::dyn_cast&lt;llvm::ConstantVector&gt;(v)) {</div>
+<div class="line"><a name="l01466"></a><span class="lineno"> 1466</span>&#160;        <span class="keywordflow">return</span> cv-&gt;getOperand(0);</div>
+<div class="line"><a name="l01467"></a><span class="lineno"> 1467</span>&#160;    }</div>
+<div class="line"><a name="l01468"></a><span class="lineno"> 1468</span>&#160;    <span class="keywordflow">if</span> (llvm::ConstantDataVector *cdv =</div>
+<div class="line"><a name="l01469"></a><span class="lineno"> 1469</span>&#160;        llvm::dyn_cast&lt;llvm::ConstantDataVector&gt;(v))</div>
+<div class="line"><a name="l01470"></a><span class="lineno"> 1470</span>&#160;        <span class="keywordflow">return</span> cdv-&gt;getElementAsConstant(0);</div>
+<div class="line"><a name="l01471"></a><span class="lineno"> 1471</span>&#160;</div>
+<div class="line"><a name="l01472"></a><span class="lineno"> 1472</span>&#160;    <span class="comment">// Otherwise, all that we should have at this point is an instruction</span></div>
+<div class="line"><a name="l01473"></a><span class="lineno"> 1473</span>&#160;    <span class="comment">// of some sort</span></div>
+<div class="line"><a name="l01474"></a><span class="lineno"> 1474</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(llvm::isa&lt;llvm::Constant&gt;(v) == <span class="keyword">false</span>);</div>
+<div class="line"><a name="l01475"></a><span class="lineno"> 1475</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(llvm::isa&lt;llvm::Instruction&gt;(v) == <span class="keyword">true</span>);</div>
+<div class="line"><a name="l01476"></a><span class="lineno"> 1476</span>&#160;</div>
+<div class="line"><a name="l01477"></a><span class="lineno"> 1477</span>&#160;    std::string newName = v-&gt;getName().str() + std::string(<span class="stringliteral">&quot;.elt0&quot;</span>);</div>
+<div class="line"><a name="l01478"></a><span class="lineno"> 1478</span>&#160;</div>
+<div class="line"><a name="l01479"></a><span class="lineno"> 1479</span>&#160;    <span class="comment">// Rewrite regular binary operators and casts to the scalarized</span></div>
+<div class="line"><a name="l01480"></a><span class="lineno"> 1480</span>&#160;    <span class="comment">// equivalent.</span></div>
+<div class="line"><a name="l01481"></a><span class="lineno"> 1481</span>&#160;    llvm::BinaryOperator *bop = llvm::dyn_cast&lt;llvm::BinaryOperator&gt;(v);</div>
+<div class="line"><a name="l01482"></a><span class="lineno"> 1482</span>&#160;    <span class="keywordflow">if</span> (bop != NULL) {</div>
+<div class="line"><a name="l01483"></a><span class="lineno"> 1483</span>&#160;        llvm::Value *v0 = <a class="code" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8">lExtractFirstVectorElement</a>(bop-&gt;getOperand(0),</div>
+<div class="line"><a name="l01484"></a><span class="lineno"> 1484</span>&#160;                                                     phiMap);</div>
+<div class="line"><a name="l01485"></a><span class="lineno"> 1485</span>&#160;        llvm::Value *v1 = <a class="code" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8">lExtractFirstVectorElement</a>(bop-&gt;getOperand(1),</div>
+<div class="line"><a name="l01486"></a><span class="lineno"> 1486</span>&#160;                                                     phiMap);</div>
+<div class="line"><a name="l01487"></a><span class="lineno"> 1487</span>&#160;        <span class="comment">// Note that the new binary operator is inserted immediately before</span></div>
+<div class="line"><a name="l01488"></a><span class="lineno"> 1488</span>&#160;        <span class="comment">// the previous vector one</span></div>
+<div class="line"><a name="l01489"></a><span class="lineno"> 1489</span>&#160;        <span class="keywordflow">return</span> llvm::BinaryOperator::Create(bop-&gt;getOpcode(), v0, v1,</div>
+<div class="line"><a name="l01490"></a><span class="lineno"> 1490</span>&#160;                                            newName, bop);</div>
 <div class="line"><a name="l01491"></a><span class="lineno"> 1491</span>&#160;    }</div>
 <div class="line"><a name="l01492"></a><span class="lineno"> 1492</span>&#160;</div>
-<div class="line"><a name="l01493"></a><span class="lineno"> 1493</span>&#160;    <span class="comment">// If we have a chain of insertelement instructions, then we can just</span></div>
-<div class="line"><a name="l01494"></a><span class="lineno"> 1494</span>&#160;    <span class="comment">// flatten them out and grab the value for the first one.</span></div>
-<div class="line"><a name="l01495"></a><span class="lineno"> 1495</span>&#160;    <span class="keywordflow">if</span> (llvm::isa&lt;llvm::InsertElementInst&gt;(v) ||</div>
-<div class="line"><a name="l01496"></a><span class="lineno"> 1496</span>&#160;        llvm::isa&lt;llvm::ShuffleVectorInst&gt;(v)) {</div>
-<div class="line"><a name="l01497"></a><span class="lineno"> 1497</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="llvmutil_8h.html#a988d33ed4cab8ba3cd2178f7a3c8ff8b">LLVMFlattenInsertChain</a>(v, vt-&gt;getNumElements(), <span class="keyword">false</span>);</div>
-<div class="line"><a name="l01498"></a><span class="lineno"> 1498</span>&#160;    }</div>
-<div class="line"><a name="l01499"></a><span class="lineno"> 1499</span>&#160;</div>
-<div class="line"><a name="l01500"></a><span class="lineno"> 1500</span>&#160;    <span class="comment">// Worst case, for everything else, just do a regular extract element</span></div>
-<div class="line"><a name="l01501"></a><span class="lineno"> 1501</span>&#160;    <span class="comment">// instruction, which we insert immediately after the instruction we</span></div>
-<div class="line"><a name="l01502"></a><span class="lineno"> 1502</span>&#160;    <span class="comment">// have here.</span></div>
-<div class="line"><a name="l01503"></a><span class="lineno"> 1503</span>&#160;    llvm::Instruction *insertAfter = llvm::dyn_cast&lt;llvm::Instruction&gt;(v);</div>
-<div class="line"><a name="l01504"></a><span class="lineno"> 1504</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(insertAfter != NULL);</div>
-<div class="line"><a name="l01505"></a><span class="lineno"> 1505</span>&#160;    llvm::Instruction *ee =</div>
-<div class="line"><a name="l01506"></a><span class="lineno"> 1506</span>&#160;        llvm::ExtractElementInst::Create(v, <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(0), <span class="stringliteral">&quot;first_elt&quot;</span>,</div>
-<div class="line"><a name="l01507"></a><span class="lineno"> 1507</span>&#160;                                         (llvm::Instruction *)NULL);</div>
-<div class="line"><a name="l01508"></a><span class="lineno"> 1508</span>&#160;    ee-&gt;insertAfter(insertAfter);</div>
-<div class="line"><a name="l01509"></a><span class="lineno"> 1509</span>&#160;    <span class="keywordflow">return</span> ee;</div>
-<div class="line"><a name="l01510"></a><span class="lineno"> 1510</span>&#160;}</div>
-<div class="line"><a name="l01511"></a><span class="lineno"> 1511</span>&#160;</div>
-<div class="line"><a name="l01512"></a><span class="lineno"> 1512</span>&#160;</div>
-<div class="line"><a name="l01513"></a><span class="lineno"> 1513</span>&#160;llvm::Value *</div>
-<div class="line"><a name="l01514"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#ac74c93c0de2de4b6b73f3a5fa9b45a6d"> 1514</a></span>&#160;<a class="code" href="llvmutil_8h.html#ac74c93c0de2de4b6b73f3a5fa9b45a6d">LLVMExtractFirstVectorElement</a>(llvm::Value *v) {</div>
-<div class="line"><a name="l01515"></a><span class="lineno"> 1515</span>&#160;    std::map&lt;llvm::PHINode *, llvm::PHINode *&gt; phiMap;</div>
-<div class="line"><a name="l01516"></a><span class="lineno"> 1516</span>&#160;    llvm::Value *ret = <a class="code" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8">lExtractFirstVectorElement</a>(v, phiMap);</div>
-<div class="line"><a name="l01517"></a><span class="lineno"> 1517</span>&#160;    <span class="keywordflow">return</span> ret;</div>
-<div class="line"><a name="l01518"></a><span class="lineno"> 1518</span>&#160;}</div>
-<div class="line"><a name="l01519"></a><span class="lineno"> 1519</span>&#160;</div>
-<div class="line"><a name="l01520"></a><span class="lineno"> 1520</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01521"></a><span class="lineno"> 1521</span>&#160;<span class="comment">/** Given two vectors of the same type, concatenate them into a vector that</span></div>
-<div class="line"><a name="l01522"></a><span class="lineno"> 1522</span>&#160;<span class="comment">    has twice as many elements, where the first half has the elements from</span></div>
-<div class="line"><a name="l01523"></a><span class="lineno"> 1523</span>&#160;<span class="comment">    the first vector and the second half has the elements from the second</span></div>
-<div class="line"><a name="l01524"></a><span class="lineno"> 1524</span>&#160;<span class="comment">    vector.</span></div>
-<div class="line"><a name="l01525"></a><span class="lineno"> 1525</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l01526"></a><span class="lineno"> 1526</span>&#160;llvm::Value *</div>
-<div class="line"><a name="l01527"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a9e52dbf98a2e38869b743b0c403b3145"> 1527</a></span>&#160;<a class="code" href="llvmutil_8h.html#a9e52dbf98a2e38869b743b0c403b3145">LLVMConcatVectors</a>(llvm::Value *v1, llvm::Value *v2,</div>
-<div class="line"><a name="l01528"></a><span class="lineno"> 1528</span>&#160;                  llvm::Instruction *insertBefore) {</div>
-<div class="line"><a name="l01529"></a><span class="lineno"> 1529</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(v1-&gt;getType() == v2-&gt;getType());</div>
-<div class="line"><a name="l01530"></a><span class="lineno"> 1530</span>&#160;</div>
-<div class="line"><a name="l01531"></a><span class="lineno"> 1531</span>&#160;    llvm::VectorType *vt =</div>
-<div class="line"><a name="l01532"></a><span class="lineno"> 1532</span>&#160;        llvm::dyn_cast&lt;llvm::VectorType&gt;(v1-&gt;getType());</div>
-<div class="line"><a name="l01533"></a><span class="lineno"> 1533</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(vt != NULL);</div>
-<div class="line"><a name="l01534"></a><span class="lineno"> 1534</span>&#160;</div>
-<div class="line"><a name="l01535"></a><span class="lineno"> 1535</span>&#160;    <a class="code" href="parse_8yy.html#a10e8b2d266b06d06f972396bf71af292">int32_t</a> identity[<a class="code" href="ispc_8h.html#a4d8b1e3b8361d8b5054fb55225f2c972">ISPC_MAX_NVEC</a>];</div>
-<div class="line"><a name="l01536"></a><span class="lineno"> 1536</span>&#160;    <span class="keywordtype">int</span> resultSize = 2*vt-&gt;getNumElements();</div>
-<div class="line"><a name="l01537"></a><span class="lineno"> 1537</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(resultSize &lt;= <a class="code" href="ispc_8h.html#a4d8b1e3b8361d8b5054fb55225f2c972">ISPC_MAX_NVEC</a>);</div>
-<div class="line"><a name="l01538"></a><span class="lineno"> 1538</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; resultSize; ++i)</div>
-<div class="line"><a name="l01539"></a><span class="lineno"> 1539</span>&#160;        identity[i] = i;</div>
-<div class="line"><a name="l01540"></a><span class="lineno"> 1540</span>&#160;</div>
-<div class="line"><a name="l01541"></a><span class="lineno"> 1541</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="llvmutil_8h.html#a0422a9c91b6a83630d891efc779b007c">LLVMShuffleVectors</a>(v1, v2, identity, resultSize, insertBefore);</div>
-<div class="line"><a name="l01542"></a><span class="lineno"> 1542</span>&#160;}</div>
-<div class="line"><a name="l01543"></a><span class="lineno"> 1543</span>&#160;</div>
-<div class="line"><a name="l01544"></a><span class="lineno"> 1544</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01545"></a><span class="lineno"> 1545</span>&#160;<span class="comment">/** Shuffle two vectors together with a ShuffleVectorInst, returning a</span></div>
-<div class="line"><a name="l01546"></a><span class="lineno"> 1546</span>&#160;<span class="comment">    vector with shufSize elements, where the shuf[] array offsets are used</span></div>
-<div class="line"><a name="l01547"></a><span class="lineno"> 1547</span>&#160;<span class="comment">    to determine which element from the two given vectors is used for each</span></div>
-<div class="line"><a name="l01548"></a><span class="lineno"> 1548</span>&#160;<span class="comment">    result element. */</span></div>
-<div class="line"><a name="l01549"></a><span class="lineno"> 1549</span>&#160;llvm::Value *</div>
-<div class="line"><a name="l01550"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a0422a9c91b6a83630d891efc779b007c"> 1550</a></span>&#160;<a class="code" href="llvmutil_8h.html#a0422a9c91b6a83630d891efc779b007c">LLVMShuffleVectors</a>(llvm::Value *v1, llvm::Value *v2, <a class="code" href="parse_8yy.html#a10e8b2d266b06d06f972396bf71af292">int32_t</a> shuf[],</div>
-<div class="line"><a name="l01551"></a><span class="lineno"> 1551</span>&#160;                   <span class="keywordtype">int</span> shufSize, llvm::Instruction *insertBefore) {</div>
-<div class="line"><a name="l01552"></a><span class="lineno"> 1552</span>&#160;    std::vector&lt;llvm::Constant *&gt; shufVec;</div>
-<div class="line"><a name="l01553"></a><span class="lineno"> 1553</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; shufSize; ++i) {</div>
-<div class="line"><a name="l01554"></a><span class="lineno"> 1554</span>&#160;        <span class="keywordflow">if</span> (shuf[i] == -1)</div>
-<div class="line"><a name="l01555"></a><span class="lineno"> 1555</span>&#160;            shufVec.push_back(llvm::UndefValue::get(<a class="code" href="structLLVMTypes.html#acbc1a9ecda1bd59f50a644be0663be8f">LLVMTypes::Int32Type</a>));</div>
-<div class="line"><a name="l01556"></a><span class="lineno"> 1556</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l01557"></a><span class="lineno"> 1557</span>&#160;            shufVec.push_back(<a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(shuf[i]));</div>
-<div class="line"><a name="l01558"></a><span class="lineno"> 1558</span>&#160;    }</div>
+<div class="line"><a name="l01493"></a><span class="lineno"> 1493</span>&#160;    llvm::CastInst *cast = llvm::dyn_cast&lt;llvm::CastInst&gt;(v);</div>
+<div class="line"><a name="l01494"></a><span class="lineno"> 1494</span>&#160;    <span class="keywordflow">if</span> (cast != NULL) {</div>
+<div class="line"><a name="l01495"></a><span class="lineno"> 1495</span>&#160;        llvm::Value *v = <a class="code" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8">lExtractFirstVectorElement</a>(cast-&gt;getOperand(0),</div>
+<div class="line"><a name="l01496"></a><span class="lineno"> 1496</span>&#160;                                                    phiMap);</div>
+<div class="line"><a name="l01497"></a><span class="lineno"> 1497</span>&#160;        <span class="comment">// Similarly, the equivalent scalar cast instruction goes right</span></div>
+<div class="line"><a name="l01498"></a><span class="lineno"> 1498</span>&#160;        <span class="comment">// before the vector cast</span></div>
+<div class="line"><a name="l01499"></a><span class="lineno"> 1499</span>&#160;        <span class="keywordflow">return</span> llvm::CastInst::Create(cast-&gt;getOpcode(), v,</div>
+<div class="line"><a name="l01500"></a><span class="lineno"> 1500</span>&#160;                                      vt-&gt;getElementType(), newName,</div>
+<div class="line"><a name="l01501"></a><span class="lineno"> 1501</span>&#160;                                      cast);</div>
+<div class="line"><a name="l01502"></a><span class="lineno"> 1502</span>&#160;    }</div>
+<div class="line"><a name="l01503"></a><span class="lineno"> 1503</span>&#160;</div>
+<div class="line"><a name="l01504"></a><span class="lineno"> 1504</span>&#160;    llvm::PHINode *phi = llvm::dyn_cast&lt;llvm::PHINode&gt;(v);</div>
+<div class="line"><a name="l01505"></a><span class="lineno"> 1505</span>&#160;    <span class="keywordflow">if</span> (phi != NULL) {</div>
+<div class="line"><a name="l01506"></a><span class="lineno"> 1506</span>&#160;        <span class="comment">// For PHI notes, recursively scalarize them.</span></div>
+<div class="line"><a name="l01507"></a><span class="lineno"> 1507</span>&#160;        <span class="keywordflow">if</span> (phiMap.find(phi) != phiMap.end())</div>
+<div class="line"><a name="l01508"></a><span class="lineno"> 1508</span>&#160;            <span class="keywordflow">return</span> phiMap[phi];</div>
+<div class="line"><a name="l01509"></a><span class="lineno"> 1509</span>&#160;</div>
+<div class="line"><a name="l01510"></a><span class="lineno"> 1510</span>&#160;        <span class="comment">// We need to create the new scalar PHI node immediately, though,</span></div>
+<div class="line"><a name="l01511"></a><span class="lineno"> 1511</span>&#160;        <span class="comment">// and put it in the map&lt;&gt;, so that if we come back to this node</span></div>
+<div class="line"><a name="l01512"></a><span class="lineno"> 1512</span>&#160;        <span class="comment">// via a recursive lExtractFirstVectorElement() call, then we can</span></div>
+<div class="line"><a name="l01513"></a><span class="lineno"> 1513</span>&#160;        <span class="comment">// return the pointer and not get stuck in an infinite loop.</span></div>
+<div class="line"><a name="l01514"></a><span class="lineno"> 1514</span>&#160;        <span class="comment">//</span></div>
+<div class="line"><a name="l01515"></a><span class="lineno"> 1515</span>&#160;        <span class="comment">// The insertion point for the new phi node also has to be the</span></div>
+<div class="line"><a name="l01516"></a><span class="lineno"> 1516</span>&#160;        <span class="comment">// start of the bblock of the original phi node.</span></div>
+<div class="line"><a name="l01517"></a><span class="lineno"> 1517</span>&#160;        llvm::Instruction *phiInsertPos = phi-&gt;getParent()-&gt;begin();</div>
+<div class="line"><a name="l01518"></a><span class="lineno"> 1518</span>&#160;        llvm::PHINode *scalarPhi =</div>
+<div class="line"><a name="l01519"></a><span class="lineno"> 1519</span>&#160;            llvm::PHINode::Create(vt-&gt;getElementType(),</div>
+<div class="line"><a name="l01520"></a><span class="lineno"> 1520</span>&#160;                                  phi-&gt;getNumIncomingValues(),</div>
+<div class="line"><a name="l01521"></a><span class="lineno"> 1521</span>&#160;                                  newName, phiInsertPos);</div>
+<div class="line"><a name="l01522"></a><span class="lineno"> 1522</span>&#160;        phiMap[phi] = scalarPhi;</div>
+<div class="line"><a name="l01523"></a><span class="lineno"> 1523</span>&#160;</div>
+<div class="line"><a name="l01524"></a><span class="lineno"> 1524</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; i &lt; phi-&gt;getNumIncomingValues(); ++i) {</div>
+<div class="line"><a name="l01525"></a><span class="lineno"> 1525</span>&#160;            llvm::Value *v = <a class="code" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8">lExtractFirstVectorElement</a>(phi-&gt;getIncomingValue(i),</div>
+<div class="line"><a name="l01526"></a><span class="lineno"> 1526</span>&#160;                                                        phiMap);</div>
+<div class="line"><a name="l01527"></a><span class="lineno"> 1527</span>&#160;            scalarPhi-&gt;addIncoming(v, phi-&gt;getIncomingBlock(i));</div>
+<div class="line"><a name="l01528"></a><span class="lineno"> 1528</span>&#160;        }</div>
+<div class="line"><a name="l01529"></a><span class="lineno"> 1529</span>&#160;</div>
+<div class="line"><a name="l01530"></a><span class="lineno"> 1530</span>&#160;        <span class="keywordflow">return</span> scalarPhi;</div>
+<div class="line"><a name="l01531"></a><span class="lineno"> 1531</span>&#160;    }</div>
+<div class="line"><a name="l01532"></a><span class="lineno"> 1532</span>&#160;</div>
+<div class="line"><a name="l01533"></a><span class="lineno"> 1533</span>&#160;    <span class="comment">// If we have a chain of insertelement instructions, then we can just</span></div>
+<div class="line"><a name="l01534"></a><span class="lineno"> 1534</span>&#160;    <span class="comment">// flatten them out and grab the value for the first one.</span></div>
+<div class="line"><a name="l01535"></a><span class="lineno"> 1535</span>&#160;    <span class="keywordflow">if</span> (llvm::isa&lt;llvm::InsertElementInst&gt;(v) ||</div>
+<div class="line"><a name="l01536"></a><span class="lineno"> 1536</span>&#160;        llvm::isa&lt;llvm::ShuffleVectorInst&gt;(v)) {</div>
+<div class="line"><a name="l01537"></a><span class="lineno"> 1537</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="llvmutil_8h.html#a988d33ed4cab8ba3cd2178f7a3c8ff8b">LLVMFlattenInsertChain</a>(v, vt-&gt;getNumElements(), <span class="keyword">false</span>);</div>
+<div class="line"><a name="l01538"></a><span class="lineno"> 1538</span>&#160;    }</div>
+<div class="line"><a name="l01539"></a><span class="lineno"> 1539</span>&#160;</div>
+<div class="line"><a name="l01540"></a><span class="lineno"> 1540</span>&#160;    <span class="comment">// Worst case, for everything else, just do a regular extract element</span></div>
+<div class="line"><a name="l01541"></a><span class="lineno"> 1541</span>&#160;    <span class="comment">// instruction, which we insert immediately after the instruction we</span></div>
+<div class="line"><a name="l01542"></a><span class="lineno"> 1542</span>&#160;    <span class="comment">// have here.</span></div>
+<div class="line"><a name="l01543"></a><span class="lineno"> 1543</span>&#160;    llvm::Instruction *insertAfter = llvm::dyn_cast&lt;llvm::Instruction&gt;(v);</div>
+<div class="line"><a name="l01544"></a><span class="lineno"> 1544</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(insertAfter != NULL);</div>
+<div class="line"><a name="l01545"></a><span class="lineno"> 1545</span>&#160;    llvm::Instruction *ee =</div>
+<div class="line"><a name="l01546"></a><span class="lineno"> 1546</span>&#160;        llvm::ExtractElementInst::Create(v, <a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(0), <span class="stringliteral">&quot;first_elt&quot;</span>,</div>
+<div class="line"><a name="l01547"></a><span class="lineno"> 1547</span>&#160;                                         (llvm::Instruction *)NULL);</div>
+<div class="line"><a name="l01548"></a><span class="lineno"> 1548</span>&#160;    ee-&gt;insertAfter(insertAfter);</div>
+<div class="line"><a name="l01549"></a><span class="lineno"> 1549</span>&#160;    <span class="keywordflow">return</span> ee;</div>
+<div class="line"><a name="l01550"></a><span class="lineno"> 1550</span>&#160;}</div>
+<div class="line"><a name="l01551"></a><span class="lineno"> 1551</span>&#160;</div>
+<div class="line"><a name="l01552"></a><span class="lineno"> 1552</span>&#160;</div>
+<div class="line"><a name="l01553"></a><span class="lineno"> 1553</span>&#160;llvm::Value *</div>
+<div class="line"><a name="l01554"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#ac74c93c0de2de4b6b73f3a5fa9b45a6d"> 1554</a></span>&#160;<a class="code" href="llvmutil_8h.html#ac74c93c0de2de4b6b73f3a5fa9b45a6d">LLVMExtractFirstVectorElement</a>(llvm::Value *v) {</div>
+<div class="line"><a name="l01555"></a><span class="lineno"> 1555</span>&#160;    std::map&lt;llvm::PHINode *, llvm::PHINode *&gt; phiMap;</div>
+<div class="line"><a name="l01556"></a><span class="lineno"> 1556</span>&#160;    llvm::Value *ret = <a class="code" href="llvmutil_8cpp.html#ae0156a4b21ef8b67d21d5562e7241fe8">lExtractFirstVectorElement</a>(v, phiMap);</div>
+<div class="line"><a name="l01557"></a><span class="lineno"> 1557</span>&#160;    <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a name="l01558"></a><span class="lineno"> 1558</span>&#160;}</div>
 <div class="line"><a name="l01559"></a><span class="lineno"> 1559</span>&#160;</div>
-<div class="line"><a name="l01560"></a><span class="lineno"> 1560</span>&#160;    llvm::ArrayRef&lt;llvm::Constant *&gt; aref(&amp;shufVec[0], &amp;shufVec[shufSize]);</div>
-<div class="line"><a name="l01561"></a><span class="lineno"> 1561</span>&#160;    llvm::Value *vec = llvm::ConstantVector::get(aref);</div>
-<div class="line"><a name="l01562"></a><span class="lineno"> 1562</span>&#160;</div>
-<div class="line"><a name="l01563"></a><span class="lineno"> 1563</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">new</span> llvm::ShuffleVectorInst(v1, v2, vec, <span class="stringliteral">&quot;shuffle&quot;</span>, insertBefore);</div>
-<div class="line"><a name="l01564"></a><span class="lineno"> 1564</span>&#160;}</div>
-<div class="line"><a name="l01565"></a><span class="lineno"> 1565</span>&#160;</div>
-<div class="line"><a name="l01566"></a><span class="lineno"> 1566</span>&#160;</div>
-<div class="line"><a name="l01567"></a><span class="lineno"> 1567</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> *</div>
-<div class="line"><a name="l01568"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a37171b0a1649a97558634a0876e1cb09"> 1568</a></span>&#160;<a class="code" href="llvmutil_8h.html#a428e1a05bd0d3048104a773764713f63">LLVMGetName</a>(llvm::Value *v, <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="parse_8yy.html#a670da3e561356241efb8054bd91b88a8">s</a>) {</div>
-<div class="line"><a name="l01569"></a><span class="lineno"> 1569</span>&#160;    <span class="keywordflow">if</span> (v == NULL) <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html#a670da3e561356241efb8054bd91b88a8">s</a>;</div>
-<div class="line"><a name="l01570"></a><span class="lineno"> 1570</span>&#160;    std::string ret = v-&gt;getName();</div>
-<div class="line"><a name="l01571"></a><span class="lineno"> 1571</span>&#160;    ret += <a class="code" href="parse_8yy.html#a670da3e561356241efb8054bd91b88a8">s</a>;</div>
-<div class="line"><a name="l01572"></a><span class="lineno"> 1572</span>&#160;    <span class="keywordflow">return</span> strdup(ret.c_str());</div>
-<div class="line"><a name="l01573"></a><span class="lineno"> 1573</span>&#160;}</div>
+<div class="line"><a name="l01560"></a><span class="lineno"> 1560</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01561"></a><span class="lineno"> 1561</span>&#160;<span class="comment">/** Given two vectors of the same type, concatenate them into a vector that</span></div>
+<div class="line"><a name="l01562"></a><span class="lineno"> 1562</span>&#160;<span class="comment">    has twice as many elements, where the first half has the elements from</span></div>
+<div class="line"><a name="l01563"></a><span class="lineno"> 1563</span>&#160;<span class="comment">    the first vector and the second half has the elements from the second</span></div>
+<div class="line"><a name="l01564"></a><span class="lineno"> 1564</span>&#160;<span class="comment">    vector.</span></div>
+<div class="line"><a name="l01565"></a><span class="lineno"> 1565</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l01566"></a><span class="lineno"> 1566</span>&#160;llvm::Value *</div>
+<div class="line"><a name="l01567"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a9e52dbf98a2e38869b743b0c403b3145"> 1567</a></span>&#160;<a class="code" href="llvmutil_8h.html#a9e52dbf98a2e38869b743b0c403b3145">LLVMConcatVectors</a>(llvm::Value *v1, llvm::Value *v2,</div>
+<div class="line"><a name="l01568"></a><span class="lineno"> 1568</span>&#160;                  llvm::Instruction *insertBefore) {</div>
+<div class="line"><a name="l01569"></a><span class="lineno"> 1569</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(v1-&gt;getType() == v2-&gt;getType());</div>
+<div class="line"><a name="l01570"></a><span class="lineno"> 1570</span>&#160;</div>
+<div class="line"><a name="l01571"></a><span class="lineno"> 1571</span>&#160;    llvm::VectorType *vt =</div>
+<div class="line"><a name="l01572"></a><span class="lineno"> 1572</span>&#160;        llvm::dyn_cast&lt;llvm::VectorType&gt;(v1-&gt;getType());</div>
+<div class="line"><a name="l01573"></a><span class="lineno"> 1573</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(vt != NULL);</div>
 <div class="line"><a name="l01574"></a><span class="lineno"> 1574</span>&#160;</div>
-<div class="line"><a name="l01575"></a><span class="lineno"> 1575</span>&#160;</div>
-<div class="line"><a name="l01576"></a><span class="lineno"> 1576</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> *</div>
-<div class="line"><a name="l01577"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a4162014721d3052c88bfed23f36edd0f"> 1577</a></span>&#160;<a class="code" href="llvmutil_8h.html#a428e1a05bd0d3048104a773764713f63">LLVMGetName</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *op, llvm::Value *v1, llvm::Value *v2) {</div>
-<div class="line"><a name="l01578"></a><span class="lineno"> 1578</span>&#160;    std::string r = op;</div>
-<div class="line"><a name="l01579"></a><span class="lineno"> 1579</span>&#160;    r += <span class="stringliteral">&quot;_&quot;</span>;</div>
-<div class="line"><a name="l01580"></a><span class="lineno"> 1580</span>&#160;    r += v1-&gt;getName().str();</div>
-<div class="line"><a name="l01581"></a><span class="lineno"> 1581</span>&#160;    r += <span class="stringliteral">&quot;_&quot;</span>;</div>
-<div class="line"><a name="l01582"></a><span class="lineno"> 1582</span>&#160;    r += v2-&gt;getName().str();</div>
-<div class="line"><a name="l01583"></a><span class="lineno"> 1583</span>&#160;    <span class="keywordflow">return</span> strdup(r.c_str());</div>
-<div class="line"><a name="l01584"></a><span class="lineno"> 1584</span>&#160;}</div>
-<div class="line"><a name="l01585"></a><span class="lineno"> 1585</span>&#160;</div>
+<div class="line"><a name="l01575"></a><span class="lineno"> 1575</span>&#160;    <a class="code" href="parse_8yy.html#a10e8b2d266b06d06f972396bf71af292">int32_t</a> identity[<a class="code" href="ispc_8h.html#a4d8b1e3b8361d8b5054fb55225f2c972">ISPC_MAX_NVEC</a>];</div>
+<div class="line"><a name="l01576"></a><span class="lineno"> 1576</span>&#160;    <span class="keywordtype">int</span> resultSize = 2*vt-&gt;getNumElements();</div>
+<div class="line"><a name="l01577"></a><span class="lineno"> 1577</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(resultSize &lt;= <a class="code" href="ispc_8h.html#a4d8b1e3b8361d8b5054fb55225f2c972">ISPC_MAX_NVEC</a>);</div>
+<div class="line"><a name="l01578"></a><span class="lineno"> 1578</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; resultSize; ++i)</div>
+<div class="line"><a name="l01579"></a><span class="lineno"> 1579</span>&#160;        identity[i] = i;</div>
+<div class="line"><a name="l01580"></a><span class="lineno"> 1580</span>&#160;</div>
+<div class="line"><a name="l01581"></a><span class="lineno"> 1581</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="llvmutil_8h.html#a0422a9c91b6a83630d891efc779b007c">LLVMShuffleVectors</a>(v1, v2, identity, resultSize, insertBefore);</div>
+<div class="line"><a name="l01582"></a><span class="lineno"> 1582</span>&#160;}</div>
+<div class="line"><a name="l01583"></a><span class="lineno"> 1583</span>&#160;</div>
+<div class="line"><a name="l01584"></a><span class="lineno"> 1584</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01585"></a><span class="lineno"> 1585</span>&#160;<span class="comment">/** Shuffle two vectors together with a ShuffleVectorInst, returning a</span></div>
+<div class="line"><a name="l01586"></a><span class="lineno"> 1586</span>&#160;<span class="comment">    vector with shufSize elements, where the shuf[] array offsets are used</span></div>
+<div class="line"><a name="l01587"></a><span class="lineno"> 1587</span>&#160;<span class="comment">    to determine which element from the two given vectors is used for each</span></div>
+<div class="line"><a name="l01588"></a><span class="lineno"> 1588</span>&#160;<span class="comment">    result element. */</span></div>
+<div class="line"><a name="l01589"></a><span class="lineno"> 1589</span>&#160;llvm::Value *</div>
+<div class="line"><a name="l01590"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a0422a9c91b6a83630d891efc779b007c"> 1590</a></span>&#160;<a class="code" href="llvmutil_8h.html#a0422a9c91b6a83630d891efc779b007c">LLVMShuffleVectors</a>(llvm::Value *v1, llvm::Value *v2, <a class="code" href="parse_8yy.html#a10e8b2d266b06d06f972396bf71af292">int32_t</a> shuf[],</div>
+<div class="line"><a name="l01591"></a><span class="lineno"> 1591</span>&#160;                   <span class="keywordtype">int</span> shufSize, llvm::Instruction *insertBefore) {</div>
+<div class="line"><a name="l01592"></a><span class="lineno"> 1592</span>&#160;    std::vector&lt;llvm::Constant *&gt; shufVec;</div>
+<div class="line"><a name="l01593"></a><span class="lineno"> 1593</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; shufSize; ++i) {</div>
+<div class="line"><a name="l01594"></a><span class="lineno"> 1594</span>&#160;        <span class="keywordflow">if</span> (shuf[i] == -1)</div>
+<div class="line"><a name="l01595"></a><span class="lineno"> 1595</span>&#160;            shufVec.push_back(llvm::UndefValue::get(<a class="code" href="structLLVMTypes.html#acbc1a9ecda1bd59f50a644be0663be8f">LLVMTypes::Int32Type</a>));</div>
+<div class="line"><a name="l01596"></a><span class="lineno"> 1596</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l01597"></a><span class="lineno"> 1597</span>&#160;            shufVec.push_back(<a class="code" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">LLVMInt32</a>(shuf[i]));</div>
+<div class="line"><a name="l01598"></a><span class="lineno"> 1598</span>&#160;    }</div>
+<div class="line"><a name="l01599"></a><span class="lineno"> 1599</span>&#160;</div>
+<div class="line"><a name="l01600"></a><span class="lineno"> 1600</span>&#160;    llvm::ArrayRef&lt;llvm::Constant *&gt; aref(&amp;shufVec[0], &amp;shufVec[shufSize]);</div>
+<div class="line"><a name="l01601"></a><span class="lineno"> 1601</span>&#160;    llvm::Value *vec = llvm::ConstantVector::get(aref);</div>
+<div class="line"><a name="l01602"></a><span class="lineno"> 1602</span>&#160;</div>
+<div class="line"><a name="l01603"></a><span class="lineno"> 1603</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">new</span> llvm::ShuffleVectorInst(v1, v2, vec, <span class="stringliteral">&quot;shuffle&quot;</span>, insertBefore);</div>
+<div class="line"><a name="l01604"></a><span class="lineno"> 1604</span>&#160;}</div>
+<div class="line"><a name="l01605"></a><span class="lineno"> 1605</span>&#160;</div>
+<div class="line"><a name="l01606"></a><span class="lineno"> 1606</span>&#160;</div>
+<div class="line"><a name="l01607"></a><span class="lineno"> 1607</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> *</div>
+<div class="line"><a name="l01608"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a37171b0a1649a97558634a0876e1cb09"> 1608</a></span>&#160;<a class="code" href="llvmutil_8h.html#a428e1a05bd0d3048104a773764713f63">LLVMGetName</a>(llvm::Value *v, <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="parse_8yy.html#a670da3e561356241efb8054bd91b88a8">s</a>) {</div>
+<div class="line"><a name="l01609"></a><span class="lineno"> 1609</span>&#160;    <span class="keywordflow">if</span> (v == NULL) <span class="keywordflow">return</span> <a class="code" href="parse_8yy.html#a670da3e561356241efb8054bd91b88a8">s</a>;</div>
+<div class="line"><a name="l01610"></a><span class="lineno"> 1610</span>&#160;    std::string ret = v-&gt;getName();</div>
+<div class="line"><a name="l01611"></a><span class="lineno"> 1611</span>&#160;    ret += <a class="code" href="parse_8yy.html#a670da3e561356241efb8054bd91b88a8">s</a>;</div>
+<div class="line"><a name="l01612"></a><span class="lineno"> 1612</span>&#160;    <span class="keywordflow">return</span> strdup(ret.c_str());</div>
+<div class="line"><a name="l01613"></a><span class="lineno"> 1613</span>&#160;}</div>
+<div class="line"><a name="l01614"></a><span class="lineno"> 1614</span>&#160;</div>
+<div class="line"><a name="l01615"></a><span class="lineno"> 1615</span>&#160;</div>
+<div class="line"><a name="l01616"></a><span class="lineno"> 1616</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> *</div>
+<div class="line"><a name="l01617"></a><span class="lineno"><a class="code" href="llvmutil_8cpp.html#a4162014721d3052c88bfed23f36edd0f"> 1617</a></span>&#160;<a class="code" href="llvmutil_8h.html#a428e1a05bd0d3048104a773764713f63">LLVMGetName</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *op, llvm::Value *v1, llvm::Value *v2) {</div>
+<div class="line"><a name="l01618"></a><span class="lineno"> 1618</span>&#160;    std::string r = op;</div>
+<div class="line"><a name="l01619"></a><span class="lineno"> 1619</span>&#160;    r += <span class="stringliteral">&quot;_&quot;</span>;</div>
+<div class="line"><a name="l01620"></a><span class="lineno"> 1620</span>&#160;    r += v1-&gt;getName().str();</div>
+<div class="line"><a name="l01621"></a><span class="lineno"> 1621</span>&#160;    r += <span class="stringliteral">&quot;_&quot;</span>;</div>
+<div class="line"><a name="l01622"></a><span class="lineno"> 1622</span>&#160;    r += v2-&gt;getName().str();</div>
+<div class="line"><a name="l01623"></a><span class="lineno"> 1623</span>&#160;    <span class="keywordflow">return</span> strdup(r.c_str());</div>
+<div class="line"><a name="l01624"></a><span class="lineno"> 1624</span>&#160;}</div>
+<div class="line"><a name="l01625"></a><span class="lineno"> 1625</span>&#160;</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jun 25 2013 18:47:49 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 20 2013 05:53:14 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
