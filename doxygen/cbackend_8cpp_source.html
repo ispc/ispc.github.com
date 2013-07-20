@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.4.3</span>
+   &#160;<span id="projectnumber">1.4.4</span>
    </div>
   </td>
  </tr>
@@ -4963,40 +4963,45 @@
 <div class="line"><a name="l04914"></a><span class="lineno"> 4914</span>&#160;        pm.add(<span class="keyword">new</span> llvm::TargetData(module));</div>
 <div class="line"><a name="l04915"></a><span class="lineno"> 4915</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l04916"></a><span class="lineno"> 4916</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l04917"></a><span class="lineno"> 4917</span>&#160;    <span class="keywordtype">int</span> flags = 0;</div>
-<div class="line"><a name="l04918"></a><span class="lineno"> 4918</span>&#160;    std::string error;</div>
-<div class="line"><a name="l04919"></a><span class="lineno"> 4919</span>&#160;    llvm::tool_output_file *of = <span class="keyword">new</span> llvm::tool_output_file(fn, error, flags);</div>
-<div class="line"><a name="l04920"></a><span class="lineno"> 4920</span>&#160;    <span class="keywordflow">if</span> (error.size()) {</div>
-<div class="line"><a name="l04921"></a><span class="lineno"> 4921</span>&#160;        fprintf(stderr, <span class="stringliteral">&quot;Error opening output file \&quot;%s\&quot;.\n&quot;</span>, fn);</div>
-<div class="line"><a name="l04922"></a><span class="lineno"> 4922</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l04923"></a><span class="lineno"> 4923</span>&#160;    }</div>
-<div class="line"><a name="l04924"></a><span class="lineno"> 4924</span>&#160;</div>
-<div class="line"><a name="l04925"></a><span class="lineno"> 4925</span>&#160;    llvm::formatted_raw_ostream fos(of-&gt;os());</div>
-<div class="line"><a name="l04926"></a><span class="lineno"> 4926</span>&#160;</div>
-<div class="line"><a name="l04927"></a><span class="lineno"> 4927</span>&#160;    pm.add(llvm::createGCLoweringPass());</div>
-<div class="line"><a name="l04928"></a><span class="lineno"> 4928</span>&#160;    pm.add(llvm::createLowerInvokePass());</div>
-<div class="line"><a name="l04929"></a><span class="lineno"> 4929</span>&#160;    pm.add(llvm::createCFGSimplificationPass());   <span class="comment">// clean up after lower invoke.</span></div>
-<div class="line"><a name="l04930"></a><span class="lineno"> 4930</span>&#160;    pm.add(<span class="keyword">new</span> <a class="code" href="classSmearCleanupPass.html">SmearCleanupPass</a>(module, vectorWidth));</div>
-<div class="line"><a name="l04931"></a><span class="lineno"> 4931</span>&#160;    pm.add(<span class="keyword">new</span> <a class="code" href="classBitcastCleanupPass.html">BitcastCleanupPass</a>());</div>
-<div class="line"><a name="l04932"></a><span class="lineno"> 4932</span>&#160;    pm.add(<span class="keyword">new</span> <a class="code" href="classAndCmpCleanupPass.html">AndCmpCleanupPass</a>());</div>
-<div class="line"><a name="l04933"></a><span class="lineno"> 4933</span>&#160;    pm.add(<span class="keyword">new</span> <a class="code" href="classMaskOpsCleanupPass.html">MaskOpsCleanupPass</a>(module));</div>
-<div class="line"><a name="l04934"></a><span class="lineno"> 4934</span>&#160;    pm.add(llvm::createDeadCodeEliminationPass()); <span class="comment">// clean up after smear pass</span></div>
-<div class="line"><a name="l04935"></a><span class="lineno"> 4935</span>&#160;<span class="comment">//CO    pm.add(llvm::createPrintModulePass(&amp;fos));</span></div>
-<div class="line"><a name="l04936"></a><span class="lineno"> 4936</span>&#160;    pm.add(<span class="keyword">new</span> CWriter(fos, includeName, vectorWidth));</div>
-<div class="line"><a name="l04937"></a><span class="lineno"> 4937</span>&#160;<span class="preprocessor">#if defined(LLVM_3_1) || defined(LLVM_3_2)</span></div>
-<div class="line"><a name="l04938"></a><span class="lineno"> 4938</span>&#160;<span class="preprocessor"></span>    <span class="comment">// This interface is depricated for 3.3+</span></div>
-<div class="line"><a name="l04939"></a><span class="lineno"> 4939</span>&#160;    pm.add(llvm::createGCInfoDeleter());</div>
-<div class="line"><a name="l04940"></a><span class="lineno"> 4940</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l04941"></a><span class="lineno"> 4941</span>&#160;<span class="preprocessor"></span><span class="comment">//CO    pm.add(llvm::createVerifierPass());</span></div>
-<div class="line"><a name="l04942"></a><span class="lineno"> 4942</span>&#160;</div>
-<div class="line"><a name="l04943"></a><span class="lineno"> 4943</span>&#160;    pm.run(*module);</div>
-<div class="line"><a name="l04944"></a><span class="lineno"> 4944</span>&#160;</div>
-<div class="line"><a name="l04945"></a><span class="lineno"> 4945</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l04946"></a><span class="lineno"> 4946</span>&#160;}</div>
+<div class="line"><a name="l04917"></a><span class="lineno"> 4917</span>&#160;<span class="preprocessor">#if defined(LLVM_3_1) || defined(LLVM_3_2) || defined(LLVM_3_3)</span></div>
+<div class="line"><a name="l04918"></a><span class="lineno"> 4918</span>&#160;<span class="preprocessor"></span>    <span class="keywordtype">int</span> flags = 0;</div>
+<div class="line"><a name="l04919"></a><span class="lineno"> 4919</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l04920"></a><span class="lineno"> 4920</span>&#160;<span class="preprocessor"></span>    llvm::sys::fs::OpenFlags flags = llvm::sys::fs::F_None;</div>
+<div class="line"><a name="l04921"></a><span class="lineno"> 4921</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l04922"></a><span class="lineno"> 4922</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l04923"></a><span class="lineno"> 4923</span>&#160;    std::string error;</div>
+<div class="line"><a name="l04924"></a><span class="lineno"> 4924</span>&#160;    llvm::tool_output_file *of = <span class="keyword">new</span> llvm::tool_output_file(fn, error, flags);</div>
+<div class="line"><a name="l04925"></a><span class="lineno"> 4925</span>&#160;    <span class="keywordflow">if</span> (error.size()) {</div>
+<div class="line"><a name="l04926"></a><span class="lineno"> 4926</span>&#160;        fprintf(stderr, <span class="stringliteral">&quot;Error opening output file \&quot;%s\&quot;.\n&quot;</span>, fn);</div>
+<div class="line"><a name="l04927"></a><span class="lineno"> 4927</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l04928"></a><span class="lineno"> 4928</span>&#160;    }</div>
+<div class="line"><a name="l04929"></a><span class="lineno"> 4929</span>&#160;</div>
+<div class="line"><a name="l04930"></a><span class="lineno"> 4930</span>&#160;    llvm::formatted_raw_ostream fos(of-&gt;os());</div>
+<div class="line"><a name="l04931"></a><span class="lineno"> 4931</span>&#160;</div>
+<div class="line"><a name="l04932"></a><span class="lineno"> 4932</span>&#160;    pm.add(llvm::createGCLoweringPass());</div>
+<div class="line"><a name="l04933"></a><span class="lineno"> 4933</span>&#160;    pm.add(llvm::createLowerInvokePass());</div>
+<div class="line"><a name="l04934"></a><span class="lineno"> 4934</span>&#160;    pm.add(llvm::createCFGSimplificationPass());   <span class="comment">// clean up after lower invoke.</span></div>
+<div class="line"><a name="l04935"></a><span class="lineno"> 4935</span>&#160;    pm.add(<span class="keyword">new</span> <a class="code" href="classSmearCleanupPass.html">SmearCleanupPass</a>(module, vectorWidth));</div>
+<div class="line"><a name="l04936"></a><span class="lineno"> 4936</span>&#160;    pm.add(<span class="keyword">new</span> <a class="code" href="classBitcastCleanupPass.html">BitcastCleanupPass</a>());</div>
+<div class="line"><a name="l04937"></a><span class="lineno"> 4937</span>&#160;    pm.add(<span class="keyword">new</span> <a class="code" href="classAndCmpCleanupPass.html">AndCmpCleanupPass</a>());</div>
+<div class="line"><a name="l04938"></a><span class="lineno"> 4938</span>&#160;    pm.add(<span class="keyword">new</span> <a class="code" href="classMaskOpsCleanupPass.html">MaskOpsCleanupPass</a>(module));</div>
+<div class="line"><a name="l04939"></a><span class="lineno"> 4939</span>&#160;    pm.add(llvm::createDeadCodeEliminationPass()); <span class="comment">// clean up after smear pass</span></div>
+<div class="line"><a name="l04940"></a><span class="lineno"> 4940</span>&#160;<span class="comment">//CO    pm.add(llvm::createPrintModulePass(&amp;fos));</span></div>
+<div class="line"><a name="l04941"></a><span class="lineno"> 4941</span>&#160;    pm.add(<span class="keyword">new</span> CWriter(fos, includeName, vectorWidth));</div>
+<div class="line"><a name="l04942"></a><span class="lineno"> 4942</span>&#160;<span class="preprocessor">#if defined(LLVM_3_1) || defined(LLVM_3_2)</span></div>
+<div class="line"><a name="l04943"></a><span class="lineno"> 4943</span>&#160;<span class="preprocessor"></span>    <span class="comment">// This interface is depricated for 3.3+</span></div>
+<div class="line"><a name="l04944"></a><span class="lineno"> 4944</span>&#160;    pm.add(llvm::createGCInfoDeleter());</div>
+<div class="line"><a name="l04945"></a><span class="lineno"> 4945</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l04946"></a><span class="lineno"> 4946</span>&#160;<span class="preprocessor"></span><span class="comment">//CO    pm.add(llvm::createVerifierPass());</span></div>
+<div class="line"><a name="l04947"></a><span class="lineno"> 4947</span>&#160;</div>
+<div class="line"><a name="l04948"></a><span class="lineno"> 4948</span>&#160;    pm.run(*module);</div>
+<div class="line"><a name="l04949"></a><span class="lineno"> 4949</span>&#160;</div>
+<div class="line"><a name="l04950"></a><span class="lineno"> 4950</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l04951"></a><span class="lineno"> 4951</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jun 25 2013 18:47:49 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 20 2013 05:53:14 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
