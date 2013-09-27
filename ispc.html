@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.10: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
 <title>Intel® SPMD Program Compiler User's Guide</title>
 <script type="text/javascript">
 
@@ -311,6 +311,14 @@ new reserved words: <tt class="docutils literal">unmasked</tt>, <tt class="docut
 and <tt class="docutils literal">in</tt>.  Any program that happens to have a variable or function with
 one of these names must be modified to rename that symbol.</p>
 </div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-5-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.5.0</h2>
+<p>This release adds support for double precision floating point constants.
+Double precision floating point constants are floating point number with
+<tt class="docutils literal">d</tt> suffix and optional exponent part. Here are some examples: 3.14d,
+31.4d-1, 1.d, 1.0d, 1d-2. Note that floating point number without suffix is
+treated as single precision constant.</p>
+</div>
 </div>
 <div class="section" id="getting-started-with-ispc">
 <h1>Getting Started with ISPC</h1>
@@ -468,38 +476,140 @@ direct the compiler to treat any warnings as errors.</p>
 <p>There are three options that affect the compilation target: <tt class="docutils literal"><span class="pre">--arch</span></tt>,
 which sets the target architecture, <tt class="docutils literal"><span class="pre">--cpu</span></tt>, which sets the target CPU,
 and <tt class="docutils literal"><span class="pre">--target</span></tt>, which sets the target instruction set.</p>
-<p>By default, the <tt class="docutils literal">ispc</tt> compiler generates code for the 64-bit x86-64
-architecture (i.e. <tt class="docutils literal"><span class="pre">--arch=x86-64</span></tt>.)  To compile to a 32-bit x86 target,
-supply <tt class="docutils literal"><span class="pre">--arch=x86</span></tt> on the command line:</p>
+<p>If none of these options is specified, <tt class="docutils literal">ispc</tt> generates code for the
+architecture of the system the compiler is running on (i.e. 64-bit x86-64
+(<tt class="docutils literal"><span class="pre">--arch=x86-64</span></tt>) on x86 systems and ARM NEON on ARM systems.</p>
+<p>To compile to a 32-bit x86 target, for example, supply <tt class="docutils literal"><span class="pre">--arch=x86</span></tt> on
+the command line:</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.obj --arch=x86
 </pre>
-<p>No other architectures are currently supported.</p>
+<p>Currently-supported architectures are <tt class="docutils literal"><span class="pre">x86-64</span></tt>, <tt class="docutils literal">x86</tt>, and <tt class="docutils literal">arm</tt>.</p>
 <p>The target CPU determines both the default instruction set used as well as
 which CPU architecture the code is tuned for.  <tt class="docutils literal">ispc <span class="pre">--help</span></tt> provides a
-list of a number of the supported CPUs.  By default, the CPU type of the
-system on which you're running <tt class="docutils literal">ispc</tt> is used to determine the target
-CPU.</p>
+list of all of the supported CPUs.  By default, the CPU type of the system
+on which you're running <tt class="docutils literal">ispc</tt> is used to determine the target CPU.</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.obj --cpu=corei7-avx
 </pre>
-<p>Finally, <tt class="docutils literal"><span class="pre">--target</span></tt> selects between the SSE2, SSE4, and AVX, and AVX2
-instruction sets.  (As general context, SSE2 was first introduced in
-processors that shipped in 2001, SSE4 was introduced in 2007, and
-processors with AVX were introduced in 2010.  AVX2 will be supported on
-future CPUs based on Intel's &quot;Haswell&quot; architecture.  Consult your CPU's
-manual for specifics on which vector instruction set it supports.)</p>
+<p>Finally, <tt class="docutils literal"><span class="pre">--target</span></tt> selects the target instruction set.  The target
+string is of the form <tt class="docutils literal"><span class="pre">[ISA]-i[mask</span> size]x[gang size]</tt>.  For example,
+<tt class="docutils literal"><span class="pre">--target=avx2-i32x16</span></tt> specifies a target with the AVX2 instruction set,
+a mask size of 32 bits, and a gang size of 16.</p>
+<p>The following target ISAs are supported:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Target</td>
+<td>Description</td>
+</tr>
+<tr><td>avx, avx1</td>
+<td>AVX (2010-2011 era Intel CPUs)</td>
+</tr>
+<tr><td>avx1.1</td>
+<td>AVX 1.1 (2012 era &quot;Ivybridge&quot; Intel CPUs)</td>
+</tr>
+<tr><td>avx2</td>
+<td>AVX 2 target (2013- Intel &quot;Haswell&quot; CPUs)</td>
+</tr>
+<tr><td>neon</td>
+<td>ARM NEON</td>
+</tr>
+<tr><td>sse2</td>
+<td>SSE2 (early 2000s era x86 CPUs)</td>
+</tr>
+<tr><td>sse4</td>
+<td>SSE4 (generally 2008-2010 Intel CPUs)</td>
+</tr>
+</tbody>
+</table>
+<p>Consult your CPU's manual for specifics on which vector instruction set it
+supports.</p>
+<p>The mask size may be 8, 16, or 32 bits, though not all combinations of ISAs
+and mask sizes are supported.  For best performance, the best general
+approach is to choose a mask size equal to the size of the most common
+datatype in your programs.  For example, if most of your computation is on
+32-bit floating-point values, an <tt class="docutils literal">i32</tt> target is appropriate.  However,
+if you're mostly doing computation on 8-bit images, <tt class="docutils literal">i8</tt> is a better choice.</p>
+<p>See <a class="reference internal" href="#basic-concepts-program-instances-and-gangs-of-program-instances">Basic Concepts: Program Instances and Gangs of Program Instances</a> for
+more discussion of the &quot;gang size&quot; and its implications for program
+execution.</p>
+<p>Running <tt class="docutils literal">ispc <span class="pre">--help</span></tt> and looking at the output for the <tt class="docutils literal"><span class="pre">--target</span></tt>
+option gives the most up-to-date documentation about which targets your
+compiler binary supports.</p>
+<p>The naming scheme for compilation targets changed in August 2013; the
+following table shows the relationship between names in the old scheme and
+in the new scheme:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="54%" />
+<col width="46%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Target</td>
+<td>Former Name</td>
+</tr>
+<tr><td>avx1-i32x8</td>
+<td>avx, avx1</td>
+</tr>
+<tr><td>avx1-i32x16</td>
+<td>avx-x2</td>
+</tr>
+<tr><td>avx1.1-i32x8</td>
+<td>avx1.1</td>
+</tr>
+<tr><td>avx1.1-i32x16</td>
+<td>avx1.1-x2</td>
+</tr>
+<tr><td>avx2-i32x8</td>
+<td>avx2</td>
+</tr>
+<tr><td>avx2-i32x16</td>
+<td>avx2-x2</td>
+</tr>
+<tr><td>neon-8</td>
+<td>n/a</td>
+</tr>
+<tr><td>neon-16</td>
+<td>n/a</td>
+</tr>
+<tr><td>neon-32</td>
+<td>n/a</td>
+</tr>
+<tr><td>sse2-i32x4</td>
+<td>sse2</td>
+</tr>
+<tr><td>sse2-i32x8</td>
+<td>sse2-x2</td>
+</tr>
+<tr><td>sse4-i32x4</td>
+<td>sse4</td>
+</tr>
+<tr><td>sse4-i32x8</td>
+<td>sse4-x2</td>
+</tr>
+<tr><td>sse4-i8x16</td>
+<td>n/a</td>
+</tr>
+<tr><td>sse4-i16x8</td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
 <p>By default, the target instruction set is chosen based on the most capable
 one supported by the system on which you're running <tt class="docutils literal">ispc</tt>.  You can
 override this choice with the <tt class="docutils literal"><span class="pre">--target</span></tt> flag; for example, to select
-Intel® SSE2, use <tt class="docutils literal"><span class="pre">--target=sse2</span></tt>.  (As with the other options in this
-section, see the output of <tt class="docutils literal">ispc <span class="pre">--help</span></tt> for a full list of supported
-targets.)</p>
+Intel® SSE2 with a 32-bit mask and 4 program instances in a gang, use
+<tt class="docutils literal"><span class="pre">--target=sse2-i32x4</span></tt>.  (As with the other options in this section, see
+the output of <tt class="docutils literal">ispc <span class="pre">--help</span></tt> for a full list of supported targets.)</p>
 </div>
 <div class="section" id="generating-generic-c-output">
 <h2>Generating Generic C++ Output</h2>
 <p>In addition to generating object files or assembly output for specific
-targets like SSE2, SSE4, and AVX, <tt class="docutils literal">ispc</tt> provides an option to generate
+targets like NEON, SSE2, SSE4, and AVX, <tt class="docutils literal">ispc</tt> provides an option to generate
 &quot;generic&quot; C++ output.  This</p>
 <p>As an example, consider the following simple <tt class="docutils literal">ispc</tt> program:</p>
 <pre class="literal-block">
@@ -634,7 +744,7 @@ preprocessor runs:</p>
 <td>1</td>
 <td>Detecting that the <tt class="docutils literal">ispc</tt> compiler is processing the file</td>
 </tr>
-<tr><td>ISPC_TARGET_{SSE2,SSE4,AVX,AVX2}</td>
+<tr><td>ISPC_TARGET_{NEON_8,NEON_16,NEON_32,SSE2,SSE4,AVX,AVX11,AVX2,GENERIC}</td>
 <td>1</td>
 <td>One of these will be set, depending on the compilation target.</td>
 </tr>
@@ -1202,7 +1312,8 @@ double</tt>).  However, there are built-in <tt class="docutils literal">int8</tt
 <li>Bitfield members of <tt class="docutils literal">struct</tt> types</li>
 <li>Variable numbers of arguments to functions</li>
 <li>Literal floating-point constants (even without a <tt class="docutils literal">f</tt> suffix) are
-currently treated as being <tt class="docutils literal">float</tt> type, not <tt class="docutils literal">double</tt></li>
+currently treated as being <tt class="docutils literal">float</tt> type, not <tt class="docutils literal">double</tt>. To have a double
+precision floating point constant use <tt class="docutils literal">d</tt> suffix.</li>
 <li>The <tt class="docutils literal">volatile</tt> qualifier</li>
 <li>The <tt class="docutils literal">register</tt> storage class for variables.  (Will be ignored).</li>
 </ul>
@@ -2957,6 +3068,25 @@ uniform bool isnan(uniform float v)
 bool isnan(double v)
 uniform bool isnan(uniform double v)
 </pre>
+<p>A number of functions are also available for performing operations on 8- and
+16-bit quantities; these map to specialized instructions that perform these
+operations on targets that support them.  <tt class="docutils literal">avg_up()</tt> computes the average
+of the two values, rounding up if their average is halfway between two
+integers (i.e., it computes <tt class="docutils literal"><span class="pre">(a+b+1)/2</span></tt>).</p>
+<pre class="literal-block">
+int8 avg_up(int8 a, int8 b)
+unsigned int8 avg_up(unsigned int8 a, unsigned int8 b)
+int16 avg_up(int16 a, int16 b)
+unsigned int16 avg_up(unsigned int16 a, unsigned int16 b)
+</pre>
+<p><tt class="docutils literal">avg_down()</tt> computes the average of the two values, rounding down (i.e.,
+it computes <tt class="docutils literal"><span class="pre">(a+b)/2</span></tt>).</p>
+<pre class="literal-block">
+int8 avg_down(int8 a, int8 b)
+unsigned int8 avg_down(unsigned int8 a, unsigned int8 b)
+int16 avg_down(int16 a, int16 b)
+unsigned int16 avg_down(unsigned int16 a, unsigned int16 b)
+</pre>
 </div>
 <div class="section" id="transcendental-functions">
 <h2>Transcendental Functions</h2>
@@ -3135,7 +3265,7 @@ command-line argument.</p>
 </div>
 <div class="section" id="cross-program-instance-operations">
 <h2>Cross-Program Instance Operations</h2>
-<p><tt class="docutils literal">ispc</tt> programs are often used to expresses independently-executing
+<p><tt class="docutils literal">ispc</tt> programs are often used to express independently-executing
 programs performing computation on separate data elements.  (i.e. pure
 data-parallelism).  However, it's often the case where it's useful for the
 program instances to be able to cooperate in computing results.  The
@@ -3161,7 +3291,7 @@ double broadcast(double value, uniform int index)
 </pre>
 <p>The <tt class="docutils literal">rotate()</tt> function allows each program instance to find the value of
 the given value that their neighbor <tt class="docutils literal">offset</tt> steps away has.  For
-example, on an 8-wide target, if <tt class="docutils literal">offset</tt> has the value (1, 2, 3, 4, 5,
+example, on an 8-wide target, if <tt class="docutils literal">value</tt> has the value (1, 2, 3, 4, 5,
 6, 7, 8) across the gang of running program instances, then <tt class="docutils literal">rotate(value,
 <span class="pre">-1)</span></tt> causes the first program instance to get the value 8, the second
 program instance to get the value 1, the third 2, and so forth.  The
@@ -3227,7 +3357,7 @@ float insert(float x, uniform int i, uniform float v)
 </div>
 <div class="section" id="reductions">
 <h2>Reductions</h2>
-<p>A number routines are available to evaluate conditions across the
+<p>A number of routines are available to evaluate conditions across the
 running program instances.  For example, <tt class="docutils literal">any()</tt> returns <tt class="docutils literal">true</tt> if
 the given value <tt class="docutils literal">v</tt> is <tt class="docutils literal">true</tt> for any of the SPMD program
 instances currently running, <tt class="docutils literal">all()</tt> returns <tt class="docutils literal">true</tt> if it true
@@ -3242,35 +3372,49 @@ uniform bool none(bool v)
 For example, the values of the given value in each of the active program
 instances are added together by the <tt class="docutils literal">reduce_add()</tt> function.</p>
 <pre class="literal-block">
+uniform int16 reduce_add(int8 x)
+uniform unsigned int16 reduce_add(unsigned int8 x)
+uniform int32 reduce_add(int16 x)
+uniform unsigned int32 reduce_add(unsigned 16int x)
+uniform int64 reduce_add(int32 x)
+uniform unsigned int64 reduce_add(unsigned int32 x)
+uniform int64 reduce_add(int64 x)
+uniform unsigned int64 reduce_add(unsigned int64 x)
+
 uniform float reduce_add(float x)
-uniform int reduce_add(int x)
-uniform unsigned int reduce_add(unsigned int x)
+uniform double reduce_add(double x)
 </pre>
-<p>You can also use functions to compute the minimum and maximum value of the
-given value across all of the currently-executing program instances.</p>
+<p>You can also use functions to compute the minimum value of the given value
+across all of the currently-executing program instances.</p>
 <pre class="literal-block">
-uniform float reduce_min(float a)
 uniform int32 reduce_min(int32 a)
 uniform unsigned int32 reduce_min(unsigned int32 a)
-uniform double reduce_min(double a)
 uniform int64 reduce_min(int64 a)
 uniform unsigned int64 reduce_min(unsigned int64 a)
 
-uniform float reduce_max(float a)
+uniform float reduce_min(float a)
+uniform double reduce_min(double a)
+</pre>
+<p>Equivalent functions are available to comptue the maximum of the given
+varying variable over the active program instances.</p>
+<pre class="literal-block">
 uniform int32 reduce_max(int32 a)
 uniform unsigned int32 reduce_max(unsigned int32 a)
-uniform double reduce_max(double a)
 uniform int64 reduce_max(int64 a)
 uniform unsigned int64 reduce_max(unsigned int64 a)
+
+uniform float reduce_max(float a)
+uniform double reduce_max(double a)
 </pre>
 <p>Finally, you can check to see if a particular value has the same value in
 all of the currently-running program instances:</p>
 <pre class="literal-block">
 uniform bool reduce_equal(int32 v)
 uniform bool reduce_equal(unsigned int32 v)
-uniform bool reduce_equal(float v)
 uniform bool reduce_equal(int64 v)
 uniform bool reduce_equal(unsigned int64 v)
+
+uniform bool reduce_equal(float v)
 uniform bool reduce_equal(double)
 </pre>
 <p>There are also variants of these functions that return the value as a
@@ -3281,10 +3425,11 @@ performance in the <a class="reference external" href="perfguide.html#understand
 uniform bool reduce_equal(int32 v, uniform int32 * uniform sameval)
 uniform bool reduce_equal(unsigned int32 v,
                           uniform unsigned int32 * uniform sameval)
-uniform bool reduce_equal(float v, uniform float * uniform sameval)
 uniform bool reduce_equal(int64 v, uniform int64 * uniform sameval)
 uniform bool reduce_equal(unsigned int64 v,
                           uniform unsigned int64 * uniform sameval)
+
+uniform bool reduce_equal(float v, uniform float * uniform sameval)
 uniform bool reduce_equal(double, uniform double * uniform sameval)
 </pre>
 <p>If called when none of the program instances are running,
