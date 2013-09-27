@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.4.4</span>
+   &#160;<span id="projectnumber">1.5.0</span>
    </div>
   </td>
  </tr>
@@ -85,6 +85,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a740ad3aba154a67bac4d1041c660f991"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSymbolTable.html#a740ad3aba154a67bac4d1041c660f991">GetMatchingVariables</a> (Predicate pred, std::vector&lt; <a class="el" href="classSymbol.html">Symbol</a> * &gt; *matches) const </td></tr>
 <tr class="memitem:ab449fbe2b55797a074940394467a262e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSymbolTable.html#ab449fbe2b55797a074940394467a262e">AddType</a> (const char *name, const <a class="el" href="classType.html">Type</a> *type, <a class="el" href="structSourcePos.html">SourcePos</a> pos)</td></tr>
 <tr class="memitem:a0d086940081f34d21263eb828a3ddfed"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classType.html">Type</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSymbolTable.html#a0d086940081f34d21263eb828a3ddfed">LookupType</a> (const char *name) const </td></tr>
+<tr class="memitem:afb09c6429ebbe5235348139dfbaeb91c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSymbolTable.html#afb09c6429ebbe5235348139dfbaeb91c">ContainsType</a> (const <a class="el" href="classType.html">Type</a> *type) const </td></tr>
 <tr class="memitem:a6e76946243946eace77ea44ea30329d6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSymbolTable.html#a6e76946243946eace77ea44ea30329d6">ClosestVariableOrFunctionMatch</a> (const char *name) const </td></tr>
 <tr class="memitem:af496f9175cb4a1370d61d9b166050324"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSymbolTable.html#af496f9175cb4a1370d61d9b166050324">ClosestTypeMatch</a> (const char *name) const </td></tr>
 <tr class="memitem:aa3608c26685895932ce7db07ec3ab73d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSymbolTable.html#aa3608c26685895932ce7db07ec3ab73d">ClosestEnumTypeMatch</a> (const char *name) const </td></tr>
@@ -137,7 +138,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p><a class="el" href="classFunction.html">Function</a> declarations are <em>not</em> scoped. (C99, for example, allows an implementation to maintain function declarations in a single namespace.) A STL <code>vector</code> is used to store the function symbols for a given name since, due to function overloading, a name can have multiple function symbols associated with it. </p>
 
-<p>Definition at line <a class="el" href="sym_8h_source.html#l00270">270</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p>Definition at line <a class="el" href="sym_8h_source.html#l00276">276</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
 </div>
 </div>
@@ -160,7 +161,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>This member variable holds one SymbolMap for each of the current active scopes as the program is being parsed. New maps are added and removed from the end of the main vector, so searches for symbols start looking at the end of <code>variables</code> and work backwards. </p>
 
-<p>Definition at line <a class="el" href="sym_8h_source.html#l00260">260</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p>Definition at line <a class="el" href="sym_8h_source.html#l00266">266</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
 </div>
 </div>
@@ -183,7 +184,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p><a class="el" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> definitions can't currently be scoped. </p>
 
-<p>Definition at line <a class="el" href="sym_8h_source.html#l00275">275</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p>Definition at line <a class="el" href="sym_8h_source.html#l00281">281</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
 </div>
 </div>
@@ -222,7 +223,7 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sym_8cpp_source.html#l00067">67</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00159">Assert</a>, <a class="el" href="sym_8cpp_source.html#l00090">PopScope()</a>, and <a class="el" href="sym_8h_source.html#l00261">variables</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="sym_8cpp_source.html#l00090">PopScope()</a>, and <a class="el" href="sym_8h_source.html#l00267">variables</a>.</p>
 
 </div>
 </div>
@@ -251,9 +252,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sym_8cpp_source.html#l00147">147</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00159">Assert</a>, <a class="el" href="sym_8h_source.html#l00271">functions</a>, <a class="el" href="sym_8cpp_source.html#l00162">LookupFunction()</a>, <a class="el" href="sym_8h_source.html#l00071">Symbol::name</a>, and <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="sym_8h_source.html#l00277">functions</a>, <a class="el" href="sym_8cpp_source.html#l00162">LookupFunction()</a>, <a class="el" href="sym_8h_source.html#l00071">Symbol::name</a>, and <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00663">Module::AddFunctionDeclaration()</a>, <a class="el" href="builtins_8cpp_source.html#l00195">lCreateISPCSymbol()</a>, and <a class="el" href="builtins_8cpp_source.html#l00172">lCreateSymbol()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00666">Module::AddFunctionDeclaration()</a>, <a class="el" href="builtins_8cpp_source.html#l00194">lCreateISPCSymbol()</a>, and <a class="el" href="builtins_8cpp_source.html#l00171">lCreateSymbol()</a>.</p>
 
 </div>
 </div>
@@ -299,9 +300,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sym_8cpp_source.html#l00192">192</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="util_8cpp_source.html#l00387">Error()</a>, <a class="el" href="sym_8cpp_source.html#l00209">LookupType()</a>, and <a class="el" href="sym_8h_source.html#l00276">types</a>.</p>
+<p>References <a class="el" href="util_8cpp_source.html#l00387">Error()</a>, <a class="el" href="sym_8cpp_source.html#l00209">LookupType()</a>, and <a class="el" href="sym_8h_source.html#l00282">types</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00392">Module::AddTypeDef()</a>, and <a class="el" href="module_8cpp_source.html#l00123">lDeclareSizeAndPtrIntTypes()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00395">Module::AddTypeDef()</a>, and <a class="el" href="module_8cpp_source.html#l00123">lDeclareSizeAndPtrIntTypes()</a>.</p>
 
 </div>
 </div>
@@ -329,9 +330,9 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sym_8cpp_source.html#l00098">98</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00159">Assert</a>, <a class="el" href="util_8cpp_source.html#l00387">Error()</a>, <a class="el" href="sym_8h_source.html#l00071">Symbol::name</a>, <a class="el" href="sym_8h_source.html#l00070">Symbol::pos</a>, <a class="el" href="sym_8h_source.html#l00261">variables</a>, and <a class="el" href="util_8cpp_source.html#l00412">Warning()</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="util_8cpp_source.html#l00387">Error()</a>, <a class="el" href="sym_8h_source.html#l00071">Symbol::name</a>, <a class="el" href="sym_8h_source.html#l00070">Symbol::pos</a>, <a class="el" href="sym_8h_source.html#l00267">variables</a>, and <a class="el" href="util_8cpp_source.html#l00412">Warning()</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00401">Module::AddGlobalVariable()</a>, <a class="el" href="decl_8cpp_source.html#l00595">Declaration::GetVariableDeclarations()</a>, <a class="el" href="builtins_8cpp_source.html#l00680">lDefineConstantInt()</a>, <a class="el" href="builtins_8cpp_source.html#l00718">lDefineConstantIntFunc()</a>, and <a class="el" href="builtins_8cpp_source.html#l00741">lDefineProgramIndex()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00404">Module::AddGlobalVariable()</a>, <a class="el" href="decl_8cpp_source.html#l00616">Declaration::GetVariableDeclarations()</a>, <a class="el" href="builtins_8cpp_source.html#l00721">lDefineConstantInt()</a>, <a class="el" href="builtins_8cpp_source.html#l00759">lDefineConstantIntFunc()</a>, and <a class="el" href="builtins_8cpp_source.html#l00782">lDefineProgramIndex()</a>.</p>
 
 </div>
 </div>
@@ -349,9 +350,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00264">264</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
+<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00275">275</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="sym_8cpp_source.html#l00270">closestTypeMatch()</a>.</p>
+<p>References <a class="el" href="sym_8cpp_source.html#l00281">closestTypeMatch()</a>.</p>
 
 </div>
 </div>
@@ -370,9 +371,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>This method returns zero or more strings with the names of types in the symbol table that nearly (but not exactly) match the given name. </p>
 
-<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00258">258</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
+<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00269">269</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="sym_8cpp_source.html#l00270">closestTypeMatch()</a>.</p>
+<p>References <a class="el" href="sym_8cpp_source.html#l00281">closestTypeMatch()</a>.</p>
 
 </div>
 </div>
@@ -408,11 +409,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00270">270</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
+<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00281">281</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="util_8cpp_source.html#l00484">StringEditDistance()</a>, and <a class="el" href="sym_8h_source.html#l00276">types</a>.</p>
+<p>References <a class="el" href="util_8cpp_source.html#l00484">StringEditDistance()</a>, and <a class="el" href="sym_8h_source.html#l00282">types</a>.</p>
 
-<p>Referenced by <a class="el" href="sym_8cpp_source.html#l00264">ClosestEnumTypeMatch()</a>, and <a class="el" href="sym_8cpp_source.html#l00258">ClosestTypeMatch()</a>.</p>
+<p>Referenced by <a class="el" href="sym_8cpp_source.html#l00275">ClosestEnumTypeMatch()</a>, and <a class="el" href="sym_8cpp_source.html#l00269">ClosestTypeMatch()</a>.</p>
 
 </div>
 </div>
@@ -438,9 +439,33 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>vector of zero or more strings that approximately match <code>name</code>. </dd></dl>
 
-<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00219">219</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
+<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00230">230</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="sym_8h_source.html#l00271">functions</a>, <a class="el" href="sym_8h_source.html#l00071">Symbol::name</a>, <a class="el" href="util_8cpp_source.html#l00484">StringEditDistance()</a>, and <a class="el" href="sym_8h_source.html#l00261">variables</a>.</p>
+<p>References <a class="el" href="sym_8h_source.html#l00277">functions</a>, <a class="el" href="sym_8h_source.html#l00071">Symbol::name</a>, <a class="el" href="util_8cpp_source.html#l00484">StringEditDistance()</a>, and <a class="el" href="sym_8h_source.html#l00267">variables</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afb09c6429ebbe5235348139dfbaeb91c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SymbolTable::ContainsType </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classType.html">Type</a> *&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Look for a type given a pointer.</p>
+<dl class="section return"><dt>Returns</dt><dd>True if found, False otherwise. </dd></dl>
+
+<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00218">218</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
+
+<p>References <a class="el" href="sym_8h_source.html#l00282">types</a>.</p>
+
+<p>Referenced by <a class="el" href="decl_8cpp_source.html#l00129">DeclSpecs::DeclSpecs()</a>.</p>
 
 </div>
 </div>
@@ -478,11 +503,11 @@ template&lt;typename Predicate &gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="sym_8h_source.html#l00281">281</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p>Definition at line <a class="el" href="sym_8h_source.html#l00287">287</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p>References <a class="el" href="sym_8h_source.html#l00271">functions</a>.</p>
+<p>References <a class="el" href="sym_8h_source.html#l00277">functions</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l02001">lGetExportedFunctions()</a>, <a class="el" href="module_8cpp_source.html#l01430">Module::writeDevStub()</a>, <a class="el" href="module_8cpp_source.html#l01691">Module::writeHeader()</a>, and <a class="el" href="module_8cpp_source.html#l01569">Module::writeHostStub()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l02005">lGetExportedFunctions()</a>, <a class="el" href="module_8cpp_source.html#l01433">Module::writeDevStub()</a>, <a class="el" href="module_8cpp_source.html#l01694">Module::writeHeader()</a>, and <a class="el" href="module_8cpp_source.html#l01572">Module::writeHostStub()</a>.</p>
 
 </div>
 </div>
@@ -513,9 +538,9 @@ template&lt;typename Predicate &gt; </div>
 </div><div class="memdoc">
 <p>Returns all of the variable symbols in the symbol table that match the given predicate. The predicate is defined as in the <a class="el" href="classSymbolTable.html#ada852a988aa9fdceeabd56ecab65e436">GetMatchingFunctions()</a> method. </p>
 
-<p>Definition at line <a class="el" href="sym_8h_source.html#l00297">297</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p>Definition at line <a class="el" href="sym_8h_source.html#l00303">303</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p>References <a class="el" href="sym_8h_source.html#l00261">variables</a>.</p>
+<p>References <a class="el" href="sym_8h_source.html#l00267">variables</a>.</p>
 
 </div>
 </div>
@@ -546,9 +571,9 @@ template&lt;typename Predicate &gt; </div>
 
 <p>Definition at line <a class="el" href="sym_8cpp_source.html#l00162">162</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="sym_8h_source.html#l00271">functions</a>.</p>
+<p>References <a class="el" href="sym_8h_source.html#l00277">functions</a>.</p>
 
-<p>Referenced by <a class="el" href="sym_8cpp_source.html#l00147">AddFunction()</a>, <a class="el" href="module_8cpp_source.html#l00663">Module::AddFunctionDeclaration()</a>, <a class="el" href="module_8cpp_source.html#l00896">Module::AddFunctionDefinition()</a>, <a class="el" href="module_8cpp_source.html#l00401">Module::AddGlobalVariable()</a>, <a class="el" href="ctx_8cpp_source.html#l01330">FunctionEmitContext::All()</a>, <a class="el" href="ctx_8cpp_source.html#l01313">FunctionEmitContext::Any()</a>, <a class="el" href="ctx_8cpp_source.html#l01366">FunctionEmitContext::LaneMask()</a>, <a class="el" href="ctx_8cpp_source.html#l01348">FunctionEmitContext::None()</a>, and <a class="el" href="expr_8cpp_source.html#l02131">BinaryExpr::Optimize()</a>.</p>
+<p>Referenced by <a class="el" href="sym_8cpp_source.html#l00147">AddFunction()</a>, <a class="el" href="module_8cpp_source.html#l00666">Module::AddFunctionDeclaration()</a>, <a class="el" href="module_8cpp_source.html#l00899">Module::AddFunctionDefinition()</a>, <a class="el" href="module_8cpp_source.html#l00404">Module::AddGlobalVariable()</a>, <a class="el" href="ctx_8cpp_source.html#l01334">FunctionEmitContext::All()</a>, <a class="el" href="ctx_8cpp_source.html#l01317">FunctionEmitContext::Any()</a>, <a class="el" href="ctx_8cpp_source.html#l01370">FunctionEmitContext::LaneMask()</a>, <a class="el" href="ctx_8cpp_source.html#l01352">FunctionEmitContext::None()</a>, and <a class="el" href="expr_8cpp_source.html#l02287">BinaryExpr::Optimize()</a>.</p>
 
 </div>
 </div>
@@ -580,7 +605,7 @@ template&lt;typename Predicate &gt; </div>
 
 <p>Definition at line <a class="el" href="sym_8cpp_source.html#l00178">178</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="type_8cpp_source.html#l03332">Type::Equal()</a>, and <a class="el" href="sym_8h_source.html#l00271">functions</a>.</p>
+<p>References <a class="el" href="type_8cpp_source.html#l03332">Type::Equal()</a>, and <a class="el" href="sym_8h_source.html#l00277">functions</a>.</p>
 
 </div>
 </div>
@@ -602,7 +627,7 @@ template&lt;typename Predicate &gt; </div>
 
 <p>Definition at line <a class="el" href="sym_8cpp_source.html#l00209">209</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="sym_8h_source.html#l00276">types</a>.</p>
+<p>References <a class="el" href="sym_8h_source.html#l00282">types</a>.</p>
 
 <p>Referenced by <a class="el" href="sym_8cpp_source.html#l00192">AddType()</a>.</p>
 
@@ -632,9 +657,9 @@ template&lt;typename Predicate &gt; </div>
 
 <p>Definition at line <a class="el" href="sym_8cpp_source.html#l00131">131</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="sym_8h_source.html#l00261">variables</a>.</p>
+<p>References <a class="el" href="sym_8h_source.html#l00267">variables</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00663">Module::AddFunctionDeclaration()</a>, <a class="el" href="module_8cpp_source.html#l00401">Module::AddGlobalVariable()</a>, <a class="el" href="stmt_8cpp_source.html#l02101">ForeachUniqueStmt::ForeachUniqueStmt()</a>, <a class="el" href="func_8cpp_source.html#l00077">Function::Function()</a>, and <a class="el" href="module_8cpp_source.html#l02031">lExtractAndRewriteGlobals()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00666">Module::AddFunctionDeclaration()</a>, <a class="el" href="module_8cpp_source.html#l00404">Module::AddGlobalVariable()</a>, <a class="el" href="stmt_8cpp_source.html#l02101">ForeachUniqueStmt::ForeachUniqueStmt()</a>, <a class="el" href="func_8cpp_source.html#l00077">Function::Function()</a>, and <a class="el" href="module_8cpp_source.html#l02035">lExtractAndRewriteGlobals()</a>.</p>
 
 </div>
 </div>
@@ -654,7 +679,7 @@ template&lt;typename Predicate &gt; </div>
 
 <p>Definition at line <a class="el" href="sym_8cpp_source.html#l00090">90</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00159">Assert</a>, <a class="el" href="sym_8h_source.html#l00263">freeSymbolMaps</a>, and <a class="el" href="sym_8h_source.html#l00261">variables</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="sym_8h_source.html#l00269">freeSymbolMaps</a>, and <a class="el" href="sym_8h_source.html#l00267">variables</a>.</p>
 
 <p>Referenced by <a class="el" href="sym_8cpp_source.html#l00067">~SymbolTable()</a>.</p>
 
@@ -674,9 +699,9 @@ template&lt;typename Predicate &gt; </div>
 </div><div class="memdoc">
 <p>Prints out the entire contents of the symbol table to standard error. (Debugging method). </p>
 
-<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00302">302</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
+<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00313">313</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="sym_8h_source.html#l00271">functions</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, <a class="el" href="sym_8h_source.html#l00071">Symbol::name</a>, <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>, <a class="el" href="sym_8h_source.html#l00276">types</a>, and <a class="el" href="sym_8h_source.html#l00261">variables</a>.</p>
+<p>References <a class="el" href="sym_8h_source.html#l00277">functions</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, <a class="el" href="sym_8h_source.html#l00071">Symbol::name</a>, <a class="el" href="sym_8h_source.html#l00084">Symbol::type</a>, <a class="el" href="sym_8h_source.html#l00282">types</a>, and <a class="el" href="sym_8h_source.html#l00267">variables</a>.</p>
 
 </div>
 </div>
@@ -696,7 +721,7 @@ template&lt;typename Predicate &gt; </div>
 
 <p>Definition at line <a class="el" href="sym_8cpp_source.html#l00075">75</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="sym_8h_source.html#l00263">freeSymbolMaps</a>, and <a class="el" href="sym_8h_source.html#l00261">variables</a>.</p>
+<p>References <a class="el" href="sym_8h_source.html#l00269">freeSymbolMaps</a>, and <a class="el" href="sym_8h_source.html#l00267">variables</a>.</p>
 
 <p>Referenced by <a class="el" href="sym_8cpp_source.html#l00062">SymbolTable()</a>.</p>
 
@@ -716,9 +741,9 @@ template&lt;typename Predicate &gt; </div>
 </div><div class="memdoc">
 <p>Returns a random symbol from the symbol table. (It is not guaranteed that it is equally likely to return all symbols). </p>
 
-<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00350">350</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
+<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00361">361</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00159">Assert</a>, <a class="el" href="sym_8cpp_source.html#l00340">ispcRand()</a>, and <a class="el" href="sym_8h_source.html#l00261">variables</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="sym_8cpp_source.html#l00351">ispcRand()</a>, and <a class="el" href="sym_8h_source.html#l00267">variables</a>.</p>
 
 </div>
 </div>
@@ -736,9 +761,9 @@ template&lt;typename Predicate &gt; </div>
 </div><div class="memdoc">
 <p>Returns a random type from the symbol table. </p>
 
-<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00365">365</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
+<p>Definition at line <a class="el" href="sym_8cpp_source.html#l00376">376</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00159">Assert</a>, and <a class="el" href="sym_8h_source.html#l00276">types</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, and <a class="el" href="sym_8h_source.html#l00282">types</a>.</p>
 
 </div>
 </div>
@@ -761,7 +786,7 @@ template&lt;typename Predicate &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sym_8h_source.html#l00263">263</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p>Definition at line <a class="el" href="sym_8h_source.html#l00269">269</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
 <p>Referenced by <a class="el" href="sym_8cpp_source.html#l00090">PopScope()</a>, and <a class="el" href="sym_8cpp_source.html#l00075">PushScope()</a>.</p>
 
@@ -785,9 +810,9 @@ template&lt;typename Predicate &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sym_8h_source.html#l00271">271</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p>Definition at line <a class="el" href="sym_8h_source.html#l00277">277</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p>Referenced by <a class="el" href="sym_8cpp_source.html#l00147">AddFunction()</a>, <a class="el" href="sym_8cpp_source.html#l00219">ClosestVariableOrFunctionMatch()</a>, <a class="el" href="sym_8h_source.html#l00281">GetMatchingFunctions()</a>, <a class="el" href="sym_8cpp_source.html#l00162">LookupFunction()</a>, and <a class="el" href="sym_8cpp_source.html#l00302">Print()</a>.</p>
+<p>Referenced by <a class="el" href="sym_8cpp_source.html#l00147">AddFunction()</a>, <a class="el" href="sym_8cpp_source.html#l00230">ClosestVariableOrFunctionMatch()</a>, <a class="el" href="sym_8h_source.html#l00287">GetMatchingFunctions()</a>, <a class="el" href="sym_8cpp_source.html#l00162">LookupFunction()</a>, and <a class="el" href="sym_8cpp_source.html#l00313">Print()</a>.</p>
 
 </div>
 </div>
@@ -809,9 +834,9 @@ template&lt;typename Predicate &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sym_8h_source.html#l00276">276</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p>Definition at line <a class="el" href="sym_8h_source.html#l00282">282</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p>Referenced by <a class="el" href="sym_8cpp_source.html#l00192">AddType()</a>, <a class="el" href="sym_8cpp_source.html#l00270">closestTypeMatch()</a>, <a class="el" href="sym_8cpp_source.html#l00209">LookupType()</a>, <a class="el" href="sym_8cpp_source.html#l00302">Print()</a>, and <a class="el" href="sym_8cpp_source.html#l00365">RandomType()</a>.</p>
+<p>Referenced by <a class="el" href="sym_8cpp_source.html#l00192">AddType()</a>, <a class="el" href="sym_8cpp_source.html#l00281">closestTypeMatch()</a>, <a class="el" href="sym_8cpp_source.html#l00218">ContainsType()</a>, <a class="el" href="sym_8cpp_source.html#l00209">LookupType()</a>, <a class="el" href="sym_8cpp_source.html#l00313">Print()</a>, and <a class="el" href="sym_8cpp_source.html#l00376">RandomType()</a>.</p>
 
 </div>
 </div>
@@ -833,9 +858,9 @@ template&lt;typename Predicate &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sym_8h_source.html#l00261">261</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p>Definition at line <a class="el" href="sym_8h_source.html#l00267">267</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p>Referenced by <a class="el" href="sym_8cpp_source.html#l00098">AddVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00219">ClosestVariableOrFunctionMatch()</a>, <a class="el" href="sym_8h_source.html#l00297">GetMatchingVariables()</a>, <a class="el" href="sym_8cpp_source.html#l00131">LookupVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00090">PopScope()</a>, <a class="el" href="sym_8cpp_source.html#l00302">Print()</a>, <a class="el" href="sym_8cpp_source.html#l00075">PushScope()</a>, <a class="el" href="sym_8cpp_source.html#l00350">RandomSymbol()</a>, and <a class="el" href="sym_8cpp_source.html#l00067">~SymbolTable()</a>.</p>
+<p>Referenced by <a class="el" href="sym_8cpp_source.html#l00098">AddVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00230">ClosestVariableOrFunctionMatch()</a>, <a class="el" href="sym_8h_source.html#l00303">GetMatchingVariables()</a>, <a class="el" href="sym_8cpp_source.html#l00131">LookupVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00090">PopScope()</a>, <a class="el" href="sym_8cpp_source.html#l00313">Print()</a>, <a class="el" href="sym_8cpp_source.html#l00075">PushScope()</a>, <a class="el" href="sym_8cpp_source.html#l00361">RandomSymbol()</a>, and <a class="el" href="sym_8cpp_source.html#l00067">~SymbolTable()</a>.</p>
 
 </div>
 </div>
@@ -846,7 +871,7 @@ template&lt;typename Predicate &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 20 2013 05:53:15 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Sep 27 2013 23:38:29 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
