@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.4.4</span>
+   &#160;<span id="projectnumber">1.5.0</span>
    </div>
   </td>
  </tr>
@@ -128,8 +128,8 @@
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">    compiler under a debuffer; in this case, just return a reasonable</span></div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">    default.</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">static</span> <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="code" href="util_8cpp.html#ab9786f333e79c9795ffb8754412827bb">   83</a></span>&#160;<a class="code" href="util_8cpp.html#ab9786f333e79c9795ffb8754412827bb">lTerminalWidth</a>() {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keywordtype">int</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="code" href="util_8cpp.html#a09df0685d240234120385bf9548d35e7">   83</a></span>&#160;<a class="code" href="util_8h.html#a09df0685d240234120385bf9548d35e7">TerminalWidth</a>() {</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a3d125edf09b2a3f07d83986ea25b87e3">disableLineWrap</a>)</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">return</span> 1&lt;&lt;30;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
@@ -277,8 +277,8 @@
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment">/** Print the given string to the given FILE, assuming the given output</span></div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="comment">    column width.  Break words as needed to avoid words spilling past the</span></div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="comment">    last column.  */</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno"><a class="code" href="util_8cpp.html#ae37ae641faf4430c259b243c9d0db424">  232</a></span>&#160;<a class="code" href="util_8cpp.html#ae37ae641faf4430c259b243c9d0db424">lPrintWithWordBreaks</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *buf, <span class="keywordtype">int</span> indent, <span class="keywordtype">int</span> columnWidth, FILE *out) {</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno"><a class="code" href="util_8cpp.html#aa549e16f471f90696581e254387531f2">  232</a></span>&#160;<a class="code" href="util_8h.html#aa549e16f471f90696581e254387531f2">PrintWithWordBreaks</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *buf, <span class="keywordtype">int</span> indent, <span class="keywordtype">int</span> columnWidth, FILE *out) {</div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="preprocessor">#ifdef ISPC_IS_WINDOWS</span></div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="preprocessor"></span>    fputs(buf, out);</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    fputs(<span class="stringliteral">&quot;\n&quot;</span>, out);</div>
@@ -424,7 +424,7 @@
 <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    printed.insert(formattedBuf);</div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <a class="code" href="util_8cpp.html#ae37ae641faf4430c259b243c9d0db424">lPrintWithWordBreaks</a>(formattedBuf, indent, <a class="code" href="util_8cpp.html#ab9786f333e79c9795ffb8754412827bb">lTerminalWidth</a>(), stderr);</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <a class="code" href="util_8h.html#aa549e16f471f90696581e254387531f2">PrintWithWordBreaks</a>(formattedBuf, indent, <a class="code" href="util_8h.html#a09df0685d240234120385bf9548d35e7">TerminalWidth</a>(), stderr);</div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    <a class="code" href="util_8cpp.html#af1b99ffe1f43c2403c2af1df6c5d2e0c">lPrintFileLineContext</a>(p);</div>
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;</div>
 <div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    free(errorBuf);</div>
@@ -715,7 +715,7 @@
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 20 2013 05:53:15 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Sep 27 2013 23:38:29 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
