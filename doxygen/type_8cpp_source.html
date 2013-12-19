@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.5.0</span>
+   &#160;<span id="projectnumber">1.6.0</span>
    </div>
   </td>
  </tr>
@@ -2928,7 +2928,7 @@
 <div class="line"><a name="l02879"></a><span class="lineno"> 2879</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classFunctionType.html#aa8626ccd2e745fce66214f69330d6437">GetNumParameters</a>(); ++i) {</div>
 <div class="line"><a name="l02880"></a><span class="lineno"> 2880</span>&#160;        <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *t = <a class="code" href="classFunctionType.html#a144e797267311e897311b257421abf7f">GetParameterType</a>(i);</div>
 <div class="line"><a name="l02881"></a><span class="lineno"> 2881</span>&#160;        <span class="keywordflow">if</span> (t == NULL)</div>
-<div class="line"><a name="l02882"></a><span class="lineno"> 2882</span>&#160;<span class="preprocessor">#if defined(LLVM_3_4)</span></div>
+<div class="line"><a name="l02882"></a><span class="lineno"> 2882</span>&#160;<span class="preprocessor">#if defined(LLVM_3_4) || defined(LLVM_3_5)</span></div>
 <div class="line"><a name="l02883"></a><span class="lineno"> 2883</span>&#160;<span class="preprocessor"></span>            <span class="keywordflow">return</span> llvm::DICompositeType();</div>
 <div class="line"><a name="l02884"></a><span class="lineno"> 2884</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l02885"></a><span class="lineno"> 2885</span>&#160;<span class="preprocessor"></span>            <span class="keywordflow">return</span> llvm::DIType();</div>
@@ -3010,387 +3010,393 @@
 <div class="line"><a name="l02961"></a><span class="lineno"> 2961</span>&#160;        callTypes.push_back(<a class="code" href="structLLVMTypes.html#acbc1a9ecda1bd59f50a644be0663be8f">LLVMTypes::Int32Type</a>); <span class="comment">// threadCount</span></div>
 <div class="line"><a name="l02962"></a><span class="lineno"> 2962</span>&#160;        callTypes.push_back(<a class="code" href="structLLVMTypes.html#acbc1a9ecda1bd59f50a644be0663be8f">LLVMTypes::Int32Type</a>); <span class="comment">// taskIndex</span></div>
 <div class="line"><a name="l02963"></a><span class="lineno"> 2963</span>&#160;        callTypes.push_back(<a class="code" href="structLLVMTypes.html#acbc1a9ecda1bd59f50a644be0663be8f">LLVMTypes::Int32Type</a>); <span class="comment">// taskCount</span></div>
-<div class="line"><a name="l02964"></a><span class="lineno"> 2964</span>&#160;    }</div>
-<div class="line"><a name="l02965"></a><span class="lineno"> 2965</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l02966"></a><span class="lineno"> 2966</span>&#160;        <span class="comment">// Otherwise we already have the types of the arguments</span></div>
-<div class="line"><a name="l02967"></a><span class="lineno"> 2967</span>&#160;        callTypes = llvmArgTypes;</div>
-<div class="line"><a name="l02968"></a><span class="lineno"> 2968</span>&#160;</div>
-<div class="line"><a name="l02969"></a><span class="lineno"> 2969</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classFunctionType.html#a128c817f3a4cfdf64dbb679d7aa8e7bf">returnType</a> == NULL) {</div>
-<div class="line"><a name="l02970"></a><span class="lineno"> 2970</span>&#160;        <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);</div>
-<div class="line"><a name="l02971"></a><span class="lineno"> 2971</span>&#160;        <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l02972"></a><span class="lineno"> 2972</span>&#160;    }</div>
-<div class="line"><a name="l02973"></a><span class="lineno"> 2973</span>&#160;</div>
-<div class="line"><a name="l02974"></a><span class="lineno"> 2974</span>&#160;    llvm::Type *llvmReturnType = <a class="code" href="classFunctionType.html#a128c817f3a4cfdf64dbb679d7aa8e7bf">returnType</a>-&gt;<a class="code" href="classType.html#a04eb42d850a697fc181b388688b6393e">LLVMType</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>);</div>
-<div class="line"><a name="l02975"></a><span class="lineno"> 2975</span>&#160;    <span class="keywordflow">if</span> (llvmReturnType == NULL)</div>
-<div class="line"><a name="l02976"></a><span class="lineno"> 2976</span>&#160;        <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l02977"></a><span class="lineno"> 2977</span>&#160;</div>
-<div class="line"><a name="l02978"></a><span class="lineno"> 2978</span>&#160;    <span class="keywordflow">return</span> llvm::FunctionType::get(llvmReturnType, callTypes, <span class="keyword">false</span>);</div>
-<div class="line"><a name="l02979"></a><span class="lineno"> 2979</span>&#160;}</div>
-<div class="line"><a name="l02980"></a><span class="lineno"> 2980</span>&#160;</div>
-<div class="line"><a name="l02981"></a><span class="lineno"> 2981</span>&#160;</div>
-<div class="line"><a name="l02982"></a><span class="lineno"> 2982</span>&#160;<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *</div>
-<div class="line"><a name="l02983"></a><span class="lineno"><a class="code" href="classFunctionType.html#a144e797267311e897311b257421abf7f"> 2983</a></span>&#160;<a class="code" href="classFunctionType.html#a144e797267311e897311b257421abf7f">FunctionType::GetParameterType</a>(<span class="keywordtype">int</span> i)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l02984"></a><span class="lineno"> 2984</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(i &lt; (<span class="keywordtype">int</span>)<a class="code" href="classFunctionType.html#a03b0968e841010ff406fc853df5dd894">paramTypes</a>.size());</div>
-<div class="line"><a name="l02985"></a><span class="lineno"> 2985</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classFunctionType.html#a03b0968e841010ff406fc853df5dd894">paramTypes</a>[i];</div>
-<div class="line"><a name="l02986"></a><span class="lineno"> 2986</span>&#160;}</div>
+<div class="line"><a name="l02964"></a><span class="lineno"> 2964</span>&#160;        callTypes.push_back(<a class="code" href="structLLVMTypes.html#acbc1a9ecda1bd59f50a644be0663be8f">LLVMTypes::Int32Type</a>); <span class="comment">// taskIndex0</span></div>
+<div class="line"><a name="l02965"></a><span class="lineno"> 2965</span>&#160;        callTypes.push_back(<a class="code" href="structLLVMTypes.html#acbc1a9ecda1bd59f50a644be0663be8f">LLVMTypes::Int32Type</a>); <span class="comment">// taskIndex1</span></div>
+<div class="line"><a name="l02966"></a><span class="lineno"> 2966</span>&#160;        callTypes.push_back(<a class="code" href="structLLVMTypes.html#acbc1a9ecda1bd59f50a644be0663be8f">LLVMTypes::Int32Type</a>); <span class="comment">// taskIndex2</span></div>
+<div class="line"><a name="l02967"></a><span class="lineno"> 2967</span>&#160;        callTypes.push_back(<a class="code" href="structLLVMTypes.html#acbc1a9ecda1bd59f50a644be0663be8f">LLVMTypes::Int32Type</a>); <span class="comment">// taskCount0</span></div>
+<div class="line"><a name="l02968"></a><span class="lineno"> 2968</span>&#160;        callTypes.push_back(<a class="code" href="structLLVMTypes.html#acbc1a9ecda1bd59f50a644be0663be8f">LLVMTypes::Int32Type</a>); <span class="comment">// taskCount1</span></div>
+<div class="line"><a name="l02969"></a><span class="lineno"> 2969</span>&#160;        callTypes.push_back(<a class="code" href="structLLVMTypes.html#acbc1a9ecda1bd59f50a644be0663be8f">LLVMTypes::Int32Type</a>); <span class="comment">// taskCount2</span></div>
+<div class="line"><a name="l02970"></a><span class="lineno"> 2970</span>&#160;    }</div>
+<div class="line"><a name="l02971"></a><span class="lineno"> 2971</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l02972"></a><span class="lineno"> 2972</span>&#160;        <span class="comment">// Otherwise we already have the types of the arguments</span></div>
+<div class="line"><a name="l02973"></a><span class="lineno"> 2973</span>&#160;        callTypes = llvmArgTypes;</div>
+<div class="line"><a name="l02974"></a><span class="lineno"> 2974</span>&#160;</div>
+<div class="line"><a name="l02975"></a><span class="lineno"> 2975</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classFunctionType.html#a128c817f3a4cfdf64dbb679d7aa8e7bf">returnType</a> == NULL) {</div>
+<div class="line"><a name="l02976"></a><span class="lineno"> 2976</span>&#160;        <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>-&gt;<a class="code" href="classModule.html#a52fe6ae67566e0d0da5d63689973d18e">errorCount</a> &gt; 0);</div>
+<div class="line"><a name="l02977"></a><span class="lineno"> 2977</span>&#160;        <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l02978"></a><span class="lineno"> 2978</span>&#160;    }</div>
+<div class="line"><a name="l02979"></a><span class="lineno"> 2979</span>&#160;</div>
+<div class="line"><a name="l02980"></a><span class="lineno"> 2980</span>&#160;    llvm::Type *llvmReturnType = <a class="code" href="classFunctionType.html#a128c817f3a4cfdf64dbb679d7aa8e7bf">returnType</a>-&gt;<a class="code" href="classType.html#a04eb42d850a697fc181b388688b6393e">LLVMType</a>(<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>);</div>
+<div class="line"><a name="l02981"></a><span class="lineno"> 2981</span>&#160;    <span class="keywordflow">if</span> (llvmReturnType == NULL)</div>
+<div class="line"><a name="l02982"></a><span class="lineno"> 2982</span>&#160;        <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l02983"></a><span class="lineno"> 2983</span>&#160;</div>
+<div class="line"><a name="l02984"></a><span class="lineno"> 2984</span>&#160;    <span class="keywordflow">return</span> llvm::FunctionType::get(llvmReturnType, callTypes, <span class="keyword">false</span>);</div>
+<div class="line"><a name="l02985"></a><span class="lineno"> 2985</span>&#160;}</div>
+<div class="line"><a name="l02986"></a><span class="lineno"> 2986</span>&#160;</div>
 <div class="line"><a name="l02987"></a><span class="lineno"> 2987</span>&#160;</div>
-<div class="line"><a name="l02988"></a><span class="lineno"> 2988</span>&#160;</div>
-<div class="line"><a name="l02989"></a><span class="lineno"> 2989</span>&#160;<a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *</div>
-<div class="line"><a name="l02990"></a><span class="lineno"><a class="code" href="classFunctionType.html#ace8cef8f3a21e7e40560c1a69325eb47"> 2990</a></span>&#160;<a class="code" href="classFunctionType.html#ace8cef8f3a21e7e40560c1a69325eb47">FunctionType::GetParameterDefault</a>(<span class="keywordtype">int</span> i)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l02991"></a><span class="lineno"> 2991</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(i &lt; (<span class="keywordtype">int</span>)<a class="code" href="classFunctionType.html#ab551b31754646d5b7478b118f00a2dcb">paramDefaults</a>.size());</div>
-<div class="line"><a name="l02992"></a><span class="lineno"> 2992</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classFunctionType.html#ab551b31754646d5b7478b118f00a2dcb">paramDefaults</a>[i];</div>
-<div class="line"><a name="l02993"></a><span class="lineno"> 2993</span>&#160;}</div>
+<div class="line"><a name="l02988"></a><span class="lineno"> 2988</span>&#160;<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *</div>
+<div class="line"><a name="l02989"></a><span class="lineno"><a class="code" href="classFunctionType.html#a144e797267311e897311b257421abf7f"> 2989</a></span>&#160;<a class="code" href="classFunctionType.html#a144e797267311e897311b257421abf7f">FunctionType::GetParameterType</a>(<span class="keywordtype">int</span> i)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l02990"></a><span class="lineno"> 2990</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(i &lt; (<span class="keywordtype">int</span>)<a class="code" href="classFunctionType.html#a03b0968e841010ff406fc853df5dd894">paramTypes</a>.size());</div>
+<div class="line"><a name="l02991"></a><span class="lineno"> 2991</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classFunctionType.html#a03b0968e841010ff406fc853df5dd894">paramTypes</a>[i];</div>
+<div class="line"><a name="l02992"></a><span class="lineno"> 2992</span>&#160;}</div>
+<div class="line"><a name="l02993"></a><span class="lineno"> 2993</span>&#160;</div>
 <div class="line"><a name="l02994"></a><span class="lineno"> 2994</span>&#160;</div>
-<div class="line"><a name="l02995"></a><span class="lineno"> 2995</span>&#160;</div>
-<div class="line"><a name="l02996"></a><span class="lineno"> 2996</span>&#160;<span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> &amp;</div>
-<div class="line"><a name="l02997"></a><span class="lineno"><a class="code" href="classFunctionType.html#a81ab0e0a223db6730d1e2214bff8f900"> 2997</a></span>&#160;<a class="code" href="classFunctionType.html#a81ab0e0a223db6730d1e2214bff8f900">FunctionType::GetParameterSourcePos</a>(<span class="keywordtype">int</span> i)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l02998"></a><span class="lineno"> 2998</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(i &lt; (<span class="keywordtype">int</span>)<a class="code" href="classFunctionType.html#a383622653928b328b0155c400f06cef9">paramPositions</a>.size());</div>
-<div class="line"><a name="l02999"></a><span class="lineno"> 2999</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classFunctionType.html#a383622653928b328b0155c400f06cef9">paramPositions</a>[i];</div>
-<div class="line"><a name="l03000"></a><span class="lineno"> 3000</span>&#160;}</div>
+<div class="line"><a name="l02995"></a><span class="lineno"> 2995</span>&#160;<a class="code" href="classExpr.html" title="Expr is the abstract base class that defines the interface that all expression types must implement...">Expr</a> *</div>
+<div class="line"><a name="l02996"></a><span class="lineno"><a class="code" href="classFunctionType.html#ace8cef8f3a21e7e40560c1a69325eb47"> 2996</a></span>&#160;<a class="code" href="classFunctionType.html#ace8cef8f3a21e7e40560c1a69325eb47">FunctionType::GetParameterDefault</a>(<span class="keywordtype">int</span> i)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l02997"></a><span class="lineno"> 2997</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(i &lt; (<span class="keywordtype">int</span>)<a class="code" href="classFunctionType.html#ab551b31754646d5b7478b118f00a2dcb">paramDefaults</a>.size());</div>
+<div class="line"><a name="l02998"></a><span class="lineno"> 2998</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classFunctionType.html#ab551b31754646d5b7478b118f00a2dcb">paramDefaults</a>[i];</div>
+<div class="line"><a name="l02999"></a><span class="lineno"> 2999</span>&#160;}</div>
+<div class="line"><a name="l03000"></a><span class="lineno"> 3000</span>&#160;</div>
 <div class="line"><a name="l03001"></a><span class="lineno"> 3001</span>&#160;</div>
-<div class="line"><a name="l03002"></a><span class="lineno"> 3002</span>&#160;</div>
-<div class="line"><a name="l03003"></a><span class="lineno"> 3003</span>&#160;<span class="keyword">const</span> std::string &amp;</div>
-<div class="line"><a name="l03004"></a><span class="lineno"><a class="code" href="classFunctionType.html#adf5600047546512f13dbb7dd8d917248"> 3004</a></span>&#160;<a class="code" href="classFunctionType.html#adf5600047546512f13dbb7dd8d917248">FunctionType::GetParameterName</a>(<span class="keywordtype">int</span> i)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l03005"></a><span class="lineno"> 3005</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(i &lt; (<span class="keywordtype">int</span>)<a class="code" href="classFunctionType.html#ad61867b25ee12933483512fb3d0f796a">paramNames</a>.size());</div>
-<div class="line"><a name="l03006"></a><span class="lineno"> 3006</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classFunctionType.html#ad61867b25ee12933483512fb3d0f796a">paramNames</a>[i];</div>
-<div class="line"><a name="l03007"></a><span class="lineno"> 3007</span>&#160;}</div>
+<div class="line"><a name="l03002"></a><span class="lineno"> 3002</span>&#160;<span class="keyword">const</span> <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> &amp;</div>
+<div class="line"><a name="l03003"></a><span class="lineno"><a class="code" href="classFunctionType.html#a81ab0e0a223db6730d1e2214bff8f900"> 3003</a></span>&#160;<a class="code" href="classFunctionType.html#a81ab0e0a223db6730d1e2214bff8f900">FunctionType::GetParameterSourcePos</a>(<span class="keywordtype">int</span> i)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l03004"></a><span class="lineno"> 3004</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(i &lt; (<span class="keywordtype">int</span>)<a class="code" href="classFunctionType.html#a383622653928b328b0155c400f06cef9">paramPositions</a>.size());</div>
+<div class="line"><a name="l03005"></a><span class="lineno"> 3005</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classFunctionType.html#a383622653928b328b0155c400f06cef9">paramPositions</a>[i];</div>
+<div class="line"><a name="l03006"></a><span class="lineno"> 3006</span>&#160;}</div>
+<div class="line"><a name="l03007"></a><span class="lineno"> 3007</span>&#160;</div>
 <div class="line"><a name="l03008"></a><span class="lineno"> 3008</span>&#160;</div>
-<div class="line"><a name="l03009"></a><span class="lineno"> 3009</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l03010"></a><span class="lineno"> 3010</span>&#160;<span class="comment">///////////////////////////////////////////////////////////////////////////</span></div>
-<div class="line"><a name="l03011"></a><span class="lineno"> 3011</span>&#160;<span class="comment"></span><span class="comment">// Type</span></div>
-<div class="line"><a name="l03012"></a><span class="lineno"> 3012</span>&#160;</div>
-<div class="line"><a name="l03013"></a><span class="lineno"> 3013</span>&#160;<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *</div>
-<div class="line"><a name="l03014"></a><span class="lineno"><a class="code" href="classType.html#a1ef4f8a5d67d1ff6010ab1bcaaea4e6f"> 3014</a></span>&#160;<a class="code" href="classType.html#a1ef4f8a5d67d1ff6010ab1bcaaea4e6f">Type::GetReferenceTarget</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l03015"></a><span class="lineno"> 3015</span>&#160;    <span class="comment">// only ReferenceType needs to override this method</span></div>
-<div class="line"><a name="l03016"></a><span class="lineno"> 3016</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
-<div class="line"><a name="l03017"></a><span class="lineno"> 3017</span>&#160;}</div>
+<div class="line"><a name="l03009"></a><span class="lineno"> 3009</span>&#160;<span class="keyword">const</span> std::string &amp;</div>
+<div class="line"><a name="l03010"></a><span class="lineno"><a class="code" href="classFunctionType.html#adf5600047546512f13dbb7dd8d917248"> 3010</a></span>&#160;<a class="code" href="classFunctionType.html#adf5600047546512f13dbb7dd8d917248">FunctionType::GetParameterName</a>(<span class="keywordtype">int</span> i)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l03011"></a><span class="lineno"> 3011</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(i &lt; (<span class="keywordtype">int</span>)<a class="code" href="classFunctionType.html#ad61867b25ee12933483512fb3d0f796a">paramNames</a>.size());</div>
+<div class="line"><a name="l03012"></a><span class="lineno"> 3012</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classFunctionType.html#ad61867b25ee12933483512fb3d0f796a">paramNames</a>[i];</div>
+<div class="line"><a name="l03013"></a><span class="lineno"> 3013</span>&#160;}</div>
+<div class="line"><a name="l03014"></a><span class="lineno"> 3014</span>&#160;</div>
+<div class="line"><a name="l03015"></a><span class="lineno"> 3015</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l03016"></a><span class="lineno"> 3016</span>&#160;<span class="comment">///////////////////////////////////////////////////////////////////////////</span></div>
+<div class="line"><a name="l03017"></a><span class="lineno"> 3017</span>&#160;<span class="comment"></span><span class="comment">// Type</span></div>
 <div class="line"><a name="l03018"></a><span class="lineno"> 3018</span>&#160;</div>
-<div class="line"><a name="l03019"></a><span class="lineno"> 3019</span>&#160;</div>
-<div class="line"><a name="l03020"></a><span class="lineno"> 3020</span>&#160;<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *</div>
-<div class="line"><a name="l03021"></a><span class="lineno"><a class="code" href="classType.html#a127bfce35f03cb94bd25fbe07efb941a"> 3021</a></span>&#160;<a class="code" href="classType.html#a127bfce35f03cb94bd25fbe07efb941a">Type::GetAsUnsignedType</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l03022"></a><span class="lineno"> 3022</span>&#160;    <span class="comment">// For many types, this doesn&#39;t make any sesne</span></div>
-<div class="line"><a name="l03023"></a><span class="lineno"> 3023</span>&#160;    <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l03024"></a><span class="lineno"> 3024</span>&#160;}</div>
+<div class="line"><a name="l03019"></a><span class="lineno"> 3019</span>&#160;<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *</div>
+<div class="line"><a name="l03020"></a><span class="lineno"><a class="code" href="classType.html#a1ef4f8a5d67d1ff6010ab1bcaaea4e6f"> 3020</a></span>&#160;<a class="code" href="classType.html#a1ef4f8a5d67d1ff6010ab1bcaaea4e6f">Type::GetReferenceTarget</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l03021"></a><span class="lineno"> 3021</span>&#160;    <span class="comment">// only ReferenceType needs to override this method</span></div>
+<div class="line"><a name="l03022"></a><span class="lineno"> 3022</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
+<div class="line"><a name="l03023"></a><span class="lineno"> 3023</span>&#160;}</div>
+<div class="line"><a name="l03024"></a><span class="lineno"> 3024</span>&#160;</div>
 <div class="line"><a name="l03025"></a><span class="lineno"> 3025</span>&#160;</div>
-<div class="line"><a name="l03026"></a><span class="lineno"> 3026</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l03027"></a><span class="lineno"> 3027</span>&#160;<span class="comment">/** Given an atomic or vector type, return a vector type of the given</span></div>
-<div class="line"><a name="l03028"></a><span class="lineno"> 3028</span>&#160;<span class="comment">    vecSize.  Issue an error if given a vector type that isn&#39;t already that</span></div>
-<div class="line"><a name="l03029"></a><span class="lineno"> 3029</span>&#160;<span class="comment">    size.</span></div>
-<div class="line"><a name="l03030"></a><span class="lineno"> 3030</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l03031"></a><span class="lineno"> 3031</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *</div>
-<div class="line"><a name="l03032"></a><span class="lineno"><a class="code" href="type_8cpp.html#ac8e867fccbfcc62156868428624b1c00"> 3032</a></span>&#160;<a class="code" href="type_8cpp.html#ac8e867fccbfcc62156868428624b1c00">lVectorConvert</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos, <span class="keyword">const</span> <span class="keywordtype">char</span> *reason, <span class="keywordtype">int</span> vecSize) {</div>
-<div class="line"><a name="l03033"></a><span class="lineno"> 3033</span>&#160;    <span class="keyword">const</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *vt = CastType&lt;VectorType&gt;(type);</div>
-<div class="line"><a name="l03034"></a><span class="lineno"> 3034</span>&#160;    <span class="keywordflow">if</span> (vt) {</div>
-<div class="line"><a name="l03035"></a><span class="lineno"> 3035</span>&#160;        <span class="keywordflow">if</span> (vt-&gt;<a class="code" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a>() != vecSize) {</div>
-<div class="line"><a name="l03036"></a><span class="lineno"> 3036</span>&#160;            <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Implicit conversion between from vector type &quot;</span></div>
-<div class="line"><a name="l03037"></a><span class="lineno"> 3037</span>&#160;                  <span class="stringliteral">&quot;\&quot;%s\&quot; to vector type of length %d for %s is not possible.&quot;</span>,</div>
-<div class="line"><a name="l03038"></a><span class="lineno"> 3038</span>&#160;                  type-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), vecSize, reason);</div>
-<div class="line"><a name="l03039"></a><span class="lineno"> 3039</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l03040"></a><span class="lineno"> 3040</span>&#160;        }</div>
-<div class="line"><a name="l03041"></a><span class="lineno"> 3041</span>&#160;        <span class="keywordflow">return</span> vt;</div>
-<div class="line"><a name="l03042"></a><span class="lineno"> 3042</span>&#160;    }</div>
-<div class="line"><a name="l03043"></a><span class="lineno"> 3043</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l03044"></a><span class="lineno"> 3044</span>&#160;        <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *at = CastType&lt;AtomicType&gt;(type);</div>
-<div class="line"><a name="l03045"></a><span class="lineno"> 3045</span>&#160;        <span class="keywordflow">if</span> (!at) {</div>
-<div class="line"><a name="l03046"></a><span class="lineno"> 3046</span>&#160;            <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Non-atomic type \&quot;%s\&quot; can&#39;t be converted to vector type &quot;</span></div>
-<div class="line"><a name="l03047"></a><span class="lineno"> 3047</span>&#160;                  <span class="stringliteral">&quot;for %s.&quot;</span>, type-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), reason);</div>
-<div class="line"><a name="l03048"></a><span class="lineno"> 3048</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l03049"></a><span class="lineno"> 3049</span>&#160;        }</div>
-<div class="line"><a name="l03050"></a><span class="lineno"> 3050</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a>(at, vecSize);</div>
-<div class="line"><a name="l03051"></a><span class="lineno"> 3051</span>&#160;    }</div>
-<div class="line"><a name="l03052"></a><span class="lineno"> 3052</span>&#160;}</div>
-<div class="line"><a name="l03053"></a><span class="lineno"> 3053</span>&#160;</div>
-<div class="line"><a name="l03054"></a><span class="lineno"> 3054</span>&#160;</div>
-<div class="line"><a name="l03055"></a><span class="lineno"> 3055</span>&#160;<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *</div>
-<div class="line"><a name="l03056"></a><span class="lineno"><a class="code" href="classType.html#a078b7dc77c288701d13abaa57434da91"> 3056</a></span>&#160;<a class="code" href="classType.html#a078b7dc77c288701d13abaa57434da91">Type::MoreGeneralType</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *t0, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *t1, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos, <span class="keyword">const</span> <span class="keywordtype">char</span> *reason,</div>
-<div class="line"><a name="l03057"></a><span class="lineno"> 3057</span>&#160;                      <span class="keywordtype">bool</span> forceVarying, <span class="keywordtype">int</span> vecSize) {</div>
-<div class="line"><a name="l03058"></a><span class="lineno"> 3058</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(reason != NULL);</div>
+<div class="line"><a name="l03026"></a><span class="lineno"> 3026</span>&#160;<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *</div>
+<div class="line"><a name="l03027"></a><span class="lineno"><a class="code" href="classType.html#a127bfce35f03cb94bd25fbe07efb941a"> 3027</a></span>&#160;<a class="code" href="classType.html#a127bfce35f03cb94bd25fbe07efb941a">Type::GetAsUnsignedType</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l03028"></a><span class="lineno"> 3028</span>&#160;    <span class="comment">// For many types, this doesn&#39;t make any sesne</span></div>
+<div class="line"><a name="l03029"></a><span class="lineno"> 3029</span>&#160;    <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l03030"></a><span class="lineno"> 3030</span>&#160;}</div>
+<div class="line"><a name="l03031"></a><span class="lineno"> 3031</span>&#160;</div>
+<div class="line"><a name="l03032"></a><span class="lineno"> 3032</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l03033"></a><span class="lineno"> 3033</span>&#160;<span class="comment">/** Given an atomic or vector type, return a vector type of the given</span></div>
+<div class="line"><a name="l03034"></a><span class="lineno"> 3034</span>&#160;<span class="comment">    vecSize.  Issue an error if given a vector type that isn&#39;t already that</span></div>
+<div class="line"><a name="l03035"></a><span class="lineno"> 3035</span>&#160;<span class="comment">    size.</span></div>
+<div class="line"><a name="l03036"></a><span class="lineno"> 3036</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l03037"></a><span class="lineno"> 3037</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *</div>
+<div class="line"><a name="l03038"></a><span class="lineno"><a class="code" href="type_8cpp.html#ac8e867fccbfcc62156868428624b1c00"> 3038</a></span>&#160;<a class="code" href="type_8cpp.html#ac8e867fccbfcc62156868428624b1c00">lVectorConvert</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos, <span class="keyword">const</span> <span class="keywordtype">char</span> *reason, <span class="keywordtype">int</span> vecSize) {</div>
+<div class="line"><a name="l03039"></a><span class="lineno"> 3039</span>&#160;    <span class="keyword">const</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *vt = CastType&lt;VectorType&gt;(type);</div>
+<div class="line"><a name="l03040"></a><span class="lineno"> 3040</span>&#160;    <span class="keywordflow">if</span> (vt) {</div>
+<div class="line"><a name="l03041"></a><span class="lineno"> 3041</span>&#160;        <span class="keywordflow">if</span> (vt-&gt;<a class="code" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a>() != vecSize) {</div>
+<div class="line"><a name="l03042"></a><span class="lineno"> 3042</span>&#160;            <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Implicit conversion between from vector type &quot;</span></div>
+<div class="line"><a name="l03043"></a><span class="lineno"> 3043</span>&#160;                  <span class="stringliteral">&quot;\&quot;%s\&quot; to vector type of length %d for %s is not possible.&quot;</span>,</div>
+<div class="line"><a name="l03044"></a><span class="lineno"> 3044</span>&#160;                  type-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), vecSize, reason);</div>
+<div class="line"><a name="l03045"></a><span class="lineno"> 3045</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l03046"></a><span class="lineno"> 3046</span>&#160;        }</div>
+<div class="line"><a name="l03047"></a><span class="lineno"> 3047</span>&#160;        <span class="keywordflow">return</span> vt;</div>
+<div class="line"><a name="l03048"></a><span class="lineno"> 3048</span>&#160;    }</div>
+<div class="line"><a name="l03049"></a><span class="lineno"> 3049</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l03050"></a><span class="lineno"> 3050</span>&#160;        <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *at = CastType&lt;AtomicType&gt;(type);</div>
+<div class="line"><a name="l03051"></a><span class="lineno"> 3051</span>&#160;        <span class="keywordflow">if</span> (!at) {</div>
+<div class="line"><a name="l03052"></a><span class="lineno"> 3052</span>&#160;            <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Non-atomic type \&quot;%s\&quot; can&#39;t be converted to vector type &quot;</span></div>
+<div class="line"><a name="l03053"></a><span class="lineno"> 3053</span>&#160;                  <span class="stringliteral">&quot;for %s.&quot;</span>, type-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), reason);</div>
+<div class="line"><a name="l03054"></a><span class="lineno"> 3054</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l03055"></a><span class="lineno"> 3055</span>&#160;        }</div>
+<div class="line"><a name="l03056"></a><span class="lineno"> 3056</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a>(at, vecSize);</div>
+<div class="line"><a name="l03057"></a><span class="lineno"> 3057</span>&#160;    }</div>
+<div class="line"><a name="l03058"></a><span class="lineno"> 3058</span>&#160;}</div>
 <div class="line"><a name="l03059"></a><span class="lineno"> 3059</span>&#160;</div>
-<div class="line"><a name="l03060"></a><span class="lineno"> 3060</span>&#160;    <span class="comment">// First, if one or both types are function types, convert them to</span></div>
-<div class="line"><a name="l03061"></a><span class="lineno"> 3061</span>&#160;    <span class="comment">// pointer to function types and then try again.</span></div>
-<div class="line"><a name="l03062"></a><span class="lineno"> 3062</span>&#160;    <span class="keywordflow">if</span> (CastType&lt;FunctionType&gt;(t0) || CastType&lt;FunctionType&gt;(t1)) {</div>
-<div class="line"><a name="l03063"></a><span class="lineno"> 3063</span>&#160;        <span class="keywordflow">if</span> (CastType&lt;FunctionType&gt;(t0))</div>
-<div class="line"><a name="l03064"></a><span class="lineno"> 3064</span>&#160;            t0 = <a class="code" href="classPointerType.html#a5df42ead4993575e09e1976fd286f631">PointerType::GetUniform</a>(t0);</div>
-<div class="line"><a name="l03065"></a><span class="lineno"> 3065</span>&#160;        <span class="keywordflow">if</span> (CastType&lt;FunctionType&gt;(t1))</div>
-<div class="line"><a name="l03066"></a><span class="lineno"> 3066</span>&#160;            t1 = <a class="code" href="classPointerType.html#a5df42ead4993575e09e1976fd286f631">PointerType::GetUniform</a>(t1);</div>
-<div class="line"><a name="l03067"></a><span class="lineno"> 3067</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classType.html#a078b7dc77c288701d13abaa57434da91">MoreGeneralType</a>(t0, t1, pos, reason, forceVarying, vecSize);</div>
-<div class="line"><a name="l03068"></a><span class="lineno"> 3068</span>&#160;    }</div>
-<div class="line"><a name="l03069"></a><span class="lineno"> 3069</span>&#160;</div>
-<div class="line"><a name="l03070"></a><span class="lineno"> 3070</span>&#160;    <span class="comment">// First, if we need to go varying, promote both of the types to be</span></div>
-<div class="line"><a name="l03071"></a><span class="lineno"> 3071</span>&#160;    <span class="comment">// varying.</span></div>
-<div class="line"><a name="l03072"></a><span class="lineno"> 3072</span>&#160;    <span class="keywordflow">if</span> (t0-&gt;<a class="code" href="classType.html#affa605ca75a62c1ac079cfefa170cb3e">IsVaryingType</a>() || t1-&gt;<a class="code" href="classType.html#affa605ca75a62c1ac079cfefa170cb3e">IsVaryingType</a>() || forceVarying) {</div>
-<div class="line"><a name="l03073"></a><span class="lineno"> 3073</span>&#160;        t0 = t0-&gt;<a class="code" href="classType.html#aedfa3c719db7ab073c5e1f75b4041e55">GetAsVaryingType</a>();</div>
-<div class="line"><a name="l03074"></a><span class="lineno"> 3074</span>&#160;        t1 = t1-&gt;<a class="code" href="classType.html#aedfa3c719db7ab073c5e1f75b4041e55">GetAsVaryingType</a>();</div>
-<div class="line"><a name="l03075"></a><span class="lineno"> 3075</span>&#160;    }</div>
-<div class="line"><a name="l03076"></a><span class="lineno"> 3076</span>&#160;</div>
-<div class="line"><a name="l03077"></a><span class="lineno"> 3077</span>&#160;    <span class="comment">// And similarly, promote them both to vectors if the caller requested</span></div>
-<div class="line"><a name="l03078"></a><span class="lineno"> 3078</span>&#160;    <span class="comment">// a particular vector size</span></div>
-<div class="line"><a name="l03079"></a><span class="lineno"> 3079</span>&#160;    <span class="keywordflow">if</span> (vecSize &gt; 0) {</div>
-<div class="line"><a name="l03080"></a><span class="lineno"> 3080</span>&#160;        t0 = <a class="code" href="type_8cpp.html#ac8e867fccbfcc62156868428624b1c00">lVectorConvert</a>(t0, pos, reason, vecSize);</div>
-<div class="line"><a name="l03081"></a><span class="lineno"> 3081</span>&#160;        t1 = <a class="code" href="type_8cpp.html#ac8e867fccbfcc62156868428624b1c00">lVectorConvert</a>(t1, pos, reason, vecSize);</div>
-<div class="line"><a name="l03082"></a><span class="lineno"> 3082</span>&#160;        <span class="keywordflow">if</span> (!t0 || !t1)</div>
-<div class="line"><a name="l03083"></a><span class="lineno"> 3083</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l03084"></a><span class="lineno"> 3084</span>&#160;    }</div>
-<div class="line"><a name="l03085"></a><span class="lineno"> 3085</span>&#160;</div>
-<div class="line"><a name="l03086"></a><span class="lineno"> 3086</span>&#160;    <span class="comment">// Are they both the same type?  If so, we&#39;re done, QED.</span></div>
-<div class="line"><a name="l03087"></a><span class="lineno"> 3087</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classType.html#a64dc632c4a2a352b75b16c7ece65ee5f">Type::Equal</a>(t0, t1))</div>
-<div class="line"><a name="l03088"></a><span class="lineno"> 3088</span>&#160;        <span class="keywordflow">return</span> t0;</div>
-<div class="line"><a name="l03089"></a><span class="lineno"> 3089</span>&#160;</div>
-<div class="line"><a name="l03090"></a><span class="lineno"> 3090</span>&#160;    <span class="comment">// If they&#39;re function types, it&#39;s hopeless if they didn&#39;t match in the</span></div>
-<div class="line"><a name="l03091"></a><span class="lineno"> 3091</span>&#160;    <span class="comment">// Type::Equal() call above.  Fail here so that we don&#39;t get into</span></div>
-<div class="line"><a name="l03092"></a><span class="lineno"> 3092</span>&#160;    <span class="comment">// trouble calling GetAsConstType()...</span></div>
-<div class="line"><a name="l03093"></a><span class="lineno"> 3093</span>&#160;    <span class="keywordflow">if</span> (CastType&lt;FunctionType&gt;(t0) || CastType&lt;FunctionType&gt;(t1)) {</div>
-<div class="line"><a name="l03094"></a><span class="lineno"> 3094</span>&#160;        <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Incompatible function types \&quot;%s\&quot; and \&quot;%s\&quot; in %s.&quot;</span>,</div>
-<div class="line"><a name="l03095"></a><span class="lineno"> 3095</span>&#160;              t0-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), t1-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), reason);</div>
-<div class="line"><a name="l03096"></a><span class="lineno"> 3096</span>&#160;        <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l03097"></a><span class="lineno"> 3097</span>&#160;    }</div>
-<div class="line"><a name="l03098"></a><span class="lineno"> 3098</span>&#160;</div>
-<div class="line"><a name="l03099"></a><span class="lineno"> 3099</span>&#160;    <span class="comment">// Not the same types, but only a const/non-const difference?  Return</span></div>
-<div class="line"><a name="l03100"></a><span class="lineno"> 3100</span>&#160;    <span class="comment">// the non-const type as the more general one.</span></div>
-<div class="line"><a name="l03101"></a><span class="lineno"> 3101</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classType.html#a5508f9cbb13418d10343e5fe5cd98d49">Type::EqualIgnoringConst</a>(t0, t1))</div>
-<div class="line"><a name="l03102"></a><span class="lineno"> 3102</span>&#160;        <span class="keywordflow">return</span> t0-&gt;<a class="code" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">GetAsNonConstType</a>();</div>
-<div class="line"><a name="l03103"></a><span class="lineno"> 3103</span>&#160;</div>
-<div class="line"><a name="l03104"></a><span class="lineno"> 3104</span>&#160;    <span class="keyword">const</span> <a class="code" href="classPointerType.html" title="Type implementation for pointers to other types.">PointerType</a> *pt0 = CastType&lt;PointerType&gt;(t0);</div>
-<div class="line"><a name="l03105"></a><span class="lineno"> 3105</span>&#160;    <span class="keyword">const</span> <a class="code" href="classPointerType.html" title="Type implementation for pointers to other types.">PointerType</a> *pt1 = CastType&lt;PointerType&gt;(t1);</div>
-<div class="line"><a name="l03106"></a><span class="lineno"> 3106</span>&#160;    <span class="keywordflow">if</span> (pt0 != NULL &amp;&amp; pt1 != NULL) {</div>
-<div class="line"><a name="l03107"></a><span class="lineno"> 3107</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classPointerType.html#aee095e680938be20bcbf9f579ad6ae6f">PointerType::IsVoidPointer</a>(pt0))</div>
-<div class="line"><a name="l03108"></a><span class="lineno"> 3108</span>&#160;            <span class="keywordflow">return</span> pt1;</div>
-<div class="line"><a name="l03109"></a><span class="lineno"> 3109</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="classPointerType.html#aee095e680938be20bcbf9f579ad6ae6f">PointerType::IsVoidPointer</a>(pt1))</div>
-<div class="line"><a name="l03110"></a><span class="lineno"> 3110</span>&#160;            <span class="keywordflow">return</span> pt0;</div>
-<div class="line"><a name="l03111"></a><span class="lineno"> 3111</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l03112"></a><span class="lineno"> 3112</span>&#160;            <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Conversion between incompatible pointer types \&quot;%s\&quot; &quot;</span></div>
-<div class="line"><a name="l03113"></a><span class="lineno"> 3113</span>&#160;                  <span class="stringliteral">&quot;and \&quot;%s\&quot; isn&#39;t possible.&quot;</span>, t0-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(),</div>
-<div class="line"><a name="l03114"></a><span class="lineno"> 3114</span>&#160;                  t1-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str());</div>
-<div class="line"><a name="l03115"></a><span class="lineno"> 3115</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l03116"></a><span class="lineno"> 3116</span>&#160;        }</div>
-<div class="line"><a name="l03117"></a><span class="lineno"> 3117</span>&#160;    }</div>
-<div class="line"><a name="l03118"></a><span class="lineno"> 3118</span>&#160;</div>
-<div class="line"><a name="l03119"></a><span class="lineno"> 3119</span>&#160;    <span class="keyword">const</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *vt0 = CastType&lt;VectorType&gt;(t0);</div>
-<div class="line"><a name="l03120"></a><span class="lineno"> 3120</span>&#160;    <span class="keyword">const</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *vt1 = CastType&lt;VectorType&gt;(t1);</div>
-<div class="line"><a name="l03121"></a><span class="lineno"> 3121</span>&#160;    <span class="keywordflow">if</span> (vt0 &amp;&amp; vt1) {</div>
-<div class="line"><a name="l03122"></a><span class="lineno"> 3122</span>&#160;        <span class="comment">// both are vectors; convert their base types and make a new vector</span></div>
-<div class="line"><a name="l03123"></a><span class="lineno"> 3123</span>&#160;        <span class="comment">// type, as long as their lengths match</span></div>
-<div class="line"><a name="l03124"></a><span class="lineno"> 3124</span>&#160;        <span class="keywordflow">if</span> (vt0-&gt;<a class="code" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a>() != vt1-&gt;GetElementCount()) {</div>
-<div class="line"><a name="l03125"></a><span class="lineno"> 3125</span>&#160;            <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Implicit conversion between differently sized vector types &quot;</span></div>
-<div class="line"><a name="l03126"></a><span class="lineno"> 3126</span>&#160;                  <span class="stringliteral">&quot;(%s, %s) for %s is not possible.&quot;</span>, t0-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(),</div>
-<div class="line"><a name="l03127"></a><span class="lineno"> 3127</span>&#160;                  t1-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), reason);</div>
-<div class="line"><a name="l03128"></a><span class="lineno"> 3128</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l03129"></a><span class="lineno"> 3129</span>&#160;        }</div>
-<div class="line"><a name="l03130"></a><span class="lineno"> 3130</span>&#160;        <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *t = <a class="code" href="classType.html#a078b7dc77c288701d13abaa57434da91">MoreGeneralType</a>(vt0-&gt;<a class="code" href="classVectorType.html#a87558faf9b83f232f1b1bd8dda7cba9a">GetElementType</a>(), vt1-&gt;GetElementType(),</div>
-<div class="line"><a name="l03131"></a><span class="lineno"> 3131</span>&#160;                                        pos, reason, forceVarying);</div>
-<div class="line"><a name="l03132"></a><span class="lineno"> 3132</span>&#160;        <span class="keywordflow">if</span> (!t)</div>
-<div class="line"><a name="l03133"></a><span class="lineno"> 3133</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l03134"></a><span class="lineno"> 3134</span>&#160;</div>
-<div class="line"><a name="l03135"></a><span class="lineno"> 3135</span>&#160;        <span class="comment">// The &#39;more general&#39; version of the two vector element types must</span></div>
-<div class="line"><a name="l03136"></a><span class="lineno"> 3136</span>&#160;        <span class="comment">// be an AtomicType (that&#39;s all that vectors can hold...)</span></div>
-<div class="line"><a name="l03137"></a><span class="lineno"> 3137</span>&#160;        <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *at = CastType&lt;AtomicType&gt;(t);</div>
-<div class="line"><a name="l03138"></a><span class="lineno"> 3138</span>&#160;        <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(at != NULL);</div>
-<div class="line"><a name="l03139"></a><span class="lineno"> 3139</span>&#160;</div>
-<div class="line"><a name="l03140"></a><span class="lineno"> 3140</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a>(at, vt0-&gt;<a class="code" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a>());</div>
-<div class="line"><a name="l03141"></a><span class="lineno"> 3141</span>&#160;    }</div>
-<div class="line"><a name="l03142"></a><span class="lineno"> 3142</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (vt0) {</div>
-<div class="line"><a name="l03143"></a><span class="lineno"> 3143</span>&#160;        <span class="comment">// If one type is a vector type but the other isn&#39;t, see if we can</span></div>
-<div class="line"><a name="l03144"></a><span class="lineno"> 3144</span>&#160;        <span class="comment">// promote the other one to a vector type.  This will fail and</span></div>
-<div class="line"><a name="l03145"></a><span class="lineno"> 3145</span>&#160;        <span class="comment">// return NULL if t1 is e.g. an array type and it&#39;s illegal to have</span></div>
-<div class="line"><a name="l03146"></a><span class="lineno"> 3146</span>&#160;        <span class="comment">// a vector of it..</span></div>
-<div class="line"><a name="l03147"></a><span class="lineno"> 3147</span>&#160;        <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *t = <a class="code" href="classType.html#a078b7dc77c288701d13abaa57434da91">MoreGeneralType</a>(vt0-&gt;<a class="code" href="classVectorType.html#a87558faf9b83f232f1b1bd8dda7cba9a">GetElementType</a>(), t1, pos,</div>
-<div class="line"><a name="l03148"></a><span class="lineno"> 3148</span>&#160;                                        reason, forceVarying);</div>
-<div class="line"><a name="l03149"></a><span class="lineno"> 3149</span>&#160;        <span class="keywordflow">if</span> (!t)</div>
-<div class="line"><a name="l03150"></a><span class="lineno"> 3150</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l03151"></a><span class="lineno"> 3151</span>&#160;</div>
-<div class="line"><a name="l03152"></a><span class="lineno"> 3152</span>&#160;        <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *at = CastType&lt;AtomicType&gt;(t);</div>
-<div class="line"><a name="l03153"></a><span class="lineno"> 3153</span>&#160;        <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(at != NULL);</div>
-<div class="line"><a name="l03154"></a><span class="lineno"> 3154</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a>(at, vt0-&gt;<a class="code" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a>());</div>
-<div class="line"><a name="l03155"></a><span class="lineno"> 3155</span>&#160;    }</div>
-<div class="line"><a name="l03156"></a><span class="lineno"> 3156</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (vt1) {</div>
-<div class="line"><a name="l03157"></a><span class="lineno"> 3157</span>&#160;        <span class="comment">// As in the above case, see if we can promote t0 to make a vector</span></div>
-<div class="line"><a name="l03158"></a><span class="lineno"> 3158</span>&#160;        <span class="comment">// that matches vt1.</span></div>
-<div class="line"><a name="l03159"></a><span class="lineno"> 3159</span>&#160;        <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *t = <a class="code" href="classType.html#a078b7dc77c288701d13abaa57434da91">MoreGeneralType</a>(t0, vt1-&gt;GetElementType(), pos,</div>
-<div class="line"><a name="l03160"></a><span class="lineno"> 3160</span>&#160;                                        reason, forceVarying);</div>
-<div class="line"><a name="l03161"></a><span class="lineno"> 3161</span>&#160;        <span class="keywordflow">if</span> (!t)</div>
-<div class="line"><a name="l03162"></a><span class="lineno"> 3162</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l03163"></a><span class="lineno"> 3163</span>&#160;</div>
-<div class="line"><a name="l03164"></a><span class="lineno"> 3164</span>&#160;        <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *at = CastType&lt;AtomicType&gt;(t);</div>
-<div class="line"><a name="l03165"></a><span class="lineno"> 3165</span>&#160;        <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(at != NULL);</div>
-<div class="line"><a name="l03166"></a><span class="lineno"> 3166</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a>(at, vt1-&gt;GetElementCount());</div>
-<div class="line"><a name="l03167"></a><span class="lineno"> 3167</span>&#160;    }</div>
-<div class="line"><a name="l03168"></a><span class="lineno"> 3168</span>&#160;</div>
-<div class="line"><a name="l03169"></a><span class="lineno"> 3169</span>&#160;    <span class="comment">// TODO: what do we need to do about references here, if anything??</span></div>
-<div class="line"><a name="l03170"></a><span class="lineno"> 3170</span>&#160;</div>
-<div class="line"><a name="l03171"></a><span class="lineno"> 3171</span>&#160;    <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *at0 = CastType&lt;AtomicType&gt;(t0-&gt;<a class="code" href="classType.html#a1ef4f8a5d67d1ff6010ab1bcaaea4e6f">GetReferenceTarget</a>());</div>
-<div class="line"><a name="l03172"></a><span class="lineno"> 3172</span>&#160;    <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *at1 = CastType&lt;AtomicType&gt;(t1-&gt;<a class="code" href="classType.html#a1ef4f8a5d67d1ff6010ab1bcaaea4e6f">GetReferenceTarget</a>());</div>
-<div class="line"><a name="l03173"></a><span class="lineno"> 3173</span>&#160;</div>
-<div class="line"><a name="l03174"></a><span class="lineno"> 3174</span>&#160;    <span class="keyword">const</span> <a class="code" href="classEnumType.html" title="Type implementation for enumerated types.">EnumType</a> *et0 = CastType&lt;EnumType&gt;(t0-&gt;<a class="code" href="classType.html#a1ef4f8a5d67d1ff6010ab1bcaaea4e6f">GetReferenceTarget</a>());</div>
-<div class="line"><a name="l03175"></a><span class="lineno"> 3175</span>&#160;    <span class="keyword">const</span> <a class="code" href="classEnumType.html" title="Type implementation for enumerated types.">EnumType</a> *et1 = CastType&lt;EnumType&gt;(t1-&gt;<a class="code" href="classType.html#a1ef4f8a5d67d1ff6010ab1bcaaea4e6f">GetReferenceTarget</a>());</div>
-<div class="line"><a name="l03176"></a><span class="lineno"> 3176</span>&#160;    <span class="keywordflow">if</span> (et0 != NULL &amp;&amp; et1 != NULL) {</div>
-<div class="line"><a name="l03177"></a><span class="lineno"> 3177</span>&#160;        <span class="comment">// Two different enum types -&gt; make them uint32s...</span></div>
-<div class="line"><a name="l03178"></a><span class="lineno"> 3178</span>&#160;        <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(et0-&gt;IsVaryingType() == et1-&gt;IsVaryingType());</div>
-<div class="line"><a name="l03179"></a><span class="lineno"> 3179</span>&#160;        <span class="keywordflow">return</span> et0-&gt;IsVaryingType() ? AtomicType::VaryingUInt32 :</div>
-<div class="line"><a name="l03180"></a><span class="lineno"> 3180</span>&#160;                AtomicType::UniformUInt32;</div>
-<div class="line"><a name="l03181"></a><span class="lineno"> 3181</span>&#160;    }</div>
-<div class="line"><a name="l03182"></a><span class="lineno"> 3182</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (et0 != NULL) {</div>
-<div class="line"><a name="l03183"></a><span class="lineno"> 3183</span>&#160;        <span class="keywordflow">if</span> (at1 != NULL)</div>
-<div class="line"><a name="l03184"></a><span class="lineno"> 3184</span>&#160;            <span class="comment">// Enum type and atomic type -&gt; convert the enum to the atomic type</span></div>
-<div class="line"><a name="l03185"></a><span class="lineno"> 3185</span>&#160;            <span class="comment">// TODO: should we return uint32 here, unless the atomic type is</span></div>
-<div class="line"><a name="l03186"></a><span class="lineno"> 3186</span>&#160;            <span class="comment">// a 64-bit atomic type, in which case we return that?</span></div>
-<div class="line"><a name="l03187"></a><span class="lineno"> 3187</span>&#160;            <span class="keywordflow">return</span> at1;</div>
-<div class="line"><a name="l03188"></a><span class="lineno"> 3188</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l03189"></a><span class="lineno"> 3189</span>&#160;            <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Implicit conversion from enum type \&quot;%s\&quot; to &quot;</span></div>
-<div class="line"><a name="l03190"></a><span class="lineno"> 3190</span>&#160;                  <span class="stringliteral">&quot;non-atomic type \&quot;%s\&quot; for %s not possible.&quot;</span>,</div>
-<div class="line"><a name="l03191"></a><span class="lineno"> 3191</span>&#160;                  t0-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), t1-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), reason);</div>
-<div class="line"><a name="l03192"></a><span class="lineno"> 3192</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l03193"></a><span class="lineno"> 3193</span>&#160;        }</div>
-<div class="line"><a name="l03194"></a><span class="lineno"> 3194</span>&#160;    }</div>
-<div class="line"><a name="l03195"></a><span class="lineno"> 3195</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (et1 != NULL) {</div>
-<div class="line"><a name="l03196"></a><span class="lineno"> 3196</span>&#160;        <span class="keywordflow">if</span> (at0 != NULL)</div>
-<div class="line"><a name="l03197"></a><span class="lineno"> 3197</span>&#160;            <span class="comment">// Enum type and atomic type; see TODO above here as well...</span></div>
-<div class="line"><a name="l03198"></a><span class="lineno"> 3198</span>&#160;            <span class="keywordflow">return</span> at0;</div>
-<div class="line"><a name="l03199"></a><span class="lineno"> 3199</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l03200"></a><span class="lineno"> 3200</span>&#160;            <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Implicit conversion from enum type \&quot;%s\&quot; to &quot;</span></div>
-<div class="line"><a name="l03201"></a><span class="lineno"> 3201</span>&#160;                  <span class="stringliteral">&quot;non-atomic type \&quot;%s\&quot; for %s not possible.&quot;</span>,</div>
-<div class="line"><a name="l03202"></a><span class="lineno"> 3202</span>&#160;                  t1-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), t0-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), reason);</div>
-<div class="line"><a name="l03203"></a><span class="lineno"> 3203</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l03204"></a><span class="lineno"> 3204</span>&#160;        }</div>
-<div class="line"><a name="l03205"></a><span class="lineno"> 3205</span>&#160;    }</div>
-<div class="line"><a name="l03206"></a><span class="lineno"> 3206</span>&#160;</div>
-<div class="line"><a name="l03207"></a><span class="lineno"> 3207</span>&#160;    <span class="comment">// Now all we can do is promote atomic types...</span></div>
-<div class="line"><a name="l03208"></a><span class="lineno"> 3208</span>&#160;    <span class="keywordflow">if</span> (at0 == NULL || at1 == NULL) {</div>
-<div class="line"><a name="l03209"></a><span class="lineno"> 3209</span>&#160;        <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(reason != NULL);</div>
-<div class="line"><a name="l03210"></a><span class="lineno"> 3210</span>&#160;        <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Implicit conversion from type \&quot;%s\&quot; to \&quot;%s\&quot; for %s not possible.&quot;</span>,</div>
-<div class="line"><a name="l03211"></a><span class="lineno"> 3211</span>&#160;              t0-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), t1-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), reason);</div>
-<div class="line"><a name="l03212"></a><span class="lineno"> 3212</span>&#160;        <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l03213"></a><span class="lineno"> 3213</span>&#160;    }</div>
-<div class="line"><a name="l03214"></a><span class="lineno"> 3214</span>&#160;</div>
-<div class="line"><a name="l03215"></a><span class="lineno"> 3215</span>&#160;    <span class="comment">// Finally, to determine which of the two atomic types is more general,</span></div>
-<div class="line"><a name="l03216"></a><span class="lineno"> 3216</span>&#160;    <span class="comment">// use the ordering of entries in the AtomicType::BasicType enumerator.</span></div>
-<div class="line"><a name="l03217"></a><span class="lineno"> 3217</span>&#160;    <span class="keywordflow">return</span> (<span class="keywordtype">int</span>(at0-&gt;<a class="code" href="classAtomicType.html#a513637c7273629ecc43425adc948ec5b">basicType</a>) &gt;= int(at1-&gt;basicType)) ? at0 : at1;</div>
-<div class="line"><a name="l03218"></a><span class="lineno"> 3218</span>&#160;}</div>
-<div class="line"><a name="l03219"></a><span class="lineno"> 3219</span>&#160;</div>
+<div class="line"><a name="l03060"></a><span class="lineno"> 3060</span>&#160;</div>
+<div class="line"><a name="l03061"></a><span class="lineno"> 3061</span>&#160;<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *</div>
+<div class="line"><a name="l03062"></a><span class="lineno"><a class="code" href="classType.html#a078b7dc77c288701d13abaa57434da91"> 3062</a></span>&#160;<a class="code" href="classType.html#a078b7dc77c288701d13abaa57434da91">Type::MoreGeneralType</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *t0, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *t1, <a class="code" href="structSourcePos.html" title="Representation of a range of positions in a source file.">SourcePos</a> pos, <span class="keyword">const</span> <span class="keywordtype">char</span> *reason,</div>
+<div class="line"><a name="l03063"></a><span class="lineno"> 3063</span>&#160;                      <span class="keywordtype">bool</span> forceVarying, <span class="keywordtype">int</span> vecSize) {</div>
+<div class="line"><a name="l03064"></a><span class="lineno"> 3064</span>&#160;    <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(reason != NULL);</div>
+<div class="line"><a name="l03065"></a><span class="lineno"> 3065</span>&#160;</div>
+<div class="line"><a name="l03066"></a><span class="lineno"> 3066</span>&#160;    <span class="comment">// First, if one or both types are function types, convert them to</span></div>
+<div class="line"><a name="l03067"></a><span class="lineno"> 3067</span>&#160;    <span class="comment">// pointer to function types and then try again.</span></div>
+<div class="line"><a name="l03068"></a><span class="lineno"> 3068</span>&#160;    <span class="keywordflow">if</span> (CastType&lt;FunctionType&gt;(t0) || CastType&lt;FunctionType&gt;(t1)) {</div>
+<div class="line"><a name="l03069"></a><span class="lineno"> 3069</span>&#160;        <span class="keywordflow">if</span> (CastType&lt;FunctionType&gt;(t0))</div>
+<div class="line"><a name="l03070"></a><span class="lineno"> 3070</span>&#160;            t0 = <a class="code" href="classPointerType.html#a5df42ead4993575e09e1976fd286f631">PointerType::GetUniform</a>(t0);</div>
+<div class="line"><a name="l03071"></a><span class="lineno"> 3071</span>&#160;        <span class="keywordflow">if</span> (CastType&lt;FunctionType&gt;(t1))</div>
+<div class="line"><a name="l03072"></a><span class="lineno"> 3072</span>&#160;            t1 = <a class="code" href="classPointerType.html#a5df42ead4993575e09e1976fd286f631">PointerType::GetUniform</a>(t1);</div>
+<div class="line"><a name="l03073"></a><span class="lineno"> 3073</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classType.html#a078b7dc77c288701d13abaa57434da91">MoreGeneralType</a>(t0, t1, pos, reason, forceVarying, vecSize);</div>
+<div class="line"><a name="l03074"></a><span class="lineno"> 3074</span>&#160;    }</div>
+<div class="line"><a name="l03075"></a><span class="lineno"> 3075</span>&#160;</div>
+<div class="line"><a name="l03076"></a><span class="lineno"> 3076</span>&#160;    <span class="comment">// First, if we need to go varying, promote both of the types to be</span></div>
+<div class="line"><a name="l03077"></a><span class="lineno"> 3077</span>&#160;    <span class="comment">// varying.</span></div>
+<div class="line"><a name="l03078"></a><span class="lineno"> 3078</span>&#160;    <span class="keywordflow">if</span> (t0-&gt;<a class="code" href="classType.html#affa605ca75a62c1ac079cfefa170cb3e">IsVaryingType</a>() || t1-&gt;<a class="code" href="classType.html#affa605ca75a62c1ac079cfefa170cb3e">IsVaryingType</a>() || forceVarying) {</div>
+<div class="line"><a name="l03079"></a><span class="lineno"> 3079</span>&#160;        t0 = t0-&gt;<a class="code" href="classType.html#aedfa3c719db7ab073c5e1f75b4041e55">GetAsVaryingType</a>();</div>
+<div class="line"><a name="l03080"></a><span class="lineno"> 3080</span>&#160;        t1 = t1-&gt;<a class="code" href="classType.html#aedfa3c719db7ab073c5e1f75b4041e55">GetAsVaryingType</a>();</div>
+<div class="line"><a name="l03081"></a><span class="lineno"> 3081</span>&#160;    }</div>
+<div class="line"><a name="l03082"></a><span class="lineno"> 3082</span>&#160;</div>
+<div class="line"><a name="l03083"></a><span class="lineno"> 3083</span>&#160;    <span class="comment">// And similarly, promote them both to vectors if the caller requested</span></div>
+<div class="line"><a name="l03084"></a><span class="lineno"> 3084</span>&#160;    <span class="comment">// a particular vector size</span></div>
+<div class="line"><a name="l03085"></a><span class="lineno"> 3085</span>&#160;    <span class="keywordflow">if</span> (vecSize &gt; 0) {</div>
+<div class="line"><a name="l03086"></a><span class="lineno"> 3086</span>&#160;        t0 = <a class="code" href="type_8cpp.html#ac8e867fccbfcc62156868428624b1c00">lVectorConvert</a>(t0, pos, reason, vecSize);</div>
+<div class="line"><a name="l03087"></a><span class="lineno"> 3087</span>&#160;        t1 = <a class="code" href="type_8cpp.html#ac8e867fccbfcc62156868428624b1c00">lVectorConvert</a>(t1, pos, reason, vecSize);</div>
+<div class="line"><a name="l03088"></a><span class="lineno"> 3088</span>&#160;        <span class="keywordflow">if</span> (!t0 || !t1)</div>
+<div class="line"><a name="l03089"></a><span class="lineno"> 3089</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l03090"></a><span class="lineno"> 3090</span>&#160;    }</div>
+<div class="line"><a name="l03091"></a><span class="lineno"> 3091</span>&#160;</div>
+<div class="line"><a name="l03092"></a><span class="lineno"> 3092</span>&#160;    <span class="comment">// Are they both the same type?  If so, we&#39;re done, QED.</span></div>
+<div class="line"><a name="l03093"></a><span class="lineno"> 3093</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classType.html#a64dc632c4a2a352b75b16c7ece65ee5f">Type::Equal</a>(t0, t1))</div>
+<div class="line"><a name="l03094"></a><span class="lineno"> 3094</span>&#160;        <span class="keywordflow">return</span> t0;</div>
+<div class="line"><a name="l03095"></a><span class="lineno"> 3095</span>&#160;</div>
+<div class="line"><a name="l03096"></a><span class="lineno"> 3096</span>&#160;    <span class="comment">// If they&#39;re function types, it&#39;s hopeless if they didn&#39;t match in the</span></div>
+<div class="line"><a name="l03097"></a><span class="lineno"> 3097</span>&#160;    <span class="comment">// Type::Equal() call above.  Fail here so that we don&#39;t get into</span></div>
+<div class="line"><a name="l03098"></a><span class="lineno"> 3098</span>&#160;    <span class="comment">// trouble calling GetAsConstType()...</span></div>
+<div class="line"><a name="l03099"></a><span class="lineno"> 3099</span>&#160;    <span class="keywordflow">if</span> (CastType&lt;FunctionType&gt;(t0) || CastType&lt;FunctionType&gt;(t1)) {</div>
+<div class="line"><a name="l03100"></a><span class="lineno"> 3100</span>&#160;        <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Incompatible function types \&quot;%s\&quot; and \&quot;%s\&quot; in %s.&quot;</span>,</div>
+<div class="line"><a name="l03101"></a><span class="lineno"> 3101</span>&#160;              t0-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), t1-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), reason);</div>
+<div class="line"><a name="l03102"></a><span class="lineno"> 3102</span>&#160;        <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l03103"></a><span class="lineno"> 3103</span>&#160;    }</div>
+<div class="line"><a name="l03104"></a><span class="lineno"> 3104</span>&#160;</div>
+<div class="line"><a name="l03105"></a><span class="lineno"> 3105</span>&#160;    <span class="comment">// Not the same types, but only a const/non-const difference?  Return</span></div>
+<div class="line"><a name="l03106"></a><span class="lineno"> 3106</span>&#160;    <span class="comment">// the non-const type as the more general one.</span></div>
+<div class="line"><a name="l03107"></a><span class="lineno"> 3107</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classType.html#a5508f9cbb13418d10343e5fe5cd98d49">Type::EqualIgnoringConst</a>(t0, t1))</div>
+<div class="line"><a name="l03108"></a><span class="lineno"> 3108</span>&#160;        <span class="keywordflow">return</span> t0-&gt;<a class="code" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">GetAsNonConstType</a>();</div>
+<div class="line"><a name="l03109"></a><span class="lineno"> 3109</span>&#160;</div>
+<div class="line"><a name="l03110"></a><span class="lineno"> 3110</span>&#160;    <span class="keyword">const</span> <a class="code" href="classPointerType.html" title="Type implementation for pointers to other types.">PointerType</a> *pt0 = CastType&lt;PointerType&gt;(t0);</div>
+<div class="line"><a name="l03111"></a><span class="lineno"> 3111</span>&#160;    <span class="keyword">const</span> <a class="code" href="classPointerType.html" title="Type implementation for pointers to other types.">PointerType</a> *pt1 = CastType&lt;PointerType&gt;(t1);</div>
+<div class="line"><a name="l03112"></a><span class="lineno"> 3112</span>&#160;    <span class="keywordflow">if</span> (pt0 != NULL &amp;&amp; pt1 != NULL) {</div>
+<div class="line"><a name="l03113"></a><span class="lineno"> 3113</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classPointerType.html#aee095e680938be20bcbf9f579ad6ae6f">PointerType::IsVoidPointer</a>(pt0))</div>
+<div class="line"><a name="l03114"></a><span class="lineno"> 3114</span>&#160;            <span class="keywordflow">return</span> pt1;</div>
+<div class="line"><a name="l03115"></a><span class="lineno"> 3115</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="classPointerType.html#aee095e680938be20bcbf9f579ad6ae6f">PointerType::IsVoidPointer</a>(pt1))</div>
+<div class="line"><a name="l03116"></a><span class="lineno"> 3116</span>&#160;            <span class="keywordflow">return</span> pt0;</div>
+<div class="line"><a name="l03117"></a><span class="lineno"> 3117</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l03118"></a><span class="lineno"> 3118</span>&#160;            <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Conversion between incompatible pointer types \&quot;%s\&quot; &quot;</span></div>
+<div class="line"><a name="l03119"></a><span class="lineno"> 3119</span>&#160;                  <span class="stringliteral">&quot;and \&quot;%s\&quot; isn&#39;t possible.&quot;</span>, t0-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(),</div>
+<div class="line"><a name="l03120"></a><span class="lineno"> 3120</span>&#160;                  t1-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str());</div>
+<div class="line"><a name="l03121"></a><span class="lineno"> 3121</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l03122"></a><span class="lineno"> 3122</span>&#160;        }</div>
+<div class="line"><a name="l03123"></a><span class="lineno"> 3123</span>&#160;    }</div>
+<div class="line"><a name="l03124"></a><span class="lineno"> 3124</span>&#160;</div>
+<div class="line"><a name="l03125"></a><span class="lineno"> 3125</span>&#160;    <span class="keyword">const</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *vt0 = CastType&lt;VectorType&gt;(t0);</div>
+<div class="line"><a name="l03126"></a><span class="lineno"> 3126</span>&#160;    <span class="keyword">const</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *vt1 = CastType&lt;VectorType&gt;(t1);</div>
+<div class="line"><a name="l03127"></a><span class="lineno"> 3127</span>&#160;    <span class="keywordflow">if</span> (vt0 &amp;&amp; vt1) {</div>
+<div class="line"><a name="l03128"></a><span class="lineno"> 3128</span>&#160;        <span class="comment">// both are vectors; convert their base types and make a new vector</span></div>
+<div class="line"><a name="l03129"></a><span class="lineno"> 3129</span>&#160;        <span class="comment">// type, as long as their lengths match</span></div>
+<div class="line"><a name="l03130"></a><span class="lineno"> 3130</span>&#160;        <span class="keywordflow">if</span> (vt0-&gt;<a class="code" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a>() != vt1-&gt;GetElementCount()) {</div>
+<div class="line"><a name="l03131"></a><span class="lineno"> 3131</span>&#160;            <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Implicit conversion between differently sized vector types &quot;</span></div>
+<div class="line"><a name="l03132"></a><span class="lineno"> 3132</span>&#160;                  <span class="stringliteral">&quot;(%s, %s) for %s is not possible.&quot;</span>, t0-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(),</div>
+<div class="line"><a name="l03133"></a><span class="lineno"> 3133</span>&#160;                  t1-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), reason);</div>
+<div class="line"><a name="l03134"></a><span class="lineno"> 3134</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l03135"></a><span class="lineno"> 3135</span>&#160;        }</div>
+<div class="line"><a name="l03136"></a><span class="lineno"> 3136</span>&#160;        <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *t = <a class="code" href="classType.html#a078b7dc77c288701d13abaa57434da91">MoreGeneralType</a>(vt0-&gt;<a class="code" href="classVectorType.html#a87558faf9b83f232f1b1bd8dda7cba9a">GetElementType</a>(), vt1-&gt;GetElementType(),</div>
+<div class="line"><a name="l03137"></a><span class="lineno"> 3137</span>&#160;                                        pos, reason, forceVarying);</div>
+<div class="line"><a name="l03138"></a><span class="lineno"> 3138</span>&#160;        <span class="keywordflow">if</span> (!t)</div>
+<div class="line"><a name="l03139"></a><span class="lineno"> 3139</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l03140"></a><span class="lineno"> 3140</span>&#160;</div>
+<div class="line"><a name="l03141"></a><span class="lineno"> 3141</span>&#160;        <span class="comment">// The &#39;more general&#39; version of the two vector element types must</span></div>
+<div class="line"><a name="l03142"></a><span class="lineno"> 3142</span>&#160;        <span class="comment">// be an AtomicType (that&#39;s all that vectors can hold...)</span></div>
+<div class="line"><a name="l03143"></a><span class="lineno"> 3143</span>&#160;        <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *at = CastType&lt;AtomicType&gt;(t);</div>
+<div class="line"><a name="l03144"></a><span class="lineno"> 3144</span>&#160;        <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(at != NULL);</div>
+<div class="line"><a name="l03145"></a><span class="lineno"> 3145</span>&#160;</div>
+<div class="line"><a name="l03146"></a><span class="lineno"> 3146</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a>(at, vt0-&gt;<a class="code" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a>());</div>
+<div class="line"><a name="l03147"></a><span class="lineno"> 3147</span>&#160;    }</div>
+<div class="line"><a name="l03148"></a><span class="lineno"> 3148</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (vt0) {</div>
+<div class="line"><a name="l03149"></a><span class="lineno"> 3149</span>&#160;        <span class="comment">// If one type is a vector type but the other isn&#39;t, see if we can</span></div>
+<div class="line"><a name="l03150"></a><span class="lineno"> 3150</span>&#160;        <span class="comment">// promote the other one to a vector type.  This will fail and</span></div>
+<div class="line"><a name="l03151"></a><span class="lineno"> 3151</span>&#160;        <span class="comment">// return NULL if t1 is e.g. an array type and it&#39;s illegal to have</span></div>
+<div class="line"><a name="l03152"></a><span class="lineno"> 3152</span>&#160;        <span class="comment">// a vector of it..</span></div>
+<div class="line"><a name="l03153"></a><span class="lineno"> 3153</span>&#160;        <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *t = <a class="code" href="classType.html#a078b7dc77c288701d13abaa57434da91">MoreGeneralType</a>(vt0-&gt;<a class="code" href="classVectorType.html#a87558faf9b83f232f1b1bd8dda7cba9a">GetElementType</a>(), t1, pos,</div>
+<div class="line"><a name="l03154"></a><span class="lineno"> 3154</span>&#160;                                        reason, forceVarying);</div>
+<div class="line"><a name="l03155"></a><span class="lineno"> 3155</span>&#160;        <span class="keywordflow">if</span> (!t)</div>
+<div class="line"><a name="l03156"></a><span class="lineno"> 3156</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l03157"></a><span class="lineno"> 3157</span>&#160;</div>
+<div class="line"><a name="l03158"></a><span class="lineno"> 3158</span>&#160;        <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *at = CastType&lt;AtomicType&gt;(t);</div>
+<div class="line"><a name="l03159"></a><span class="lineno"> 3159</span>&#160;        <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(at != NULL);</div>
+<div class="line"><a name="l03160"></a><span class="lineno"> 3160</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a>(at, vt0-&gt;<a class="code" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a>());</div>
+<div class="line"><a name="l03161"></a><span class="lineno"> 3161</span>&#160;    }</div>
+<div class="line"><a name="l03162"></a><span class="lineno"> 3162</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (vt1) {</div>
+<div class="line"><a name="l03163"></a><span class="lineno"> 3163</span>&#160;        <span class="comment">// As in the above case, see if we can promote t0 to make a vector</span></div>
+<div class="line"><a name="l03164"></a><span class="lineno"> 3164</span>&#160;        <span class="comment">// that matches vt1.</span></div>
+<div class="line"><a name="l03165"></a><span class="lineno"> 3165</span>&#160;        <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *t = <a class="code" href="classType.html#a078b7dc77c288701d13abaa57434da91">MoreGeneralType</a>(t0, vt1-&gt;GetElementType(), pos,</div>
+<div class="line"><a name="l03166"></a><span class="lineno"> 3166</span>&#160;                                        reason, forceVarying);</div>
+<div class="line"><a name="l03167"></a><span class="lineno"> 3167</span>&#160;        <span class="keywordflow">if</span> (!t)</div>
+<div class="line"><a name="l03168"></a><span class="lineno"> 3168</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l03169"></a><span class="lineno"> 3169</span>&#160;</div>
+<div class="line"><a name="l03170"></a><span class="lineno"> 3170</span>&#160;        <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *at = CastType&lt;AtomicType&gt;(t);</div>
+<div class="line"><a name="l03171"></a><span class="lineno"> 3171</span>&#160;        <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(at != NULL);</div>
+<div class="line"><a name="l03172"></a><span class="lineno"> 3172</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a>(at, vt1-&gt;GetElementCount());</div>
+<div class="line"><a name="l03173"></a><span class="lineno"> 3173</span>&#160;    }</div>
+<div class="line"><a name="l03174"></a><span class="lineno"> 3174</span>&#160;</div>
+<div class="line"><a name="l03175"></a><span class="lineno"> 3175</span>&#160;    <span class="comment">// TODO: what do we need to do about references here, if anything??</span></div>
+<div class="line"><a name="l03176"></a><span class="lineno"> 3176</span>&#160;</div>
+<div class="line"><a name="l03177"></a><span class="lineno"> 3177</span>&#160;    <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *at0 = CastType&lt;AtomicType&gt;(t0-&gt;<a class="code" href="classType.html#a1ef4f8a5d67d1ff6010ab1bcaaea4e6f">GetReferenceTarget</a>());</div>
+<div class="line"><a name="l03178"></a><span class="lineno"> 3178</span>&#160;    <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *at1 = CastType&lt;AtomicType&gt;(t1-&gt;<a class="code" href="classType.html#a1ef4f8a5d67d1ff6010ab1bcaaea4e6f">GetReferenceTarget</a>());</div>
+<div class="line"><a name="l03179"></a><span class="lineno"> 3179</span>&#160;</div>
+<div class="line"><a name="l03180"></a><span class="lineno"> 3180</span>&#160;    <span class="keyword">const</span> <a class="code" href="classEnumType.html" title="Type implementation for enumerated types.">EnumType</a> *et0 = CastType&lt;EnumType&gt;(t0-&gt;<a class="code" href="classType.html#a1ef4f8a5d67d1ff6010ab1bcaaea4e6f">GetReferenceTarget</a>());</div>
+<div class="line"><a name="l03181"></a><span class="lineno"> 3181</span>&#160;    <span class="keyword">const</span> <a class="code" href="classEnumType.html" title="Type implementation for enumerated types.">EnumType</a> *et1 = CastType&lt;EnumType&gt;(t1-&gt;<a class="code" href="classType.html#a1ef4f8a5d67d1ff6010ab1bcaaea4e6f">GetReferenceTarget</a>());</div>
+<div class="line"><a name="l03182"></a><span class="lineno"> 3182</span>&#160;    <span class="keywordflow">if</span> (et0 != NULL &amp;&amp; et1 != NULL) {</div>
+<div class="line"><a name="l03183"></a><span class="lineno"> 3183</span>&#160;        <span class="comment">// Two different enum types -&gt; make them uint32s...</span></div>
+<div class="line"><a name="l03184"></a><span class="lineno"> 3184</span>&#160;        <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(et0-&gt;IsVaryingType() == et1-&gt;IsVaryingType());</div>
+<div class="line"><a name="l03185"></a><span class="lineno"> 3185</span>&#160;        <span class="keywordflow">return</span> et0-&gt;IsVaryingType() ? AtomicType::VaryingUInt32 :</div>
+<div class="line"><a name="l03186"></a><span class="lineno"> 3186</span>&#160;                AtomicType::UniformUInt32;</div>
+<div class="line"><a name="l03187"></a><span class="lineno"> 3187</span>&#160;    }</div>
+<div class="line"><a name="l03188"></a><span class="lineno"> 3188</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (et0 != NULL) {</div>
+<div class="line"><a name="l03189"></a><span class="lineno"> 3189</span>&#160;        <span class="keywordflow">if</span> (at1 != NULL)</div>
+<div class="line"><a name="l03190"></a><span class="lineno"> 3190</span>&#160;            <span class="comment">// Enum type and atomic type -&gt; convert the enum to the atomic type</span></div>
+<div class="line"><a name="l03191"></a><span class="lineno"> 3191</span>&#160;            <span class="comment">// TODO: should we return uint32 here, unless the atomic type is</span></div>
+<div class="line"><a name="l03192"></a><span class="lineno"> 3192</span>&#160;            <span class="comment">// a 64-bit atomic type, in which case we return that?</span></div>
+<div class="line"><a name="l03193"></a><span class="lineno"> 3193</span>&#160;            <span class="keywordflow">return</span> at1;</div>
+<div class="line"><a name="l03194"></a><span class="lineno"> 3194</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l03195"></a><span class="lineno"> 3195</span>&#160;            <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Implicit conversion from enum type \&quot;%s\&quot; to &quot;</span></div>
+<div class="line"><a name="l03196"></a><span class="lineno"> 3196</span>&#160;                  <span class="stringliteral">&quot;non-atomic type \&quot;%s\&quot; for %s not possible.&quot;</span>,</div>
+<div class="line"><a name="l03197"></a><span class="lineno"> 3197</span>&#160;                  t0-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), t1-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), reason);</div>
+<div class="line"><a name="l03198"></a><span class="lineno"> 3198</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l03199"></a><span class="lineno"> 3199</span>&#160;        }</div>
+<div class="line"><a name="l03200"></a><span class="lineno"> 3200</span>&#160;    }</div>
+<div class="line"><a name="l03201"></a><span class="lineno"> 3201</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (et1 != NULL) {</div>
+<div class="line"><a name="l03202"></a><span class="lineno"> 3202</span>&#160;        <span class="keywordflow">if</span> (at0 != NULL)</div>
+<div class="line"><a name="l03203"></a><span class="lineno"> 3203</span>&#160;            <span class="comment">// Enum type and atomic type; see TODO above here as well...</span></div>
+<div class="line"><a name="l03204"></a><span class="lineno"> 3204</span>&#160;            <span class="keywordflow">return</span> at0;</div>
+<div class="line"><a name="l03205"></a><span class="lineno"> 3205</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l03206"></a><span class="lineno"> 3206</span>&#160;            <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Implicit conversion from enum type \&quot;%s\&quot; to &quot;</span></div>
+<div class="line"><a name="l03207"></a><span class="lineno"> 3207</span>&#160;                  <span class="stringliteral">&quot;non-atomic type \&quot;%s\&quot; for %s not possible.&quot;</span>,</div>
+<div class="line"><a name="l03208"></a><span class="lineno"> 3208</span>&#160;                  t1-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), t0-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), reason);</div>
+<div class="line"><a name="l03209"></a><span class="lineno"> 3209</span>&#160;            <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l03210"></a><span class="lineno"> 3210</span>&#160;        }</div>
+<div class="line"><a name="l03211"></a><span class="lineno"> 3211</span>&#160;    }</div>
+<div class="line"><a name="l03212"></a><span class="lineno"> 3212</span>&#160;</div>
+<div class="line"><a name="l03213"></a><span class="lineno"> 3213</span>&#160;    <span class="comment">// Now all we can do is promote atomic types...</span></div>
+<div class="line"><a name="l03214"></a><span class="lineno"> 3214</span>&#160;    <span class="keywordflow">if</span> (at0 == NULL || at1 == NULL) {</div>
+<div class="line"><a name="l03215"></a><span class="lineno"> 3215</span>&#160;        <a class="code" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert</a>(reason != NULL);</div>
+<div class="line"><a name="l03216"></a><span class="lineno"> 3216</span>&#160;        <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(pos, <span class="stringliteral">&quot;Implicit conversion from type \&quot;%s\&quot; to \&quot;%s\&quot; for %s not possible.&quot;</span>,</div>
+<div class="line"><a name="l03217"></a><span class="lineno"> 3217</span>&#160;              t0-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), t1-&gt;<a class="code" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">GetString</a>().c_str(), reason);</div>
+<div class="line"><a name="l03218"></a><span class="lineno"> 3218</span>&#160;        <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l03219"></a><span class="lineno"> 3219</span>&#160;    }</div>
 <div class="line"><a name="l03220"></a><span class="lineno"> 3220</span>&#160;</div>
-<div class="line"><a name="l03221"></a><span class="lineno"> 3221</span>&#160;<span class="keywordtype">bool</span></div>
-<div class="line"><a name="l03222"></a><span class="lineno"><a class="code" href="classType.html#ae563a2978af2027bf5fc50211758f1d8"> 3222</a></span>&#160;<a class="code" href="classType.html#ae563a2978af2027bf5fc50211758f1d8">Type::IsBasicType</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type) {</div>
-<div class="line"><a name="l03223"></a><span class="lineno"> 3223</span>&#160;    <span class="keywordflow">return</span> (CastType&lt;AtomicType&gt;(type) != NULL ||</div>
-<div class="line"><a name="l03224"></a><span class="lineno"> 3224</span>&#160;            CastType&lt;EnumType&gt;(type) != NULL ||</div>
-<div class="line"><a name="l03225"></a><span class="lineno"> 3225</span>&#160;            CastType&lt;PointerType&gt;(type) != NULL);</div>
-<div class="line"><a name="l03226"></a><span class="lineno"> 3226</span>&#160;}</div>
-<div class="line"><a name="l03227"></a><span class="lineno"> 3227</span>&#160;</div>
-<div class="line"><a name="l03228"></a><span class="lineno"> 3228</span>&#160;</div>
-<div class="line"><a name="l03229"></a><span class="lineno"> 3229</span>&#160;<span class="keyword">static</span> <span class="keywordtype">bool</span></div>
-<div class="line"><a name="l03230"></a><span class="lineno"><a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae"> 3230</a></span>&#160;<a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *a, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *b, <span class="keywordtype">bool</span> ignoreConst) {</div>
-<div class="line"><a name="l03231"></a><span class="lineno"> 3231</span>&#160;    <span class="keywordflow">if</span> (a == NULL || b == NULL)</div>
-<div class="line"><a name="l03232"></a><span class="lineno"> 3232</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l03221"></a><span class="lineno"> 3221</span>&#160;    <span class="comment">// Finally, to determine which of the two atomic types is more general,</span></div>
+<div class="line"><a name="l03222"></a><span class="lineno"> 3222</span>&#160;    <span class="comment">// use the ordering of entries in the AtomicType::BasicType enumerator.</span></div>
+<div class="line"><a name="l03223"></a><span class="lineno"> 3223</span>&#160;    <span class="keywordflow">return</span> (<span class="keywordtype">int</span>(at0-&gt;<a class="code" href="classAtomicType.html#a513637c7273629ecc43425adc948ec5b">basicType</a>) &gt;= int(at1-&gt;basicType)) ? at0 : at1;</div>
+<div class="line"><a name="l03224"></a><span class="lineno"> 3224</span>&#160;}</div>
+<div class="line"><a name="l03225"></a><span class="lineno"> 3225</span>&#160;</div>
+<div class="line"><a name="l03226"></a><span class="lineno"> 3226</span>&#160;</div>
+<div class="line"><a name="l03227"></a><span class="lineno"> 3227</span>&#160;<span class="keywordtype">bool</span></div>
+<div class="line"><a name="l03228"></a><span class="lineno"><a class="code" href="classType.html#ae563a2978af2027bf5fc50211758f1d8"> 3228</a></span>&#160;<a class="code" href="classType.html#ae563a2978af2027bf5fc50211758f1d8">Type::IsBasicType</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *type) {</div>
+<div class="line"><a name="l03229"></a><span class="lineno"> 3229</span>&#160;    <span class="keywordflow">return</span> (CastType&lt;AtomicType&gt;(type) != NULL ||</div>
+<div class="line"><a name="l03230"></a><span class="lineno"> 3230</span>&#160;            CastType&lt;EnumType&gt;(type) != NULL ||</div>
+<div class="line"><a name="l03231"></a><span class="lineno"> 3231</span>&#160;            CastType&lt;PointerType&gt;(type) != NULL);</div>
+<div class="line"><a name="l03232"></a><span class="lineno"> 3232</span>&#160;}</div>
 <div class="line"><a name="l03233"></a><span class="lineno"> 3233</span>&#160;</div>
-<div class="line"><a name="l03234"></a><span class="lineno"> 3234</span>&#160;    <span class="keywordflow">if</span> (ignoreConst == <span class="keyword">false</span> &amp;&amp;</div>
-<div class="line"><a name="l03235"></a><span class="lineno"> 3235</span>&#160;        a-&gt;<a class="code" href="classType.html#a9a6d77fb89abc534e2ee1726cc13cf05">IsConstType</a>() != b-&gt;<a class="code" href="classType.html#a9a6d77fb89abc534e2ee1726cc13cf05">IsConstType</a>())</div>
-<div class="line"><a name="l03236"></a><span class="lineno"> 3236</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l03237"></a><span class="lineno"> 3237</span>&#160;</div>
-<div class="line"><a name="l03238"></a><span class="lineno"> 3238</span>&#160;    <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *ata = CastType&lt;AtomicType&gt;(a);</div>
-<div class="line"><a name="l03239"></a><span class="lineno"> 3239</span>&#160;    <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *atb = CastType&lt;AtomicType&gt;(b);</div>
-<div class="line"><a name="l03240"></a><span class="lineno"> 3240</span>&#160;    <span class="keywordflow">if</span> (ata != NULL &amp;&amp; atb != NULL) {</div>
-<div class="line"><a name="l03241"></a><span class="lineno"> 3241</span>&#160;        <span class="keywordflow">return</span> ((ata-&gt;<a class="code" href="classAtomicType.html#a513637c7273629ecc43425adc948ec5b">basicType</a> == atb-&gt;basicType) &amp;&amp;</div>
-<div class="line"><a name="l03242"></a><span class="lineno"> 3242</span>&#160;                (ata-&gt;<a class="code" href="classAtomicType.html#a7e299cd168d4b2e8820e061d6643bd36">GetVariability</a>() == atb-&gt;GetVariability()));</div>
-<div class="line"><a name="l03243"></a><span class="lineno"> 3243</span>&#160;    }</div>
-<div class="line"><a name="l03244"></a><span class="lineno"> 3244</span>&#160;</div>
-<div class="line"><a name="l03245"></a><span class="lineno"> 3245</span>&#160;    <span class="comment">// For all of the other types, we need to see if we have the same two</span></div>
-<div class="line"><a name="l03246"></a><span class="lineno"> 3246</span>&#160;    <span class="comment">// general types.  If so, then we dig into the details of the type and</span></div>
-<div class="line"><a name="l03247"></a><span class="lineno"> 3247</span>&#160;    <span class="comment">// see if all of the relevant bits are equal...</span></div>
-<div class="line"><a name="l03248"></a><span class="lineno"> 3248</span>&#160;    <span class="keyword">const</span> <a class="code" href="classEnumType.html" title="Type implementation for enumerated types.">EnumType</a> *eta = CastType&lt;EnumType&gt;(a);</div>
-<div class="line"><a name="l03249"></a><span class="lineno"> 3249</span>&#160;    <span class="keyword">const</span> <a class="code" href="classEnumType.html" title="Type implementation for enumerated types.">EnumType</a> *etb = CastType&lt;EnumType&gt;(b);</div>
-<div class="line"><a name="l03250"></a><span class="lineno"> 3250</span>&#160;    <span class="keywordflow">if</span> (eta != NULL &amp;&amp; etb != NULL)</div>
-<div class="line"><a name="l03251"></a><span class="lineno"> 3251</span>&#160;        <span class="comment">// Kind of goofy, but this sufficies to check</span></div>
-<div class="line"><a name="l03252"></a><span class="lineno"> 3252</span>&#160;        <span class="keywordflow">return</span> (eta-&gt;<a class="code" href="classEnumType.html#a01e0b7ff639e2f0809f12e10ac69f16a">pos</a> == etb-&gt;pos &amp;&amp;</div>
-<div class="line"><a name="l03253"></a><span class="lineno"> 3253</span>&#160;                eta-&gt;<a class="code" href="classEnumType.html#a79db8e79fee1e37a85dcdd9ca7a5fb85">GetVariability</a>() == etb-&gt;GetVariability());</div>
-<div class="line"><a name="l03254"></a><span class="lineno"> 3254</span>&#160;</div>
-<div class="line"><a name="l03255"></a><span class="lineno"> 3255</span>&#160;    <span class="keyword">const</span> <a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> *arta = CastType&lt;ArrayType&gt;(a);</div>
-<div class="line"><a name="l03256"></a><span class="lineno"> 3256</span>&#160;    <span class="keyword">const</span> <a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> *artb = CastType&lt;ArrayType&gt;(b);</div>
-<div class="line"><a name="l03257"></a><span class="lineno"> 3257</span>&#160;    <span class="keywordflow">if</span> (arta != NULL &amp;&amp; artb != NULL)</div>
-<div class="line"><a name="l03258"></a><span class="lineno"> 3258</span>&#160;        <span class="keywordflow">return</span> (arta-&gt;<a class="code" href="classArrayType.html#abd41c2442a7dc53f404399d746d0c6e8">GetElementCount</a>() == artb-&gt;GetElementCount() &amp;&amp;</div>
-<div class="line"><a name="l03259"></a><span class="lineno"> 3259</span>&#160;                <a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(arta-&gt;<a class="code" href="classArrayType.html#a0c07b5af9127e3dfc4626782f4227377">GetElementType</a>(), artb-&gt;GetElementType(),</div>
-<div class="line"><a name="l03260"></a><span class="lineno"> 3260</span>&#160;                                   ignoreConst));</div>
-<div class="line"><a name="l03261"></a><span class="lineno"> 3261</span>&#160;</div>
-<div class="line"><a name="l03262"></a><span class="lineno"> 3262</span>&#160;    <span class="keyword">const</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *vta = CastType&lt;VectorType&gt;(a);</div>
-<div class="line"><a name="l03263"></a><span class="lineno"> 3263</span>&#160;    <span class="keyword">const</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *vtb = CastType&lt;VectorType&gt;(b);</div>
-<div class="line"><a name="l03264"></a><span class="lineno"> 3264</span>&#160;    <span class="keywordflow">if</span> (vta != NULL &amp;&amp; vtb != NULL)</div>
-<div class="line"><a name="l03265"></a><span class="lineno"> 3265</span>&#160;        <span class="keywordflow">return</span> (vta-&gt;<a class="code" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a>() == vtb-&gt;GetElementCount() &amp;&amp;</div>
-<div class="line"><a name="l03266"></a><span class="lineno"> 3266</span>&#160;                <a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(vta-&gt;<a class="code" href="classVectorType.html#a87558faf9b83f232f1b1bd8dda7cba9a">GetElementType</a>(), vtb-&gt;GetElementType(),</div>
-<div class="line"><a name="l03267"></a><span class="lineno"> 3267</span>&#160;                                   ignoreConst));</div>
-<div class="line"><a name="l03268"></a><span class="lineno"> 3268</span>&#160;</div>
-<div class="line"><a name="l03269"></a><span class="lineno"> 3269</span>&#160;    <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *sta = CastType&lt;StructType&gt;(a);</div>
-<div class="line"><a name="l03270"></a><span class="lineno"> 3270</span>&#160;    <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *stb = CastType&lt;StructType&gt;(b);</div>
-<div class="line"><a name="l03271"></a><span class="lineno"> 3271</span>&#160;    <span class="keyword">const</span> <a class="code" href="classUndefinedStructType.html">UndefinedStructType</a> *usta = CastType&lt;UndefinedStructType&gt;(a);</div>
-<div class="line"><a name="l03272"></a><span class="lineno"> 3272</span>&#160;    <span class="keyword">const</span> <a class="code" href="classUndefinedStructType.html">UndefinedStructType</a> *ustb = CastType&lt;UndefinedStructType&gt;(b);</div>
-<div class="line"><a name="l03273"></a><span class="lineno"> 3273</span>&#160;    <span class="keywordflow">if</span> ((sta != NULL || usta != NULL) &amp;&amp; (stb != NULL || ustb != NULL)) {</div>
-<div class="line"><a name="l03274"></a><span class="lineno"> 3274</span>&#160;        <span class="comment">// Report both defuned and undefined structs as equal if their</span></div>
-<div class="line"><a name="l03275"></a><span class="lineno"> 3275</span>&#160;        <span class="comment">// names are the same.</span></div>
-<div class="line"><a name="l03276"></a><span class="lineno"> 3276</span>&#160;        <span class="keywordflow">if</span> (a-&gt;<a class="code" href="classType.html#a619effc9d2d2517bd884076eb9559b65">GetVariability</a>() != b-&gt;<a class="code" href="classType.html#a619effc9d2d2517bd884076eb9559b65">GetVariability</a>())</div>
-<div class="line"><a name="l03277"></a><span class="lineno"> 3277</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l03278"></a><span class="lineno"> 3278</span>&#160;</div>
-<div class="line"><a name="l03279"></a><span class="lineno"> 3279</span>&#160;        <span class="keyword">const</span> std::string &amp;namea = sta ? sta-&gt;<a class="code" href="classStructType.html#a6edfc6a18f8acba8111bf2de63b8c870">GetStructName</a>() :</div>
-<div class="line"><a name="l03280"></a><span class="lineno"> 3280</span>&#160;            usta-&gt;GetStructName();</div>
-<div class="line"><a name="l03281"></a><span class="lineno"> 3281</span>&#160;        <span class="keyword">const</span> std::string &amp;nameb = stb ? stb-&gt;GetStructName() :</div>
-<div class="line"><a name="l03282"></a><span class="lineno"> 3282</span>&#160;            ustb-&gt;GetStructName();</div>
-<div class="line"><a name="l03283"></a><span class="lineno"> 3283</span>&#160;        <span class="keywordflow">return</span> (namea == nameb);</div>
-<div class="line"><a name="l03284"></a><span class="lineno"> 3284</span>&#160;    }</div>
-<div class="line"><a name="l03285"></a><span class="lineno"> 3285</span>&#160;</div>
-<div class="line"><a name="l03286"></a><span class="lineno"> 3286</span>&#160;    <span class="keyword">const</span> <a class="code" href="classPointerType.html" title="Type implementation for pointers to other types.">PointerType</a> *pta = CastType&lt;PointerType&gt;(a);</div>
-<div class="line"><a name="l03287"></a><span class="lineno"> 3287</span>&#160;    <span class="keyword">const</span> <a class="code" href="classPointerType.html" title="Type implementation for pointers to other types.">PointerType</a> *ptb = CastType&lt;PointerType&gt;(b);</div>
-<div class="line"><a name="l03288"></a><span class="lineno"> 3288</span>&#160;    <span class="keywordflow">if</span> (pta != NULL &amp;&amp; ptb != NULL)</div>
-<div class="line"><a name="l03289"></a><span class="lineno"> 3289</span>&#160;        <span class="keywordflow">return</span> (pta-&gt;<a class="code" href="classType.html#a1b3756addee50a4a06b055c5795200ef">IsUniformType</a>() == ptb-&gt;IsUniformType() &amp;&amp;</div>
-<div class="line"><a name="l03290"></a><span class="lineno"> 3290</span>&#160;                pta-&gt;<a class="code" href="classPointerType.html#ae65fd322812acd28a23861538b8af167">IsSlice</a>() == ptb-&gt;IsSlice() &amp;&amp;</div>
-<div class="line"><a name="l03291"></a><span class="lineno"> 3291</span>&#160;                pta-&gt;<a class="code" href="classPointerType.html#a129f257ee3ac4f1f241352ebe9d5bb30">IsFrozenSlice</a>() == ptb-&gt;IsFrozenSlice() &amp;&amp;</div>
-<div class="line"><a name="l03292"></a><span class="lineno"> 3292</span>&#160;                <a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(pta-&gt;<a class="code" href="classPointerType.html#a19d9c35984226e4ae0f003495854ab87">GetBaseType</a>(), ptb-&gt;<a class="code" href="classType.html#a51af28faf17eb05982547d9b340429eb">GetBaseType</a>(),</div>
-<div class="line"><a name="l03293"></a><span class="lineno"> 3293</span>&#160;                                   ignoreConst));</div>
-<div class="line"><a name="l03294"></a><span class="lineno"> 3294</span>&#160;</div>
-<div class="line"><a name="l03295"></a><span class="lineno"> 3295</span>&#160;    <span class="keyword">const</span> <a class="code" href="classReferenceType.html" title="Type representing a reference to another (non-reference) type.">ReferenceType</a> *rta = CastType&lt;ReferenceType&gt;(a);</div>
-<div class="line"><a name="l03296"></a><span class="lineno"> 3296</span>&#160;    <span class="keyword">const</span> <a class="code" href="classReferenceType.html" title="Type representing a reference to another (non-reference) type.">ReferenceType</a> *rtb = CastType&lt;ReferenceType&gt;(b);</div>
-<div class="line"><a name="l03297"></a><span class="lineno"> 3297</span>&#160;    <span class="keywordflow">if</span> (rta != NULL &amp;&amp; rtb != NULL)</div>
-<div class="line"><a name="l03298"></a><span class="lineno"> 3298</span>&#160;        <span class="keywordflow">return</span> (<a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(rta-&gt;<a class="code" href="classReferenceType.html#ad3eabdfac95c0fdd7618284de92ad7fb">GetReferenceTarget</a>(),</div>
-<div class="line"><a name="l03299"></a><span class="lineno"> 3299</span>&#160;                                   rtb-&gt;<a class="code" href="classType.html#a1ef4f8a5d67d1ff6010ab1bcaaea4e6f">GetReferenceTarget</a>(), ignoreConst));</div>
+<div class="line"><a name="l03234"></a><span class="lineno"> 3234</span>&#160;</div>
+<div class="line"><a name="l03235"></a><span class="lineno"> 3235</span>&#160;<span class="keyword">static</span> <span class="keywordtype">bool</span></div>
+<div class="line"><a name="l03236"></a><span class="lineno"><a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae"> 3236</a></span>&#160;<a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *a, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *b, <span class="keywordtype">bool</span> ignoreConst) {</div>
+<div class="line"><a name="l03237"></a><span class="lineno"> 3237</span>&#160;    <span class="keywordflow">if</span> (a == NULL || b == NULL)</div>
+<div class="line"><a name="l03238"></a><span class="lineno"> 3238</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l03239"></a><span class="lineno"> 3239</span>&#160;</div>
+<div class="line"><a name="l03240"></a><span class="lineno"> 3240</span>&#160;    <span class="keywordflow">if</span> (ignoreConst == <span class="keyword">false</span> &amp;&amp;</div>
+<div class="line"><a name="l03241"></a><span class="lineno"> 3241</span>&#160;        a-&gt;<a class="code" href="classType.html#a9a6d77fb89abc534e2ee1726cc13cf05">IsConstType</a>() != b-&gt;<a class="code" href="classType.html#a9a6d77fb89abc534e2ee1726cc13cf05">IsConstType</a>())</div>
+<div class="line"><a name="l03242"></a><span class="lineno"> 3242</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l03243"></a><span class="lineno"> 3243</span>&#160;</div>
+<div class="line"><a name="l03244"></a><span class="lineno"> 3244</span>&#160;    <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *ata = CastType&lt;AtomicType&gt;(a);</div>
+<div class="line"><a name="l03245"></a><span class="lineno"> 3245</span>&#160;    <span class="keyword">const</span> <a class="code" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc.">AtomicType</a> *atb = CastType&lt;AtomicType&gt;(b);</div>
+<div class="line"><a name="l03246"></a><span class="lineno"> 3246</span>&#160;    <span class="keywordflow">if</span> (ata != NULL &amp;&amp; atb != NULL) {</div>
+<div class="line"><a name="l03247"></a><span class="lineno"> 3247</span>&#160;        <span class="keywordflow">return</span> ((ata-&gt;<a class="code" href="classAtomicType.html#a513637c7273629ecc43425adc948ec5b">basicType</a> == atb-&gt;basicType) &amp;&amp;</div>
+<div class="line"><a name="l03248"></a><span class="lineno"> 3248</span>&#160;                (ata-&gt;<a class="code" href="classAtomicType.html#a7e299cd168d4b2e8820e061d6643bd36">GetVariability</a>() == atb-&gt;GetVariability()));</div>
+<div class="line"><a name="l03249"></a><span class="lineno"> 3249</span>&#160;    }</div>
+<div class="line"><a name="l03250"></a><span class="lineno"> 3250</span>&#160;</div>
+<div class="line"><a name="l03251"></a><span class="lineno"> 3251</span>&#160;    <span class="comment">// For all of the other types, we need to see if we have the same two</span></div>
+<div class="line"><a name="l03252"></a><span class="lineno"> 3252</span>&#160;    <span class="comment">// general types.  If so, then we dig into the details of the type and</span></div>
+<div class="line"><a name="l03253"></a><span class="lineno"> 3253</span>&#160;    <span class="comment">// see if all of the relevant bits are equal...</span></div>
+<div class="line"><a name="l03254"></a><span class="lineno"> 3254</span>&#160;    <span class="keyword">const</span> <a class="code" href="classEnumType.html" title="Type implementation for enumerated types.">EnumType</a> *eta = CastType&lt;EnumType&gt;(a);</div>
+<div class="line"><a name="l03255"></a><span class="lineno"> 3255</span>&#160;    <span class="keyword">const</span> <a class="code" href="classEnumType.html" title="Type implementation for enumerated types.">EnumType</a> *etb = CastType&lt;EnumType&gt;(b);</div>
+<div class="line"><a name="l03256"></a><span class="lineno"> 3256</span>&#160;    <span class="keywordflow">if</span> (eta != NULL &amp;&amp; etb != NULL)</div>
+<div class="line"><a name="l03257"></a><span class="lineno"> 3257</span>&#160;        <span class="comment">// Kind of goofy, but this sufficies to check</span></div>
+<div class="line"><a name="l03258"></a><span class="lineno"> 3258</span>&#160;        <span class="keywordflow">return</span> (eta-&gt;<a class="code" href="classEnumType.html#a01e0b7ff639e2f0809f12e10ac69f16a">pos</a> == etb-&gt;pos &amp;&amp;</div>
+<div class="line"><a name="l03259"></a><span class="lineno"> 3259</span>&#160;                eta-&gt;<a class="code" href="classEnumType.html#a79db8e79fee1e37a85dcdd9ca7a5fb85">GetVariability</a>() == etb-&gt;GetVariability());</div>
+<div class="line"><a name="l03260"></a><span class="lineno"> 3260</span>&#160;</div>
+<div class="line"><a name="l03261"></a><span class="lineno"> 3261</span>&#160;    <span class="keyword">const</span> <a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> *arta = CastType&lt;ArrayType&gt;(a);</div>
+<div class="line"><a name="l03262"></a><span class="lineno"> 3262</span>&#160;    <span class="keyword">const</span> <a class="code" href="classArrayType.html" title="One-dimensional array type.">ArrayType</a> *artb = CastType&lt;ArrayType&gt;(b);</div>
+<div class="line"><a name="l03263"></a><span class="lineno"> 3263</span>&#160;    <span class="keywordflow">if</span> (arta != NULL &amp;&amp; artb != NULL)</div>
+<div class="line"><a name="l03264"></a><span class="lineno"> 3264</span>&#160;        <span class="keywordflow">return</span> (arta-&gt;<a class="code" href="classArrayType.html#abd41c2442a7dc53f404399d746d0c6e8">GetElementCount</a>() == artb-&gt;GetElementCount() &amp;&amp;</div>
+<div class="line"><a name="l03265"></a><span class="lineno"> 3265</span>&#160;                <a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(arta-&gt;<a class="code" href="classArrayType.html#a0c07b5af9127e3dfc4626782f4227377">GetElementType</a>(), artb-&gt;GetElementType(),</div>
+<div class="line"><a name="l03266"></a><span class="lineno"> 3266</span>&#160;                                   ignoreConst));</div>
+<div class="line"><a name="l03267"></a><span class="lineno"> 3267</span>&#160;</div>
+<div class="line"><a name="l03268"></a><span class="lineno"> 3268</span>&#160;    <span class="keyword">const</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *vta = CastType&lt;VectorType&gt;(a);</div>
+<div class="line"><a name="l03269"></a><span class="lineno"> 3269</span>&#160;    <span class="keyword">const</span> <a class="code" href="classVectorType.html" title="A (short) vector of atomic types.">VectorType</a> *vtb = CastType&lt;VectorType&gt;(b);</div>
+<div class="line"><a name="l03270"></a><span class="lineno"> 3270</span>&#160;    <span class="keywordflow">if</span> (vta != NULL &amp;&amp; vtb != NULL)</div>
+<div class="line"><a name="l03271"></a><span class="lineno"> 3271</span>&#160;        <span class="keywordflow">return</span> (vta-&gt;<a class="code" href="classVectorType.html#a47331cbd5a0b4f16dddb30bad2022067">GetElementCount</a>() == vtb-&gt;GetElementCount() &amp;&amp;</div>
+<div class="line"><a name="l03272"></a><span class="lineno"> 3272</span>&#160;                <a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(vta-&gt;<a class="code" href="classVectorType.html#a87558faf9b83f232f1b1bd8dda7cba9a">GetElementType</a>(), vtb-&gt;GetElementType(),</div>
+<div class="line"><a name="l03273"></a><span class="lineno"> 3273</span>&#160;                                   ignoreConst));</div>
+<div class="line"><a name="l03274"></a><span class="lineno"> 3274</span>&#160;</div>
+<div class="line"><a name="l03275"></a><span class="lineno"> 3275</span>&#160;    <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *sta = CastType&lt;StructType&gt;(a);</div>
+<div class="line"><a name="l03276"></a><span class="lineno"> 3276</span>&#160;    <span class="keyword">const</span> <a class="code" href="classStructType.html" title="Representation of a structure holding a number of members.">StructType</a> *stb = CastType&lt;StructType&gt;(b);</div>
+<div class="line"><a name="l03277"></a><span class="lineno"> 3277</span>&#160;    <span class="keyword">const</span> <a class="code" href="classUndefinedStructType.html">UndefinedStructType</a> *usta = CastType&lt;UndefinedStructType&gt;(a);</div>
+<div class="line"><a name="l03278"></a><span class="lineno"> 3278</span>&#160;    <span class="keyword">const</span> <a class="code" href="classUndefinedStructType.html">UndefinedStructType</a> *ustb = CastType&lt;UndefinedStructType&gt;(b);</div>
+<div class="line"><a name="l03279"></a><span class="lineno"> 3279</span>&#160;    <span class="keywordflow">if</span> ((sta != NULL || usta != NULL) &amp;&amp; (stb != NULL || ustb != NULL)) {</div>
+<div class="line"><a name="l03280"></a><span class="lineno"> 3280</span>&#160;        <span class="comment">// Report both defuned and undefined structs as equal if their</span></div>
+<div class="line"><a name="l03281"></a><span class="lineno"> 3281</span>&#160;        <span class="comment">// names are the same.</span></div>
+<div class="line"><a name="l03282"></a><span class="lineno"> 3282</span>&#160;        <span class="keywordflow">if</span> (a-&gt;<a class="code" href="classType.html#a619effc9d2d2517bd884076eb9559b65">GetVariability</a>() != b-&gt;<a class="code" href="classType.html#a619effc9d2d2517bd884076eb9559b65">GetVariability</a>())</div>
+<div class="line"><a name="l03283"></a><span class="lineno"> 3283</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l03284"></a><span class="lineno"> 3284</span>&#160;</div>
+<div class="line"><a name="l03285"></a><span class="lineno"> 3285</span>&#160;        <span class="keyword">const</span> std::string &amp;namea = sta ? sta-&gt;<a class="code" href="classStructType.html#a6edfc6a18f8acba8111bf2de63b8c870">GetStructName</a>() :</div>
+<div class="line"><a name="l03286"></a><span class="lineno"> 3286</span>&#160;            usta-&gt;GetStructName();</div>
+<div class="line"><a name="l03287"></a><span class="lineno"> 3287</span>&#160;        <span class="keyword">const</span> std::string &amp;nameb = stb ? stb-&gt;GetStructName() :</div>
+<div class="line"><a name="l03288"></a><span class="lineno"> 3288</span>&#160;            ustb-&gt;GetStructName();</div>
+<div class="line"><a name="l03289"></a><span class="lineno"> 3289</span>&#160;        <span class="keywordflow">return</span> (namea == nameb);</div>
+<div class="line"><a name="l03290"></a><span class="lineno"> 3290</span>&#160;    }</div>
+<div class="line"><a name="l03291"></a><span class="lineno"> 3291</span>&#160;</div>
+<div class="line"><a name="l03292"></a><span class="lineno"> 3292</span>&#160;    <span class="keyword">const</span> <a class="code" href="classPointerType.html" title="Type implementation for pointers to other types.">PointerType</a> *pta = CastType&lt;PointerType&gt;(a);</div>
+<div class="line"><a name="l03293"></a><span class="lineno"> 3293</span>&#160;    <span class="keyword">const</span> <a class="code" href="classPointerType.html" title="Type implementation for pointers to other types.">PointerType</a> *ptb = CastType&lt;PointerType&gt;(b);</div>
+<div class="line"><a name="l03294"></a><span class="lineno"> 3294</span>&#160;    <span class="keywordflow">if</span> (pta != NULL &amp;&amp; ptb != NULL)</div>
+<div class="line"><a name="l03295"></a><span class="lineno"> 3295</span>&#160;        <span class="keywordflow">return</span> (pta-&gt;<a class="code" href="classType.html#a1b3756addee50a4a06b055c5795200ef">IsUniformType</a>() == ptb-&gt;IsUniformType() &amp;&amp;</div>
+<div class="line"><a name="l03296"></a><span class="lineno"> 3296</span>&#160;                pta-&gt;<a class="code" href="classPointerType.html#ae65fd322812acd28a23861538b8af167">IsSlice</a>() == ptb-&gt;IsSlice() &amp;&amp;</div>
+<div class="line"><a name="l03297"></a><span class="lineno"> 3297</span>&#160;                pta-&gt;<a class="code" href="classPointerType.html#a129f257ee3ac4f1f241352ebe9d5bb30">IsFrozenSlice</a>() == ptb-&gt;IsFrozenSlice() &amp;&amp;</div>
+<div class="line"><a name="l03298"></a><span class="lineno"> 3298</span>&#160;                <a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(pta-&gt;<a class="code" href="classPointerType.html#a19d9c35984226e4ae0f003495854ab87">GetBaseType</a>(), ptb-&gt;<a class="code" href="classType.html#a51af28faf17eb05982547d9b340429eb">GetBaseType</a>(),</div>
+<div class="line"><a name="l03299"></a><span class="lineno"> 3299</span>&#160;                                   ignoreConst));</div>
 <div class="line"><a name="l03300"></a><span class="lineno"> 3300</span>&#160;</div>
-<div class="line"><a name="l03301"></a><span class="lineno"> 3301</span>&#160;    <span class="keyword">const</span> <a class="code" href="classFunctionType.html" title="Type representing a function (return type + argument types)">FunctionType</a> *fta = CastType&lt;FunctionType&gt;(a);</div>
-<div class="line"><a name="l03302"></a><span class="lineno"> 3302</span>&#160;    <span class="keyword">const</span> <a class="code" href="classFunctionType.html" title="Type representing a function (return type + argument types)">FunctionType</a> *ftb = CastType&lt;FunctionType&gt;(b);</div>
-<div class="line"><a name="l03303"></a><span class="lineno"> 3303</span>&#160;    <span class="keywordflow">if</span> (fta != NULL &amp;&amp; ftb != NULL) {</div>
-<div class="line"><a name="l03304"></a><span class="lineno"> 3304</span>&#160;        <span class="comment">// Both the return types and all of the argument types must match</span></div>
-<div class="line"><a name="l03305"></a><span class="lineno"> 3305</span>&#160;        <span class="comment">// for function types to match</span></div>
-<div class="line"><a name="l03306"></a><span class="lineno"> 3306</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(fta-&gt;<a class="code" href="classFunctionType.html#a45303f612d6eb85d73fb8cbd785330cf">GetReturnType</a>(), ftb-&gt;GetReturnType(),</div>
-<div class="line"><a name="l03307"></a><span class="lineno"> 3307</span>&#160;                                ignoreConst))</div>
-<div class="line"><a name="l03308"></a><span class="lineno"> 3308</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l03309"></a><span class="lineno"> 3309</span>&#160;</div>
-<div class="line"><a name="l03310"></a><span class="lineno"> 3310</span>&#160;        <span class="keywordflow">if</span> (fta-&gt;<a class="code" href="classFunctionType.html#a32f0aa9227794002abea1952e6c9f347">isTask</a> != ftb-&gt;isTask ||</div>
-<div class="line"><a name="l03311"></a><span class="lineno"> 3311</span>&#160;            fta-&gt;<a class="code" href="classFunctionType.html#ad9be8ddac0b12ed937557b231319052c">isExported</a> != ftb-&gt;isExported ||</div>
-<div class="line"><a name="l03312"></a><span class="lineno"> 3312</span>&#160;            fta-&gt;<a class="code" href="classFunctionType.html#a82597ec6f94ce5517506e306953f7eb9">isExternC</a> != ftb-&gt;isExternC ||</div>
-<div class="line"><a name="l03313"></a><span class="lineno"> 3313</span>&#160;            fta-&gt;<a class="code" href="classFunctionType.html#a4678c61188857a7671bd1539ee666f0c">isUnmasked</a> != ftb-&gt;isUnmasked)</div>
+<div class="line"><a name="l03301"></a><span class="lineno"> 3301</span>&#160;    <span class="keyword">const</span> <a class="code" href="classReferenceType.html" title="Type representing a reference to another (non-reference) type.">ReferenceType</a> *rta = CastType&lt;ReferenceType&gt;(a);</div>
+<div class="line"><a name="l03302"></a><span class="lineno"> 3302</span>&#160;    <span class="keyword">const</span> <a class="code" href="classReferenceType.html" title="Type representing a reference to another (non-reference) type.">ReferenceType</a> *rtb = CastType&lt;ReferenceType&gt;(b);</div>
+<div class="line"><a name="l03303"></a><span class="lineno"> 3303</span>&#160;    <span class="keywordflow">if</span> (rta != NULL &amp;&amp; rtb != NULL)</div>
+<div class="line"><a name="l03304"></a><span class="lineno"> 3304</span>&#160;        <span class="keywordflow">return</span> (<a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(rta-&gt;<a class="code" href="classReferenceType.html#ad3eabdfac95c0fdd7618284de92ad7fb">GetReferenceTarget</a>(),</div>
+<div class="line"><a name="l03305"></a><span class="lineno"> 3305</span>&#160;                                   rtb-&gt;<a class="code" href="classType.html#a1ef4f8a5d67d1ff6010ab1bcaaea4e6f">GetReferenceTarget</a>(), ignoreConst));</div>
+<div class="line"><a name="l03306"></a><span class="lineno"> 3306</span>&#160;</div>
+<div class="line"><a name="l03307"></a><span class="lineno"> 3307</span>&#160;    <span class="keyword">const</span> <a class="code" href="classFunctionType.html" title="Type representing a function (return type + argument types)">FunctionType</a> *fta = CastType&lt;FunctionType&gt;(a);</div>
+<div class="line"><a name="l03308"></a><span class="lineno"> 3308</span>&#160;    <span class="keyword">const</span> <a class="code" href="classFunctionType.html" title="Type representing a function (return type + argument types)">FunctionType</a> *ftb = CastType&lt;FunctionType&gt;(b);</div>
+<div class="line"><a name="l03309"></a><span class="lineno"> 3309</span>&#160;    <span class="keywordflow">if</span> (fta != NULL &amp;&amp; ftb != NULL) {</div>
+<div class="line"><a name="l03310"></a><span class="lineno"> 3310</span>&#160;        <span class="comment">// Both the return types and all of the argument types must match</span></div>
+<div class="line"><a name="l03311"></a><span class="lineno"> 3311</span>&#160;        <span class="comment">// for function types to match</span></div>
+<div class="line"><a name="l03312"></a><span class="lineno"> 3312</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(fta-&gt;<a class="code" href="classFunctionType.html#a45303f612d6eb85d73fb8cbd785330cf">GetReturnType</a>(), ftb-&gt;GetReturnType(),</div>
+<div class="line"><a name="l03313"></a><span class="lineno"> 3313</span>&#160;                                ignoreConst))</div>
 <div class="line"><a name="l03314"></a><span class="lineno"> 3314</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l03315"></a><span class="lineno"> 3315</span>&#160;</div>
-<div class="line"><a name="l03316"></a><span class="lineno"> 3316</span>&#160;        <span class="keywordflow">if</span> (fta-&gt;<a class="code" href="classFunctionType.html#aa8626ccd2e745fce66214f69330d6437">GetNumParameters</a>() != ftb-&gt;GetNumParameters())</div>
-<div class="line"><a name="l03317"></a><span class="lineno"> 3317</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l03318"></a><span class="lineno"> 3318</span>&#160;</div>
-<div class="line"><a name="l03319"></a><span class="lineno"> 3319</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; fta-&gt;<a class="code" href="classFunctionType.html#aa8626ccd2e745fce66214f69330d6437">GetNumParameters</a>(); ++i)</div>
-<div class="line"><a name="l03320"></a><span class="lineno"> 3320</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(fta-&gt;<a class="code" href="classFunctionType.html#a144e797267311e897311b257421abf7f">GetParameterType</a>(i),</div>
-<div class="line"><a name="l03321"></a><span class="lineno"> 3321</span>&#160;                       ftb-&gt;GetParameterType(i), ignoreConst))</div>
-<div class="line"><a name="l03322"></a><span class="lineno"> 3322</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l03323"></a><span class="lineno"> 3323</span>&#160;</div>
-<div class="line"><a name="l03324"></a><span class="lineno"> 3324</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l03325"></a><span class="lineno"> 3325</span>&#160;    }</div>
-<div class="line"><a name="l03326"></a><span class="lineno"> 3326</span>&#160;</div>
-<div class="line"><a name="l03327"></a><span class="lineno"> 3327</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l03328"></a><span class="lineno"> 3328</span>&#160;}</div>
+<div class="line"><a name="l03316"></a><span class="lineno"> 3316</span>&#160;        <span class="keywordflow">if</span> (fta-&gt;<a class="code" href="classFunctionType.html#a32f0aa9227794002abea1952e6c9f347">isTask</a> != ftb-&gt;isTask ||</div>
+<div class="line"><a name="l03317"></a><span class="lineno"> 3317</span>&#160;            fta-&gt;<a class="code" href="classFunctionType.html#ad9be8ddac0b12ed937557b231319052c">isExported</a> != ftb-&gt;isExported ||</div>
+<div class="line"><a name="l03318"></a><span class="lineno"> 3318</span>&#160;            fta-&gt;<a class="code" href="classFunctionType.html#a82597ec6f94ce5517506e306953f7eb9">isExternC</a> != ftb-&gt;isExternC ||</div>
+<div class="line"><a name="l03319"></a><span class="lineno"> 3319</span>&#160;            fta-&gt;<a class="code" href="classFunctionType.html#a4678c61188857a7671bd1539ee666f0c">isUnmasked</a> != ftb-&gt;isUnmasked)</div>
+<div class="line"><a name="l03320"></a><span class="lineno"> 3320</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l03321"></a><span class="lineno"> 3321</span>&#160;</div>
+<div class="line"><a name="l03322"></a><span class="lineno"> 3322</span>&#160;        <span class="keywordflow">if</span> (fta-&gt;<a class="code" href="classFunctionType.html#aa8626ccd2e745fce66214f69330d6437">GetNumParameters</a>() != ftb-&gt;GetNumParameters())</div>
+<div class="line"><a name="l03323"></a><span class="lineno"> 3323</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l03324"></a><span class="lineno"> 3324</span>&#160;</div>
+<div class="line"><a name="l03325"></a><span class="lineno"> 3325</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; fta-&gt;<a class="code" href="classFunctionType.html#aa8626ccd2e745fce66214f69330d6437">GetNumParameters</a>(); ++i)</div>
+<div class="line"><a name="l03326"></a><span class="lineno"> 3326</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(fta-&gt;<a class="code" href="classFunctionType.html#a144e797267311e897311b257421abf7f">GetParameterType</a>(i),</div>
+<div class="line"><a name="l03327"></a><span class="lineno"> 3327</span>&#160;                       ftb-&gt;GetParameterType(i), ignoreConst))</div>
+<div class="line"><a name="l03328"></a><span class="lineno"> 3328</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l03329"></a><span class="lineno"> 3329</span>&#160;</div>
-<div class="line"><a name="l03330"></a><span class="lineno"> 3330</span>&#160;</div>
-<div class="line"><a name="l03331"></a><span class="lineno"> 3331</span>&#160;<span class="keywordtype">bool</span></div>
-<div class="line"><a name="l03332"></a><span class="lineno"><a class="code" href="classType.html#a64dc632c4a2a352b75b16c7ece65ee5f"> 3332</a></span>&#160;<a class="code" href="classType.html#a64dc632c4a2a352b75b16c7ece65ee5f">Type::Equal</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *a, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *b) {</div>
-<div class="line"><a name="l03333"></a><span class="lineno"> 3333</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(a, b, <span class="keyword">false</span>);</div>
+<div class="line"><a name="l03330"></a><span class="lineno"> 3330</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l03331"></a><span class="lineno"> 3331</span>&#160;    }</div>
+<div class="line"><a name="l03332"></a><span class="lineno"> 3332</span>&#160;</div>
+<div class="line"><a name="l03333"></a><span class="lineno"> 3333</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l03334"></a><span class="lineno"> 3334</span>&#160;}</div>
 <div class="line"><a name="l03335"></a><span class="lineno"> 3335</span>&#160;</div>
 <div class="line"><a name="l03336"></a><span class="lineno"> 3336</span>&#160;</div>
 <div class="line"><a name="l03337"></a><span class="lineno"> 3337</span>&#160;<span class="keywordtype">bool</span></div>
-<div class="line"><a name="l03338"></a><span class="lineno"><a class="code" href="classType.html#a5508f9cbb13418d10343e5fe5cd98d49"> 3338</a></span>&#160;<a class="code" href="classType.html#a5508f9cbb13418d10343e5fe5cd98d49">Type::EqualIgnoringConst</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *a, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *b) {</div>
-<div class="line"><a name="l03339"></a><span class="lineno"> 3339</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(a, b, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l03338"></a><span class="lineno"><a class="code" href="classType.html#a64dc632c4a2a352b75b16c7ece65ee5f"> 3338</a></span>&#160;<a class="code" href="classType.html#a64dc632c4a2a352b75b16c7ece65ee5f">Type::Equal</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *a, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *b) {</div>
+<div class="line"><a name="l03339"></a><span class="lineno"> 3339</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(a, b, <span class="keyword">false</span>);</div>
 <div class="line"><a name="l03340"></a><span class="lineno"> 3340</span>&#160;}</div>
+<div class="line"><a name="l03341"></a><span class="lineno"> 3341</span>&#160;</div>
+<div class="line"><a name="l03342"></a><span class="lineno"> 3342</span>&#160;</div>
+<div class="line"><a name="l03343"></a><span class="lineno"> 3343</span>&#160;<span class="keywordtype">bool</span></div>
+<div class="line"><a name="l03344"></a><span class="lineno"><a class="code" href="classType.html#a5508f9cbb13418d10343e5fe5cd98d49"> 3344</a></span>&#160;<a class="code" href="classType.html#a5508f9cbb13418d10343e5fe5cd98d49">Type::EqualIgnoringConst</a>(<span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *a, <span class="keyword">const</span> <a class="code" href="classType.html" title="Interface class that defines the type abstraction.">Type</a> *b) {</div>
+<div class="line"><a name="l03345"></a><span class="lineno"> 3345</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="type_8cpp.html#a27ebe7cb3612850b086e3d4736c3f9ae">lCheckTypeEquality</a>(a, b, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l03346"></a><span class="lineno"> 3346</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 27 2013 23:38:29 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 19 2013 21:30:52 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
