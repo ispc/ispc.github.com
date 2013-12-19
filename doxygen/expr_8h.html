@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.5.0</span>
+   &#160;<span id="projectnumber">1.6.0</span>
    </div>
   </td>
  </tr>
@@ -121,6 +121,7 @@ Classes</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a22c267bd1298a34e1b3fec5254903717"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="expr_8h.html#a22c267bd1298a34e1b3fec5254903717">CanConvertTypes</a> (const <a class="el" href="classType.html">Type</a> *fromType, const <a class="el" href="classType.html">Type</a> *toType, const char *errorMsgBase=NULL, <a class="el" href="structSourcePos.html">SourcePos</a> pos=<a class="el" href="structSourcePos.html">SourcePos</a>())</td></tr>
 <tr class="memitem:a776a3d6e37bb2b78ce0d3ed4cdea9556"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExpr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="expr_8h.html#a776a3d6e37bb2b78ce0d3ed4cdea9556">TypeConvertExpr</a> (<a class="el" href="classExpr.html">Expr</a> *expr, const <a class="el" href="classType.html">Type</a> *toType, const char *errorMsgBase)</td></tr>
+<tr class="memitem:aea2b23275dc720bde492976bef2988ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExpr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="expr_8h.html#aea2b23275dc720bde492976bef2988ae">MakeBinaryExpr</a> (<a class="el" href="classBinaryExpr.html#a968e4b26ba6673e3422708e341f1aed7">BinaryExpr::Op</a> o, <a class="el" href="classExpr.html">Expr</a> *a, <a class="el" href="classExpr.html">Expr</a> *b, <a class="el" href="structSourcePos.html">SourcePos</a> p)</td></tr>
 <tr class="memitem:a527118184f536ef9df67c74bc2fb5176"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="expr_8h.html#a527118184f536ef9df67c74bc2fb5176">InitSymbol</a> (llvm::Value *lvalue, const <a class="el" href="classType.html">Type</a> *symType, <a class="el" href="classExpr.html">Expr</a> *initExpr, <a class="el" href="classFunctionEmitContext.html">FunctionEmitContext</a> *ctx, <a class="el" href="structSourcePos.html">SourcePos</a> pos)</td></tr>
 <tr class="memitem:ae94c05cca3a65f90a54dac243c470446"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="expr_8h.html#ae94c05cca3a65f90a54dac243c470446">PossiblyResolveFunctionOverloads</a> (<a class="el" href="classExpr.html">Expr</a> *expr, const <a class="el" href="classType.html">Type</a> *type)</td></tr>
 </table>
@@ -170,7 +171,7 @@ Functions</h2></td></tr>
 
 <p>References <a class="el" href="expr_8cpp_source.html#l00196">lDoTypeConv()</a>.</p>
 
-<p>Referenced by <a class="el" href="expr_8cpp_source.html#l08116">FunctionSymbolExpr::computeOverloadCost()</a>, <a class="el" href="expr_8cpp_source.html#l08061">lIsMatchWithTypeConvSameVariability()</a>, <a class="el" href="expr_8cpp_source.html#l03686">FunctionCallExpr::TypeCheck()</a>, and <a class="el" href="expr_8cpp_source.html#l07042">TypeCastExpr::TypeCheck()</a>.</p>
+<p>Referenced by <a class="el" href="expr_8cpp_source.html#l08211">FunctionSymbolExpr::computeOverloadCost()</a>, <a class="el" href="expr_8cpp_source.html#l08156">lIsMatchWithTypeConvSameVariability()</a>, <a class="el" href="expr_8cpp_source.html#l03774">FunctionCallExpr::TypeCheck()</a>, and <a class="el" href="expr_8cpp_source.html#l07137">TypeCastExpr::TypeCheck()</a>.</p>
 
 </div>
 </div>
@@ -242,9 +243,51 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="expr_8cpp_source.html#l00637">637</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="ctx_8cpp_source.html#l02312">FunctionEmitContext::AddElementOffset()</a>, <a class="el" href="ispc_8h_source.html#l00166">AssertPos</a>, <a class="el" href="ispc_8h_source.html#l00560">Globals::ctx</a>, <a class="el" href="type_8cpp_source.html#l03332">Type::Equal()</a>, <a class="el" href="util_8cpp_source.html#l00387">Error()</a>, <a class="el" href="module_8h_source.html#l00147">Module::errorCount</a>, <a class="el" href="expr_8h_source.html#l00240">ExprList::exprs</a>, <a class="el" href="util_8h_source.html#l00113">FATAL</a>, <a class="el" href="ispc_8cpp_source.html#l00082">g</a>, <a class="el" href="classType.html#ab0eff8692794d3437a91404c98985d20">Type::GetAsUniformType()</a>, <a class="el" href="expr_8cpp_source.html#l00099">Expr::GetConstant()</a>, <a class="el" href="ctx_8cpp_source.html#l00397">FunctionEmitContext::GetCurrentBasicBlock()</a>, <a class="el" href="classCollectionType.html#abc5eb48e176e4abb0fa405d41ae99381">CollectionType::GetElementCount()</a>, <a class="el" href="ctx_8cpp_source.html#l02166">FunctionEmitContext::GetElementPtrInst()</a>, <a class="el" href="classCollectionType.html#a6f8fa8323edfe0d729b9973a38254cf1">CollectionType::GetElementType()</a>, <a class="el" href="type_8h_source.html#l00160">Type::GetSOAWidth()</a>, <a class="el" href="type_8cpp_source.html#l00108">Variability::GetString()</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, <a class="el" href="type_8cpp_source.html#l02565">ReferenceType::GetString()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="type_8cpp_source.html#l00882">PointerType::GetUniform()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="classType.html#a619effc9d2d2517bd884076eb9559b65">Type::GetVariability()</a>, <a class="el" href="expr_8cpp_source.html#l00637">InitSymbol()</a>, <a class="el" href="type_8cpp_source.html#l03222">Type::IsBasicType()</a>, <a class="el" href="type_8h_source.html#l00156">Type::IsSOAType()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00263">LLVMInt32()</a>, <a class="el" href="classType.html#a04eb42d850a697fc181b388688b6393e">Type::LLVMType()</a>, <a class="el" href="ispc_8cpp_source.html#l00083">m</a>, <a class="el" href="ctx_8cpp_source.html#l03075">FunctionEmitContext::MemcpyInst()</a>, <a class="el" href="module_8h_source.html#l00154">Module::module</a>, <a class="el" href="ast_8h_source.html#l00076">ASTNode::pos</a>, <a class="el" href="expr_8cpp_source.html#l00604">PossiblyResolveFunctionOverloads()</a>, <a class="el" href="ispc_8cpp_source.html#l00824">Target::SizeOf()</a>, <a class="el" href="ctx_8cpp_source.html#l02982">FunctionEmitContext::StoreInst()</a>, <a class="el" href="ispc_8h_source.html#l00487">Globals::target</a>, and <a class="el" href="expr_8cpp_source.html#l00584">TypeConvertExpr()</a>.</p>
+<p>References <a class="el" href="ctx_8cpp_source.html#l02316">FunctionEmitContext::AddElementOffset()</a>, <a class="el" href="ispc_8h_source.html#l00166">AssertPos</a>, <a class="el" href="ispc_8h_source.html#l00582">Globals::ctx</a>, <a class="el" href="type_8cpp_source.html#l03338">Type::Equal()</a>, <a class="el" href="util_8cpp_source.html#l00387">Error()</a>, <a class="el" href="module_8h_source.html#l00147">Module::errorCount</a>, <a class="el" href="expr_8h_source.html#l00241">ExprList::exprs</a>, <a class="el" href="util_8h_source.html#l00113">FATAL</a>, <a class="el" href="ispc_8cpp_source.html#l00082">g</a>, <a class="el" href="classType.html#ab0eff8692794d3437a91404c98985d20">Type::GetAsUniformType()</a>, <a class="el" href="expr_8cpp_source.html#l00099">Expr::GetConstant()</a>, <a class="el" href="ctx_8cpp_source.html#l00401">FunctionEmitContext::GetCurrentBasicBlock()</a>, <a class="el" href="classCollectionType.html#abc5eb48e176e4abb0fa405d41ae99381">CollectionType::GetElementCount()</a>, <a class="el" href="ctx_8cpp_source.html#l02170">FunctionEmitContext::GetElementPtrInst()</a>, <a class="el" href="classCollectionType.html#a6f8fa8323edfe0d729b9973a38254cf1">CollectionType::GetElementType()</a>, <a class="el" href="type_8h_source.html#l00160">Type::GetSOAWidth()</a>, <a class="el" href="type_8cpp_source.html#l00108">Variability::GetString()</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, <a class="el" href="type_8cpp_source.html#l02565">ReferenceType::GetString()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="type_8cpp_source.html#l00882">PointerType::GetUniform()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="classType.html#a619effc9d2d2517bd884076eb9559b65">Type::GetVariability()</a>, <a class="el" href="expr_8cpp_source.html#l00637">InitSymbol()</a>, <a class="el" href="type_8cpp_source.html#l03228">Type::IsBasicType()</a>, <a class="el" href="type_8h_source.html#l00156">Type::IsSOAType()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00263">LLVMInt32()</a>, <a class="el" href="classType.html#a04eb42d850a697fc181b388688b6393e">Type::LLVMType()</a>, <a class="el" href="ispc_8cpp_source.html#l00083">m</a>, <a class="el" href="ctx_8cpp_source.html#l03095">FunctionEmitContext::MemcpyInst()</a>, <a class="el" href="module_8h_source.html#l00154">Module::module</a>, <a class="el" href="ast_8h_source.html#l00076">ASTNode::pos</a>, <a class="el" href="expr_8cpp_source.html#l00604">PossiblyResolveFunctionOverloads()</a>, <a class="el" href="ispc_8cpp_source.html#l00981">Target::SizeOf()</a>, <a class="el" href="ctx_8cpp_source.html#l02992">FunctionEmitContext::StoreInst()</a>, <a class="el" href="ispc_8h_source.html#l00509">Globals::target</a>, and <a class="el" href="expr_8cpp_source.html#l00584">TypeConvertExpr()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00147">DeclStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l08410">NewExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l00637">InitSymbol()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00147">DeclStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l08508">NewExpr::GetValue()</a>, and <a class="el" href="expr_8cpp_source.html#l00637">InitSymbol()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aea2b23275dc720bde492976bef2988ae"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classExpr.html">Expr</a>* MakeBinaryExpr </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classBinaryExpr.html#a968e4b26ba6673e3422708e341f1aed7">BinaryExpr::Op</a>&#160;</td>
+          <td class="paramname"><em>o</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classExpr.html">Expr</a> *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classExpr.html">Expr</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSourcePos.html">SourcePos</a>&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="expr_8cpp_source.html#l01712">1712</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+
+<p>References <a class="el" href="expr_8cpp_source.html#l01663">lCreateBinaryOperatorCall()</a>.</p>
 
 </div>
 </div>
@@ -274,9 +317,9 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="expr_8cpp_source.html#l00604">604</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p>References <a class="el" href="classType.html#a51af28faf17eb05982547d9b340429eb">Type::GetBaseType()</a>, <a class="el" href="type_8h_source.html#l00890">FunctionType::GetNumParameters()</a>, <a class="el" href="type_8cpp_source.html#l02983">FunctionType::GetParameterType()</a>, <a class="el" href="ast_8h_source.html#l00076">ASTNode::pos</a>, and <a class="el" href="expr_8cpp_source.html#l08188">FunctionSymbolExpr::ResolveOverloads()</a>.</p>
+<p>References <a class="el" href="classType.html#a51af28faf17eb05982547d9b340429eb">Type::GetBaseType()</a>, <a class="el" href="type_8h_source.html#l00890">FunctionType::GetNumParameters()</a>, <a class="el" href="type_8cpp_source.html#l02989">FunctionType::GetParameterType()</a>, <a class="el" href="ast_8h_source.html#l00076">ASTNode::pos</a>, and <a class="el" href="expr_8cpp_source.html#l08283">FunctionSymbolExpr::ResolveOverloads()</a>.</p>
 
-<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00147">DeclStmt::EmitCode()</a>, and <a class="el" href="expr_8cpp_source.html#l00637">InitSymbol()</a>.</p>
+<p>Referenced by <a class="el" href="stmt_8cpp_source.html#l00147">DeclStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l00637">InitSymbol()</a>, and <a class="el" href="expr_8cpp_source.html#l03048">AssignExpr::TypeCheck()</a>.</p>
 
 </div>
 </div>
@@ -316,14 +359,14 @@ parameter"). </p>
 
 <p>References <a class="el" href="util_8cpp_source.html#l00400">Debug()</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l00196">lDoTypeConv()</a>, and <a class="el" href="ast_8h_source.html#l00076">ASTNode::pos</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l00404">Module::AddGlobalVariable()</a>, <a class="el" href="ctx_8cpp_source.html#l01241">FunctionEmitContext::CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l00147">DeclStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l03896">ExprList::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l03532">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00637">InitSymbol()</a>, <a class="el" href="expr_8cpp_source.html#l01670">lEmitLogicalOp()</a>, <a class="el" href="stmt_8cpp_source.html#l00295">DeclStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l01276">UnaryExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l00469">IfStmt::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l00932">DoStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l02440">BinaryExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l01127">ForStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l02979">AssignExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l03430">SelectExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l01825">ForeachStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l03686">FunctionCallExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l04502">IndexExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l02589">SwitchStmt::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l03186">AssertStmt::TypeCheck()</a>, and <a class="el" href="expr_8cpp_source.html#l08545">NewExpr::TypeCheck()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l00404">Module::AddGlobalVariable()</a>, <a class="el" href="ctx_8cpp_source.html#l01245">FunctionEmitContext::CurrentLanesReturned()</a>, <a class="el" href="stmt_8cpp_source.html#l00147">DeclStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l03976">ExprList::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l03589">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l00637">InitSymbol()</a>, <a class="el" href="expr_8cpp_source.html#l01728">lEmitLogicalOp()</a>, <a class="el" href="stmt_8cpp_source.html#l00295">DeclStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l01276">UnaryExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l00469">IfStmt::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l00932">DoStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l02498">BinaryExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l01127">ForStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l03048">AssignExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l03480">SelectExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l01825">ForeachStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l03774">FunctionCallExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l04583">IndexExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l02589">SwitchStmt::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l03186">AssertStmt::TypeCheck()</a>, and <a class="el" href="expr_8cpp_source.html#l08643">NewExpr::TypeCheck()</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 27 2013 23:38:29 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 19 2013 21:30:52 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
