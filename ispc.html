@@ -100,6 +100,8 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-1">Updating ISPC Programs For Changes In ISPC 1.1</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-2">Updating ISPC Programs For Changes In ISPC 1.2</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-3">Updating ISPC Programs For Changes In ISPC 1.3</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-5-0">Updating ISPC Programs For Changes In ISPC 1.5.0</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-6-0">Updating ISPC Programs For Changes In ISPC 1.6.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -147,7 +149,10 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#enumeration-types">Enumeration Types</a></li>
 <li><a class="reference internal" href="#short-vector-types">Short Vector Types</a></li>
 <li><a class="reference internal" href="#array-types">Array Types</a></li>
-<li><a class="reference internal" href="#struct-types">Struct Types</a></li>
+<li><a class="reference internal" href="#struct-types">Struct Types</a><ul>
+<li><a class="reference internal" href="#operators-overloading">Operators Overloading</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#structure-of-array-types">Structure of Array Types</a></li>
 </ul>
 </li>
@@ -318,6 +323,13 @@ Double precision floating point constants are floating point number with
 <tt class="docutils literal">d</tt> suffix and optional exponent part. Here are some examples: 3.14d,
 31.4d-1, 1.d, 1.0d, 1d-2. Note that floating point number without suffix is
 treated as single precision constant.</p>
+</div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-6-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.6.0</h2>
+<p>This release adds support for <a class="reference internal" href="#operators-overloading">Operators Overloading</a>, so a word <tt class="docutils literal">operator</tt>
+becomes a keyword and it potentially creates a conflict with existing user
+function. Also a new library function packed_store_active2() was introduced,
+which also may create a conflict with existing user functions.</p>
 </div>
 </div>
 <div class="section" id="getting-started-with-ispc">
@@ -1280,6 +1292,7 @@ statement itself (e.g. <tt class="docutils literal">for (int i = 0; ...</tt>)</l
 <li>Function overloading by parameter type</li>
 <li>Hexadecimal floating-point constants</li>
 <li>Dynamic memory allocation with <tt class="docutils literal">new</tt> and <tt class="docutils literal">delete</tt>.</li>
+<li>Limited support for overloaded operators (<a class="reference internal" href="#operators-overloading">Operators Overloading</a>).</li>
 </ul>
 <p><tt class="docutils literal">ispc</tt> also adds a number of new features that aren't in C89, C99, or
 C++:</p>
@@ -1987,6 +2000,31 @@ still has only a single <tt class="docutils literal">a</tt> member, since <tt cl
 <tt class="docutils literal">uniform</tt> variability in the declaration of <tt class="docutils literal">Foo</tt>.  Therefore, the
 indexing operation in the last line results in an error.</p>
 </div>
+<div class="section" id="operators-overloading">
+<h2>Operators Overloading</h2>
+<p>ISPC has limited support for overloaded operators for <tt class="docutils literal">struct</tt> types. Only
+binary operators are supported currently, namely they are: <tt class="docutils literal">*, /, %, +, <span class="pre">-,</span> &gt;&gt;
+and &lt;&lt;</tt>. Operators overloading support is similar to the one in C++ language.
+To overload an operator for <tt class="docutils literal">struct S</tt>, you need to declare and implement a
+function using keyword <tt class="docutils literal">operator</tt>, which accepts two parameters of type
+<tt class="docutils literal">struct S</tt> or <tt class="docutils literal">struct S&amp;</tt> and returns either of these types. For example:</p>
+<pre class="literal-block">
+struct S { float re, im;};
+struct S operator*(struct S a, struct S b) {
+    struct S result;
+    result.re = a.re * b.re - a.im * b.im;
+    result.im = a.re * b.im + a.im * b.re;
+    return result;
+}
+
+void foo(struct S a, struct S b) {
+    struct S mul = a*b;
+    print(&quot;a.re:   %\na.im:   %\n&quot;, a.re, a.im);
+    print(&quot;b.re:   %\nb.im:   %\n&quot;, b.re, b.im);
+    print(&quot;mul.re: %\nmul.im: %\n&quot;, mul.re, mul.im);
+}
+</pre>
+</div>
 <div class="section" id="structure-of-array-types">
 <h2>Structure of Array Types</h2>
 <p>If data can be laid out in memory so that the executing program instances
@@ -2159,8 +2197,11 @@ delete[] ptr;
 <p>In the above code, each program instance allocates its own <tt class="docutils literal">count</tt> sized
 array of <tt class="docutils literal">uniform int</tt> values, uses that memory, and then deallocates
 that memory.  Uses of <tt class="docutils literal">new</tt> and <tt class="docutils literal">delete</tt> in <tt class="docutils literal">ispc</tt> programs are
-serviced by corresponding calls the system C library's <tt class="docutils literal">malloc()</tt> and
-<tt class="docutils literal">free()</tt> functions.</p>
+implemented as calls to C library's aligned memory allocation routines,
+which are platform dependent (<tt class="docutils literal">posix_memalign()</tt> and <tt class="docutils literal">free()</tt> on Linux
+and Mac and <tt class="docutils literal">_aligned_malloc()</tt> and <tt class="docutils literal">_aligned_free()</tt> on Windows). So it's
+advised to pair ISPC's <tt class="docutils literal">new</tt> and <tt class="docutils literal">delete</tt> with each other, but not with
+C/C++ memory management functions.</p>
 <p>Note that the rules for <tt class="docutils literal">uniform</tt> and <tt class="docutils literal">varying</tt> for <tt class="docutils literal">new</tt> are
 analogous to the corresponding rules for pointers (as described in
 <a class="reference internal" href="#pointer-types">Pointer Types</a>).  Specifically, if a specific rate qualifier isn't
@@ -2723,8 +2764,7 @@ Intel® Cilk(tm), Intel® Thread Building Blocks or another task system), and
 for tasks to use <tt class="docutils literal">ispc</tt> for SPMD parallelism across the vector lanes as
 appropriate.  Alternatively, <tt class="docutils literal">ispc</tt> also has support for launching tasks
 from <tt class="docutils literal">ispc</tt> code.  The approach is similar to Intel® Cilk's task launch
-feature.  (See the <tt class="docutils literal">examples/mandelbrot_tasks</tt> example to see it used in
-a small example.)</p>
+feature.  (Check the <tt class="docutils literal">examples/mandelbrot_tasks</tt> example to see how it is used.)</p>
 <p>Any function that is launched as a task must be declared with the
 <tt class="docutils literal">task</tt> qualifier:</p>
 <pre class="literal-block">
@@ -2801,6 +2841,30 @@ gives a unique index that corresponds to the hardware thread that is
 executing the current task.  The <tt class="docutils literal">threadIndex</tt> can be used for accessing
 data that is private to the current thread and thus doesn't require
 synchronization to access under parallel execution.</p>
+<p>The tasking system also supports multi-dimensional partitioning (currently up
+to three dimensions). To launch a 3D grid of tasks, for example with <tt class="docutils literal">N0</tt>,
+<tt class="docutils literal">N1</tt>  and <tt class="docutils literal">N2</tt> tasks in x-, y- and z-dimension respectively</p>
+<pre class="literal-block">
+float data[N2][N1][N0]
+task void foo_task()
+{
+   data[taskIndex2][taskIndex1][threadIndex0] = taskIndex;
+}
+</pre>
+<p>we use the following <tt class="docutils literal">launch</tt> expressions:</p>
+<pre class="literal-block">
+launch [N2][N1][N0] foo_task()
+</pre>
+<p>or</p>
+<pre class="literal-block">
+launch [N0,N1,N2] foo_task()
+</pre>
+<p>Value of <tt class="docutils literal">taskIndex</tt> is equal to <tt class="docutils literal">taskIndex0 + <span class="pre">taskCount0*(taskIndex1</span> +
+taskCount1*taskIndex2)</tt> and it ranges from <tt class="docutils literal">0</tt> to  <tt class="docutils literal"><span class="pre">taskCount-1</span></tt>, where
+<tt class="docutils literal">taskCount = taskCount0*taskCount1*taskCount2</tt>. If <tt class="docutils literal">N1</tt> or/and <tt class="docutils literal">N2</tt> are
+not specified in the <tt class="docutils literal">launch</tt> expression, a value of <tt class="docutils literal">1</tt> is assumed.
+Finally, for an one-dimensional grid of tasks,  <tt class="docutils literal">taskIndex</tt> is equivalent to
+<tt class="docutils literal">taskIndex0</tt> and <tt class="docutils literal">taskCount</tt> is equivalent to <tt class="docutils literal">taskCount0</tt>.</p>
 </div>
 <div class="section" id="task-parallelism-runtime-requirements">
 <h2>Task Parallelism: Runtime Requirements</h2>
@@ -2826,7 +2890,7 @@ remainder of this section.</p>
 manage tasks in <tt class="docutils literal">ispc</tt>:</p>
 <pre class="literal-block">
 void *ISPCAlloc(void **handlePtr, int64_t size, int32_t alignment);
-void ISPCLaunch(void **handlePtr, void *f, void *data, int count);
+void ISPCLaunch(void **handlePtr, void *f, void *data, int count0, int count1, int count2);
 void ISPCSync(void *handle);
 </pre>
 <p>All three of these functions take an opaque handle (or a pointer to an
@@ -2859,13 +2923,17 @@ tasks.  Each <tt class="docutils literal">launch</tt> statement in <tt class="do
 after the handle pointer to the function are relatively straightforward;
 the <tt class="docutils literal">void *f</tt> parameter holds a pointer to a function to call to run the
 work for this task, <tt class="docutils literal">data</tt> holds a pointer to data to pass to this
-function, and <tt class="docutils literal">count</tt> is the number of instances of this function to
-enqueue for asynchronous execution.  (In other words, <tt class="docutils literal">count</tt> corresponds
-to the value <tt class="docutils literal">n</tt> in a multiple-task launch statement like <tt class="docutils literal">launch[n]</tt>.)</p>
+function, and <tt class="docutils literal">count0</tt>, <tt class="docutils literal">count1</tt> and <tt class="docutils literal">count2</tt> are the number of instances
+of this function to enqueue for asynchronous execution.  (In other words,
+<tt class="docutils literal">count0</tt>, <tt class="docutils literal">count1</tt> and <tt class="docutils literal">count2</tt> correspond to the value <tt class="docutils literal">n0</tt>, <tt class="docutils literal">n1</tt>
+and <tt class="docutils literal">n2</tt> in a multiple-task launch statement like <tt class="docutils literal"><span class="pre">launch[n2][n1][n0]</span></tt> or
+<tt class="docutils literal">launch [n0,n1,n2]</tt> respectively.)</p>
 <p>The signature of the provided function pointer <tt class="docutils literal">f</tt> is</p>
 <pre class="literal-block">
 void (*TaskFuncPtr)(void *data, int threadIndex, int threadCount,
-                    int taskIndex, int taskCount)
+                    int taskIndex, int taskCount,
+                    int taskIndex0, int taskIndex1, int taskIndex2,
+                    int taskCount0, int taskCount1, int taskCount2);
 </pre>
 <p>When this function pointer is called by one of the hardware threads managed
 by the task system, the <tt class="docutils literal">data</tt> pointer passed to <tt class="docutils literal">ISPCLaunch()</tt> should
@@ -2874,11 +2942,14 @@ number of hardware threads that have been spawned to run tasks and
 <tt class="docutils literal">threadIndex</tt> should be an integer index between zero and <tt class="docutils literal">threadCount</tt>
 uniquely identifying the hardware thread that is running the task.  (These
 values can be used to index into thread-local storage.)</p>
-<p>The value of <tt class="docutils literal">taskCount</tt> should be the number of tasks launched in the
-<tt class="docutils literal">launch</tt> statement that caused the call to <tt class="docutils literal">ISPCLaunch()</tt> and each of
-the calls to this function should be given a unique value of <tt class="docutils literal">taskIndex</tt>
-between zero and <tt class="docutils literal">taskCount</tt>, to distinguish which of the instances
-of the set of launched tasks is running.</p>
+<p>The value of <tt class="docutils literal">taskCount</tt> should be the total number of tasks launched in the
+<tt class="docutils literal">launch</tt> statement (it must be equal to <tt class="docutils literal">taskCount0*taskCount1*taskCount2</tt>)
+that caused the call to <tt class="docutils literal">ISPCLaunch()</tt> and each of the calls to this function
+should be given a unique value of <tt class="docutils literal">taskIndex</tt>, <tt class="docutils literal">taskIndex0</tt>, <tt class="docutils literal">taskIndex1</tt>
+and <tt class="docutils literal">taskIndex2</tt> between zero and <tt class="docutils literal">taskCount</tt>, <tt class="docutils literal">taskCount0</tt>,
+<tt class="docutils literal">taskCount1</tt> and <tt class="docutils literal">taskCount2</tt> respectively,  with <tt class="docutils literal">taskIndex = taskIndex0
++ <span class="pre">taskCount0*(taskIndex1</span> + taskCount1*taskIndex2)</tt>, to distinguish which of
+the instances of the set of launched tasks is running.</p>
 </div>
 </div>
 <div class="section" id="the-ispc-standard-library">
@@ -3305,6 +3376,18 @@ int64 rotate(int64 value, uniform int offset)
 float rotate(float value, uniform int offset)
 double rotate(double value, uniform int offset)
 </pre>
+<p>The <tt class="docutils literal">shift()</tt> function allows each program instance to find the value of
+the given value that their neighbor <tt class="docutils literal">offset</tt> steps away has.  This is similar
+to <tt class="docutils literal">rotate()</tt> with the exception that values are not circularly shifted.
+Instead, zeroes are shifted in where appropriate.</p>
+<pre class="literal-block">
+int8 shift(int8 value, uniform int offset)
+int16 shift(int16 value, uniform int offset)
+int32 shift(int32 value, uniform int offset)
+int64 shift(int64 value, uniform int offset)
+float shift(float value, uniform int offset)
+double shift(double value, uniform int offset)
+</pre>
 <p>Finally, the <tt class="docutils literal">shuffle()</tt> functions allow two variants of fully general
 shuffling of values among the program instances.  For the first version,
 each program instance's value of permutation gives the program instance
@@ -3332,7 +3415,7 @@ float shuffle(float value0, float value1, int permutation)
 double shuffle(double value0, double value1, int permutation)
 </pre>
 <p>Finally, there are primitive operations that extract and set values in the
-SIMD lanes.  You can implement all of the broadcast, rotate, and shuffle
+SIMD lanes.  You can implement all of the broadcast, rotate, shift, and shuffle
 operations described above in this section from these routines, though in
 general, not as efficiently.  These routines are useful for implementing
 other reductions and cross-lane communication that isn't included in the
@@ -3533,6 +3616,13 @@ uniform int packed_store_active(uniform int * uniform base,
 uniform int packed_store_active(uniform unsigned int * uniform base,
                                 unsigned int val)
 </pre>
+<p>There are also <tt class="docutils literal">packed_store_active2()</tt> functions with exactly the same
+signatures and the same semantic except that they may write one extra
+element to the output array (but still returning the same value as
+<tt class="docutils literal">packed_store_active()</tt>). These functions suggest different branch free
+implementation on most of supported targets, which usually (but not always)
+performs better than <tt class="docutils literal">packed_store_active()</tt>. It's advised to test function
+performance on user's scenarios on particular target hardware before using it.</p>
 <p>As an example of how these functions can be used, the following code shows
 the use of <tt class="docutils literal">packed_store_active()</tt>.</p>
 <pre class="literal-block">
