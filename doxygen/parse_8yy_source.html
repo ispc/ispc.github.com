@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.6.0</span>
+   &#160;<span id="projectnumber">1.7.0</span>
    </div>
   </td>
  </tr>
@@ -666,7 +666,7 @@
 <div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;    {</div>
 <div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;        <span class="keywordflow">if</span> ($2 == NULL)</div>
 <div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;            $$ = NULL;</div>
-<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="classType.html#a64dc632c4a2a352b75b16c7ece65ee5f">Type::Equal</a>($2, <a class="code" href="classAtomicType.html#a28a79cd7526ec38bf8ae805bfbb179f3">AtomicType::Void</a>)) {</div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> ($2-&gt;IsVoidType()) {</div>
 <div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;            <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(@1, <span class="stringliteral">&quot;\&quot;uniform\&quot; qualifier is illegal with \&quot;void\&quot; type.&quot;</span>);</div>
 <div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;            $$ = NULL;</div>
 <div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;        }</div>
@@ -677,7 +677,7 @@
 <div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;    {</div>
 <div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;        <span class="keywordflow">if</span> ($2 == NULL)</div>
 <div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;            $$ = NULL;</div>
-<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="classType.html#a64dc632c4a2a352b75b16c7ece65ee5f">Type::Equal</a>($2, <a class="code" href="classAtomicType.html#a28a79cd7526ec38bf8ae805bfbb179f3">AtomicType::Void</a>)) {</div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> ($2-&gt;IsVoidType()) {</div>
 <div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;            <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(@1, <span class="stringliteral">&quot;\&quot;varying\&quot; qualifier is illegal with \&quot;void\&quot; type.&quot;</span>);</div>
 <div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;            $$ = NULL;</div>
 <div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;        }</div>
@@ -1130,7 +1130,7 @@
 <div class="line"><a name="l01081"></a><span class="lineno"> 1081</span>&#160;    {</div>
 <div class="line"><a name="l01082"></a><span class="lineno"> 1082</span>&#160;        <span class="keywordflow">if</span> ($2 != NULL) {</div>
 <div class="line"><a name="l01083"></a><span class="lineno"> 1083</span>&#160;            <span class="keywordflow">if</span> ($1 == <a class="code" href="decl_8h.html#a4e1d46f163dbd13f9fe27a6b5074b8ea">TYPEQUAL_UNIFORM</a>) {</div>
-<div class="line"><a name="l01084"></a><span class="lineno"> 1084</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="classType.html#a64dc632c4a2a352b75b16c7ece65ee5f">Type::Equal</a>($2, <a class="code" href="classAtomicType.html#a28a79cd7526ec38bf8ae805bfbb179f3">AtomicType::Void</a>)) {</div>
+<div class="line"><a name="l01084"></a><span class="lineno"> 1084</span>&#160;                <span class="keywordflow">if</span> ($2-&gt;IsVoidType()) {</div>
 <div class="line"><a name="l01085"></a><span class="lineno"> 1085</span>&#160;                    <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(@1, <span class="stringliteral">&quot;\&quot;uniform\&quot; qualifier is illegal with \&quot;void\&quot; type.&quot;</span>);</div>
 <div class="line"><a name="l01086"></a><span class="lineno"> 1086</span>&#160;                    $$ = NULL;</div>
 <div class="line"><a name="l01087"></a><span class="lineno"> 1087</span>&#160;                }</div>
@@ -1138,7 +1138,7 @@
 <div class="line"><a name="l01089"></a><span class="lineno"> 1089</span>&#160;                    $$ = $2-&gt;GetAsUniformType();</div>
 <div class="line"><a name="l01090"></a><span class="lineno"> 1090</span>&#160;            }</div>
 <div class="line"><a name="l01091"></a><span class="lineno"> 1091</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> ($1 == <a class="code" href="decl_8h.html#a1b7c547c3ec2c68546466f0ea2312224">TYPEQUAL_VARYING</a>) {</div>
-<div class="line"><a name="l01092"></a><span class="lineno"> 1092</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="classType.html#a64dc632c4a2a352b75b16c7ece65ee5f">Type::Equal</a>($2, <a class="code" href="classAtomicType.html#a28a79cd7526ec38bf8ae805bfbb179f3">AtomicType::Void</a>)) {</div>
+<div class="line"><a name="l01092"></a><span class="lineno"> 1092</span>&#160;                <span class="keywordflow">if</span> ($2-&gt;IsVoidType()) {</div>
 <div class="line"><a name="l01093"></a><span class="lineno"> 1093</span>&#160;                    <a class="code" href="util_8h.html#acc4419cef627221c13aff45ab137c735">Error</a>(@1, <span class="stringliteral">&quot;\&quot;varying\&quot; qualifier is illegal with \&quot;void\&quot; type.&quot;</span>);</div>
 <div class="line"><a name="l01094"></a><span class="lineno"> 1094</span>&#160;                    $$ = NULL;</div>
 <div class="line"><a name="l01095"></a><span class="lineno"> 1095</span>&#160;                }</div>
@@ -2483,7 +2483,7 @@
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 19 2013 21:30:52 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 18 2014 18:28:37 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

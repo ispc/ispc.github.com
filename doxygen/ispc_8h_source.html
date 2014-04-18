@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.6.0</span>
+   &#160;<span id="projectnumber">1.7.0</span>
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!--header-->
 <div class="contents">
 <a href="ispc_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">  Copyright (c) 2010-2013, Intel Corporation</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">  Copyright (c) 2010-2014, Intel Corporation</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">  All rights reserved.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">  Redistribution and use in source and binary forms, with or without</span></div>
@@ -87,7 +87,7 @@
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#ifndef ISPC_H</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define ISPC_H</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="ispc_8h.html#a41c2e0d19c07dc86fbd86e68b50e5cd7">   41</a></span>&#160;<span class="preprocessor">#define ISPC_VERSION &quot;1.6.0&quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="ispc_8h.html#a41c2e0d19c07dc86fbd86e68b50e5cd7">   41</a></span>&#160;<span class="preprocessor">#define ISPC_VERSION &quot;1.7.0&quot;</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#if !defined(LLVM_3_1) &amp;&amp; !defined(LLVM_3_2) &amp;&amp; !defined(LLVM_3_3) &amp;&amp; !defined(LLVM_3_4) &amp;&amp; !defined(LLVM_3_5)</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#error &quot;Only LLVM 3.1, 3.2, 3.3, 3.4 and the 3.5 development branch are supported&quot;</span></div>
@@ -330,363 +330,378 @@
 <div class="line"><a name="l00281"></a><span class="lineno"><a class="code" href="classTarget.html#a9df30415fc6b8d4799d9b81659433046">  281</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a9df30415fc6b8d4799d9b81659433046">hasScatter</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> <a class="code" href="classTarget.html#aeab42d5eb77fd3184c56b1b08e121df3">m_hasScatter</a>;}</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
 <div class="line"><a name="l00283"></a><span class="lineno"><a class="code" href="classTarget.html#a9acd9fa94c50aa0c3c5a612aa81ee5aa">  283</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a9acd9fa94c50aa0c3c5a612aa81ee5aa">hasTranscendentals</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> <a class="code" href="classTarget.html#a72f3ee06a59112c360f87c4e8ddb33cb">m_hasTranscendentals</a>;}</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment">    /** llvm Target object representing this target. */</span></div>
-<div class="line"><a name="l00288"></a><span class="lineno"><a class="code" href="classTarget.html#ab9336588a885619f1e8c00140c601e17">  288</a></span>&#160;    <span class="keyword">const</span> llvm::Target *<a class="code" href="classTarget.html#ab9336588a885619f1e8c00140c601e17">m_target</a>;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">    /** llvm TargetMachine.</span></div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment">        Note that it&#39;s not destroyed during Target destruction, as</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">        Module::CompileAndOutput() uses TargetMachines after Target is destroyed.</span></div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">        This needs to be changed.</span></div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">        It&#39;s also worth noticing, that DataLayout of TargetMachine cannot be</span></div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">        modified and for generic targets it&#39;s not what we really need, so it</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">        must not be used.</span></div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">        */</span></div>
-<div class="line"><a name="l00298"></a><span class="lineno"><a class="code" href="classTarget.html#ab25cbfefc1f22595aabf3430dc152d34">  298</a></span>&#160;    llvm::TargetMachine *<a class="code" href="classTarget.html#ab25cbfefc1f22595aabf3430dc152d34">m_targetMachine</a>;</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="preprocessor">#if defined(LLVM_3_1)</span></div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="preprocessor"></span>    llvm::TargetData *m_targetData;</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00303"></a><span class="lineno"><a class="code" href="classTarget.html#a0e299ac7e95726b5c10339c3b78ffbed">  303</a></span>&#160;<span class="preprocessor"></span>    llvm::DataLayout *<a class="code" href="classTarget.html#a0e299ac7e95726b5c10339c3b78ffbed">m_dataLayout</a>;</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="preprocessor"></span><span class="comment"></span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment">    /** flag to report invalid state after construction</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="comment">        (due to bad parameters passed to constructor). */</span></div>
-<div class="line"><a name="l00308"></a><span class="lineno"><a class="code" href="classTarget.html#a58c0b1e2b8010567c6c5a622d27d6bd0">  308</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a58c0b1e2b8010567c6c5a622d27d6bd0">m_valid</a>;</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="comment">    /** Instruction set being compiled to. */</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno"><a class="code" href="classTarget.html#aafef0dd4c5c3b6f91907351d6fa18644">  311</a></span>&#160;    <a class="code" href="classTarget.html#aa48340cc9786270d1ddcf046d577512f">ISA</a> <a class="code" href="classTarget.html#aafef0dd4c5c3b6f91907351d6fa18644">m_isa</a>;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="comment">    /** Target system architecture.  (e.g. &quot;x86-64&quot;, &quot;x86&quot;). */</span></div>
-<div class="line"><a name="l00314"></a><span class="lineno"><a class="code" href="classTarget.html#aab79c269edba23ddad660f9313dbf28a">  314</a></span>&#160;    std::string <a class="code" href="classTarget.html#aab79c269edba23ddad660f9313dbf28a">m_arch</a>;</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    </div>
+<div class="line"><a name="l00285"></a><span class="lineno"><a class="code" href="classTarget.html#a82d3906f3c4c22ad0f4bdb2af99a3069">  285</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a82d3906f3c4c22ad0f4bdb2af99a3069">hasTrigonometry</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> <a class="code" href="classTarget.html#a42de3420a81beada76f927e98cbe835c">m_hasTrigonometry</a>;}</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    </div>
+<div class="line"><a name="l00287"></a><span class="lineno"><a class="code" href="classTarget.html#a9f7a9c1e27814b88bda088873b0b6c9f">  287</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a9f7a9c1e27814b88bda088873b0b6c9f">hasRsqrtd</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> <a class="code" href="classTarget.html#a79d99fa00249c2637a3d7044092701f5">m_hasRsqrtd</a>;}</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    </div>
+<div class="line"><a name="l00289"></a><span class="lineno"><a class="code" href="classTarget.html#ab65974a570c7cea4a74366e785b65bc1">  289</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#ab65974a570c7cea4a74366e785b65bc1">hasRcpd</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> <a class="code" href="classTarget.html#a01d91cf3c3ae10605fac058fb3386c7b">m_hasRcpd</a>;}</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">    /** llvm Target object representing this target. */</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno"><a class="code" href="classTarget.html#ab9336588a885619f1e8c00140c601e17">  294</a></span>&#160;    <span class="keyword">const</span> llvm::Target *<a class="code" href="classTarget.html#ab9336588a885619f1e8c00140c601e17">m_target</a>;</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">    /** llvm TargetMachine.</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">        Note that it&#39;s not destroyed during Target destruction, as</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">        Module::CompileAndOutput() uses TargetMachines after Target is destroyed.</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">        This needs to be changed.</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="comment">        It&#39;s also worth noticing, that DataLayout of TargetMachine cannot be</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="comment">        modified and for generic targets it&#39;s not what we really need, so it</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="comment">        must not be used.</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno"><a class="code" href="classTarget.html#ab25cbfefc1f22595aabf3430dc152d34">  304</a></span>&#160;    llvm::TargetMachine *<a class="code" href="classTarget.html#ab25cbfefc1f22595aabf3430dc152d34">m_targetMachine</a>;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="preprocessor">#if defined(LLVM_3_1)</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="preprocessor"></span>    llvm::TargetData *m_targetData;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno"><a class="code" href="classTarget.html#a0e299ac7e95726b5c10339c3b78ffbed">  309</a></span>&#160;<span class="preprocessor"></span>    llvm::DataLayout *<a class="code" href="classTarget.html#a0e299ac7e95726b5c10339c3b78ffbed">m_dataLayout</a>;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="preprocessor"></span><span class="comment"></span></div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="comment">    /** flag to report invalid state after construction</span></div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="comment">        (due to bad parameters passed to constructor). */</span></div>
+<div class="line"><a name="l00314"></a><span class="lineno"><a class="code" href="classTarget.html#a58c0b1e2b8010567c6c5a622d27d6bd0">  314</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a58c0b1e2b8010567c6c5a622d27d6bd0">m_valid</a>;</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="comment">    /** Is the target architecture 32 or 64 bit */</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno"><a class="code" href="classTarget.html#aa7eb7cda8a9a335eec04f0ec5e0b5932">  317</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#aa7eb7cda8a9a335eec04f0ec5e0b5932">m_is32Bit</a>;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="comment">    /** Instruction set being compiled to. */</span></div>
+<div class="line"><a name="l00317"></a><span class="lineno"><a class="code" href="classTarget.html#aafef0dd4c5c3b6f91907351d6fa18644">  317</a></span>&#160;    <a class="code" href="classTarget.html#aa48340cc9786270d1ddcf046d577512f">ISA</a> <a class="code" href="classTarget.html#aafef0dd4c5c3b6f91907351d6fa18644">m_isa</a>;</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="comment">    /** Target CPU. (e.g. &quot;corei7&quot;, &quot;corei7-avx&quot;, ..) */</span></div>
-<div class="line"><a name="l00320"></a><span class="lineno"><a class="code" href="classTarget.html#aa9629e82028a08abd0735160dd9b83d6">  320</a></span>&#160;    std::string <a class="code" href="classTarget.html#aa9629e82028a08abd0735160dd9b83d6">m_cpu</a>;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="comment">    /** Target system architecture.  (e.g. &quot;x86-64&quot;, &quot;x86&quot;). */</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno"><a class="code" href="classTarget.html#aab79c269edba23ddad660f9313dbf28a">  320</a></span>&#160;    std::string <a class="code" href="classTarget.html#aab79c269edba23ddad660f9313dbf28a">m_arch</a>;</div>
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="comment">    /** Target-specific attribute string to pass along to the LLVM backend */</span></div>
-<div class="line"><a name="l00323"></a><span class="lineno"><a class="code" href="classTarget.html#a01d352e58da28f4e1fefdad5e8eb68c9">  323</a></span>&#160;    std::string <a class="code" href="classTarget.html#a01d352e58da28f4e1fefdad5e8eb68c9">m_attributes</a>;</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="preprocessor">#if !defined(LLVM_3_1) &amp;&amp; !defined(LLVM_3_2)</span></div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<span class="preprocessor"></span><span class="comment">    /** Target-specific LLVM attribute, which has to be attached to every</span></div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="comment">        function to ensure that it is generated for correct target architecture.</span></div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="comment">        This is requirement was introduced in LLVM 3.3 */</span></div>
-<div class="line"><a name="l00329"></a><span class="lineno"><a class="code" href="classTarget.html#ac0a62c47f84c851f4e929371cd432811">  329</a></span>&#160;    llvm::AttributeSet* <a class="code" href="classTarget.html#ac0a62c47f84c851f4e929371cd432811">m_tf_attributes</a>;</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="preprocessor"></span><span class="comment"></span></div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="comment">    /** Native vector width of the vector instruction set.  Note that this</span></div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="comment">        value is directly derived from the ISA being used (e.g. it&#39;s 4 for</span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="comment">        SSE, 8 for AVX, etc.) */</span></div>
-<div class="line"><a name="l00335"></a><span class="lineno"><a class="code" href="classTarget.html#a9a89bf825b5c024f42a04dcbb6e13913">  335</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classTarget.html#a9a89bf825b5c024f42a04dcbb6e13913">m_nativeVectorWidth</a>;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="comment">    /** Native vector alignment in bytes. Theoretically this may be derived</span></div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="comment">        from the vector size, but it&#39;s better to manage directly the alignement.</span></div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="comment">        It allows easier experimenting and better fine tuning for particular</span></div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="comment">        platform. This information is primatily used when</span></div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="comment">        --opt=force-aligned-memory is used. */</span></div>
-<div class="line"><a name="l00342"></a><span class="lineno"><a class="code" href="classTarget.html#af70cca5b3b830bb34c4b851cd4cae528">  342</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classTarget.html#af70cca5b3b830bb34c4b851cd4cae528">m_nativeVectorAlignment</a>;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="comment">    /** Data type with in bits. Typically it&#39;s 32, but could be 8, 16 or 64.</span></div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="comment">        For generic it&#39;s -1, which means undefined. */</span></div>
-<div class="line"><a name="l00346"></a><span class="lineno"><a class="code" href="classTarget.html#acca1b35f348ae355b2207883d4308e4b">  346</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classTarget.html#acca1b35f348ae355b2207883d4308e4b">m_dataTypeWidth</a>;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="comment">    /** Actual vector width currently being compiled to.  This may be an</span></div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="comment">        integer multiple of the native vector width, for example if we&#39;re</span></div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment">        &quot;doubling up&quot; and compiling 8-wide on a 4-wide SSE system. */</span></div>
-<div class="line"><a name="l00351"></a><span class="lineno"><a class="code" href="classTarget.html#a34a9a43e4017a5f8c00cf1645bd888d8">  351</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classTarget.html#a34a9a43e4017a5f8c00cf1645bd888d8">m_vectorWidth</a>;</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="comment">    /** Indicates whether position independent code should be generated. */</span></div>
-<div class="line"><a name="l00354"></a><span class="lineno"><a class="code" href="classTarget.html#aaae2bf943660cf5a925221a23f722f07">  354</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#aaae2bf943660cf5a925221a23f722f07">m_generatePIC</a>;</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="comment">    /** Is there overhead associated with masking on the target</span></div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="comment">        architecture; e.g. there is on SSE, due to extra blends and the</span></div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="comment">        like, but there isn&#39;t with an ISA that supports masking</span></div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="comment">        natively. */</span></div>
-<div class="line"><a name="l00360"></a><span class="lineno"><a class="code" href="classTarget.html#a6aa8953c3d6a1ed0bc688ebe6c9acc53">  360</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a6aa8953c3d6a1ed0bc688ebe6c9acc53">m_maskingIsFree</a>;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="comment">    /** Is the target architecture 32 or 64 bit */</span></div>
+<div class="line"><a name="l00323"></a><span class="lineno"><a class="code" href="classTarget.html#aa7eb7cda8a9a335eec04f0ec5e0b5932">  323</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#aa7eb7cda8a9a335eec04f0ec5e0b5932">m_is32Bit</a>;</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="comment">    /** Target CPU. (e.g. &quot;corei7&quot;, &quot;corei7-avx&quot;, ..) */</span></div>
+<div class="line"><a name="l00326"></a><span class="lineno"><a class="code" href="classTarget.html#aa9629e82028a08abd0735160dd9b83d6">  326</a></span>&#160;    std::string <a class="code" href="classTarget.html#aa9629e82028a08abd0735160dd9b83d6">m_cpu</a>;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="comment">    /** Target-specific attribute string to pass along to the LLVM backend */</span></div>
+<div class="line"><a name="l00329"></a><span class="lineno"><a class="code" href="classTarget.html#a01d352e58da28f4e1fefdad5e8eb68c9">  329</a></span>&#160;    std::string <a class="code" href="classTarget.html#a01d352e58da28f4e1fefdad5e8eb68c9">m_attributes</a>;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="preprocessor">#if !defined(LLVM_3_1) &amp;&amp; !defined(LLVM_3_2)</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="preprocessor"></span><span class="comment">    /** Target-specific LLVM attribute, which has to be attached to every</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="comment">        function to ensure that it is generated for correct target architecture.</span></div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="comment">        This is requirement was introduced in LLVM 3.3 */</span></div>
+<div class="line"><a name="l00335"></a><span class="lineno"><a class="code" href="classTarget.html#ac0a62c47f84c851f4e929371cd432811">  335</a></span>&#160;    llvm::AttributeSet* <a class="code" href="classTarget.html#ac0a62c47f84c851f4e929371cd432811">m_tf_attributes</a>;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="preprocessor"></span><span class="comment"></span></div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="comment">    /** Native vector width of the vector instruction set.  Note that this</span></div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="comment">        value is directly derived from the ISA being used (e.g. it&#39;s 4 for</span></div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="comment">        SSE, 8 for AVX, etc.) */</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno"><a class="code" href="classTarget.html#a9a89bf825b5c024f42a04dcbb6e13913">  341</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classTarget.html#a9a89bf825b5c024f42a04dcbb6e13913">m_nativeVectorWidth</a>;</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="comment">    /** Native vector alignment in bytes. Theoretically this may be derived</span></div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="comment">        from the vector size, but it&#39;s better to manage directly the alignement.</span></div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="comment">        It allows easier experimenting and better fine tuning for particular</span></div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<span class="comment">        platform. This information is primatily used when</span></div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="comment">        --opt=force-aligned-memory is used. */</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno"><a class="code" href="classTarget.html#af70cca5b3b830bb34c4b851cd4cae528">  348</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classTarget.html#af70cca5b3b830bb34c4b851cd4cae528">m_nativeVectorAlignment</a>;</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment">    /** Data type with in bits. Typically it&#39;s 32, but could be 8, 16 or 64.</span></div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="comment">        For generic it&#39;s -1, which means undefined. */</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno"><a class="code" href="classTarget.html#acca1b35f348ae355b2207883d4308e4b">  352</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classTarget.html#acca1b35f348ae355b2207883d4308e4b">m_dataTypeWidth</a>;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="comment">    /** Actual vector width currently being compiled to.  This may be an</span></div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="comment">        integer multiple of the native vector width, for example if we&#39;re</span></div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="comment">        &quot;doubling up&quot; and compiling 8-wide on a 4-wide SSE system. */</span></div>
+<div class="line"><a name="l00357"></a><span class="lineno"><a class="code" href="classTarget.html#a34a9a43e4017a5f8c00cf1645bd888d8">  357</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classTarget.html#a34a9a43e4017a5f8c00cf1645bd888d8">m_vectorWidth</a>;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="comment">    /** Indicates whether position independent code should be generated. */</span></div>
+<div class="line"><a name="l00360"></a><span class="lineno"><a class="code" href="classTarget.html#aaae2bf943660cf5a925221a23f722f07">  360</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#aaae2bf943660cf5a925221a23f722f07">m_generatePIC</a>;</div>
 <div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="comment">    /** How many bits are used to store each element of the mask: e.g. this</span></div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<span class="comment">        is 32 on SSE/AVX, since that matches the HW better, but it&#39;s 1 for</span></div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;<span class="comment">        the generic target. */</span></div>
-<div class="line"><a name="l00365"></a><span class="lineno"><a class="code" href="classTarget.html#abdf6c02148ec32814228ba704907be01">  365</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classTarget.html#abdf6c02148ec32814228ba704907be01">m_maskBitCount</a>;</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="comment">    /** Indicates whether the target has native support for float/half</span></div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="comment">        conversions. */</span></div>
-<div class="line"><a name="l00369"></a><span class="lineno"><a class="code" href="classTarget.html#a4d654f87ff83ff494c1397a937544cb8">  369</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a4d654f87ff83ff494c1397a937544cb8">m_hasHalf</a>;</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;<span class="comment">    /** Indicates whether there is an ISA random number instruction. */</span></div>
-<div class="line"><a name="l00372"></a><span class="lineno"><a class="code" href="classTarget.html#aeb22f07da32d2d48c39a12c4b5a8acfe">  372</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#aeb22f07da32d2d48c39a12c4b5a8acfe">m_hasRand</a>;</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;<span class="comment">    /** Indicates whether the target has a native gather instruction */</span></div>
-<div class="line"><a name="l00375"></a><span class="lineno"><a class="code" href="classTarget.html#a9b78c7cff59b8bb32e4e264f8d891590">  375</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a9b78c7cff59b8bb32e4e264f8d891590">m_hasGather</a>;</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="comment">    /** Is there overhead associated with masking on the target</span></div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<span class="comment">        architecture; e.g. there is on SSE, due to extra blends and the</span></div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;<span class="comment">        like, but there isn&#39;t with an ISA that supports masking</span></div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="comment">        natively. */</span></div>
+<div class="line"><a name="l00366"></a><span class="lineno"><a class="code" href="classTarget.html#a6aa8953c3d6a1ed0bc688ebe6c9acc53">  366</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a6aa8953c3d6a1ed0bc688ebe6c9acc53">m_maskingIsFree</a>;</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="comment">    /** How many bits are used to store each element of the mask: e.g. this</span></div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;<span class="comment">        is 32 on SSE/AVX, since that matches the HW better, but it&#39;s 1 for</span></div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="comment">        the generic target. */</span></div>
+<div class="line"><a name="l00371"></a><span class="lineno"><a class="code" href="classTarget.html#abdf6c02148ec32814228ba704907be01">  371</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classTarget.html#abdf6c02148ec32814228ba704907be01">m_maskBitCount</a>;</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="comment">    /** Indicates whether the target has native support for float/half</span></div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;<span class="comment">        conversions. */</span></div>
+<div class="line"><a name="l00375"></a><span class="lineno"><a class="code" href="classTarget.html#a4d654f87ff83ff494c1397a937544cb8">  375</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a4d654f87ff83ff494c1397a937544cb8">m_hasHalf</a>;</div>
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;<span class="comment">    /** Indicates whether the target has a native scatter instruction */</span></div>
-<div class="line"><a name="l00378"></a><span class="lineno"><a class="code" href="classTarget.html#aeab42d5eb77fd3184c56b1b08e121df3">  378</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#aeab42d5eb77fd3184c56b1b08e121df3">m_hasScatter</a>;</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;<span class="comment">    /** Indicates whether there is an ISA random number instruction. */</span></div>
+<div class="line"><a name="l00378"></a><span class="lineno"><a class="code" href="classTarget.html#aeb22f07da32d2d48c39a12c4b5a8acfe">  378</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#aeb22f07da32d2d48c39a12c4b5a8acfe">m_hasRand</a>;</div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="comment">    /** Indicates whether the target has support for transcendentals (beyond</span></div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="comment">        sqrt, which we assume that all of them handle). */</span></div>
-<div class="line"><a name="l00382"></a><span class="lineno"><a class="code" href="classTarget.html#a72f3ee06a59112c360f87c4e8ddb33cb">  382</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a72f3ee06a59112c360f87c4e8ddb33cb">m_hasTranscendentals</a>;</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;};</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="comment">    /** Indicates whether the target has a native gather instruction */</span></div>
+<div class="line"><a name="l00381"></a><span class="lineno"><a class="code" href="classTarget.html#a9b78c7cff59b8bb32e4e264f8d891590">  381</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a9b78c7cff59b8bb32e4e264f8d891590">m_hasGather</a>;</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="comment">    /** Indicates whether the target has a native scatter instruction */</span></div>
+<div class="line"><a name="l00384"></a><span class="lineno"><a class="code" href="classTarget.html#aeab42d5eb77fd3184c56b1b08e121df3">  384</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#aeab42d5eb77fd3184c56b1b08e121df3">m_hasScatter</a>;</div>
 <div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="comment">/** @brief Structure that collects optimization options</span></div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;<span class="comment">    This structure collects all of the options related to optimization of</span></div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;<span class="comment">    generated code.</span></div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00391"></a><span class="lineno"><a class="code" href="structOpt.html">  391</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structOpt.html" title="Structure that collects optimization options.">Opt</a> {</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <a class="code" href="structOpt.html#ae1ec631e0d039be80e5182b5d79ec0dd">Opt</a>();</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;<span class="comment">    /** Optimization level.  Currently, the only valid values are 0,</span></div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;<span class="comment">        indicating essentially no optimization, and 1, indicating as much</span></div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;<span class="comment">        optimization as possible. */</span></div>
-<div class="line"><a name="l00397"></a><span class="lineno"><a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">  397</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a>;</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;<span class="comment">    /** Indicates whether &quot;fast and loose&quot; numerically unsafe optimizations</span></div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="comment">        should be performed.  This is false by default. */</span></div>
-<div class="line"><a name="l00401"></a><span class="lineno"><a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">  401</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">fastMath</a>;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="comment">    /** Indicates whether the target has support for transcendentals (beyond</span></div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="comment">        sqrt, which we assume that all of them handle). */</span></div>
+<div class="line"><a name="l00388"></a><span class="lineno"><a class="code" href="classTarget.html#a72f3ee06a59112c360f87c4e8ddb33cb">  388</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a72f3ee06a59112c360f87c4e8ddb33cb">m_hasTranscendentals</a>;</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="comment"></span></div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;<span class="comment">    /** Indicates whether the target has ISA support for trigonometry */</span></div>
+<div class="line"><a name="l00391"></a><span class="lineno"><a class="code" href="classTarget.html#a42de3420a81beada76f927e98cbe835c">  391</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a42de3420a81beada76f927e98cbe835c">m_hasTrigonometry</a>;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="comment"></span></div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;<span class="comment">    /** Indicates whether there is an ISA double precision rsqrt. */</span></div>
+<div class="line"><a name="l00394"></a><span class="lineno"><a class="code" href="classTarget.html#a79d99fa00249c2637a3d7044092701f5">  394</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a79d99fa00249c2637a3d7044092701f5">m_hasRsqrtd</a>;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    <span class="comment"></span></div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;<span class="comment">    /** Indicates whether there is an ISA double precision rcp. */</span></div>
+<div class="line"><a name="l00397"></a><span class="lineno"><a class="code" href="classTarget.html#a01d91cf3c3ae10605fac058fb3386c7b">  397</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classTarget.html#a01d91cf3c3ae10605fac058fb3386c7b">m_hasRcpd</a>;</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;};</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="comment">/** @brief Structure that collects optimization options</span></div>
 <div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="comment">    /** Indicates whether an vector load should be issued for masked loads</span></div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;<span class="comment">        on platforms that don&#39;t have a native masked vector load.  (This may</span></div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="comment">        lead to accessing memory up to programCount-1 elements past the end of</span></div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;<span class="comment">        arrays, so is unsafe in general.) */</span></div>
-<div class="line"><a name="l00407"></a><span class="lineno"><a class="code" href="structOpt.html#a751580c259f1ee6f7ecf82d025651b54">  407</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a751580c259f1ee6f7ecf82d025651b54">fastMaskedVload</a>;</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="comment">    This structure collects all of the options related to optimization of</span></div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;<span class="comment">    generated code.</span></div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00406"></a><span class="lineno"><a class="code" href="structOpt.html">  406</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structOpt.html" title="Structure that collects optimization options.">Opt</a> {</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    <a class="code" href="structOpt.html#ae1ec631e0d039be80e5182b5d79ec0dd">Opt</a>();</div>
 <div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;<span class="comment">    /** Indicates when loops should be unrolled (when doing so seems like</span></div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;<span class="comment">        it will make sense. */</span></div>
-<div class="line"><a name="l00411"></a><span class="lineno"><a class="code" href="structOpt.html#a93ab457610c75c76b82b35bdbee5e18a">  411</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a93ab457610c75c76b82b35bdbee5e18a">unrollLoops</a>;</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;<span class="comment">    /** Indicates if addressing math will be done with 32-bit math, even on</span></div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;<span class="comment">        64-bit systems.  (This is generally noticably more efficient,</span></div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;<span class="comment">        though at the cost of addressing &gt;2GB).</span></div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00417"></a><span class="lineno"><a class="code" href="structOpt.html#a8c01f8f3455aa7c26a3ddcc55f1a4099">  417</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a8c01f8f3455aa7c26a3ddcc55f1a4099">force32BitAddressing</a>;</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;<span class="comment">    /** Indicates whether Assert() statements should be ignored (for</span></div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;<span class="comment">        performance in the generated code). */</span></div>
-<div class="line"><a name="l00421"></a><span class="lineno"><a class="code" href="structOpt.html#afc84ab6af324e0efee5c0f9f86390d07">  421</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#afc84ab6af324e0efee5c0f9f86390d07">disableAsserts</a>;</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;<span class="comment">    /** Indicates whether FMA instructions should be disabled (on targets</span></div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;<span class="comment">        that support them). */</span></div>
-<div class="line"><a name="l00425"></a><span class="lineno"><a class="code" href="structOpt.html#ad9bd9253547a565a706760fcfcabe18a">  425</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#ad9bd9253547a565a706760fcfcabe18a">disableFMA</a>;</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;<span class="comment">    /** Always generate aligned vector load/store instructions; this</span></div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;<span class="comment">        implies a guarantee that all dynamic access through pointers that</span></div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;<span class="comment">        becomes a vector load/store will be a cache-aligned sequence of</span></div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="comment">        locations. */</span></div>
-<div class="line"><a name="l00431"></a><span class="lineno"><a class="code" href="structOpt.html#ad5cc603ac055813030c0290d01f64921">  431</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#ad5cc603ac055813030c0290d01f64921">forceAlignedMemory</a>;</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;<span class="comment">    /** If enabled, disables the various optimizations that kick in when</span></div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;<span class="comment">        the execution mask can be determined to be &quot;all on&quot; at compile</span></div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;<span class="comment">        time. */</span></div>
-<div class="line"><a name="l00436"></a><span class="lineno"><a class="code" href="structOpt.html#aca3c4f4401d84d52bcf77b3dd8a89d0c">  436</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#aca3c4f4401d84d52bcf77b3dd8a89d0c">disableMaskAllOnOptimizations</a>;</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;<span class="comment">    /** Optimization level.  Currently, the only valid values are 0,</span></div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;<span class="comment">        indicating essentially no optimization, and 1, indicating as much</span></div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;<span class="comment">        optimization as possible. */</span></div>
+<div class="line"><a name="l00412"></a><span class="lineno"><a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">  412</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structOpt.html#a97c56a56d18f9a3d0687344b46e5a779">level</a>;</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;<span class="comment">    /** Indicates whether &quot;fast and loose&quot; numerically unsafe optimizations</span></div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;<span class="comment">        should be performed.  This is false by default. */</span></div>
+<div class="line"><a name="l00416"></a><span class="lineno"><a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">  416</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a3a974b35488e8a0efc67028b636d9b90">fastMath</a>;</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;<span class="comment">    /** Indicates whether an vector load should be issued for masked loads</span></div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;<span class="comment">        on platforms that don&#39;t have a native masked vector load.  (This may</span></div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;<span class="comment">        lead to accessing memory up to programCount-1 elements past the end of</span></div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;<span class="comment">        arrays, so is unsafe in general.) */</span></div>
+<div class="line"><a name="l00422"></a><span class="lineno"><a class="code" href="structOpt.html#a751580c259f1ee6f7ecf82d025651b54">  422</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a751580c259f1ee6f7ecf82d025651b54">fastMaskedVload</a>;</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;<span class="comment">    /** Indicates when loops should be unrolled (when doing so seems like</span></div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;<span class="comment">        it will make sense. */</span></div>
+<div class="line"><a name="l00426"></a><span class="lineno"><a class="code" href="structOpt.html#a93ab457610c75c76b82b35bdbee5e18a">  426</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a93ab457610c75c76b82b35bdbee5e18a">unrollLoops</a>;</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;<span class="comment">    /** Indicates if addressing math will be done with 32-bit math, even on</span></div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;<span class="comment">        64-bit systems.  (This is generally noticably more efficient,</span></div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="comment">        though at the cost of addressing &gt;2GB).</span></div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00432"></a><span class="lineno"><a class="code" href="structOpt.html#a8c01f8f3455aa7c26a3ddcc55f1a4099">  432</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a8c01f8f3455aa7c26a3ddcc55f1a4099">force32BitAddressing</a>;</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;<span class="comment">    /** Indicates whether Assert() statements should be ignored (for</span></div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;<span class="comment">        performance in the generated code). */</span></div>
+<div class="line"><a name="l00436"></a><span class="lineno"><a class="code" href="structOpt.html#afc84ab6af324e0efee5c0f9f86390d07">  436</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#afc84ab6af324e0efee5c0f9f86390d07">disableAsserts</a>;</div>
 <div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;<span class="comment">    /** If enabled, the various __pseudo* memory ops (gather/scatter,</span></div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;<span class="comment">        masked load/store) are left in their __pseudo* form, for better</span></div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;<span class="comment">        understanding of the structure of generated code when reading</span></div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;<span class="comment">        it. */</span></div>
-<div class="line"><a name="l00442"></a><span class="lineno"><a class="code" href="structOpt.html#a1f2ce342012d4e65a83a47a0327380bc">  442</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a1f2ce342012d4e65a83a47a0327380bc">disableHandlePseudoMemoryOps</a>;</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;<span class="comment">    /** On targets that don&#39;t have a masked store instruction but do have a</span></div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;<span class="comment">        blending instruction, by default, we simulate masked stores by</span></div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;<span class="comment">        loading the old value, blending, and storing the result.  This can</span></div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;<span class="comment">        potentially be unsafe in multi-threaded code, in that it writes to</span></div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;<span class="comment">        locations that aren&#39;t supposed to be written to.  Setting this</span></div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;<span class="comment">        value to true disables this work-around, and instead implements</span></div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;<span class="comment">        masked stores by &#39;scalarizing&#39; them, so that we iterate over the</span></div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;<span class="comment">        ISIMD lanes and do a scalar write for the ones that are running. */</span></div>
-<div class="line"><a name="l00452"></a><span class="lineno"><a class="code" href="structOpt.html#a441c78a679b7bc088d879ade8d20845f">  452</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a441c78a679b7bc088d879ade8d20845f">disableBlendedMaskedStores</a>;</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;<span class="comment">    /** Disables the &#39;coherent control flow&#39; constructs in the</span></div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;<span class="comment">        language. (e.g. this causes &quot;cif&quot; statements to be demoted to &quot;if&quot;</span></div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;<span class="comment">        statements.)  This is likely only useful for measuring the impact</span></div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;<span class="comment">        of coherent control flow. */</span></div>
-<div class="line"><a name="l00458"></a><span class="lineno"><a class="code" href="structOpt.html#a269b3d2789b821a74a7255b2fd308da4">  458</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a269b3d2789b821a74a7255b2fd308da4">disableCoherentControlFlow</a>;</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;<span class="comment">    /** Disables uniform control flow optimizations (e.g. this changes an</span></div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;<span class="comment">        &quot;if&quot; statement with a uniform condition to have a varying</span></div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;<span class="comment">        condition).  This is likely only useful for measuring the impact of</span></div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;<span class="comment">        uniform control flow. */</span></div>
-<div class="line"><a name="l00464"></a><span class="lineno"><a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">  464</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">disableUniformControlFlow</a>;</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;<span class="comment">    /** Disables the backend optimizations related to gather/scatter</span></div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;<span class="comment">        (e.g. transforming gather from sequential locations to an unaligned</span></div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;<span class="comment">        load, etc.)  This is likely only useful for measuring the impact of</span></div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;<span class="comment">        these optimizations. */</span></div>
-<div class="line"><a name="l00470"></a><span class="lineno"><a class="code" href="structOpt.html#a515b1fed805b43f36ec51403c8d4f3bf">  470</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a515b1fed805b43f36ec51403c8d4f3bf">disableGatherScatterOptimizations</a>;</div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;<span class="comment">    /** Disables the optimization that demotes masked stores to regular</span></div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;<span class="comment">        stores when the store is happening at the same control flow level</span></div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="comment">        where the variable was declared.  This is likely only useful for</span></div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;<span class="comment">        measuring the impact of this optimization. */</span></div>
-<div class="line"><a name="l00476"></a><span class="lineno"><a class="code" href="structOpt.html#a4922c058dd40b20fcda0022be7a7d6ea">  476</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a4922c058dd40b20fcda0022be7a7d6ea">disableMaskedStoreToStore</a>;</div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;<span class="comment">    /** Disables the optimization that detects when the execution mask is</span></div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;<span class="comment">        all on and emits code for gathers and scatters that doesn&#39;t loop</span></div>
-<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;<span class="comment">        over the SIMD lanes but just does the scalar loads and stores</span></div>
-<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;<span class="comment">        directly. */</span></div>
-<div class="line"><a name="l00482"></a><span class="lineno"><a class="code" href="structOpt.html#a6e55373ff211bb3ea9d98d731d074c92">  482</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a6e55373ff211bb3ea9d98d731d074c92">disableGatherScatterFlattening</a>;</div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;<span class="comment">    /** Disables the optimizations that detect when arrays are being</span></div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;<span class="comment">        indexed with &#39;uniform&#39; values and issue scalar loads/stores rather</span></div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;<span class="comment">        than gathers/scatters.  This is likely only useful for measuring</span></div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;<span class="comment">        the impact of this optimization. */</span></div>
-<div class="line"><a name="l00488"></a><span class="lineno"><a class="code" href="structOpt.html#ade00ce91375beef743b1dc773a526d12">  488</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#ade00ce91375beef743b1dc773a526d12">disableUniformMemoryOptimizations</a>;</div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;<span class="comment">    /** Disables optimizations that coalesce incoherent scalar memory</span></div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;<span class="comment">        access from gathers into wider vector operations, when possible. */</span></div>
-<div class="line"><a name="l00492"></a><span class="lineno"><a class="code" href="structOpt.html#ae1d46f2e5700ea95e8a9903225f37a6e">  492</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#ae1d46f2e5700ea95e8a9903225f37a6e">disableCoalescing</a>;</div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;};</div>
-<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;<span class="comment">/** @brief This structure collects together a number of global variables.</span></div>
-<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;<span class="comment">    This structure collects a number of global variables that mostly</span></div>
-<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;<span class="comment">    represent parameter settings for this compilation run.  In particular,</span></div>
-<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;<span class="comment">    none of these values should change after compilation befins; their</span></div>
-<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;<span class="comment">    values are all set during command-line argument processing or very</span></div>
-<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;<span class="comment">    early during the compiler&#39;s execution, before any files are parsed.</span></div>
-<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;<span class="comment">  */</span></div>
-<div class="line"><a name="l00503"></a><span class="lineno"><a class="code" href="structGlobals.html">  503</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structGlobals.html" title="This structure collects together a number of global variables.">Globals</a> {</div>
-<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;    <a class="code" href="structGlobals.html#a3b78cfdbe2809ad8b6b722969dda4425">Globals</a>();</div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;<span class="comment">    /** Optimization option settings */</span></div>
-<div class="line"><a name="l00507"></a><span class="lineno"><a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">  507</a></span>&#160;    <a class="code" href="structOpt.html" title="Structure that collects optimization options.">Opt</a> <a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>;<span class="comment"></span></div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;<span class="comment">    /** Compilation target information */</span></div>
-<div class="line"><a name="l00509"></a><span class="lineno"><a class="code" href="structGlobals.html#af44214098578181f0d116a1919dbc397">  509</a></span>&#160;    <a class="code" href="classTarget.html" title="Structure that defines a compilation target.">Target</a>* <a class="code" href="structGlobals.html#af44214098578181f0d116a1919dbc397">target</a>;</div>
-<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;<span class="comment">    /** There are a number of math libraries that can be used for</span></div>
-<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;<span class="comment">        transcendentals and the like during program compilation. */</span></div>
-<div class="line"><a name="l00513"></a><span class="lineno"><a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45">  513</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45">MathLib</a> { <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3f9d7b36c46f10ce2e7246c587fdb284">Math_ISPC</a>, <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a8c7eff35ae130e97be933e1bf32cc35b">Math_ISPCFast</a>, <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45af2767474d6d68689e5438e5885d3600b">Math_SVML</a>, <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3e401778bb86ff534f0f59d55d61a6ac">Math_System</a> };</div>
-<div class="line"><a name="l00514"></a><span class="lineno"><a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">  514</a></span>&#160;    <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45">MathLib</a> <a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a>;</div>
-<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;<span class="comment">    /** Records whether the ispc standard library should be made available</span></div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;<span class="comment">        to the program during compilations. (Default is true.) */</span></div>
-<div class="line"><a name="l00518"></a><span class="lineno"><a class="code" href="structGlobals.html#a65b6c565d6264e535d48a27f89de3329">  518</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a65b6c565d6264e535d48a27f89de3329">includeStdlib</a>;</div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;<span class="comment">    /** Indicates whether the C pre-processor should be run over the</span></div>
-<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;<span class="comment">        program source before compiling it.  (Default is true.) */</span></div>
-<div class="line"><a name="l00522"></a><span class="lineno"><a class="code" href="structGlobals.html#aa150c22538b58a8a390466ce996d9a6f">  522</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#aa150c22538b58a8a390466ce996d9a6f">runCPP</a>;</div>
-<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;<span class="comment">    /** When \c true, voluminous debugging output will be printed during</span></div>
-<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;<span class="comment">        ispc&#39;s execution. */</span></div>
-<div class="line"><a name="l00526"></a><span class="lineno"><a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">  526</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a>;</div>
-<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;<span class="comment">    /** Indicates which stages of optimization we want to dump. */</span></div>
-<div class="line"><a name="l00529"></a><span class="lineno"><a class="code" href="structGlobals.html#ae50a3756c7cf0ffa0b2851b9353cb05e">  529</a></span>&#160;    std::set&lt;int&gt; <a class="code" href="structGlobals.html#ae50a3756c7cf0ffa0b2851b9353cb05e">debug_stages</a>;</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;<span class="comment">    /** Indicates whether FMA instructions should be disabled (on targets</span></div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;<span class="comment">        that support them). */</span></div>
+<div class="line"><a name="l00440"></a><span class="lineno"><a class="code" href="structOpt.html#ad9bd9253547a565a706760fcfcabe18a">  440</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#ad9bd9253547a565a706760fcfcabe18a">disableFMA</a>;</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;<span class="comment">    /** Always generate aligned vector load/store instructions; this</span></div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;<span class="comment">        implies a guarantee that all dynamic access through pointers that</span></div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;<span class="comment">        becomes a vector load/store will be a cache-aligned sequence of</span></div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;<span class="comment">        locations. */</span></div>
+<div class="line"><a name="l00446"></a><span class="lineno"><a class="code" href="structOpt.html#ad5cc603ac055813030c0290d01f64921">  446</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#ad5cc603ac055813030c0290d01f64921">forceAlignedMemory</a>;</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;<span class="comment">    /** If enabled, disables the various optimizations that kick in when</span></div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;<span class="comment">        the execution mask can be determined to be &quot;all on&quot; at compile</span></div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;<span class="comment">        time. */</span></div>
+<div class="line"><a name="l00451"></a><span class="lineno"><a class="code" href="structOpt.html#aca3c4f4401d84d52bcf77b3dd8a89d0c">  451</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#aca3c4f4401d84d52bcf77b3dd8a89d0c">disableMaskAllOnOptimizations</a>;</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;<span class="comment">    /** If enabled, the various __pseudo* memory ops (gather/scatter,</span></div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;<span class="comment">        masked load/store) are left in their __pseudo* form, for better</span></div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;<span class="comment">        understanding of the structure of generated code when reading</span></div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;<span class="comment">        it. */</span></div>
+<div class="line"><a name="l00457"></a><span class="lineno"><a class="code" href="structOpt.html#a1f2ce342012d4e65a83a47a0327380bc">  457</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a1f2ce342012d4e65a83a47a0327380bc">disableHandlePseudoMemoryOps</a>;</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;<span class="comment">    /** On targets that don&#39;t have a masked store instruction but do have a</span></div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;<span class="comment">        blending instruction, by default, we simulate masked stores by</span></div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;<span class="comment">        loading the old value, blending, and storing the result.  This can</span></div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;<span class="comment">        potentially be unsafe in multi-threaded code, in that it writes to</span></div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;<span class="comment">        locations that aren&#39;t supposed to be written to.  Setting this</span></div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;<span class="comment">        value to true disables this work-around, and instead implements</span></div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;<span class="comment">        masked stores by &#39;scalarizing&#39; them, so that we iterate over the</span></div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;<span class="comment">        ISIMD lanes and do a scalar write for the ones that are running. */</span></div>
+<div class="line"><a name="l00467"></a><span class="lineno"><a class="code" href="structOpt.html#a441c78a679b7bc088d879ade8d20845f">  467</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a441c78a679b7bc088d879ade8d20845f">disableBlendedMaskedStores</a>;</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;<span class="comment">    /** Disables the &#39;coherent control flow&#39; constructs in the</span></div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;<span class="comment">        language. (e.g. this causes &quot;cif&quot; statements to be demoted to &quot;if&quot;</span></div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="comment">        statements.)  This is likely only useful for measuring the impact</span></div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;<span class="comment">        of coherent control flow. */</span></div>
+<div class="line"><a name="l00473"></a><span class="lineno"><a class="code" href="structOpt.html#a269b3d2789b821a74a7255b2fd308da4">  473</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a269b3d2789b821a74a7255b2fd308da4">disableCoherentControlFlow</a>;</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;<span class="comment">    /** Disables uniform control flow optimizations (e.g. this changes an</span></div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;<span class="comment">        &quot;if&quot; statement with a uniform condition to have a varying</span></div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;<span class="comment">        condition).  This is likely only useful for measuring the impact of</span></div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;<span class="comment">        uniform control flow. */</span></div>
+<div class="line"><a name="l00479"></a><span class="lineno"><a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">  479</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#af6b1278e8f15a3bfdf7c1efb7b81fc6e">disableUniformControlFlow</a>;</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;<span class="comment">    /** Disables the backend optimizations related to gather/scatter</span></div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;<span class="comment">        (e.g. transforming gather from sequential locations to an unaligned</span></div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;<span class="comment">        load, etc.)  This is likely only useful for measuring the impact of</span></div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;<span class="comment">        these optimizations. */</span></div>
+<div class="line"><a name="l00485"></a><span class="lineno"><a class="code" href="structOpt.html#a515b1fed805b43f36ec51403c8d4f3bf">  485</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a515b1fed805b43f36ec51403c8d4f3bf">disableGatherScatterOptimizations</a>;</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;<span class="comment">    /** Disables the optimization that demotes masked stores to regular</span></div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;<span class="comment">        stores when the store is happening at the same control flow level</span></div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;<span class="comment">        where the variable was declared.  This is likely only useful for</span></div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;<span class="comment">        measuring the impact of this optimization. */</span></div>
+<div class="line"><a name="l00491"></a><span class="lineno"><a class="code" href="structOpt.html#a4922c058dd40b20fcda0022be7a7d6ea">  491</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a4922c058dd40b20fcda0022be7a7d6ea">disableMaskedStoreToStore</a>;</div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;<span class="comment">    /** Disables the optimization that detects when the execution mask is</span></div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;<span class="comment">        all on and emits code for gathers and scatters that doesn&#39;t loop</span></div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;<span class="comment">        over the SIMD lanes but just does the scalar loads and stores</span></div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;<span class="comment">        directly. */</span></div>
+<div class="line"><a name="l00497"></a><span class="lineno"><a class="code" href="structOpt.html#a6e55373ff211bb3ea9d98d731d074c92">  497</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#a6e55373ff211bb3ea9d98d731d074c92">disableGatherScatterFlattening</a>;</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;<span class="comment">    /** Disables the optimizations that detect when arrays are being</span></div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;<span class="comment">        indexed with &#39;uniform&#39; values and issue scalar loads/stores rather</span></div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;<span class="comment">        than gathers/scatters.  This is likely only useful for measuring</span></div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;<span class="comment">        the impact of this optimization. */</span></div>
+<div class="line"><a name="l00503"></a><span class="lineno"><a class="code" href="structOpt.html#ade00ce91375beef743b1dc773a526d12">  503</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#ade00ce91375beef743b1dc773a526d12">disableUniformMemoryOptimizations</a>;</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;<span class="comment">    /** Disables optimizations that coalesce incoherent scalar memory</span></div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;<span class="comment">        access from gathers into wider vector operations, when possible. */</span></div>
+<div class="line"><a name="l00507"></a><span class="lineno"><a class="code" href="structOpt.html#ae1d46f2e5700ea95e8a9903225f37a6e">  507</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structOpt.html#ae1d46f2e5700ea95e8a9903225f37a6e">disableCoalescing</a>;</div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;};</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;<span class="comment">/** @brief This structure collects together a number of global variables.</span></div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;<span class="comment">    This structure collects a number of global variables that mostly</span></div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;<span class="comment">    represent parameter settings for this compilation run.  In particular,</span></div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;<span class="comment">    none of these values should change after compilation befins; their</span></div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;<span class="comment">    values are all set during command-line argument processing or very</span></div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;<span class="comment">    early during the compiler&#39;s execution, before any files are parsed.</span></div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;<span class="comment">  */</span></div>
+<div class="line"><a name="l00518"></a><span class="lineno"><a class="code" href="structGlobals.html">  518</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structGlobals.html" title="This structure collects together a number of global variables.">Globals</a> {</div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;    <a class="code" href="structGlobals.html#a3b78cfdbe2809ad8b6b722969dda4425">Globals</a>();</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;<span class="comment">    /** Optimization option settings */</span></div>
+<div class="line"><a name="l00522"></a><span class="lineno"><a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">  522</a></span>&#160;    <a class="code" href="structOpt.html" title="Structure that collects optimization options.">Opt</a> <a class="code" href="structGlobals.html#a638d941ae19aae0823fb9b426518cdda">opt</a>;<span class="comment"></span></div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;<span class="comment">    /** Compilation target information */</span></div>
+<div class="line"><a name="l00524"></a><span class="lineno"><a class="code" href="structGlobals.html#af44214098578181f0d116a1919dbc397">  524</a></span>&#160;    <a class="code" href="classTarget.html" title="Structure that defines a compilation target.">Target</a>* <a class="code" href="structGlobals.html#af44214098578181f0d116a1919dbc397">target</a>;</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;<span class="comment">    /** There are a number of math libraries that can be used for</span></div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;<span class="comment">        transcendentals and the like during program compilation. */</span></div>
+<div class="line"><a name="l00528"></a><span class="lineno"><a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45">  528</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45">MathLib</a> { <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3f9d7b36c46f10ce2e7246c587fdb284">Math_ISPC</a>, <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a8c7eff35ae130e97be933e1bf32cc35b">Math_ISPCFast</a>, <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45af2767474d6d68689e5438e5885d3600b">Math_SVML</a>, <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45a3e401778bb86ff534f0f59d55d61a6ac">Math_System</a> };</div>
+<div class="line"><a name="l00529"></a><span class="lineno"><a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">  529</a></span>&#160;    <a class="code" href="structGlobals.html#a786e2c588f3ecf4e6af765ff0d9cbc45">MathLib</a> <a class="code" href="structGlobals.html#a1ac6067419d73be8d5d2d2cbbcfd842c">mathLib</a>;</div>
 <div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;<span class="comment">    /** Indicates after which optimization we want to generate</span></div>
-<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;<span class="comment">        DebugIR information. */</span></div>
-<div class="line"><a name="l00533"></a><span class="lineno"><a class="code" href="structGlobals.html#ad1905f5f542af00b518a9988c2dffb09">  533</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structGlobals.html#ad1905f5f542af00b518a9988c2dffb09">debugIR</a>;</div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;<span class="comment">    /** Records whether the ispc standard library should be made available</span></div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;<span class="comment">        to the program during compilations. (Default is true.) */</span></div>
+<div class="line"><a name="l00533"></a><span class="lineno"><a class="code" href="structGlobals.html#a65b6c565d6264e535d48a27f89de3329">  533</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a65b6c565d6264e535d48a27f89de3329">includeStdlib</a>;</div>
 <div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;<span class="comment">    /** Indicates which phases of optimization we want to switch off. */</span></div>
-<div class="line"><a name="l00536"></a><span class="lineno"><a class="code" href="structGlobals.html#af650d06552e2f39c82dd6104561e7a14">  536</a></span>&#160;    std::set&lt;int&gt; <a class="code" href="structGlobals.html#af650d06552e2f39c82dd6104561e7a14">off_stages</a>;</div>
-<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;<span class="comment">    /** Indicates whether all warning messages should be surpressed. */</span></div>
-<div class="line"><a name="l00539"></a><span class="lineno"><a class="code" href="structGlobals.html#a59396e4fc487ea16b659d6e370bcb624">  539</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a59396e4fc487ea16b659d6e370bcb624">disableWarnings</a>;</div>
-<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;<span class="comment">    /** Indicates whether warnings should be issued as errors. */</span></div>
-<div class="line"><a name="l00542"></a><span class="lineno"><a class="code" href="structGlobals.html#abe8464ded1077b692bf7446bd120672c">  542</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#abe8464ded1077b692bf7446bd120672c">warningsAsErrors</a>;</div>
-<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;<span class="comment">    /** Indicates whether line wrapping of error messages to the terminal</span></div>
-<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;<span class="comment">        width should be disabled. */</span></div>
-<div class="line"><a name="l00546"></a><span class="lineno"><a class="code" href="structGlobals.html#a3d125edf09b2a3f07d83986ea25b87e3">  546</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a3d125edf09b2a3f07d83986ea25b87e3">disableLineWrap</a>;</div>
-<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;<span class="comment">    /** Indicates whether additional warnings should be issued about</span></div>
-<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;<span class="comment">        possible performance pitfalls. */</span></div>
-<div class="line"><a name="l00550"></a><span class="lineno"><a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">  550</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">emitPerfWarnings</a>;</div>
-<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;<span class="comment">    /** Indicates whether all printed output should be surpressed. */</span></div>
-<div class="line"><a name="l00553"></a><span class="lineno"><a class="code" href="structGlobals.html#a4b3dd87f896aed9ca033314f336ff99f">  553</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a4b3dd87f896aed9ca033314f336ff99f">quiet</a>;</div>
-<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;<span class="comment">    /** Always use ANSI escape sequences to colorize warning and error</span></div>
-<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;<span class="comment">        messages, even if piping output to a file, etc. */</span></div>
-<div class="line"><a name="l00557"></a><span class="lineno"><a class="code" href="structGlobals.html#ab4dfd426e531b0e04cf979d34d78ba28">  557</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#ab4dfd426e531b0e04cf979d34d78ba28">forceColoredOutput</a>;</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;<span class="comment">    /** Indicates whether the C pre-processor should be run over the</span></div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;<span class="comment">        program source before compiling it.  (Default is true.) */</span></div>
+<div class="line"><a name="l00537"></a><span class="lineno"><a class="code" href="structGlobals.html#aa150c22538b58a8a390466ce996d9a6f">  537</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#aa150c22538b58a8a390466ce996d9a6f">runCPP</a>;</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;<span class="comment">    /** When \c true, voluminous debugging output will be printed during</span></div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;<span class="comment">        ispc&#39;s execution. */</span></div>
+<div class="line"><a name="l00541"></a><span class="lineno"><a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">  541</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a>;</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;<span class="comment">    /** Indicates which stages of optimization we want to dump. */</span></div>
+<div class="line"><a name="l00544"></a><span class="lineno"><a class="code" href="structGlobals.html#ae50a3756c7cf0ffa0b2851b9353cb05e">  544</a></span>&#160;    std::set&lt;int&gt; <a class="code" href="structGlobals.html#ae50a3756c7cf0ffa0b2851b9353cb05e">debug_stages</a>;</div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;<span class="comment">    /** Indicates after which optimization we want to generate</span></div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;<span class="comment">        DebugIR information. */</span></div>
+<div class="line"><a name="l00548"></a><span class="lineno"><a class="code" href="structGlobals.html#ad1905f5f542af00b518a9988c2dffb09">  548</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structGlobals.html#ad1905f5f542af00b518a9988c2dffb09">debugIR</a>;</div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;<span class="comment">    /** Indicates which phases of optimization we want to switch off. */</span></div>
+<div class="line"><a name="l00551"></a><span class="lineno"><a class="code" href="structGlobals.html#af650d06552e2f39c82dd6104561e7a14">  551</a></span>&#160;    std::set&lt;int&gt; <a class="code" href="structGlobals.html#af650d06552e2f39c82dd6104561e7a14">off_stages</a>;</div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;<span class="comment">    /** Indicates whether all warning messages should be surpressed. */</span></div>
+<div class="line"><a name="l00554"></a><span class="lineno"><a class="code" href="structGlobals.html#a59396e4fc487ea16b659d6e370bcb624">  554</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a59396e4fc487ea16b659d6e370bcb624">disableWarnings</a>;</div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;<span class="comment">    /** Indicates whether warnings should be issued as errors. */</span></div>
+<div class="line"><a name="l00557"></a><span class="lineno"><a class="code" href="structGlobals.html#abe8464ded1077b692bf7446bd120672c">  557</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#abe8464ded1077b692bf7446bd120672c">warningsAsErrors</a>;</div>
 <div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;<span class="comment">    /** Indicates whether calls should be emitted in the program to an</span></div>
-<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;<span class="comment">        externally-defined program instrumentation function. (See the</span></div>
-<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;<span class="comment">        &quot;Instrumenting your ispc programs&quot; section in the user&#39;s</span></div>
-<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;<span class="comment">        manual.) */</span></div>
-<div class="line"><a name="l00563"></a><span class="lineno"><a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">  563</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">emitInstrumentation</a>;</div>
-<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;<span class="comment">    /** Indicates whether ispc should generate debugging symbols for the</span></div>
-<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;<span class="comment">        program in its output. */</span></div>
-<div class="line"><a name="l00567"></a><span class="lineno"><a class="code" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">  567</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">generateDebuggingSymbols</a>;</div>
-<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;<span class="comment">    /** If true, function names are mangled by appending the target ISA and</span></div>
-<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;<span class="comment">        vector width to them. */</span></div>
-<div class="line"><a name="l00571"></a><span class="lineno"><a class="code" href="structGlobals.html#a70d9662d1a19c30f5d94dfebf5e6d49c">  571</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a70d9662d1a19c30f5d94dfebf5e6d49c">mangleFunctionsWithTarget</a>;</div>
-<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;<span class="comment">    /** If enabled, the lexer will randomly replace some tokens returned</span></div>
-<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;<span class="comment">        with other tokens, in order to test error condition handling in the</span></div>
-<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;<span class="comment">        compiler. */</span></div>
-<div class="line"><a name="l00576"></a><span class="lineno"><a class="code" href="structGlobals.html#a55be54da2074e433e4bcecd100e43779">  576</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a55be54da2074e433e4bcecd100e43779">enableFuzzTest</a>;</div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;<span class="comment">    /** Seed for random number generator used for fuzz testing. */</span></div>
-<div class="line"><a name="l00579"></a><span class="lineno"><a class="code" href="structGlobals.html#a45bf35d6567f44da9a1f332b16ad1c9f">  579</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structGlobals.html#a45bf35d6567f44da9a1f332b16ad1c9f">fuzzTestSeed</a>;</div>
-<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;<span class="comment">    /** Global LLVMContext object */</span></div>
-<div class="line"><a name="l00582"></a><span class="lineno"><a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">  582</a></span>&#160;    llvm::LLVMContext *<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>;</div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;<span class="comment">    /** Indicates whether line wrapping of error messages to the terminal</span></div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;<span class="comment">        width should be disabled. */</span></div>
+<div class="line"><a name="l00561"></a><span class="lineno"><a class="code" href="structGlobals.html#a3d125edf09b2a3f07d83986ea25b87e3">  561</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a3d125edf09b2a3f07d83986ea25b87e3">disableLineWrap</a>;</div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;<span class="comment">    /** Indicates whether additional warnings should be issued about</span></div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;<span class="comment">        possible performance pitfalls. */</span></div>
+<div class="line"><a name="l00565"></a><span class="lineno"><a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">  565</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a0b44ee0afe2d9210999bd045c27823c9">emitPerfWarnings</a>;</div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;<span class="comment">    /** Indicates whether all printed output should be surpressed. */</span></div>
+<div class="line"><a name="l00568"></a><span class="lineno"><a class="code" href="structGlobals.html#a4b3dd87f896aed9ca033314f336ff99f">  568</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a4b3dd87f896aed9ca033314f336ff99f">quiet</a>;</div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;<span class="comment">    /** Always use ANSI escape sequences to colorize warning and error</span></div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;<span class="comment">        messages, even if piping output to a file, etc. */</span></div>
+<div class="line"><a name="l00572"></a><span class="lineno"><a class="code" href="structGlobals.html#ab4dfd426e531b0e04cf979d34d78ba28">  572</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#ab4dfd426e531b0e04cf979d34d78ba28">forceColoredOutput</a>;</div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;<span class="comment">    /** Indicates whether calls should be emitted in the program to an</span></div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;<span class="comment">        externally-defined program instrumentation function. (See the</span></div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;<span class="comment">        &quot;Instrumenting your ispc programs&quot; section in the user&#39;s</span></div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;<span class="comment">        manual.) */</span></div>
+<div class="line"><a name="l00578"></a><span class="lineno"><a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">  578</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#af3ae6fbeae978b0dc41b19a17f27aa60">emitInstrumentation</a>;</div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;<span class="comment">    /** Indicates whether ispc should generate debugging symbols for the</span></div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;<span class="comment">        program in its output. */</span></div>
+<div class="line"><a name="l00582"></a><span class="lineno"><a class="code" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">  582</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">generateDebuggingSymbols</a>;</div>
 <div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;<span class="comment">    /** Current working directory when the ispc compiler starts</span></div>
-<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;<span class="comment">        execution. */</span></div>
-<div class="line"><a name="l00586"></a><span class="lineno"><a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">  586</a></span>&#160;    <span class="keywordtype">char</span> <a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>[1024];</div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;<span class="comment">    /** If true, function names are mangled by appending the target ISA and</span></div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;<span class="comment">        vector width to them. */</span></div>
+<div class="line"><a name="l00586"></a><span class="lineno"><a class="code" href="structGlobals.html#a70d9662d1a19c30f5d94dfebf5e6d49c">  586</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a70d9662d1a19c30f5d94dfebf5e6d49c">mangleFunctionsWithTarget</a>;</div>
 <div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;<span class="comment">    /** Arguments to pass along to the C pre-processor, if it is run on the</span></div>
-<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;<span class="comment">        program before compilation. */</span></div>
-<div class="line"><a name="l00590"></a><span class="lineno"><a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">  590</a></span>&#160;    std::vector&lt;std::string&gt; <a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">cppArgs</a>;</div>
-<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;<span class="comment">    /** Additional user-provided directories to search when processing</span></div>
-<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;<span class="comment">        #include directives in the preprocessor. */</span></div>
-<div class="line"><a name="l00594"></a><span class="lineno"><a class="code" href="structGlobals.html#ad79d304eab94ba944a4297876b9230c6">  594</a></span>&#160;    std::vector&lt;std::string&gt; <a class="code" href="structGlobals.html#ad79d304eab94ba944a4297876b9230c6">includePath</a>;</div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;<span class="comment">    /** If enabled, the lexer will randomly replace some tokens returned</span></div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;<span class="comment">        with other tokens, in order to test error condition handling in the</span></div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;<span class="comment">        compiler. */</span></div>
+<div class="line"><a name="l00591"></a><span class="lineno"><a class="code" href="structGlobals.html#a55be54da2074e433e4bcecd100e43779">  591</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structGlobals.html#a55be54da2074e433e4bcecd100e43779">enableFuzzTest</a>;</div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;<span class="comment">    /** Seed for random number generator used for fuzz testing. */</span></div>
+<div class="line"><a name="l00594"></a><span class="lineno"><a class="code" href="structGlobals.html#a45bf35d6567f44da9a1f332b16ad1c9f">  594</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structGlobals.html#a45bf35d6567f44da9a1f332b16ad1c9f">fuzzTestSeed</a>;</div>
 <div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;<span class="comment">    /** Indicates that alignment in memory allocation routines should be</span></div>
-<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;<span class="comment">        forced to have given value. -1 value means natural alignment for the platforms. */</span></div>
-<div class="line"><a name="l00598"></a><span class="lineno"><a class="code" href="structGlobals.html#a131ac2b2ed49c487ed702eb83087c4e4">  598</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structGlobals.html#a131ac2b2ed49c487ed702eb83087c4e4">forceAlignment</a>;</div>
-<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;};</div>
-<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;</div>
-<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;<span class="keyword">enum</span> {</div>
-<div class="line"><a name="l00602"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5aa70f85ac6667a951dc8a1649e027f524">  602</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5aa70f85ac6667a951dc8a1649e027f524">COST_ASSIGN</a> = 1,</div>
-<div class="line"><a name="l00603"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a19c8dd86970153a37f9f3ea74d568098">  603</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a19c8dd86970153a37f9f3ea74d568098">COST_COMPLEX_ARITH_OP</a> = 4,</div>
-<div class="line"><a name="l00604"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5af3b52b3fe582fa33a05b179de583f013">  604</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5af3b52b3fe582fa33a05b179de583f013">COST_DELETE</a> = 32,</div>
-<div class="line"><a name="l00605"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5afdc88ca148035f944379bcd833502e07">  605</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5afdc88ca148035f944379bcd833502e07">COST_DEREF</a> = 4,</div>
-<div class="line"><a name="l00606"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a93db4e15460347adf2dd0eee01db4cef">  606</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a93db4e15460347adf2dd0eee01db4cef">COST_FUNCALL</a> = 4,</div>
-<div class="line"><a name="l00607"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a7fc9041278c2483d52839501b54e9dde">  607</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a7fc9041278c2483d52839501b54e9dde">COST_FUNPTR_UNIFORM</a> = 12,</div>
-<div class="line"><a name="l00608"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a7f7993c37bd4b74ca0d8426808747b29">  608</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a7f7993c37bd4b74ca0d8426808747b29">COST_FUNPTR_VARYING</a> = 24,</div>
-<div class="line"><a name="l00609"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a7a283065322c6351bd001d12cb489f53">  609</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a7a283065322c6351bd001d12cb489f53">COST_GATHER</a> = 8,</div>
-<div class="line"><a name="l00610"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a5c265aeb00271f33f1508fa6e10e2743">  610</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a5c265aeb00271f33f1508fa6e10e2743">COST_GOTO</a> = 4,</div>
-<div class="line"><a name="l00611"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a823f6601e9b3429dbb144eaf8ee4147b">  611</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a823f6601e9b3429dbb144eaf8ee4147b">COST_LOAD</a> = 2,</div>
-<div class="line"><a name="l00612"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5ab1d011cdbc94a7714dc827e31400afde">  612</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5ab1d011cdbc94a7714dc827e31400afde">COST_NEW</a> = 32,</div>
-<div class="line"><a name="l00613"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a69f60777c954f8b01518068d01a91b88">  613</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a69f60777c954f8b01518068d01a91b88">COST_BREAK_CONTINUE</a> = 3,</div>
-<div class="line"><a name="l00614"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a5957bd8ce116043e23f537c394edd3b9">  614</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a5957bd8ce116043e23f537c394edd3b9">COST_RETURN</a> = 4,</div>
-<div class="line"><a name="l00615"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5af81cdc83381bd7903d4bc0725e5a5dfd">  615</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5af81cdc83381bd7903d4bc0725e5a5dfd">COST_SELECT</a> = 4,</div>
-<div class="line"><a name="l00616"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a3137882d7620bad80b389f8d823459e5">  616</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a3137882d7620bad80b389f8d823459e5">COST_SIMPLE_ARITH_LOGIC_OP</a> = 1,</div>
-<div class="line"><a name="l00617"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a456f516d8f0e11f1ef925e96d3ed258f">  617</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a456f516d8f0e11f1ef925e96d3ed258f">COST_SYNC</a> = 32,</div>
-<div class="line"><a name="l00618"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a273c1c4b56446c90f8f9369f80326823">  618</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a273c1c4b56446c90f8f9369f80326823">COST_TASK_LAUNCH</a> = 32,</div>
-<div class="line"><a name="l00619"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5adc1a52ea4cdb6e1873f31cdb26b7fb99">  619</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5adc1a52ea4cdb6e1873f31cdb26b7fb99">COST_TYPECAST_COMPLEX</a> = 4,</div>
-<div class="line"><a name="l00620"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a88d2934ce408a675ef07508cc8662136">  620</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a88d2934ce408a675ef07508cc8662136">COST_TYPECAST_SIMPLE</a> = 1,</div>
-<div class="line"><a name="l00621"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a36c01086c93eebb6004ce25928584c3e">  621</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a36c01086c93eebb6004ce25928584c3e">COST_UNIFORM_IF</a> = 2,</div>
-<div class="line"><a name="l00622"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5ab9632d78e1450d93979d93615289e383">  622</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5ab9632d78e1450d93979d93615289e383">COST_VARYING_IF</a> = 3,</div>
-<div class="line"><a name="l00623"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a74bb20208bb8744b06e5bf8b413c3387">  623</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a74bb20208bb8744b06e5bf8b413c3387">COST_UNIFORM_LOOP</a> = 4,</div>
-<div class="line"><a name="l00624"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a8471b4c1eb05355d348ac9ebf1d17ab1">  624</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a8471b4c1eb05355d348ac9ebf1d17ab1">COST_VARYING_LOOP</a> = 6,</div>
-<div class="line"><a name="l00625"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5aa57def760d2f0a24ceb917979cf9dec2">  625</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5aa57def760d2f0a24ceb917979cf9dec2">COST_UNIFORM_SWITCH</a> = 4,</div>
-<div class="line"><a name="l00626"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5afd483f805747682b50cd8352d283483f">  626</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5afd483f805747682b50cd8352d283483f">COST_VARYING_SWITCH</a> = 12,</div>
-<div class="line"><a name="l00627"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a52a03a13e1a15820cff7e3d2dfda0d3c">  627</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a52a03a13e1a15820cff7e3d2dfda0d3c">COST_ASSERT</a> = 8,</div>
-<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;</div>
-<div class="line"><a name="l00629"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a9db67cd81911cae4caafc60c189eb5fd">  629</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a9db67cd81911cae4caafc60c189eb5fd">CHECK_MASK_AT_FUNCTION_START_COST</a> = 16,</div>
-<div class="line"><a name="l00630"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a78d5af543670c975aabc86817edeb540">  630</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a78d5af543670c975aabc86817edeb540">PREDICATE_SAFE_IF_STATEMENT_COST</a> = 6,</div>
-<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;};</div>
-<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;</div>
-<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;<span class="keyword">extern</span> <a class="code" href="structGlobals.html" title="This structure collects together a number of global variables.">Globals</a> *<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>;</div>
-<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;<span class="keyword">extern</span> <a class="code" href="classModule.html">Module</a> *<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>;</div>
-<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;</div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;<span class="preprocessor">#endif // ISPC_H</span></div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;<span class="comment">    /** Global LLVMContext object */</span></div>
+<div class="line"><a name="l00597"></a><span class="lineno"><a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">  597</a></span>&#160;    llvm::LLVMContext *<a class="code" href="structGlobals.html#af0bc8f49d4474cfd5bff9550d11a9853">ctx</a>;</div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;<span class="comment">    /** Current working directory when the ispc compiler starts</span></div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;<span class="comment">        execution. */</span></div>
+<div class="line"><a name="l00601"></a><span class="lineno"><a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">  601</a></span>&#160;    <span class="keywordtype">char</span> <a class="code" href="structGlobals.html#ab737603db6289f661588de29c64f03ff">currentDirectory</a>[1024];</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;<span class="comment">    /** Arguments to pass along to the C pre-processor, if it is run on the</span></div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;<span class="comment">        program before compilation. */</span></div>
+<div class="line"><a name="l00605"></a><span class="lineno"><a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">  605</a></span>&#160;    std::vector&lt;std::string&gt; <a class="code" href="structGlobals.html#af8d2fa99e9fdf45b952ee90542ffeb65">cppArgs</a>;</div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;<span class="comment">    /** Additional user-provided directories to search when processing</span></div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;<span class="comment">        #include directives in the preprocessor. */</span></div>
+<div class="line"><a name="l00609"></a><span class="lineno"><a class="code" href="structGlobals.html#ad79d304eab94ba944a4297876b9230c6">  609</a></span>&#160;    std::vector&lt;std::string&gt; <a class="code" href="structGlobals.html#ad79d304eab94ba944a4297876b9230c6">includePath</a>;</div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;<span class="comment">    /** Indicates that alignment in memory allocation routines should be</span></div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;<span class="comment">        forced to have given value. -1 value means natural alignment for the platforms. */</span></div>
+<div class="line"><a name="l00613"></a><span class="lineno"><a class="code" href="structGlobals.html#a131ac2b2ed49c487ed702eb83087c4e4">  613</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structGlobals.html#a131ac2b2ed49c487ed702eb83087c4e4">forceAlignment</a>;</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;};</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;</div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;<span class="keyword">enum</span> {</div>
+<div class="line"><a name="l00617"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5aa70f85ac6667a951dc8a1649e027f524">  617</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5aa70f85ac6667a951dc8a1649e027f524">COST_ASSIGN</a> = 1,</div>
+<div class="line"><a name="l00618"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a19c8dd86970153a37f9f3ea74d568098">  618</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a19c8dd86970153a37f9f3ea74d568098">COST_COMPLEX_ARITH_OP</a> = 4,</div>
+<div class="line"><a name="l00619"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5af3b52b3fe582fa33a05b179de583f013">  619</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5af3b52b3fe582fa33a05b179de583f013">COST_DELETE</a> = 32,</div>
+<div class="line"><a name="l00620"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5afdc88ca148035f944379bcd833502e07">  620</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5afdc88ca148035f944379bcd833502e07">COST_DEREF</a> = 4,</div>
+<div class="line"><a name="l00621"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a93db4e15460347adf2dd0eee01db4cef">  621</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a93db4e15460347adf2dd0eee01db4cef">COST_FUNCALL</a> = 4,</div>
+<div class="line"><a name="l00622"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a7fc9041278c2483d52839501b54e9dde">  622</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a7fc9041278c2483d52839501b54e9dde">COST_FUNPTR_UNIFORM</a> = 12,</div>
+<div class="line"><a name="l00623"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a7f7993c37bd4b74ca0d8426808747b29">  623</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a7f7993c37bd4b74ca0d8426808747b29">COST_FUNPTR_VARYING</a> = 24,</div>
+<div class="line"><a name="l00624"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a7a283065322c6351bd001d12cb489f53">  624</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a7a283065322c6351bd001d12cb489f53">COST_GATHER</a> = 8,</div>
+<div class="line"><a name="l00625"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a5c265aeb00271f33f1508fa6e10e2743">  625</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a5c265aeb00271f33f1508fa6e10e2743">COST_GOTO</a> = 4,</div>
+<div class="line"><a name="l00626"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a823f6601e9b3429dbb144eaf8ee4147b">  626</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a823f6601e9b3429dbb144eaf8ee4147b">COST_LOAD</a> = 2,</div>
+<div class="line"><a name="l00627"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5ab1d011cdbc94a7714dc827e31400afde">  627</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5ab1d011cdbc94a7714dc827e31400afde">COST_NEW</a> = 32,</div>
+<div class="line"><a name="l00628"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a69f60777c954f8b01518068d01a91b88">  628</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a69f60777c954f8b01518068d01a91b88">COST_BREAK_CONTINUE</a> = 3,</div>
+<div class="line"><a name="l00629"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a5957bd8ce116043e23f537c394edd3b9">  629</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a5957bd8ce116043e23f537c394edd3b9">COST_RETURN</a> = 4,</div>
+<div class="line"><a name="l00630"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5af81cdc83381bd7903d4bc0725e5a5dfd">  630</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5af81cdc83381bd7903d4bc0725e5a5dfd">COST_SELECT</a> = 4,</div>
+<div class="line"><a name="l00631"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a3137882d7620bad80b389f8d823459e5">  631</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a3137882d7620bad80b389f8d823459e5">COST_SIMPLE_ARITH_LOGIC_OP</a> = 1,</div>
+<div class="line"><a name="l00632"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a456f516d8f0e11f1ef925e96d3ed258f">  632</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a456f516d8f0e11f1ef925e96d3ed258f">COST_SYNC</a> = 32,</div>
+<div class="line"><a name="l00633"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a273c1c4b56446c90f8f9369f80326823">  633</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a273c1c4b56446c90f8f9369f80326823">COST_TASK_LAUNCH</a> = 32,</div>
+<div class="line"><a name="l00634"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5adc1a52ea4cdb6e1873f31cdb26b7fb99">  634</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5adc1a52ea4cdb6e1873f31cdb26b7fb99">COST_TYPECAST_COMPLEX</a> = 4,</div>
+<div class="line"><a name="l00635"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a88d2934ce408a675ef07508cc8662136">  635</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a88d2934ce408a675ef07508cc8662136">COST_TYPECAST_SIMPLE</a> = 1,</div>
+<div class="line"><a name="l00636"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a36c01086c93eebb6004ce25928584c3e">  636</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a36c01086c93eebb6004ce25928584c3e">COST_UNIFORM_IF</a> = 2,</div>
+<div class="line"><a name="l00637"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5ab9632d78e1450d93979d93615289e383">  637</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5ab9632d78e1450d93979d93615289e383">COST_VARYING_IF</a> = 3,</div>
+<div class="line"><a name="l00638"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a74bb20208bb8744b06e5bf8b413c3387">  638</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a74bb20208bb8744b06e5bf8b413c3387">COST_UNIFORM_LOOP</a> = 4,</div>
+<div class="line"><a name="l00639"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a8471b4c1eb05355d348ac9ebf1d17ab1">  639</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a8471b4c1eb05355d348ac9ebf1d17ab1">COST_VARYING_LOOP</a> = 6,</div>
+<div class="line"><a name="l00640"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5aa57def760d2f0a24ceb917979cf9dec2">  640</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5aa57def760d2f0a24ceb917979cf9dec2">COST_UNIFORM_SWITCH</a> = 4,</div>
+<div class="line"><a name="l00641"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5afd483f805747682b50cd8352d283483f">  641</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5afd483f805747682b50cd8352d283483f">COST_VARYING_SWITCH</a> = 12,</div>
+<div class="line"><a name="l00642"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a52a03a13e1a15820cff7e3d2dfda0d3c">  642</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a52a03a13e1a15820cff7e3d2dfda0d3c">COST_ASSERT</a> = 8,</div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;</div>
+<div class="line"><a name="l00644"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a9db67cd81911cae4caafc60c189eb5fd">  644</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a9db67cd81911cae4caafc60c189eb5fd">CHECK_MASK_AT_FUNCTION_START_COST</a> = 16,</div>
+<div class="line"><a name="l00645"></a><span class="lineno"><a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a78d5af543670c975aabc86817edeb540">  645</a></span>&#160;    <a class="code" href="ispc_8h.html#a99fb83031ce9923c84392b4e92f956b5a78d5af543670c975aabc86817edeb540">PREDICATE_SAFE_IF_STATEMENT_COST</a> = 6,</div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;};</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;</div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;<span class="keyword">extern</span> <a class="code" href="structGlobals.html" title="This structure collects together a number of global variables.">Globals</a> *<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>;</div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;<span class="keyword">extern</span> <a class="code" href="classModule.html">Module</a> *<a class="code" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>;</div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;</div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;<span class="preprocessor">#endif // ISPC_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 19 2013 21:30:52 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 18 2014 18:28:37 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
