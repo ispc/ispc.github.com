@@ -234,6 +234,13 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#restructuring-existing-programs-to-use-ispc">Restructuring Existing Programs to Use ISPC</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#experimental-support-for-ptx">Experimental support for PTX</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#compiling-for-the-nvidia-kepler-gpu">Compiling For The NVIDIA Kepler GPU</a></li>
+<li><a class="reference internal" href="#hints">Hints</a></li>
+<li><a class="reference internal" href="#limitations-known-issues">Limitations &amp; known issues</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#disclaimer-and-legal-information">Disclaimer and Legal Information</a></li>
 <li><a class="reference internal" href="#optimization-notice">Optimization Notice</a></li>
 </ul>
@@ -4307,6 +4314,110 @@ coherence of control flow across the running SPMD program instances, which
 can also have a significant effect on performance; in general, creating
 groups of work that will tend to do similar computation across the SPMD
 program instances improves performance.</p>
+</div>
+</div>
+<div class="section" id="experimental-support-for-ptx">
+<h1>Experimental support for PTX</h1>
+<p><tt class="docutils literal">ispc</tt> provides experimental support for PTX code generation which currently
+targets NVIDIA GPUs with compute capability &gt;3.5 [Kepler GPUs with support for
+dynamic parallelism]. Due to its nature, the PTX backend currently impose
+several restrictions on the <tt class="docutils literal">ispc</tt> program, which will be described below.</p>
+<div class="section" id="overview">
+<h2>Overview</h2>
+<p>SPMD programming in <tt class="docutils literal">ispc</tt> is similar to a warp-synchronous CUDA programming.
+Namely, program instances in a gang are equivalent of CUDA threads in a single
+warp. Hence, to run efficiently on a GPU <tt class="docutils literal">ispc</tt> program must use tasking
+functionality via <tt class="docutils literal">launch</tt> keyword to ensure multiple number of warps are
+executed concurrently on the GPU.</p>
+<p><tt class="docutils literal">export</tt> functions are equipped with a CUDA C wrapper which schedules a
+single warp--a thread-block with a total of 32 threads. In contract to CPU
+programming, this exported function, either directly or otherwise, should
+utilize <tt class="docutils literal">launch</tt> keyword to schedule work on a GPU.</p>
+<p>At the PTX level, <tt class="docutils literal">launch</tt> keyword is mapped to CUDA Dynamic Parallelism and
+it schedules a grid of thread-blocks each 4 warps-wide (128 threads).  As a
+result, <tt class="docutils literal">ispc</tt> has a tasking-granularity of 4 tasks with PTX target; this
+restriction will be eliminated in future.</p>
+<p>When passing pointers to an <tt class="docutils literal">export</tt> function, it is important that they
+remain legal when are accessed from GPU. Prior to CUDA 6.0, such a pointer were
+holding an address that is only accessible from the GPU.  With the release of
+CUDA 6.0, it is possible to pass a pointer to a unified memory allocated with
+<tt class="docutils literal">cudaMallocManaged</tt>. Examples provides rudimentary wrapper functions that
+call CUDA API for managed memory allocations, allowing the programmers to avoid
+explicit memory copies.</p>
+</div>
+<div class="section" id="compiling-for-the-nvidia-kepler-gpu">
+<h2>Compiling For The NVIDIA Kepler GPU</h2>
+<p>Compilation for NVIDIA Kepler GPU is a several step procedure.</p>
+<p>First, we need to generate a LLVM assembly from <tt class="docutils literal">ispc</tt> source file (<tt class="docutils literal">ispc</tt>
+generates LLVM assembly instead of bitcode when <tt class="docutils literal">nvptx</tt> target is chosen):</p>
+<pre class="literal-block">
+$ISPC_HOME/ispc foo.ispc --emit-llvm --target=nvptx -o foo.ll
+</pre>
+<p>This LLVM assembly can immediately be compiled into PTX with the help of
+<tt class="docutils literal">ptxgen</tt> tool; this tool uses <tt class="docutils literal">libNVVM</tt> which is a part of a CUDA Toolkit.</p>
+<pre class="literal-block">
+$ISPC_HOME/ptxtools/ptxgen --use_fast_math foo.ll -o foo.ptx
+</pre>
+<!-- If ``ispc`` is compiled with  LLVM >3.2, the resulting bitcode must first be -->
+<!-- decompiled with the ``llvm-dis`` from LLVM 3.2 distribution; this "trick" is -->
+<!-- required to generate an IR compatible with libNVVM: -->
+<!-- :: -->
+<!--  -->
+<!-- $LLVM32/bin/llvm-dis foo.bc -o foo.ll -->
+<!-- $ISPC_HOME/ptxtools/ptxgen - -use_fast_math foo.ll -o foo.ptx -->
+<p>This PTX is ready for execution on a GPU, for example via CUDA
+Driver API. Alternatively, we also provide a simple <tt class="docutils literal">ptxcc</tt> tool, which
+compiles the resulting PTX code into an object file:</p>
+<pre class="literal-block">
+$ISPC_HOME/ptxtools/ptxcc foo.ptx -o foo_cu.o -Xnvcc=&quot;--maxrregcount=64
+-Xptxas=-v&quot;
+</pre>
+<p>This object file can be linked with the main program via <tt class="docutils literal">nvcc</tt>:</p>
+<pre class="literal-block">
+nvcc foo_cu.o foo_main.o -o foo
+</pre>
+</div>
+<div class="section" id="hints">
+<h2>Hints</h2>
+<ul class="simple">
+<li><tt class="docutils literal">uniform</tt> arrays in a function scope are statically allocated in
+<tt class="docutils literal">__shared__</tt> memory, with all ensuing consequences. For example, if more
+than avaiable shared memory per SMX is allocated, a link- or runtime-error will occur</li>
+<li>If <tt class="docutils literal">uniform</tt> arrays of large size are desired, we recommend to use
+<tt class="docutils literal">uniform new uniform T[size]</tt> for their allocation, ideally outside the
+tasking function (see <tt class="docutils literal">deferred/kernels.ispc</tt> in the deferred shading example)</li>
+</ul>
+<p>Examples that produces executables for CPU, XeonPhi and Kepler GPU display
+several tuning approaches that can benefit GPU performance.
+<tt class="docutils literal">ispc</tt> may also generate performance warning, that if followed, may improve
+GPU application performance.</p>
+</div>
+<div class="section" id="limitations-known-issues">
+<h2>Limitations &amp; known issues</h2>
+<p>Due to its experimental form, PTX code generation is known to impose several
+limitation on the <tt class="docutils literal">ispc</tt> program which are documented in the following list:</p>
+<ul class="simple">
+<li>Must use <tt class="docutils literal">ispc</tt> tasking functionality to run efficiently on GPU</li>
+<li>Must use <tt class="docutils literal">new/delete</tt> and/or <tt class="docutils literal">ispc_malloc</tt>/<tt class="docutils literal">ispc_free</tt>/<tt class="docutils literal">ispc_memset</tt>/<tt class="docutils literal">ispc_memcpy</tt> to allocate/free/set/copy memory that is visible to GPU</li>
+<li><tt class="docutils literal">export</tt> functions must have <tt class="docutils literal">void</tt> return type.</li>
+<li><tt class="docutils literal">task</tt>/<tt class="docutils literal">export</tt> functions do not accept varying data-types</li>
+<li><tt class="docutils literal">new</tt>/<tt class="docutils literal">delete</tt> currently only works with <tt class="docutils literal">uniform</tt> data-types</li>
+<li><tt class="docutils literal">aossoa</tt>/<tt class="docutils literal">soaaos</tt> is not yet supported</li>
+<li><tt class="docutils literal">sizeof(varying)</tt> is not yet unsupported</li>
+<li>Function pointers do not work yet (may or may not generate compilation fail)</li>
+<li><tt class="docutils literal">memset</tt>/<tt class="docutils literal">memcpy</tt>/<tt class="docutils literal">memmove</tt> is not yet supported</li>
+<li><tt class="docutils literal">uniform</tt> arrays in global scope are mapped to global memory</li>
+<li><tt class="docutils literal">varying</tt> arrays in global scope are not yet supported</li>
+<li><tt class="docutils literal">uniform</tt> arrays in local  scope are mapped to shared memory</li>
+<li><tt class="docutils literal">varying</tt> arrays in local  scope are mapped to local  memory</li>
+<li><tt class="docutils literal">const uniform/varying</tt> arrays are mapped to local memory</li>
+<li><tt class="docutils literal">const static uniform</tt> arrays are mapped to constant memory</li>
+<li><tt class="docutils literal">const static varying</tt>  arrays are mapped to global   memory</li>
+<li><tt class="docutils literal">static</tt> data types in local scope are not allowed; compilation will fail</li>
+<li>Best performance is obtained with libNVVM (LLVM PTX backend can also be used but it requires libdevice.compute_35.10.bc that comes with libNVVM)</li>
+</ul>
+<p>Likely there are more... which, together with some of the above-mentioned
+issues, will be fixed in due time.</p>
 </div>
 </div>
 <div class="section" id="disclaimer-and-legal-information">
