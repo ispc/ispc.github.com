@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.8.0</span>
    </div>
   </td>
  </tr>
@@ -93,7 +93,7 @@
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#if defined(LLVM_3_4)</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor"></span><span class="preprocessor">  #include &lt;llvm/DebugInfo.h&gt;</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#if defined(LLVM_3_5)</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#if !defined(LLVM_3_2) &amp;&amp; !defined(LLVM_3_3) &amp;&amp; !defined(LLVM_3_4) // LLVM 3.5+</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor"></span><span class="preprocessor">  #include &lt;llvm/IR/DebugInfo.h&gt;</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor"></span></div>
@@ -210,7 +210,7 @@
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">    /** The diBuilder manages generating debugging information */</span></div>
 <div class="line"><a name="l00162"></a><span class="lineno"><a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">  162</a></span>&#160;    llvm::DIBuilder *<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#if !defined(LLVM_3_1) &amp;&amp; !defined(LLVM_3_2) &amp;&amp; !defined(LLVM_3_3)</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#if !defined(LLVM_3_2) &amp;&amp; !defined(LLVM_3_3)</span></div>
 <div class="line"><a name="l00165"></a><span class="lineno"><a class="code" href="classModule.html#aa14ce64af67b5395cedaa4c06c43d67a">  165</a></span>&#160;<span class="preprocessor"></span>    llvm::DICompileUnit <a class="code" href="classModule.html#aa14ce64af67b5395cedaa4c06c43d67a">diCompileUnit</a>;</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="preprocessor">#endif // LLVM_3_4+</span></div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="preprocessor"></span></div>
@@ -245,7 +245,7 @@
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 18 2014 18:28:37 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Oct 17 2014 01:31:11 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
