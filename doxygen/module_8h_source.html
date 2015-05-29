@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.8.2</span>
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!--header-->
 <div class="contents">
 <a href="module_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">  Copyright (c) 2010-2014, Intel Corporation</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">  Copyright (c) 2010-2015, Intel Corporation</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">  All rights reserved.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">  Redistribution and use in source and binary forms, with or without</span></div>
@@ -210,42 +210,44 @@
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">    /** The diBuilder manages generating debugging information */</span></div>
 <div class="line"><a name="l00162"></a><span class="lineno"><a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">  162</a></span>&#160;    llvm::DIBuilder *<a class="code" href="classModule.html#a36f0446f0c92681fb4fddda7bcd98299">diBuilder</a>;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#if !defined(LLVM_3_2) &amp;&amp; !defined(LLVM_3_3)</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno"><a class="code" href="classModule.html#aa14ce64af67b5395cedaa4c06c43d67a">  165</a></span>&#160;<span class="preprocessor"></span>    llvm::DICompileUnit <a class="code" href="classModule.html#aa14ce64af67b5395cedaa4c06c43d67a">diCompileUnit</a>;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="preprocessor">#endif // LLVM_3_4+</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00169"></a><span class="lineno"><a class="code" href="classModule.html#a423fde49a388b68fc95d354ca9891f99">  169</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="classModule.html#a423fde49a388b68fc95d354ca9891f99">filename</a>;</div>
-<div class="line"><a name="l00170"></a><span class="lineno"><a class="code" href="classModule.html#a2f65ea2445b5675c2cfcc6773f6d71f8">  170</a></span>&#160;    <a class="code" href="classAST.html">AST</a> *<a class="code" href="classModule.html#a2f65ea2445b5675c2cfcc6773f6d71f8">ast</a>;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
-<div class="line"><a name="l00172"></a><span class="lineno"><a class="code" href="classModule.html#afb3d55fee6b8e7298c4d2958f64b0973">  172</a></span>&#160;    std::vector&lt;std::pair&lt;const Type *, SourcePos&gt; &gt; <a class="code" href="classModule.html#afb3d55fee6b8e7298c4d2958f64b0973">exportedTypes</a>;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">    /** Write the corresponding output type to the given file.  Returns</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">        true on success, false if there has been an error.  The given</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">        filename may be NULL, indicating that output should go to standard</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment">        output. */</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a594cfcea06b848755262c10199a54cfb">writeOutput</a>(<a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> ot, <span class="keyword">const</span> <span class="keywordtype">char</span> *filename,</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                     <span class="keyword">const</span> <span class="keywordtype">char</span> *includeFileName = NULL,</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                     <a class="code" href="structDispatchHeaderInfo.html">DispatchHeaderInfo</a> *DHI = 0);</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a307501ecd6f5e09dbc3d6467c2eb0abe">writeHeader</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a3a03387130b5b1720585ded5e961f45a">writeDispatchHeader</a>(<a class="code" href="structDispatchHeaderInfo.html">DispatchHeaderInfo</a> *DHI);</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a3bfdbc168d9fc2cd75a9143fc67f03f9">writeDeps</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename);</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classModule.html#aba56c6829134019097b66d3193cfecef">writeDevStub</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename);</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classModule.html#aeda3525705ad7d87e21c854ffd1b8edf">writeHostStub</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename);</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a6cdcea5baae8b781325a46f4397af4f1">writeObjectFileOrAssembly</a>(<a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> outputType, <span class="keyword">const</span> <span class="keywordtype">char</span> *filename);</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a6cdcea5baae8b781325a46f4397af4f1">writeObjectFileOrAssembly</a>(llvm::TargetMachine *targetMachine,</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                                          llvm::Module *<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>, <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> outputType,</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                                          <span class="keyword">const</span> <span class="keywordtype">char</span> *outFileName);</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classModule.html#ae4d74e8025773c7266e0ffb5d8ef5227">writeBitcode</a>(llvm::Module *<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>, <span class="keyword">const</span> <span class="keywordtype">char</span> *outFileName);</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classModule.html#a0b22b6e47f5ae32ca0ee762054fa3b2b">execPreprocessor</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *infilename, llvm::raw_string_ostream* ostream) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;};</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="preprocessor">#endif // ISPC_MODULE_H</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#if defined(LLVM_3_4) || defined(LLVM_3_5) || defined(LLVM_3_6)</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="preprocessor"></span>    llvm::DICompileUnit <a class="code" href="classModule.html#ad1441b4471254d672918649affbfa3d4">diCompileUnit</a>;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="preprocessor">#elif !defined(LLVM_3_2) &amp;&amp; !defined(LLVM_3_3) // LLVM 3.7++</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno"><a class="code" href="classModule.html#ad1441b4471254d672918649affbfa3d4">  167</a></span>&#160;<span class="preprocessor"></span>    llvm::DICompileUnit *<a class="code" href="classModule.html#ad1441b4471254d672918649affbfa3d4">diCompileUnit</a>;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="preprocessor">#endif // LLVM_3_4+</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00171"></a><span class="lineno"><a class="code" href="classModule.html#a423fde49a388b68fc95d354ca9891f99">  171</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="classModule.html#a423fde49a388b68fc95d354ca9891f99">filename</a>;</div>
+<div class="line"><a name="l00172"></a><span class="lineno"><a class="code" href="classModule.html#a2f65ea2445b5675c2cfcc6773f6d71f8">  172</a></span>&#160;    <a class="code" href="classAST.html">AST</a> *<a class="code" href="classModule.html#a2f65ea2445b5675c2cfcc6773f6d71f8">ast</a>;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno"><a class="code" href="classModule.html#afb3d55fee6b8e7298c4d2958f64b0973">  174</a></span>&#160;    std::vector&lt;std::pair&lt;const Type *, SourcePos&gt; &gt; <a class="code" href="classModule.html#afb3d55fee6b8e7298c4d2958f64b0973">exportedTypes</a>;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">    /** Write the corresponding output type to the given file.  Returns</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment">        true on success, false if there has been an error.  The given</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="comment">        filename may be NULL, indicating that output should go to standard</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="comment">        output. */</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a594cfcea06b848755262c10199a54cfb">writeOutput</a>(<a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> ot, <span class="keyword">const</span> <span class="keywordtype">char</span> *filename,</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                     <span class="keyword">const</span> <span class="keywordtype">char</span> *includeFileName = NULL,</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                     <a class="code" href="structDispatchHeaderInfo.html">DispatchHeaderInfo</a> *DHI = 0);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a307501ecd6f5e09dbc3d6467c2eb0abe">writeHeader</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename);</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a3a03387130b5b1720585ded5e961f45a">writeDispatchHeader</a>(<a class="code" href="structDispatchHeaderInfo.html">DispatchHeaderInfo</a> *DHI);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a3bfdbc168d9fc2cd75a9143fc67f03f9">writeDeps</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classModule.html#aba56c6829134019097b66d3193cfecef">writeDevStub</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classModule.html#aeda3525705ad7d87e21c854ffd1b8edf">writeHostStub</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a6cdcea5baae8b781325a46f4397af4f1">writeObjectFileOrAssembly</a>(<a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> outputType, <span class="keyword">const</span> <span class="keywordtype">char</span> *filename);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classModule.html#a6cdcea5baae8b781325a46f4397af4f1">writeObjectFileOrAssembly</a>(llvm::TargetMachine *targetMachine,</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                                          llvm::Module *<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>, <a class="code" href="classModule.html#a7089f94e2e69bf0b29c5f8ed9bbcde16">OutputType</a> outputType,</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                                          <span class="keyword">const</span> <span class="keywordtype">char</span> *outFileName);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classModule.html#ae4d74e8025773c7266e0ffb5d8ef5227">writeBitcode</a>(llvm::Module *<a class="code" href="classModule.html#a8fcd6fd8e2f91f41e0b168a2bdab585d">module</a>, <span class="keyword">const</span> <span class="keywordtype">char</span> *outFileName);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classModule.html#a0b22b6e47f5ae32ca0ee762054fa3b2b">execPreprocessor</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *infilename, llvm::raw_string_ostream* ostream) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;};</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="preprocessor">#endif // ISPC_MODULE_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Dec 31 2014 14:57:22 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri May 29 2015 21:40:43 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
