@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.8.2</span>
    </div>
   </td>
  </tr>
@@ -45,6 +45,7 @@
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -54,7 +55,10 @@
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ispc_8h_source.html">ispc.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="module_8h_source.html">module.h</a>&quot;</code><br/>
+<code>#include &lt;math.h&gt;</code><br/>
 <code>#include &lt;stdio.h&gt;</code><br/>
+<code>#include &lt;string.h&gt;</code><br/>
+<code>#include &lt;sstream&gt;</code><br/>
 <code>#include &lt;inttypes.h&gt;</code><br/>
 <code>#include &quot;<a class="el" href="llvmutil_8h_source.html">llvmutil.h</a>&quot;</code><br/>
 <code>#include &quot;llvm/IR/Constants.h&quot;</code><br/>
@@ -66,12 +70,12 @@
 <code>#include &quot;llvm/IR/IntrinsicInst.h&quot;</code><br/>
 <code>#include &quot;llvm/IR/InlineAsm.h&quot;</code><br/>
 <code>#include &quot;llvm/Pass.h&quot;</code><br/>
-<code>#include &quot;llvm/PassManager.h&quot;</code><br/>
+<code>#include &quot;llvm/IR/LegacyPassManager.h&quot;</code><br/>
 <code>#include &quot;llvm/IR/TypeFinder.h&quot;</code><br/>
 <code>#include &quot;llvm/ADT/StringExtras.h&quot;</code><br/>
 <code>#include &quot;llvm/ADT/SmallString.h&quot;</code><br/>
 <code>#include &quot;llvm/ADT/STLExtras.h&quot;</code><br/>
-<code>#include &quot;llvm/Analysis/ConstantsScanner.h&quot;</code><br/>
+<code>#include &quot;llvm/IR/InstIterator.h&quot;</code><br/>
 <code>#include &quot;llvm/Analysis/LoopInfo.h&quot;</code><br/>
 <code>#include &quot;llvm/IR/Verifier.h&quot;</code><br/>
 <code>#include &lt;llvm/IR/IRPrintingPasses.h&gt;</code><br/>
@@ -108,10 +112,14 @@
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classconstant__scanner_1_1constant__iterator.html">constant_scanner::constant_iterator</a></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSmearCleanupPass.html">SmearCleanupPass</a></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBitcastCleanupPass.html">BitcastCleanupPass</a></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAndCmpCleanupPass.html">AndCmpCleanupPass</a></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaskOpsCleanupPass.html">MaskOpsCleanupPass</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespaceconstant__scanner"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceconstant__scanner.html">constant_scanner</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="define-members"></a>
 Macros</h2></td></tr>
@@ -132,7 +140,10 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adc9811fbe857cf3a117d54a061f3a2d9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cbackend_8cpp.html#adc9811fbe857cf3a117d54a061f3a2d9">findUsedArrayTypes</a> (const llvm::Module *<a class="el" href="ispc_8cpp.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>, std::vector&lt; llvm::ArrayType * &gt; &amp;t)</td></tr>
+<tr class="memitem:a99d469a74f06d4756bd9ee024fde54b5"><td class="memItemLeft" align="right" valign="top">constant_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceconstant__scanner.html#a99d469a74f06d4756bd9ee024fde54b5">constant_scanner::constant_begin</a> (const llvm::Function *F)</td></tr>
+<tr class="memitem:a89a35bd9cba320800827fbbe12d33462"><td class="memItemLeft" align="right" valign="top">constant_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceconstant__scanner.html#a89a35bd9cba320800827fbbe12d33462">constant_scanner::constant_end</a> (const llvm::Function *F)</td></tr>
+<tr class="memitem:acf5aff68a4fe8da2cb2278eff3b3c80f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cbackend_8cpp.html#acf5aff68a4fe8da2cb2278eff3b3c80f">findUsedArrayAndLongIntTypes</a> (const llvm::Module *<a class="el" href="ispc_8cpp.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>, std::vector&lt; llvm::ArrayType * &gt; &amp;t, std::vector&lt; llvm::IntegerType * &gt; &amp;i, std::vector&lt; bool &gt; &amp;IsVolatile, std::vector&lt; int &gt; &amp;Alignment)</td></tr>
+<tr class="memitem:ad3461e1bbbecfc6e80ea9a610d9c50ea"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cbackend_8cpp.html#ad3461e1bbbecfc6e80ea9a610d9c50ea">is_vec16_i64_ty</a> (llvm::Type *Ty)</td></tr>
 <tr class="memitem:a8180c5a0c56abb2af8f45fa802014c3b"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cbackend_8cpp.html#a8180c5a0c56abb2af8f45fa802014c3b">CBEMangle</a> (const std::string &amp;S)</td></tr>
 <tr class="memitem:a2fa5e5d90f78374b78027d0b72ce2646"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cbackend_8cpp.html#a2fa5e5d90f78374b78027d0b72ce2646">ftostr</a> (const llvm::APFloat &amp;V)</td></tr>
 <tr class="memitem:a78da5656c62f661883b7d55220980de1"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cbackend_8cpp.html#a78da5656c62f661883b7d55220980de1">isFPCSafeToPrint</a> (const llvm::ConstantFP *CFP)</td></tr>
@@ -162,7 +173,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l00023">23</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l00026">26</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -200,7 +211,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l00022">22</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l00025">25</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -251,7 +262,7 @@ Functions</h2></td></tr>
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l02170">2170</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l02316">2316</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -278,7 +289,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l00616">616</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l00740">740</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -315,11 +326,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>FindStaticTors - Given a static ctor/dtor list, unpack its contents into the StaticTors set. </p>
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l02151">2151</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l02297">2297</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="adc9811fbe857cf3a117d54a061f3a2d9"></a>
+<a class="anchor" id="acf5aff68a4fe8da2cb2278eff3b3c80f"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -327,7 +338,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void findUsedArrayTypes </td>
+          <td class="memname">static void findUsedArrayAndLongIntTypes </td>
           <td>(</td>
           <td class="paramtype">const llvm::Module *&#160;</td>
           <td class="paramname"><em>m</em>, </td>
@@ -336,7 +347,25 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::vector&lt; llvm::ArrayType * &gt; &amp;&#160;</td>
-          <td class="paramname"><em>t</em>&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; llvm::IntegerType * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; bool &gt; &amp;&#160;</td>
+          <td class="paramname"><em>IsVolatile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>Alignment</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -351,7 +380,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l00285">285</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l00380">380</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -377,9 +406,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l01035">1035</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l01177">1177</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="cbackend_8cpp_source.html#l01055">isFPCSafeToPrint()</a>.</p>
+<p>Referenced by <a class="el" href="cbackend_8cpp_source.html#l01197">isFPCSafeToPrint()</a>.</p>
 
 </div>
 </div>
@@ -415,7 +444,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l02032">2032</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l02178">2178</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -441,7 +470,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l03583">3583</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l03831">3831</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -468,9 +497,35 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>getGlobalVariableClass - If this is a global that is specially recognized by LLVM, return a code that indicates how we should handle it. </p>
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l02178">2178</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l02324">2324</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
-<p>References <a class="el" href="cbackend_8cpp_source.html#l02172">GlobalCtors</a>, <a class="el" href="cbackend_8cpp_source.html#l02172">GlobalDtors</a>, <a class="el" href="cbackend_8cpp_source.html#l02173">NotPrinted</a>, and <a class="el" href="cbackend_8cpp_source.html#l02171">NotSpecial</a>.</p>
+<p>References <a class="el" href="cbackend_8cpp_source.html#l02318">GlobalCtors</a>, <a class="el" href="cbackend_8cpp_source.html#l02318">GlobalDtors</a>, <a class="el" href="cbackend_8cpp_source.html#l02319">NotPrinted</a>, and <a class="el" href="cbackend_8cpp_source.html#l02317">NotSpecial</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad3461e1bbbecfc6e80ea9a610d9c50ea"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool is_vec16_i64_ty </td>
+          <td>(</td>
+          <td class="paramtype">llvm::Type *&#160;</td>
+          <td class="paramname"><em>Ty</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l00387">387</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -496,9 +551,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l01055">1055</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l01197">1197</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
-<p>References <a class="el" href="cbackend_8cpp_source.html#l01035">ftostr()</a>.</p>
+<p>References <a class="el" href="cbackend_8cpp_source.html#l01177">ftostr()</a>.</p>
 
 </div>
 </div>
@@ -524,7 +579,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l02987">2987</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l03235">3235</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -550,7 +605,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l03685">3685</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l03938">3938</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -593,9 +648,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Construct the name of a function with the given base and returning a vector of a given type, of the specified idth. For example, if base is "foo" and matchType is i32 and width is 16, this will return the string "__foo_i32&lt;__vec16_i32&gt;". </p>
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l01205">1205</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
-
-<p>Referenced by <a class="el" href="cbackend_8cpp_source.html#l04620">SmearCleanupPass::runOnBasicBlock()</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l01347">1347</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -622,9 +675,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns true if the given value is a compile-time constant vector of i1s with all elements 'true'. </p>
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l04883">4883</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
-
-<p>Referenced by <a class="el" href="cbackend_8cpp_source.html#l04906">MaskOpsCleanupPass::lGetNotOperand()</a>, and <a class="el" href="cbackend_8cpp_source.html#l04923">MaskOpsCleanupPass::runOnBasicBlock()</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l05203">5203</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -650,9 +701,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l03417">3417</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
-
-<p>Referenced by <a class="el" href="cbackend_8cpp_source.html#l04736">AndCmpCleanupPass::runOnBasicBlock()</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l03665">3665</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -678,11 +727,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l03451">3451</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l03699">3699</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
-<p>References <a class="el" href="ispc_8h_source.html#l00159">Assert</a>.</p>
-
-<p>Referenced by <a class="el" href="cbackend_8cpp_source.html#l04736">AndCmpCleanupPass::runOnBasicBlock()</a>.</p>
+<p>References <a class="el" href="ispc_8h_source.html#l00170">Assert</a>.</p>
 
 </div>
 </div>
@@ -724,9 +771,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l02203">2203</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l02349">2349</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="cbackend_8cpp_source.html#l02222">PrintEscapedString()</a>.</p>
+<p>Referenced by <a class="el" href="cbackend_8cpp_source.html#l02368">PrintEscapedString()</a>.</p>
 
 </div>
 </div>
@@ -762,9 +809,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l02222">2222</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l02368">2368</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
-<p>References <a class="el" href="cbackend_8cpp_source.html#l02203">PrintEscapedString()</a>.</p>
+<p>References <a class="el" href="cbackend_8cpp_source.html#l02349">PrintEscapedString()</a>.</p>
 
 </div>
 </div>
@@ -812,7 +859,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l03659">3659</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l03912">3912</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -852,16 +899,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l04984">4984</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="cbackend_8cpp_source.html#l05304">5304</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="module_8cpp_source.html#l01085">Module::writeOutput()</a>.</p>
+<p>Referenced by <a class="el" href="module_8cpp_source.html#l01157">Module::writeOutput()</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Dec 31 2014 14:57:23 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri May 29 2015 21:40:43 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.8.2</span>
    </div>
   </td>
  </tr>
@@ -80,9 +80,6 @@
 &#160;
 
 <h3><a class="anchor" id="index_l"></a>- l -</h3><ul>
-<li>lAddExtractedGlobals()
-: <a class="el" href="module_8cpp.html#a7c8e27fe892e5b7f3b2993bc131e05bb">module.cpp</a>
-</li>
 <li>lAddModuleSymbols()
 : <a class="el" href="builtins_8cpp.html#a5554f69d9b8a595fa07c03b7bf942434">builtins.cpp</a>
 </li>
@@ -126,7 +123,7 @@
 : <a class="el" href="ctx_8cpp.html#acd038ed218045b72d269d8126b31da7c">ctx.cpp</a>
 </li>
 <li>lCallInst()
-: <a class="el" href="opt_8cpp.html#a8c19662e48244e08880bd61669b26839">opt.cpp</a>
+: <a class="el" href="opt_8cpp.html#a6e4af755e19b1128d1b71e55688f249a">opt.cpp</a>
 </li>
 <li>lCanImproveVectorDivide()
 : <a class="el" href="expr_8cpp.html#a7aaed3405ebd34bcfee68b424988023b">expr.cpp</a>
@@ -172,6 +169,9 @@
 </li>
 <li>lCoalescePerfInfo()
 : <a class="el" href="opt_8cpp.html#ac6bd161dcb83c2ac4c5bd2b3cd3bb9b4">opt.cpp</a>
+</li>
+<li>lCompatibleTypes()
+: <a class="el" href="module_8cpp.html#a3820c0aae5edf455632911a6cbca75e4">module.cpp</a>
 </li>
 <li>lComputeBasePtr()
 : <a class="el" href="opt_8cpp.html#a750e741d5d8196d5aaa5a557e434750a">opt.cpp</a>
@@ -237,13 +237,10 @@
 : <a class="el" href="expr_8cpp.html#afba70fe98977761f7178858ee9f214ad">expr.cpp</a>
 </li>
 <li>lCreateDIArray()
-: <a class="el" href="type_8cpp.html#a4da0b4906ed2dcecb37b4d5df8a3b6e6">type.cpp</a>
+: <a class="el" href="type_8cpp.html#a07d573baa2acf65ff266127e07730bed">type.cpp</a>
 </li>
 <li>lCreateDispatchFunction()
 : <a class="el" href="module_8cpp.html#a138214349137466b3ea13d8395b35fec">module.cpp</a>
-</li>
-<li>lCreateDispatchModule()
-: <a class="el" href="module_8cpp.html#a4ee5467ae8ebe068b41ed5b706405720">module.cpp</a>
 </li>
 <li>lCreateISPCSymbol()
 : <a class="el" href="builtins_8cpp.html#a81398a326620dd285b8e6a26061b5a35">builtins.cpp</a>
@@ -283,6 +280,9 @@
 </li>
 <li>lEmitBinaryPointerArith()
 : <a class="el" href="expr_8cpp.html#a10ff63730b53bcea5e9b6e94fac9e40b">expr.cpp</a>
+</li>
+<li>lEmitDispatchModule()
+: <a class="el" href="module_8cpp.html#a0e77b36fad968ce4c79fbc4fc13b6bfb">module.cpp</a>
 </li>
 <li>lEmitEnumDecls()
 : <a class="el" href="module_8cpp.html#a4cd0f93a97d39c554ca2891466cfae92">module.cpp</a>
@@ -332,9 +332,6 @@
 <li>lExtract248Scale()
 : <a class="el" href="opt_8cpp.html#a6b7adc00a1832b7937542e9f70d7a008">opt.cpp</a>
 </li>
-<li>lExtractAndRewriteGlobals()
-: <a class="el" href="module_8cpp.html#a19cd0f8ade15ce98c906df3449c8dd87">module.cpp</a>
-</li>
 <li>lExtractConstantOffset()
 : <a class="el" href="opt_8cpp.html#adce013e717663e5e455ad1d4b6ddb35a">opt.cpp</a>
 </li>
@@ -349,6 +346,9 @@
 </li>
 <li>lExtractOffsetVector248Scale()
 : <a class="el" href="opt_8cpp.html#a8e57e1615411b94fc8171f6180b9d762">opt.cpp</a>
+</li>
+<li>lExtractOrCheckGlobals()
+: <a class="el" href="module_8cpp.html#ace070c4e9ece9fd8ca2fcc9b598cffad">module.cpp</a>
 </li>
 <li>lExtractTargets()
 : <a class="el" href="module_8cpp.html#a684cc363eb4a3ce8aad846ed1714a333">module.cpp</a>
@@ -439,7 +439,7 @@
 : <a class="el" href="ispc_8cpp.html#a4888bc842d5f447f8bcfe12306f693dd">ispc.cpp</a>
 </li>
 <li>lGetTargetFileName()
-: <a class="el" href="module_8cpp.html#ad4d67e664e7c85207d6a8c6dfa8aaa24">module.cpp</a>
+: <a class="el" href="module_8cpp.html#a85c740f5e8dbdf70f84011eca3d8b864">module.cpp</a>
 </li>
 <li>lGetTypedFunc()
 : <a class="el" href="cbackend_8cpp.html#aca92ef87321dddbc6d44e49d0d8ad1c4">cbackend.cpp</a>
@@ -476,6 +476,9 @@
 </li>
 <li>lImproveMaskedStore()
 : <a class="el" href="opt_8cpp.html#aa1fbd436abbd761d1097793a6d261d66">opt.cpp</a>
+</li>
+<li>lInitDispatchModule()
+: <a class="el" href="module_8cpp.html#acceb648f79985c0f4003f9136bf2eb50">module.cpp</a>
 </li>
 <li>lInstructionMayWriteToMemory()
 : <a class="el" href="opt_8cpp.html#a4e9c006f2dbccb2cad3e63ac8ada1dbd">opt.cpp</a>
@@ -526,7 +529,7 @@
 : <a class="el" href="stmt_8cpp.html#aba8d7e7f2d8b6cd8de9c17c0a9bb392d">stmt.cpp</a>
 </li>
 <li>LLVMBoolVector()
-: <a class="el" href="llvmutil_8h.html#a36ff3cfe03b341afd8f6c33108614687">llvmutil.h</a>
+: <a class="el" href="llvmutil_8h.html#a193bfef64b68b16d5a439d28a4c757a6">llvmutil.h</a>
 , <a class="el" href="llvmutil_8cpp.html#aaea7cba9df4e42f858e65a12195cff11">llvmutil.cpp</a>
 </li>
 <li>LLVMConcatVectors()
@@ -538,20 +541,20 @@
 , <a class="el" href="llvmutil_8cpp.html#aeaf1592a71f06facf6c39c861cd214b5">llvmutil.cpp</a>
 </li>
 <li>LLVMDoubleVector()
-: <a class="el" href="llvmutil_8h.html#af7dfff32875a3d46080f596d5c9089e1">llvmutil.h</a>
+: <a class="el" href="llvmutil_8h.html#a64788b45fb18b68d48c0dfe6e1e34642">llvmutil.h</a>
 , <a class="el" href="llvmutil_8cpp.html#affdffb2a837b2a688f9a78fb4b50f191">llvmutil.cpp</a>
 </li>
 <li>LLVMDumpValue()
-: <a class="el" href="llvmutil_8cpp.html#af2ea5fb708473897ea3eb7fb5a0d956f">llvmutil.cpp</a>
-, <a class="el" href="llvmutil_8h.html#af2ea5fb708473897ea3eb7fb5a0d956f">llvmutil.h</a>
+: <a class="el" href="llvmutil_8h.html#af2ea5fb708473897ea3eb7fb5a0d956f">llvmutil.h</a>
+, <a class="el" href="llvmutil_8cpp.html#af2ea5fb708473897ea3eb7fb5a0d956f">llvmutil.cpp</a>
 </li>
 <li>LLVMExtractFirstVectorElement()
 : <a class="el" href="llvmutil_8h.html#ac74c93c0de2de4b6b73f3a5fa9b45a6d">llvmutil.h</a>
 , <a class="el" href="llvmutil_8cpp.html#ac74c93c0de2de4b6b73f3a5fa9b45a6d">llvmutil.cpp</a>
 </li>
 <li>LLVMExtractVectorInts()
-: <a class="el" href="llvmutil_8cpp.html#ace1036bc9879c0cb415c7eca1f89a557">llvmutil.cpp</a>
-, <a class="el" href="llvmutil_8h.html#ace1036bc9879c0cb415c7eca1f89a557">llvmutil.h</a>
+: <a class="el" href="llvmutil_8h.html#ace1036bc9879c0cb415c7eca1f89a557">llvmutil.h</a>
+, <a class="el" href="llvmutil_8cpp.html#ace1036bc9879c0cb415c7eca1f89a557">llvmutil.cpp</a>
 </li>
 <li>LLVMFlattenInsertChain()
 : <a class="el" href="llvmutil_8h.html#a988d33ed4cab8ba3cd2178f7a3c8ff8b">llvmutil.h</a>
@@ -563,46 +566,44 @@
 </li>
 <li>LLVMFloatVector()
 : <a class="el" href="llvmutil_8h.html#a76c7dd0b45a6aff9f0cdb0f550376095">llvmutil.h</a>
-, <a class="el" href="llvmutil_8cpp.html#a8a66309d42673e29f7f087dfce4dca74">llvmutil.cpp</a>
+, <a class="el" href="llvmutil_8cpp.html#afa982d6d182a6f56414d883be5164f82">llvmutil.cpp</a>
 </li>
 <li>LLVMGetName()
 : <a class="el" href="llvmutil_8h.html#a428e1a05bd0d3048104a773764713f63">llvmutil.h</a>
-, <a class="el" href="llvmutil_8cpp.html#a37171b0a1649a97558634a0876e1cb09">llvmutil.cpp</a>
+, <a class="el" href="llvmutil_8cpp.html#a4162014721d3052c88bfed23f36edd0f">llvmutil.cpp</a>
 </li>
 <li>LLVMInt16()
 : <a class="el" href="llvmutil_8h.html#aa864092ace67a1c92b1a89106d162dce">llvmutil.h</a>
 , <a class="el" href="llvmutil_8cpp.html#ae9840a5c746f03e39e076b3c391e6aa1">llvmutil.cpp</a>
 </li>
 <li>LLVMInt16Vector()
-: <a class="el" href="llvmutil_8h.html#ac9a0b6e586f01f921638aaef92363eb7">llvmutil.h</a>
+: <a class="el" href="llvmutil_8h.html#aef4077dfbe80ef992997c585542bc32c">llvmutil.h</a>
 , <a class="el" href="llvmutil_8cpp.html#a7a6ba880d5e948b7cc6982d52e2cc1b0">llvmutil.cpp</a>
-, <a class="el" href="llvmutil_8h.html#aef4077dfbe80ef992997c585542bc32c">llvmutil.h</a>
+, <a class="el" href="llvmutil_8h.html#ac9a0b6e586f01f921638aaef92363eb7">llvmutil.h</a>
 </li>
 <li>LLVMInt32()
 : <a class="el" href="llvmutil_8h.html#a805eea7bde44804e2a4df8026b8cc230">llvmutil.h</a>
 , <a class="el" href="llvmutil_8cpp.html#a602095f61a26f3a5d9976de2c84c6cb0">llvmutil.cpp</a>
 </li>
 <li>LLVMInt32Vector()
-: <a class="el" href="llvmutil_8cpp.html#a56a9a0a3ff62407f975481f0d33f9a6e">llvmutil.cpp</a>
-, <a class="el" href="llvmutil_8h.html#a8fa451f2b0901dc66c576aa7f728ee55">llvmutil.h</a>
-, <a class="el" href="llvmutil_8cpp.html#afd8c6127667f8e8d90ed92d0552a8dab">llvmutil.cpp</a>
+: <a class="el" href="llvmutil_8h.html#a8fa451f2b0901dc66c576aa7f728ee55">llvmutil.h</a>
+, <a class="el" href="llvmutil_8cpp.html#a56a9a0a3ff62407f975481f0d33f9a6e">llvmutil.cpp</a>
 </li>
 <li>LLVMInt64()
 : <a class="el" href="llvmutil_8h.html#a55856bce3d2fc76f28111393ab711537">llvmutil.h</a>
 , <a class="el" href="llvmutil_8cpp.html#af53b70ad972d63ed9b1b2b768d76ab98">llvmutil.cpp</a>
 </li>
 <li>LLVMInt64Vector()
-: <a class="el" href="llvmutil_8h.html#ab451ab544be331be34170df41056c341">llvmutil.h</a>
+: <a class="el" href="llvmutil_8h.html#a9badc829495d74456ec8492e1d6ac720">llvmutil.h</a>
 , <a class="el" href="llvmutil_8cpp.html#a395ed8f1c29d26b0722d1cb77f53012f">llvmutil.cpp</a>
-, <a class="el" href="llvmutil_8h.html#a9badc829495d74456ec8492e1d6ac720">llvmutil.h</a>
+, <a class="el" href="llvmutil_8h.html#ab451ab544be331be34170df41056c341">llvmutil.h</a>
 </li>
 <li>LLVMInt8()
-: <a class="el" href="llvmutil_8h.html#a9138577b844ec490e42609798f4c2d20">llvmutil.h</a>
-, <a class="el" href="llvmutil_8cpp.html#a2f052e19ac4d93fe89c1d32a920a5839">llvmutil.cpp</a>
+: <a class="el" href="llvmutil_8cpp.html#a2f052e19ac4d93fe89c1d32a920a5839">llvmutil.cpp</a>
+, <a class="el" href="llvmutil_8h.html#a9138577b844ec490e42609798f4c2d20">llvmutil.h</a>
 </li>
 <li>LLVMInt8Vector()
-: <a class="el" href="llvmutil_8cpp.html#a8d12c24d31941f05e444c0ca279bf04e">llvmutil.cpp</a>
-, <a class="el" href="llvmutil_8h.html#a159be2465951c194c67456ff73414b2e">llvmutil.h</a>
+: <a class="el" href="llvmutil_8h.html#ab77dce53672c5c609207c5845762aec0">llvmutil.h</a>
 , <a class="el" href="llvmutil_8cpp.html#ac7a8a8c5e6295faa7b08a21800083bc0">llvmutil.cpp</a>
 </li>
 <li>LLVMIntAsType()
@@ -614,13 +615,11 @@
 , <a class="el" href="llvmutil_8cpp.html#a0422a9c91b6a83630d891efc779b007c">llvmutil.cpp</a>
 </li>
 <li>LLVMUInt16()
-: <a class="el" href="llvmutil_8cpp.html#ae7411419ea2464f22cf1c10d4286e48a">llvmutil.cpp</a>
-, <a class="el" href="llvmutil_8h.html#a62894e1fa6f4fcade53451b6c8f22f86">llvmutil.h</a>
+: <a class="el" href="llvmutil_8h.html#a62894e1fa6f4fcade53451b6c8f22f86">llvmutil.h</a>
+, <a class="el" href="llvmutil_8cpp.html#ae7411419ea2464f22cf1c10d4286e48a">llvmutil.cpp</a>
 </li>
 <li>LLVMUInt16Vector()
 : <a class="el" href="llvmutil_8cpp.html#a0bae5d4cb5798536a84d162c3b889af5">llvmutil.cpp</a>
-, <a class="el" href="llvmutil_8h.html#ad419d9b45abdb28502853243a2c285bd">llvmutil.h</a>
-, <a class="el" href="llvmutil_8cpp.html#ae910c29b5295e411ce57fd9332b90c4e">llvmutil.cpp</a>
 , <a class="el" href="llvmutil_8h.html#a69e1c0753aed23512b708f7b8443c403">llvmutil.h</a>
 </li>
 <li>LLVMUInt32()
@@ -628,36 +627,36 @@
 , <a class="el" href="llvmutil_8cpp.html#af6a62412904acda5a430e20028911a7a">llvmutil.cpp</a>
 </li>
 <li>LLVMUInt32Vector()
-: <a class="el" href="llvmutil_8cpp.html#a06d28447e1ca6b966d6053a3bdef8ad4">llvmutil.cpp</a>
+: <a class="el" href="llvmutil_8cpp.html#a6f844cc5f821f261e55255e44dd10d1d">llvmutil.cpp</a>
 , <a class="el" href="llvmutil_8h.html#ab0188c419ce36ea2b1a80f0394b33817">llvmutil.h</a>
-, <a class="el" href="llvmutil_8cpp.html#a6f844cc5f821f261e55255e44dd10d1d">llvmutil.cpp</a>
+, <a class="el" href="llvmutil_8cpp.html#a06d28447e1ca6b966d6053a3bdef8ad4">llvmutil.cpp</a>
 </li>
 <li>LLVMUInt64()
-: <a class="el" href="llvmutil_8cpp.html#abdd20276346cb312d501d61879cfd297">llvmutil.cpp</a>
-, <a class="el" href="llvmutil_8h.html#a51cf514ecff6769ffb013a4a781c8ae2">llvmutil.h</a>
+: <a class="el" href="llvmutil_8h.html#a51cf514ecff6769ffb013a4a781c8ae2">llvmutil.h</a>
+, <a class="el" href="llvmutil_8cpp.html#abdd20276346cb312d501d61879cfd297">llvmutil.cpp</a>
 </li>
 <li>LLVMUInt64Vector()
-: <a class="el" href="llvmutil_8h.html#a08ac6894af5d668ff76c06b7946f004a">llvmutil.h</a>
-, <a class="el" href="llvmutil_8cpp.html#a85e4b84475e536ff3b063a57f5f4a5f1">llvmutil.cpp</a>
+: <a class="el" href="llvmutil_8cpp.html#ac112376ac77771122bf87b659b9468a5">llvmutil.cpp</a>
 , <a class="el" href="llvmutil_8h.html#a640029a221c7ca5ef934ca4f8cc5c30f">llvmutil.h</a>
-, <a class="el" href="llvmutil_8cpp.html#ac112376ac77771122bf87b659b9468a5">llvmutil.cpp</a>
+, <a class="el" href="llvmutil_8cpp.html#a85e4b84475e536ff3b063a57f5f4a5f1">llvmutil.cpp</a>
 </li>
 <li>LLVMUInt8()
-: <a class="el" href="llvmutil_8cpp.html#ab828ceda1cf4a2d711b5753ed38c3728">llvmutil.cpp</a>
-, <a class="el" href="llvmutil_8h.html#ab373f3690df50510f49d1d986f8fce02">llvmutil.h</a>
+: <a class="el" href="llvmutil_8h.html#ab373f3690df50510f49d1d986f8fce02">llvmutil.h</a>
+, <a class="el" href="llvmutil_8cpp.html#ab828ceda1cf4a2d711b5753ed38c3728">llvmutil.cpp</a>
 </li>
 <li>LLVMUInt8Vector()
 : <a class="el" href="llvmutil_8h.html#a44dbfed7fffae0d6189212b07768ec1d">llvmutil.h</a>
 , <a class="el" href="llvmutil_8cpp.html#a4c81cd6a240cf41a420f6204fa4ac6f9">llvmutil.cpp</a>
 , <a class="el" href="llvmutil_8h.html#a2396cae0757641a3b46ef0d5ce0fb809">llvmutil.h</a>
+, <a class="el" href="llvmutil_8cpp.html#a21470814d54039beaf7d35280ed45443">llvmutil.cpp</a>
 </li>
 <li>LLVMUIntAsType()
 : <a class="el" href="llvmutil_8cpp.html#ac2c720b34a6ea695fbb9a589c1b5558d">llvmutil.cpp</a>
 , <a class="el" href="llvmutil_8h.html#a99c5f62ce6256d81e8cca188f0d28925">llvmutil.h</a>
 </li>
 <li>LLVMVectorIsLinear()
-: <a class="el" href="llvmutil_8cpp.html#a90f7875bca1cd3b22931cae1981ad611">llvmutil.cpp</a>
-, <a class="el" href="llvmutil_8h.html#a90f7875bca1cd3b22931cae1981ad611">llvmutil.h</a>
+: <a class="el" href="llvmutil_8h.html#a90f7875bca1cd3b22931cae1981ad611">llvmutil.h</a>
+, <a class="el" href="llvmutil_8cpp.html#a90f7875bca1cd3b22931cae1981ad611">llvmutil.cpp</a>
 </li>
 <li>LLVMVectorValuesAllEqual()
 : <a class="el" href="llvmutil_8cpp.html#a5c329b0e63f1bfd214020a89e14ceceb">llvmutil.cpp</a>
@@ -700,7 +699,7 @@
 : <a class="el" href="expr_8cpp.html#ad084008c6ad086e2c1b471d0bbec04b6">expr.cpp</a>
 </li>
 <li>lOffsets32BitSafe()
-: <a class="el" href="opt_8cpp.html#a6f14dd2deb4b07e1ab1beedb817ad014">opt.cpp</a>
+: <a class="el" href="opt_8cpp.html#a7f94527d24a1f32007c7e6c9b2c827fc">opt.cpp</a>
 </li>
 <li>lOpString()
 : <a class="el" href="expr_8cpp.html#a94cae12006164b59711a5fd8988f9f93">expr.cpp</a>
@@ -847,7 +846,7 @@
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Dec 31 2014 14:57:23 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri May 29 2015 21:40:44 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

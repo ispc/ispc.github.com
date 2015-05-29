@@ -17,7 +17,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.8.2</span>
    </div>
   </td>
  </tr>
@@ -110,7 +110,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7bd23bd909d493d271dbe1024d212c06 inherit pub_methods_classType"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classType.html#a7bd23bd909d493d271dbe1024d212c06">Mangle</a> () const =0</td></tr>
 <tr class="memitem:a7e35141766bbc63333953263cd85d883 inherit pub_methods_classType"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classType.html#a7e35141766bbc63333953263cd85d883">GetCDeclaration</a> (const std::string &amp;name) const =0</td></tr>
 <tr class="memitem:a04eb42d850a697fc181b388688b6393e inherit pub_methods_classType"><td class="memItemLeft" align="right" valign="top">virtual llvm::Type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classType.html#a04eb42d850a697fc181b388688b6393e">LLVMType</a> (llvm::LLVMContext *ctx) const =0</td></tr>
-<tr class="memitem:a8b6ded269378020c769915bbbff3d73c inherit pub_methods_classType"><td class="memItemLeft" align="right" valign="top">virtual llvm::DIType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classType.html#a8b6ded269378020c769915bbbff3d73c">GetDIType</a> (llvm::DIDescriptor scope) const =0</td></tr>
+<tr class="memitem:a6b0d6084272d19bd614d5cce2c738c6d inherit pub_methods_classType"><td class="memItemLeft" align="right" valign="top">virtual llvm::DIType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classType.html#a6b0d6084272d19bd614d5cce2c738c6d">GetDIType</a> (llvm::DIScope *scope) const =0</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -134,7 +134,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Abstract base class for types that represent sequences. </p>
 <p><a class="el" href="classSequentialType.html" title="Abstract base class for types that represent sequences.">SequentialType</a> is an abstract base class that adds interface routines for types that represent linear sequences of other types (i.e., arrays and vectors). </p>
 
-<p>Definition at line <a class="el" href="type_8h_source.html#l00513">513</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p>Definition at line <a class="el" href="type_8h_source.html#l00531">531</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 </div><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ac4726b22e3c9461fc0a586b8085ad3e2"></a>
 <div class="memitem">
@@ -158,7 +158,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="type_8h_source.html#l00527">527</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p>Definition at line <a class="el" href="type_8h_source.html#l00545">545</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 
 </div>
 </div>
@@ -187,7 +187,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classVectorType.html#a87558faf9b83f232f1b1bd8dda7cba9a">VectorType</a>, and <a class="el" href="classArrayType.html#a0c07b5af9127e3dfc4626782f4227377">ArrayType</a>.</p>
 
-<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l02438">FunctionEmitContext::AddElementOffset()</a>, <a class="el" href="ctx_8cpp_source.html#l02361">FunctionEmitContext::GetElementPtrInst()</a>, <a class="el" href="type_8cpp_source.html#l01241">GetElementType()</a>, <a class="el" href="expr_8cpp_source.html#l04513">IndexExpr::GetLValueType()</a>, <a class="el" href="expr_8cpp_source.html#l04311">IndexExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l04244">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04390">lCheckIndicesVersusBounds()</a>, and <a class="el" href="module_8cpp_source.html#l00692">lRecursiveCheckValidParamType()</a>.</p>
+<p>Referenced by <a class="el" href="ctx_8cpp_source.html#l02536">FunctionEmitContext::AddElementOffset()</a>, <a class="el" href="ctx_8cpp_source.html#l02452">FunctionEmitContext::GetElementPtrInst()</a>, <a class="el" href="expr_8cpp_source.html#l04513">IndexExpr::GetLValueType()</a>, <a class="el" href="expr_8cpp_source.html#l04311">IndexExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l04244">IndexExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04390">lCheckIndicesVersusBounds()</a>, and <a class="el" href="module_8cpp_source.html#l00758">lRecursiveCheckValidParamType()</a>.</p>
 
 </div>
 </div>
@@ -216,9 +216,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classCollectionType.html#a6f8fa8323edfe0d729b9973a38254cf1">CollectionType</a>.</p>
 
-<p>Definition at line <a class="el" href="type_8cpp_source.html#l01241">1241</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
-
-<p>References <a class="el" href="classSequentialType.html#a923d9a8ec402a9880b6d149b8f372916">GetElementType()</a>.</p>
+<p>Definition at line <a class="el" href="type_8cpp_source.html#l01304">1304</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
 </div>
 </div>
@@ -229,7 +227,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Dec 31 2014 14:57:23 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri May 29 2015 21:40:44 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
