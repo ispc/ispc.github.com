@@ -18,7 +18,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.9.0</span>
+   &#160;<span id="projectnumber">1.9.1</span>
    </div>
   </td>
  </tr>
@@ -687,14 +687,14 @@
 <div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;            // No u or l suffix</div>
 <div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;            // If we&#39;re compiling to an 8-bit mask target and the constant</div>
 <div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;            // fits into 8 bits, return an 8-bit int.</div>
-<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;            if (g-&gt;target-&gt;getMaskBitCount() == 8) {</div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;            if (g-&gt;target-&gt;getDataTypeWidth() == 8) {</div>
 <div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;                if (yylval.intVal &lt;= 0x7fULL)</div>
 <div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;                    return TOKEN_INT8_CONSTANT;</div>
 <div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;                else if (yylval.intVal &lt;= 0xffULL)</div>
 <div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;                    return TOKEN_UINT8_CONSTANT;</div>
 <div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;            }</div>
 <div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;            // And similarly for 16-bit masks and constants</div>
-<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;            if (g-&gt;target-&gt;getMaskBitCount() == 16) {</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;            if (g-&gt;target-&gt;getDataTypeWidth() == 16) {</div>
 <div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;                if (yylval.intVal &lt;= 0x7fffULL)</div>
 <div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;                    return TOKEN_INT16_CONSTANT;</div>
 <div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;                else if (yylval.intVal &lt;= 0xffffULL)</div>
@@ -936,7 +936,7 @@
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Feb 12 2016 18:22:19 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jul 8 2016 17:29:18 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.10
 </small></address>
