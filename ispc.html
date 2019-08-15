@@ -109,6 +109,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-9-2">Updating ISPC Programs For Changes In ISPC 1.9.2</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-10-0">Updating ISPC Programs For Changes In ISPC 1.10.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-11-0">Updating ISPC Programs For Changes In ISPC 1.11.0</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-12-0">Updating ISPC Programs For Changes In ISPC 1.12.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -120,8 +121,6 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#basic-command-line-options">Basic Command-line Options</a></li>
 <li><a class="reference internal" href="#selecting-the-compilation-target">Selecting The Compilation Target</a></li>
 <li><a class="reference internal" href="#generating-generic-c-output">Generating Generic C++ Output</a></li>
-<li><a class="reference internal" href="#compiling-for-the-intel-xeon-phi-architecture-codename-knights-corner">Compiling For The Intel®  Xeon Phi™ Architecture (codename Knights Corner)</a></li>
-<li><a class="reference internal" href="#compiling-for-the-intel-xeon-phi-architecture-codename-knights-landing">Compiling For The Intel®  Xeon Phi™ Architecture (codename Knights Landing)</a></li>
 <li><a class="reference internal" href="#selecting-32-or-64-bit-addressing">Selecting 32 or 64 Bit Addressing</a></li>
 <li><a class="reference internal" href="#the-preprocessor">The Preprocessor</a></li>
 <li><a class="reference internal" href="#debugging">Debugging</a></li>
@@ -415,13 +414,29 @@ case when your C/C++ compiler is not supporting that, please use <tt class="docu
 <p>This release also introduces new AVX512 target avx512skx-i32x8. It produces code,
 which doesn't use ZMM registers.</p>
 </div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-12-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.12.0</h2>
+<p>This release contains the following changes that may affect compatibility with
+older versions:</p>
+<ul class="simple">
+<li>'noinline' keyword was added.</li>
+<li>Standard library functions 'rsqrt_fast()' and 'rcp_fast()' were added.</li>
+<li>AVX1.1 (IvyBridge) targets and generic KNC and KNL targets were removed.
+Note that KNL is still supported through avx512knl-i32x16.</li>
+</ul>
+<p>The release also introduces static initialization for varying variables, which
+should not affect compatibility.</p>
+<p>This release introduces experimental cross OS compilation support and ARM/AARCH64
+support. It also contains a new 128-bit AVX2 target (avx2-i32x4) and a CPU
+definition for Ice Lake client (--cpu=icl).</p>
+</div>
 </div>
 <div class="section" id="getting-started-with-ispc">
 <h1>Getting Started with ISPC</h1>
 <div class="section" id="installing-ispc">
 <h2>Installing ISPC</h2>
 <p>The <a class="reference external" href="downloads.html">ispc downloads web page</a> has prebuilt executables for Windows*,
-Linux* and Mac OS* available for download.  Alternatively, you can
+Linux* and macOS* available for download.  Alternatively, you can
 download the source code from that page and build it yourself; see see the
 <a class="reference external" href="http://github.com/ispc/ispc/wiki">ispc wiki</a> for instructions about building <tt class="docutils literal">ispc</tt> from source.</p>
 <p>Once you have an executable for your system, copy it into a directory
@@ -463,11 +478,12 @@ SIMD hardware.  Here, the variable <tt class="docutils literal">index</tt> takes
 program can then proceed, doing computation and control flow based on the
 values loaded.  The result from the running program instances is written to
 the <tt class="docutils literal">vout</tt> array before the next iteration of the <tt class="docutils literal">foreach</tt> loop runs.</p>
-<p>On Linux* and Mac OS*, the makefile in that directory compiles this program.
-For Windows*, open the <tt class="docutils literal">examples/examples.sln</tt> file in Microsoft Visual
-C++ 2012* to build this (and the other) examples.  In either case,
-build it now!  We'll walk through the details of the compilation steps in
-the following section, <a class="reference internal" href="#using-the-ispc-compiler">Using The ISPC Compiler</a>.)  In addition to
+<p>To build and run examples go to <tt class="docutils literal">examples</tt> and create <tt class="docutils literal">build</tt> folder.
+Run <tt class="docutils literal">cmake <span class="pre">-DISPC_EXECUTABLE=&lt;path_to_ispc_binary&gt;</span> ../</tt>. On Linux* and
+macOS*, the makefile will be generated in that directory. On Windows*,
+Microsoft Visual Studio solution <tt class="docutils literal">ispc_examples.sln</tt> will be created. In
+either case, build it now! We'll walk through the details of the compilation
+steps in the following section, <a class="reference internal" href="#using-the-ispc-compiler">Using The ISPC Compiler</a>.)  In addition to
 compiling the <tt class="docutils literal">ispc</tt> program, in this case the <tt class="docutils literal">ispc</tt> compiler also
 generates a small header file, <tt class="docutils literal">simple.h</tt>.  This header file includes the
 declaration for the C-callable function that the above <tt class="docutils literal">ispc</tt> program is
@@ -543,15 +559,15 @@ ispc foo.ispc -o foo.obj
 <pre class="literal-block">
 ispc foo.ispc -o foo.asm --emit-asm
 </pre>
-<p>To generate LLVM bitcode, use the <tt class="docutils literal"><span class="pre">--emit-llvm</span></tt> flag.</p>
+<p>To generate LLVM bitcode, use the <tt class="docutils literal"><span class="pre">--emit-llvm</span></tt> flag.
+To generate LLVM bitcode in textual form, use the <tt class="docutils literal"><span class="pre">--emit-llvm-text</span></tt> flag.</p>
 <p>Optimizations are on by default; they can be turned off with <tt class="docutils literal"><span class="pre">-O0</span></tt>:</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.obj -O0
 </pre>
-<p>On Mac* and Linux*, there is basic support for generating debugging
-symbols; this is enabled with the <tt class="docutils literal"><span class="pre">-g</span></tt> command-line flag.  Using <tt class="docutils literal"><span class="pre">-g</span></tt>
-causes optimizations to be disabled; to compile with debugging symbols and
-optimization, <tt class="docutils literal"><span class="pre">-O1</span></tt> should be provided as well as the <tt class="docutils literal"><span class="pre">-g</span></tt> flag.</p>
+<p>There is support for generating debugging symbols; this is enabled with the
+<tt class="docutils literal"><span class="pre">-g</span></tt> command-line flag.  Using <tt class="docutils literal"><span class="pre">-g</span></tt> doesn't affect optimization level;
+to debug unoptimized code pass <tt class="docutils literal"><span class="pre">-O0</span></tt> flag.</p>
 <p>The <tt class="docutils literal"><span class="pre">-h</span></tt> flag can also be used to direct <tt class="docutils literal">ispc</tt> to generate a C/C++
 header file that includes C/C++ declarations of the C-callable <tt class="docutils literal">ispc</tt>
 functions and the types passed to it.</p>
@@ -569,12 +585,13 @@ direct the compiler to treat any warnings as errors.</p>
 </div>
 <div class="section" id="selecting-the-compilation-target">
 <h2>Selecting The Compilation Target</h2>
-<p>There are three options that affect the compilation target: <tt class="docutils literal"><span class="pre">--arch</span></tt>,
+<p>There are four options that affect the compilation target: <tt class="docutils literal"><span class="pre">--arch</span></tt>,
 which sets the target architecture, <tt class="docutils literal"><span class="pre">--cpu</span></tt>, which sets the target CPU,
-and <tt class="docutils literal"><span class="pre">--target</span></tt>, which sets the target instruction set.</p>
-<p>If none of these options is specified, <tt class="docutils literal">ispc</tt> generates code for the
-architecture of the system the compiler is running on (i.e. 64-bit x86-64
-(<tt class="docutils literal"><span class="pre">--arch=x86-64</span></tt>) on x86 systems and ARM NEON on ARM systems.</p>
+<tt class="docutils literal"><span class="pre">--target</span></tt>, which sets the target instruction set, and <tt class="docutils literal"><span class="pre">--target-os</span></tt>,
+which sets the target operating system.</p>
+<p>If none of these options is specified, <tt class="docutils literal">ispc</tt> generates code for the host
+OS and for the architecture of the system the compiler is running on (i.e.
+64-bit x86-64 (<tt class="docutils literal"><span class="pre">--arch=x86-64</span></tt>) on x86 systems and ARM NEON on ARM systems.</p>
 <p>To compile to a 32-bit x86 target, for example, supply <tt class="docutils literal"><span class="pre">--arch=x86</span></tt> on
 the command line:</p>
 <pre class="literal-block">
@@ -588,7 +605,7 @@ on which you're running <tt class="docutils literal">ispc</tt> is used to determ
 <pre class="literal-block">
 ispc foo.ispc -o foo.obj --cpu=corei7-avx
 </pre>
-<p>Finally, <tt class="docutils literal"><span class="pre">--target</span></tt> selects the target instruction set.  The target
+<p>Next, <tt class="docutils literal"><span class="pre">--target</span></tt> selects the target instruction set.  The target
 string is of the form <tt class="docutils literal"><span class="pre">[ISA]-i[mask</span> size]x[gang size]</tt>.  For example,
 <tt class="docutils literal"><span class="pre">--target=avx2-i32x16</span></tt> specifies a target with the AVX2 instruction set,
 a mask size of 32 bits, and a gang size of 16.</p>
@@ -604,9 +621,6 @@ a mask size of 32 bits, and a gang size of 16.</p>
 </tr>
 <tr><td>avx, avx1</td>
 <td>AVX (2010-2011 era Intel CPUs)</td>
-</tr>
-<tr><td>avx1.1</td>
-<td>AVX 1.1 (2012 era &quot;Ivybridge&quot; Intel CPUs)</td>
 </tr>
 <tr><td>avx2</td>
 <td>AVX 2 target (2013- Intel &quot;Haswell&quot; CPUs)</td>
@@ -660,12 +674,6 @@ in the new scheme:</p>
 <tr><td>avx1-i32x16</td>
 <td>avx-x2</td>
 </tr>
-<tr><td>avx1.1-i32x8</td>
-<td>avx1.1</td>
-</tr>
-<tr><td>avx1.1-i32x16</td>
-<td>avx1.1-x2</td>
-</tr>
 <tr><td>avx2-i32x8</td>
 <td>avx2</td>
 </tr>
@@ -707,6 +715,17 @@ override this choice with the <tt class="docutils literal"><span class="pre">--t
 Intel® SSE2 with a 32-bit mask and 4 program instances in a gang, use
 <tt class="docutils literal"><span class="pre">--target=sse2-i32x4</span></tt>.  (As with the other options in this section, see
 the output of <tt class="docutils literal">ispc <span class="pre">--help</span></tt> for a full list of supported targets.)</p>
+<p>Finally, <tt class="docutils literal"><span class="pre">--target-os</span></tt> selects the target operating system. Depending on
+your host <tt class="docutils literal">ispc</tt> may support Windows, Linux, macOS, Android, iOS and PS4
+targets. Running <tt class="docutils literal">ispc <span class="pre">--help</span></tt> and looking at the output for the <tt class="docutils literal"><span class="pre">--target-os</span></tt>
+option gives the list of supported targets. By default <tt class="docutils literal">ispc</tt> produces the
+code for your host operating system.</p>
+<pre class="literal-block">
+ispc foo.ispc -o foo.obj --target-os=android
+</pre>
+<p>Note that cross OS compilation is in experimental stage. We encourage you to
+try it and send us a note with your experiences or to file a bug or feature
+requests with the <tt class="docutils literal">ispc</tt> <a class="reference external" href="https://github.com/ispc/ispc/issues?state=open">bug tracker</a>.</p>
 </div>
 <div class="section" id="generating-generic-c-output">
 <h2>Generating Generic C++ Output</h2>
@@ -755,72 +774,6 @@ provide the basic context.</p>
 C++ file; this can be used to easily include specific implementations of
 the vector types and functions.</p>
 </div>
-<div class="section" id="compiling-for-the-intel-xeon-phi-architecture-codename-knights-corner">
-<h2>Compiling For The Intel®  Xeon Phi™ Architecture (codename Knights Corner)</h2>
-<p><tt class="docutils literal">ispc</tt> has beta-level support for compiling for the many-core Intel®
-Xeon Phi™ architecture (formerly, &quot;Many Integrated Cores&quot; / MIC, codename
-Knights Corner).
-This support is based on the &quot;generic&quot; C++ output, described in the previous
-section.</p>
-<p>To compile for Xeon Phi™, first generate intermediate C++ code:</p>
-<pre class="literal-block">
-ispc foo.ispc --emit-c++ --target=generic-16 -o foo.cpp \
-    --c++-include-file=knc.h
-</pre>
-<p>The <tt class="docutils literal">ispc</tt> distribution now includes a header file,
-<tt class="docutils literal">examples/intrinsics/knc.h</tt>, which maps from the generic C++ output
-to the corresponding intrinsic operations supported by Intel Xeon Phi™.
-Thus, to generate an object file, use the Intel C++ Compiler (<tt class="docutils literal">icpc</tt>) compile
-the C++ code generated by <tt class="docutils literal">ispc</tt>, setting the <tt class="docutils literal">#include</tt> search
-path so that it can find the <tt class="docutils literal">examples/intrinsics/knc.h</tt> header file
-in the <tt class="docutils literal">ispc</tt> distribution.</p>
-<pre class="literal-block">
-icpc -mmic -Iexamples/intrinsics/ foo.cpp -o foo.o
-</pre>
-<p>With the current beta implementation, complex <tt class="docutils literal">ispc</tt> programs are able to
-run on Xeon Phi™, though there are a number of known limitations:</p>
-<ul class="simple">
-<li>The <tt class="docutils literal">examples/intrinsics/knc.h</tt> header file isn't complete yet; for
-example, vector operations with <tt class="docutils literal">int8</tt> and <tt class="docutils literal">int16</tt> types aren't yet
-implemented.  Programs that operate on <tt class="docutils literal">varying</tt> <tt class="docutils literal">int32</tt>, <tt class="docutils literal">float</tt>,
-and <tt class="docutils literal">double</tt> data-types (and <tt class="docutils literal">uniform</tt> variables of any data type,
-and arrays and structures of these types), should operate correctly.</li>
-<li>If you use the <tt class="docutils literal">launch</tt> functionality to launch tasks across cores,
-note that the pthreads task system implemented in
-<tt class="docutils literal">examples/tasksys.cpp</tt> offers several implemenetations for Xeon Phi™.
-You will need to experiment to understand which one is most
-appropriate for your workload.</li>
-<li>The compiler currently emits unaligned memory accesses in many cases
-where the memory address is actually aligned.  This may unnecessarily
-impact performance.</li>
-<li>When requesting that ICPC generate code with strict floating point
-precision compliance (using ICPC option <tt class="docutils literal"><span class="pre">-fp-model</span> strict</tt>) or
-accurate reporting of floating point exceptions (using ICPC option
-<tt class="docutils literal"><span class="pre">-fp-model</span> except</tt>) the compiler will generate code that uses the
-x87 unit rather than Xeon Phi™'s vector unit. For similar reasons, the
-options <tt class="docutils literal">–ansi</tt> and <tt class="docutils literal"><span class="pre">–fmath-errno</span></tt> may result in calls to math
-functions that are implemented in x87 rather than using vector instructions.
-This will have a significant performance impact. See the ICPC manual for
-details on these compiler options.</li>
-</ul>
-<p>All of these issues are currently actively being addressed and will be
-fixed in future releases.</p>
-<p>If you do use the current version of <tt class="docutils literal">ispc</tt> on Intel Xeon Phi™,
-please let us know of any bugs or unexpected results.  (Also, any
-interesting results!).</p>
-</div>
-<div class="section" id="compiling-for-the-intel-xeon-phi-architecture-codename-knights-landing">
-<h2>Compiling For The Intel®  Xeon Phi™ Architecture (codename Knights Landing)</h2>
-<p><tt class="docutils literal">ispc</tt> starting from v1.9.0 has support for compiling for the second
-generation of Intel® Xeon Phi™ architecture (codename Knights Landing).
-Two compilation paths are supported - generic (similar to KNC support) and
-native.</p>
-<p>To compile using generic path, follow KNC instructions, but use knl.h, instead
-of knc.h and use -xMIC-AVX512 for ICPC instead of -mmic.</p>
-<p>To compile using native path, just set --target=avx512knl-i32x16.</p>
-<p>Going forward, generic path will be deprecated, so using native target is
-preferable way to get AVX512 support.</p>
-</div>
 <div class="section" id="selecting-32-or-64-bit-addressing">
 <h2>Selecting 32 or 64 Bit Addressing</h2>
 <p>By default, <tt class="docutils literal">ispc</tt> uses 32-bit arithmetic for performing addressing
@@ -859,7 +812,7 @@ preprocessor runs:</p>
 <td>1</td>
 <td>Detecting that the <tt class="docutils literal">ispc</tt> compiler is processing the file</td>
 </tr>
-<tr><td>ISPC_TARGET_{NEON_8, NEON_16, NEON_32, SSE2, SSE4, AVX, AVX11, AVX2, AVX512KNL, AVX512SKX, GENERIC}</td>
+<tr><td>ISPC_TARGET_{NEON_8, NEON_16, NEON_32, SSE2, SSE4, AVX, AVX2, AVX512KNL, AVX512SKX, GENERIC}</td>
 <td>1</td>
 <td>One of these will be set, depending on the compilation target.</td>
 </tr>
@@ -878,6 +831,14 @@ preprocessor runs:</p>
 <tr><td>PI</td>
 <td>3.1415926535</td>
 <td>Mathematics</td>
+</tr>
+<tr><td>TARGET_WIDTH</td>
+<td>Vector width of the target, e.g., 8 for sse2-i32x8.</td>
+<td>Static varying initialization.</td>
+</tr>
+<tr><td>TARGET_ELEMENT_WIDTH</td>
+<td>Element width in bytes, e.g., 4 for i32.</td>
+<td>Static varying initialization.</td>
 </tr>
 </tbody>
 </table>
@@ -907,24 +868,27 @@ preprocessor runs:</p>
 </div>
 <div class="section" id="debugging">
 <h2>Debugging</h2>
-<p>On Linux* and Mac OS*, the <tt class="docutils literal"><span class="pre">-g</span></tt> command-line flag can be supplied to
-the compiler, which causes it to generate debugging symbols.  Running
-<tt class="docutils literal">ispc</tt> programs in the debugger, setting breakpoints, printing out
+<p>The <tt class="docutils literal"><span class="pre">-g</span></tt> command-line flag can be supplied to the compiler, which causes
+it to generate debugging symbols.  The debug info is emitted in DWARF format
+on Linux* and macOS*.  The version of the DWARF can be controlled by
+command-line switch <tt class="docutils literal"><span class="pre">--dwarf-version={2,3,4}</span></tt>.  On Windows* CodeView format
+is used (not PDB), it's natively supported by Microsoft Visual Studio*.
+Running <tt class="docutils literal">ispc</tt> programs in the debugger, setting breakpoints, printing out
 variables is just the same as debugging C/C++ programs.  Similarly, you can
 directly step up and down the call stack between <tt class="docutils literal">ispc</tt> code and C/C++
 code.</p>
 <p>One limitation of the current debugging support is that the debugger
 provides a window into an entire gang's worth of program instances, rather
 than just a single program instance.  (These concepts will be introduced
-shortly, in <cite>Basic Concepts: Program Instances and Gangs of Program
-Instances</cite>).  Thus, when a <tt class="docutils literal">varying</tt> variable is printed, the values for
+shortly, in <a class="reference internal" href="#basic-concepts-program-instances-and-gangs-of-program-instances">Basic Concepts: Program Instances and Gangs of Program Instances</a>
+). Thus, when a <tt class="docutils literal">varying</tt> variable is printed, the values for
 each of the program instances are displayed.  Along similar lines, the path
 the debugger follows through program source code passes each statement that
 any program instance wants to execute (see <a class="reference internal" href="#control-flow-within-a-gang">Control Flow Within A Gang</a>
 for more details on control flow in <tt class="docutils literal">ispc</tt>.)</p>
 <p>While debugging, a variable, <tt class="docutils literal">__mask</tt>, is available to provide the
 current program execution mask at the current point in the program</p>
-<p>Another option for debugging (and the only current option on Windows*) is
+<p>Another option for debugging is
 to use the <tt class="docutils literal">print</tt> statement for <tt class="docutils literal">printf()</tt> style debugging.  (See
 <a class="reference internal" href="#output-functions">Output Functions</a> for more information.)  You can also use the ability to
 call back to application code at particular points in the program, passing
@@ -1485,7 +1449,7 @@ precision floating point constant use <tt class="docutils literal">d</tt> suffix
 <p><tt class="docutils literal">ispc</tt> additionally reserves the following words:</p>
 <p><tt class="docutils literal">bool</tt>, <tt class="docutils literal">delete</tt>, <tt class="docutils literal">export</tt>, <tt class="docutils literal">cdo</tt>, <tt class="docutils literal">cfor</tt>, <tt class="docutils literal">cif</tt>, <tt class="docutils literal">cwhile</tt>,
 <tt class="docutils literal">false</tt>, <tt class="docutils literal">foreach</tt>, <tt class="docutils literal">foreach_active</tt>, <tt class="docutils literal">foreach_tiled</tt>,
-<tt class="docutils literal">foreach_unique</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>,
+<tt class="docutils literal">foreach_unique</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">noinline</tt>, <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>,
 <tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">new</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>,
 <tt class="docutils literal">true</tt>, <tt class="docutils literal">uniform</tt>, and <tt class="docutils literal">varying</tt>.</p>
 </div>
@@ -1603,7 +1567,7 @@ doesn't support character constants.</p>
 <tt class="docutils literal">const</tt>, <tt class="docutils literal">continue</tt>, <tt class="docutils literal">default</tt>, <tt class="docutils literal">do</tt>, <tt class="docutils literal">double</tt>, <tt class="docutils literal">else</tt>,
 <tt class="docutils literal">enum</tt>, <tt class="docutils literal">export</tt>, <tt class="docutils literal">extern</tt>, <tt class="docutils literal">false</tt>, <tt class="docutils literal">float</tt>, <tt class="docutils literal">for</tt>,
 <tt class="docutils literal">foreach</tt>, <tt class="docutils literal">foreach_active</tt>, <tt class="docutils literal">foreach_tiled</tt>, <tt class="docutils literal">foreach_unique</tt>,
-<tt class="docutils literal">goto</tt>, <tt class="docutils literal">if</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">int</tt>, <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>,
+<tt class="docutils literal">goto</tt>, <tt class="docutils literal">if</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">noinline</tt>, <tt class="docutils literal">int</tt>, <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>,
 <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">NULL</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">return</tt>,
 <tt class="docutils literal">signed</tt>, <tt class="docutils literal">sizeof</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">static</tt>, <tt class="docutils literal">struct</tt>, <tt class="docutils literal">switch</tt>,
 <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">typedef</tt>, <tt class="docutils literal">uniform</tt>, <tt class="docutils literal">union</tt>,
@@ -2254,6 +2218,19 @@ int bar = ...;
 <pre class="literal-block">
 for (int i = 0; ...)
 </pre>
+<p>Varying variables can be initialized with individual element values in braces.
+The number of values has to be equal to the target width. So, static varying
+initialization is not portable across targets with different widths unless
+guarded with <tt class="docutils literal">#if TARGET_WIDTH</tt>:</p>
+<pre class="literal-block">
+#if TARGET_WIDTH == 4
+    varying int bar = { 1, 2, 3, 4 };
+#elif TARGET_WIDTH == 8
+    varying int bar = { 1, 2, 3, 4, 5, 6, 7, 8 };
+#elif TARGET_WIDTH == 16
+    ...
+#endif
+</pre>
 <p>Arrays can be initialized with individual element values in braces:</p>
 <pre class="literal-block">
 int bar[2][4] = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 } };
@@ -2338,8 +2315,8 @@ delete[] ptr;
 array of <tt class="docutils literal">uniform int</tt> values, uses that memory, and then deallocates
 that memory.  Uses of <tt class="docutils literal">new</tt> and <tt class="docutils literal">delete</tt> in <tt class="docutils literal">ispc</tt> programs are
 implemented as calls to C library's aligned memory allocation routines,
-which are platform dependent (<tt class="docutils literal">posix_memalign()</tt> and <tt class="docutils literal">free()</tt> on Linux
-and Mac and <tt class="docutils literal">_aligned_malloc()</tt> and <tt class="docutils literal">_aligned_free()</tt> on Windows). So it's
+which are platform dependent (<tt class="docutils literal">posix_memalign()</tt> and <tt class="docutils literal">free()</tt> on Linux*
+and macOS* and <tt class="docutils literal">_aligned_malloc()</tt> and <tt class="docutils literal">_aligned_free()</tt> on Windows*). So it's
 advised to pair ISPC's <tt class="docutils literal">new</tt> and <tt class="docutils literal">delete</tt> with each other, but not with
 C/C++ memory management functions.</p>
 <p>Note that the rules for <tt class="docutils literal">uniform</tt> and <tt class="docutils literal">varying</tt> for <tt class="docutils literal">new</tt> are
@@ -2785,7 +2762,9 @@ export uniform float inc(uniform float v) {
 inlined by <tt class="docutils literal">ispc</tt>; <tt class="docutils literal">inline</tt> is not a hint, but forces inlining.  The
 compiler will opportunistically inline short functions depending on their
 complexity, but any function that should always be inlined should have the
-<tt class="docutils literal">inline</tt> qualifier.</p>
+<tt class="docutils literal">inline</tt> qualifier. Similarly, any function defined with a <tt class="docutils literal">noinline</tt>
+qualifier will never be inlined by <tt class="docutils literal">ispc</tt>. <tt class="docutils literal">noinline</tt> and <tt class="docutils literal">inline</tt>
+cannot be used on the same function.</p>
 </div>
 <div class="section" id="function-overloading">
 <h2>Function Overloading</h2>
@@ -3250,6 +3229,12 @@ different on different architectures.</p>
 float rcp(float v)
 uniform float rcp(uniform float v)
 </pre>
+<p>ispc also provides a version of <tt class="docutils literal">rcp()</tt> for float with less precision which doesn't
+use Newton-Raphson.</p>
+<pre class="literal-block">
+float rcp_fast(float v)
+uniform float rcp_fast(uniform float v)
+</pre>
 <p>A standard set of minimum and maximum functions is available.  These
 functions also map to corresponding intrinsic functions.</p>
 <pre class="literal-block">
@@ -3317,6 +3302,12 @@ float sqrt(float v)
 uniform float sqrt(uniform float v)
 float rsqrt(float v)
 uniform float rsqrt(uniform float v)
+</pre>
+<p>ispc also provides a version of <tt class="docutils literal">rsqrt()</tt> for float with less precision which doesn't
+use Newton-Raphson.</p>
+<pre class="literal-block">
+float rsqrt_fast(float v)
+uniform float rsqrt_fast(uniform float v)
 </pre>
 <p><tt class="docutils literal">ispc</tt> provides a standard variety of calls for trigonometric functions:</p>
 <pre class="literal-block">
@@ -3446,7 +3437,7 @@ while (rdrand(&amp;r) == false)
 <p>In addition to the <tt class="docutils literal">int32</tt> variants of <tt class="docutils literal">rdrand()</tt> listed above, there
 are versions that return <tt class="docutils literal">int16</tt>, <tt class="docutils literal">float</tt>, and <tt class="docutils literal">int64</tt> values as
 well.</p>
-<p>Note that when compiling to targets other than <tt class="docutils literal">avx1.1</tt> and <tt class="docutils literal">avx2</tt>, the
+<p>Note that when compiling to targets older than <tt class="docutils literal">avx2</tt>, the
 <tt class="docutils literal">rdrand()</tt> functions always return <tt class="docutils literal">false</tt>.</p>
 </div>
 <div class="section" id="output-functions">
