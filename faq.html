@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.14: http://docutils.sourceforge.net/" />
 <title>Frequently Asked Questions About ispc</title>
 <script type="text/javascript">
 
@@ -271,9 +271,8 @@ chaining the results of these calls together to perform the required
 computations.  It is then expected that the user will provide the
 implementation of these functions via a header file with <tt class="docutils literal">inline</tt>
 functions defined for each of these functions and then use a C++ compiler
-to generate a final object file.  (Examples of these headers include
-<tt class="docutils literal">examples/intrinsics/sse4.h</tt> and <tt class="docutils literal">examples/intrinsics/knc.h</tt> in the
-<tt class="docutils literal">ispc</tt> distribution.)</p>
+to generate a final object file.  (Example of this header is
+<tt class="docutils literal">examples/intrinsics/sse4.h</tt> in the <tt class="docutils literal">ispc</tt> distribution.)</p>
 <p>If a target other than one of the &quot;generic&quot; ones is used with C++ output,
 then the compiler will transform certain operations into particular code
 sequences that may not be desired for the actual final target; for example,
@@ -281,10 +280,9 @@ SSE targets that don't have hardware &quot;gather&quot; instructions will transf
 gather into a sequence of scalar load instructions.  When this in turn is
 transformed to C++ code, the fact that the loads were originally a gather
 is lost, and the header file of function definitions wouldn't have a chance
-to map the &quot;gather&quot; to a target-specific operation, as the <tt class="docutils literal">knc.h</tt> header
-does, for example.  Thus, the &quot;generic&quot; targets exist to provide basic
-targets of various vector widths, without imposing any limitations on the
-final target's capabilities.</p>
+to map the &quot;gather&quot; to a target-specific operation. Thus, the &quot;generic&quot;
+targets exist to provide basic targets of various vector widths, without
+imposing any limitations on the final target's capabilities.</p>
 </div>
 <div class="section" id="why-won-t-the-compiler-generate-an-object-file-or-assembly-output-with-the-generic-targets">
 <h2>Why won't the compiler generate an object file or assembly output with the &quot;generic&quot; targets?</h2>
