@@ -3,8 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.14: http://docutils.sourceforge.net/" />
-<title>Frequently Asked Questions About ispc</title>
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Frequently Asked Questions About Intel® ISPC</title>
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -21,11 +21,11 @@
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 <body>
-<div class="document" id="frequently-asked-questions-about-ispc">
+<div class="document" id="frequently-asked-questions-about-intel-ispc">
 <div id="wrap">
   <div id="wrap2">
     <div id="header">
-      <h1 id="logo">Intel SPMD Program Compiler</h1>
+      <h1 id="logo">Intel® Implicit SPMD Program Compiler</h1>
       <div id="slogan">An open-source compiler for high-performance SIMD programming on
       the CPU</div>
     </div>
@@ -58,12 +58,12 @@
             </ul>
         </div>
       </div>
-<h1 class="title">Frequently Asked Questions About ispc</h1>
+<h1 class="title">Frequently Asked Questions About Intel® ISPC</h1>
 
 <div id="content">
 <p>This document includes a number of frequently (and not frequently) asked
-questions about ispc, the Intel® SPMD Program Compiler.  The source to this
-document is in the file <tt class="docutils literal">docs/faq.rst</tt> in the <tt class="docutils literal">ispc</tt> source
+questions about ispc, the Intel® Implicit SPMD Program Compiler (Intel® ISPC).
+The source to this document is in the file <tt class="docutils literal">docs/faq.rst</tt> in the <tt class="docutils literal">ispc</tt> source
 distribution.</p>
 <ul class="simple">
 <li>Understanding ispc's Output<ul>
@@ -445,22 +445,22 @@ argument.</p>
 ispc foo.ispc -o foo.o --target=sse2,sse4-x2,avx-x2
 </pre>
 <p>Then four object files will be generated: <tt class="docutils literal">foo_sse2.o</tt>, <tt class="docutils literal">foo_sse4.o</tt>,
-<tt class="docutils literal">foo_avx.o</tt>, and <tt class="docutils literal">foo.o</tt>.[#]_  Link all of these into your executable, and
+<tt class="docutils literal">foo_avx.o</tt>, and <tt class="docutils literal">foo.o</tt> <a class="footnote-reference" href="#id2" id="id1">[1]</a>. Link all of these into your executable, and
 when you call a function in <tt class="docutils literal">foo.ispc</tt> from your application code,
 <tt class="docutils literal">ispc</tt> will determine which instruction sets are supported by the CPU the
 code is running on and will call the most appropriate version of the
 function available.</p>
-<table class="docutils footnote" frame="void" id="id1" rules="none">
+<table class="docutils footnote" frame="void" id="id2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[1]</td><td>Similarly, if you choose to generate assembly language output or
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Similarly, if you choose to generate assembly language output or
 LLVM bitcode output, multiple versions of those files will be created.</td></tr>
 </tbody>
 </table>
 <p>In general, the version of the function that runs will be the one in the
 most general instruction set that is supported by the system.  If you only
 compile SSE2 and SSE4 variants and run on a system that supports AVX, for
-example, then the SSE4 variant will be executed.  If the system doesn't
+example, then the SSE4 variant will be executed.  If the system
 is not able to run any of the available variants of the function (for
 example, trying to run a function that only has SSE4 and AVX variants on a
 system that only supports SSE2), then the standard library <tt class="docutils literal">abort()</tt>
@@ -707,7 +707,7 @@ the generated code simpler?</p>
 <tt class="docutils literal">programCount</tt>-sized chunks of elements of the array, and the other
 handles any excess elements at the end of the array that don't completely
 fill a gang.  The code for the main loop is essentially what one would
-expect: a vector of values are laoded from the array, the multiply is done,
+expect: a vector of values are loaded from the array, the multiply is done,
 and the result is stored.</p>
 <pre class="literal-block">
 LBB0_2:                                 ## %foreach_full_body
@@ -800,7 +800,7 @@ could be in the definition of <tt class="docutils literal">doWork()</tt>.)</p>
 </div>
 </div>
     <div class="clearfix"></div>
-    <div id="footer"> &copy; 2011-2019 <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
+    <div id="footer"> &copy; <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
       <!-- Please Do Not remove this link, thank u -->
       </div>
       </div>

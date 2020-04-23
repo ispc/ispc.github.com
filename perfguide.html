@@ -3,8 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.14: http://docutils.sourceforge.net/" />
-<title>Intel® SPMD Program Compiler Performance Guide</title>
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Intel® ISPC Performance Guide</title>
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -21,11 +21,11 @@
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 <body>
-<div class="document" id="intel-spmd-program-compiler-performance-guide">
+<div class="document" id="intel-ispc-performance-guide">
 <div id="wrap">
   <div id="wrap2">
     <div id="header">
-      <h1 id="logo">Intel SPMD Program Compiler</h1>
+      <h1 id="logo">Intel® Implicit SPMD Program Compiler</h1>
       <div id="slogan">An open-source compiler for high-performance SIMD programming on
       the CPU</div>
     </div>
@@ -58,7 +58,7 @@
             </ul>
         </div>
       </div>
-<h1 class="title">Intel® SPMD Program Compiler Performance Guide</h1>
+<h1 class="title">Intel® ISPC Performance Guide</h1>
 
 <div id="content">
 <p>The SPMD programming model provided by <tt class="docutils literal">ispc</tt> naturally delivers
@@ -85,11 +85,11 @@ the most out of <tt class="docutils literal">ispc</tt> in practice.</p>
 <li><a class="reference internal" href="#inline-aggressively">&quot;inline&quot; Aggressively</a></li>
 <li><a class="reference internal" href="#avoid-the-system-math-library">Avoid The System Math Library</a></li>
 <li><a class="reference internal" href="#declare-variables-in-the-scope-where-they-re-used">Declare Variables In The Scope Where They're Used</a></li>
-<li><a class="reference internal" href="#instrumenting-ispc-programs-to-understand-runtime-behavior">Instrumenting ISPC Programs To Understand Runtime Behavior</a></li>
+<li><a class="reference internal" href="#instrumenting-intel-ispc-programs-to-understand-runtime-behavior">Instrumenting Intel® ISPC Programs To Understand Runtime Behavior</a></li>
 <li><a class="reference internal" href="#choosing-a-target-vector-width">Choosing A Target Vector Width</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#disclaimer-and-legal-information">Disclaimer and Legal Information</a></li>
+<li><a class="reference internal" href="#notices-disclaimers">Notices &amp; Disclaimers</a></li>
 <li><a class="reference internal" href="#optimization-notice">Optimization Notice</a></li>
 </ul>
 <div class="section" id="key-concepts">
@@ -199,7 +199,7 @@ are related to the values of the data in the domain being processed, and if
 the data values have some coherence, iterating with compact regions will
 improve control flow coherence.</p>
 <p>Second, processing compact regions may mean that the data accessed by
-program instances in the gang is be more coherent, leading to performance
+program instances in the gang is more coherent, leading to performance
 benefits from better cache hit rates.</p>
 <p>As a concrete example, for the ray tracer example in the <tt class="docutils literal">ispc</tt>
 distribution (in the <tt class="docutils literal">examples/rt</tt> directory), performance is 20% better
@@ -340,7 +340,7 @@ float f = x[i];
 </pre>
 <p>Since the index <tt class="docutils literal">i</tt> is a varying value, the program instances in the gang
 will in general be reading different locations in the array <tt class="docutils literal">x</tt>.  Because
-current CPUs have a &quot;gather&quot; instruction, the <tt class="docutils literal">ispc</tt> compiler has to
+not all CPUs have a &quot;gather&quot; instruction, the <tt class="docutils literal">ispc</tt> compiler has to
 serialize these memory reads, performing a separate memory load for each
 running program instance, packing the result into <tt class="docutils literal">f</tt>.  (The analogous
 case happens for a write into <tt class="docutils literal">x[i]</tt>.)</p>
@@ -561,7 +561,7 @@ functions (a few lines long), and experiment with it for longer functions.</p>
 </div>
 <div class="section" id="avoid-the-system-math-library">
 <h2>Avoid The System Math Library</h2>
-<p>The default math library for transcendentals and the like that <tt class="docutils literal">ispc</tt> has
+<p>The default math library for transcendentals and the like in <tt class="docutils literal">ispc</tt> has
 higher error than the system's math library, though is much more efficient
 due to being vectorized across the program instances and due to the fact
 that the functions can be inlined in the final code.  (It generally has
@@ -601,8 +601,8 @@ float func() {
 <p>Doing so can reduce the amount of masked store instructions that the
 compiler needs to generate.</p>
 </div>
-<div class="section" id="instrumenting-ispc-programs-to-understand-runtime-behavior">
-<h2>Instrumenting ISPC Programs To Understand Runtime Behavior</h2>
+<div class="section" id="instrumenting-intel-ispc-programs-to-understand-runtime-behavior">
+<h2>Instrumenting Intel® ISPC Programs To Understand Runtime Behavior</h2>
 <p><tt class="docutils literal">ispc</tt> has an optional instrumentation feature that can help you
 understand performance issues.  If a program is compiled using the
 <tt class="docutils literal"><span class="pre">--instrument</span></tt> flag, the compiler emits calls to a function with the
@@ -670,92 +670,42 @@ It is selected with the <tt class="docutils literal"><span class="pre">--target=
 <tt class="docutils literal"><span class="pre">--target=avx-x2</span></tt> options, respectively.</p>
 </div>
 </div>
-<div class="section" id="disclaimer-and-legal-information">
-<h1>Disclaimer and Legal Information</h1>
-<p>INFORMATION IN THIS DOCUMENT IS PROVIDED IN CONNECTION WITH INTEL(R) PRODUCTS.
-NO LICENSE, EXPRESS OR IMPLIED, BY ESTOPPEL OR OTHERWISE, TO ANY INTELLECTUAL
-PROPERTY RIGHTS IS GRANTED BY THIS DOCUMENT. EXCEPT AS PROVIDED IN INTEL'S TERMS
-AND CONDITIONS OF SALE FOR SUCH PRODUCTS, INTEL ASSUMES NO LIABILITY WHATSOEVER,
-AND INTEL DISCLAIMS ANY EXPRESS OR IMPLIED WARRANTY, RELATING TO SALE AND/OR USE
-OF INTEL PRODUCTS INCLUDING LIABILITY OR WARRANTIES RELATING TO FITNESS FOR A
-PARTICULAR PURPOSE, MERCHANTABILITY, OR INFRINGEMENT OF ANY PATENT, COPYRIGHT
-OR OTHER INTELLECTUAL PROPERTY RIGHT.</p>
-<p>UNLESS OTHERWISE AGREED IN WRITING BY INTEL, THE INTEL PRODUCTS ARE NOT DESIGNED
-NOR INTENDED FOR ANY APPLICATION IN WHICH THE FAILURE OF THE INTEL PRODUCT COULD
-CREATE A SITUATION WHERE PERSONAL INJURY OR DEATH MAY OCCUR.</p>
-<p>Intel may make changes to specifications and product descriptions at any time,
-without notice. Designers must not rely on the absence or characteristics of any
-features or instructions marked &quot;reserved&quot; or &quot;undefined.&quot; Intel reserves these
-for future definition and shall have no responsibility whatsoever for conflicts
-or incompatibilities arising from future changes to them. The information here
-is subject to change without notice. Do not finalize a design with this
-information.</p>
-<p>The products described in this document may contain design defects or errors
-known as errata which may cause the product to deviate from published
-specifications. Current characterized errata are available on request.</p>
-<p>Contact your local Intel sales office or your distributor to obtain the latest
-specifications and before placing your product order.</p>
-<p>Copies of documents which have an order number and are referenced in this
-document, or other Intel literature, may be obtained by calling 1-800-548-4725,
-or by visiting Intel's Web Site.</p>
-<p>Intel processor numbers are not a measure of performance. Processor numbers
-differentiate features within each processor family, not across different
-processor families. See <a class="reference external" href="http://www.intel.com/products/processor_number">http://www.intel.com/products/processor_number</a> for
-details.</p>
-<p>BunnyPeople, Celeron, Celeron Inside, Centrino, Centrino Atom,
-Centrino Atom Inside, Centrino Inside, Centrino logo, Core Inside, FlashFile,
-i960, InstantIP, Intel, Intel logo, Intel386, Intel486, IntelDX2, IntelDX4,
-IntelSX2, Intel Atom, Intel Atom Inside, Intel Core, Intel Inside,
-Intel Inside logo, Intel. Leap ahead., Intel. Leap ahead. logo, Intel NetBurst,
-Intel NetMerge, Intel NetStructure, Intel SingleDriver, Intel SpeedStep,
-Intel StrataFlash, Intel Viiv, Intel vPro, Intel XScale, Itanium,
-Itanium Inside, MCS, MMX, Oplus, OverDrive, PDCharm, Pentium, Pentium Inside,
-skoool, Sound Mark, The Journey Inside, Viiv Inside, vPro Inside, VTune, Xeon,
-and Xeon Inside are trademarks of Intel Corporation in the U.S. and other
-countries.</p>
-<ul class="simple">
-<li>Other names and brands may be claimed as the property of others.</li>
-</ul>
-<p>Copyright(C) 2011-2019, Intel Corporation. All rights reserved.</p>
+<div class="section" id="notices-disclaimers">
+<h1>Notices &amp; Disclaimers</h1>
+<p>Software and workloads used in performance tests may have been optimized for
+performance only on Intel microprocessors.</p>
+<p>Performance tests, such as SYSmark and MobileMark, are measured using specific
+computer systems, components, software, operations and functions.  Any change
+to any of those factors may cause the results to vary.  You should consult
+other information and performance tests to assist you in fully evaluating your
+contemplated purchases, including the performance of that product when combined
+with other products.   For more complete information visit
+www.intel.com/benchmarks.</p>
+<p>Performance results are based on testing as of dates shown in configurations and
+may not reflect all publicly available updates.  See backup for configuration
+details.  No product or component can be absolutely secure.</p>
+<p>Your costs and results may vary.</p>
+<p>Intel technologies may require enabled hardware, software or service activation.</p>
+<p>© Intel Corporation.  Intel, the Intel logo, and other Intel marks are
+trademarks of Intel Corporation or its subsidiaries.  Other names and brands may
+be claimed as the property of others.</p>
 </div>
 <div class="section" id="optimization-notice">
 <h1>Optimization Notice</h1>
-<p>Intel compilers, associated libraries and associated development tools may
-include or utilize options that optimize for instruction sets that are
-available in both Intel and non-Intel microprocessors (for example SIMD
-instruction sets), but do not optimize equally for non-Intel
-microprocessors.  In addition, certain compiler options for Intel
-compilers, including some that are not specific to Intel
-micro-architecture, are reserved for Intel microprocessors.  For a detailed
-description of Intel compiler options, including the instruction sets and
-specific microprocessors they implicate, please refer to the &quot;Intel
-Compiler User and Reference Guides&quot; under &quot;Compiler Options.&quot;  Many library
-routines that are part of Intel compiler products are more highly optimized
-for Intel microprocessors than for other microprocessors.  While the
-compilers and libraries in Intel compiler products offer optimizations for
-both Intel and Intel-compatible microprocessors, depending on the options
-you select, your code and other factors, you likely will get extra
-performance on Intel microprocessors.</p>
-<p>Intel compilers, associated libraries and associated development tools may
-or may not optimize to the same degree for non-Intel microprocessors for
-optimizations that are not unique to Intel microprocessors.  These
-optimizations include Intel® Streaming SIMD Extensions 2 (Intel® SSE2),
-Intel® Streaming SIMD Extensions 3 (Intel® SSE3), and Supplemental
-Streaming SIMD Extensions 3 (Intel SSSE3) instruction sets and other
-optimizations.  Intel does not guarantee the availability, functionality,
-or effectiveness of any optimization on microprocessors not manufactured by
-Intel.  Microprocessor-dependent optimizations in this product are intended
-for use with Intel microprocessors.</p>
-<p>While Intel believes our compilers and libraries are excellent choices to
-assist in obtaining the best performance on Intel and non-Intel
-microprocessors, Intel recommends that you evaluate other compilers and
-libraries to determine which best meet your requirements.  We hope to win
-your business by striving to offer the best performance of any compiler or
-library; please let us know if you find we do not.</p>
+<p>Intel's compilers may or may not optimize to the same degree for non-Intel
+microprocessors for optimizations that are not unique to Intel microprocessors.
+These optimizations include SSE2, SSE3, and SSSE3 instruction sets and other
+optimizations. Intel does not guarantee the availability, functionality, or
+effectiveness of any optimization on microprocessors not manufactured by Intel.
+Microprocessor-dependent optimizations in this product are intended for use with
+Intel microprocessors. Certain optimizations not specific to Intel
+microarchitecture are reserved for Intel microprocessors. Please refer to the
+applicable product User and Reference Guides for more information regarding the
+specific instruction sets covered by this notice.</p>
 </div>
 </div>
     <div class="clearfix"></div>
-    <div id="footer"> &copy; 2011-2019 <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
+    <div id="footer"> &copy; <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
       <!-- Please Do Not remove this link, thank u -->
       </div>
       </div>

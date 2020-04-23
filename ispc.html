@@ -3,8 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.14: http://docutils.sourceforge.net/" />
-<title>Intel® SPMD Program Compiler User's Guide</title>
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Intel® ISPC User's Guide</title>
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -21,11 +21,11 @@
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 <body>
-<div class="document" id="intel-spmd-program-compiler-user-s-guide">
+<div class="document" id="intel-ispc-user-s-guide">
 <div id="wrap">
   <div id="wrap2">
     <div id="header">
-      <h1 id="logo">Intel SPMD Program Compiler</h1>
+      <h1 id="logo">Intel® Implicit SPMD Program Compiler</h1>
       <div id="slogan">An open-source compiler for high-performance SIMD programming on
       the CPU</div>
     </div>
@@ -58,11 +58,12 @@
             </ul>
         </div>
       </div>
-<h1 class="title">Intel® SPMD Program Compiler User's Guide</h1>
+<h1 class="title">Intel® ISPC User's Guide</h1>
 
 <div id="content">
-<p>The Intel® SPMD Program Compiler (<tt class="docutils literal">ispc</tt>) is a compiler for writing SPMD
-(single program multiple data) programs to run on the CPU.  The SPMD
+<p>The Intel® Implicit SPMD Program Compiler (Intel® ISPC) is a compiler for
+writing SPMD (single program multiple data) programs to run on the CPU.
+The SPMD
 programming approach is widely known to graphics and GPGPU programmers; it
 is used for GPU shaders and CUDA* and OpenCL* kernels, for example.  The
 main idea behind SPMD is that one writes programs as if they were operating
@@ -110,6 +111,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-10-0">Updating ISPC Programs For Changes In ISPC 1.10.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-11-0">Updating ISPC Programs For Changes In ISPC 1.11.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-12-0">Updating ISPC Programs For Changes In ISPC 1.12.0</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-13-0">Updating ISPC Programs For Changes In ISPC 1.13.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -242,14 +244,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#restructuring-existing-programs-to-use-ispc">Restructuring Existing Programs to Use ISPC</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#experimental-support-for-ptx">Experimental support for PTX</a><ul>
-<li><a class="reference internal" href="#overview">Overview</a></li>
-<li><a class="reference internal" href="#compiling-for-the-nvidia-kepler-gpu">Compiling For The NVIDIA Kepler GPU</a></li>
-<li><a class="reference internal" href="#hints">Hints</a></li>
-<li><a class="reference internal" href="#limitations-known-issues">Limitations &amp; known issues</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#disclaimer-and-legal-information">Disclaimer and Legal Information</a></li>
+<li><a class="reference internal" href="#notices-disclaimers">Notices &amp; Disclaimers</a></li>
 <li><a class="reference internal" href="#optimization-notice">Optimization Notice</a></li>
 </ul>
 <div class="section" id="recent-changes-to-ispc">
@@ -419,8 +414,8 @@ which doesn't use ZMM registers.</p>
 <p>This release contains the following changes that may affect compatibility with
 older versions:</p>
 <ul class="simple">
-<li>'noinline' keyword was added.</li>
-<li>Standard library functions 'rsqrt_fast()' and 'rcp_fast()' were added.</li>
+<li><tt class="docutils literal">noinline</tt> keyword was added.</li>
+<li>Standard library functions <tt class="docutils literal">rsqrt_fast()</tt> and <tt class="docutils literal">rcp_fast()</tt> were added.</li>
 <li>AVX1.1 (IvyBridge) targets and generic KNC and KNL targets were removed.
 Note that KNL is still supported through avx512knl-i32x16.</li>
 </ul>
@@ -430,14 +425,31 @@ should not affect compatibility.</p>
 support. It also contains a new 128-bit AVX2 target (avx2-i32x4) and a CPU
 definition for Ice Lake client (--cpu=icl).</p>
 </div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-13-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.13.0</h2>
+<p>This release contains the following changes that may affect compatibility with
+older versions:</p>
+<ul class="simple">
+<li>Representation of <tt class="docutils literal">bool</tt> type in storage was changed from target-specific to
+one byte per boolean value.  So size of <tt class="docutils literal">varying bool</tt> is target width (in
+bytes), and size of <tt class="docutils literal">unform bool</tt> is one.  This definition is compatible
+with C/C++, hence improves interoperability.</li>
+<li>type aliases for unsigned types were added: <tt class="docutils literal">uint8</tt>, <tt class="docutils literal">uint16</tt>, <tt class="docutils literal">uint32</tt>,
+<tt class="docutils literal">uint64</tt>, and <tt class="docutils literal">uint</tt>.  To detect if these types are supported you can
+check if ISPC_UINT_IS_DEFINED macro is defined, this is handy for writing code
+which works with older versions of <tt class="docutils literal">ispc</tt>.</li>
+<li><tt class="docutils literal">extract()</tt>/<tt class="docutils literal">insert()</tt> for boolean arguments, and <tt class="docutils literal">abs()</tt> for all integer and
+FP types were added to standard library.</li>
+</ul>
+</div>
 </div>
 <div class="section" id="getting-started-with-ispc">
 <h1>Getting Started with ISPC</h1>
 <div class="section" id="installing-ispc">
 <h2>Installing ISPC</h2>
-<p>The <a class="reference external" href="downloads.html">ispc downloads web page</a> has prebuilt executables for Windows*,
+<p>The <a class="reference external" href="http://ispc.github.io/downloads.html">ispc downloads web page</a> has prebuilt executables for Windows*,
 Linux* and macOS* available for download.  Alternatively, you can
-download the source code from that page and build it yourself; see see the
+download the source code from that page and build it yourself; see the
 <a class="reference external" href="http://github.com/ispc/ispc/wiki">ispc wiki</a> for instructions about building <tt class="docutils literal">ispc</tt> from source.</p>
 <p>Once you have an executable for your system, copy it into a directory
 that's in your <tt class="docutils literal">PATH</tt>.  Congratulations--you've now installed <tt class="docutils literal">ispc</tt>.</p>
@@ -731,7 +743,7 @@ requests with the <tt class="docutils literal">ispc</tt> <a class="reference ext
 <h2>Generating Generic C++ Output</h2>
 <p>In addition to generating object files or assembly output for specific
 targets like NEON, SSE2, SSE4, and AVX, <tt class="docutils literal">ispc</tt> provides an option to generate
-&quot;generic&quot; C++ output.  This</p>
+&quot;generic&quot; C++ output.</p>
 <p>As an example, consider the following simple <tt class="docutils literal">ispc</tt> program:</p>
 <pre class="literal-block">
 int foo(int i, int j) {
@@ -812,7 +824,7 @@ preprocessor runs:</p>
 <td>1</td>
 <td>Detecting that the <tt class="docutils literal">ispc</tt> compiler is processing the file</td>
 </tr>
-<tr><td>ISPC_TARGET_{NEON_8, NEON_16, NEON_32, SSE2, SSE4, AVX, AVX2, AVX512KNL, AVX512SKX, GENERIC}</td>
+<tr><td>ISPC_TARGET_{NEON, SSE2, SSE4, AVX, AVX2, AVX512KNL, AVX512SKX, GENERIC}</td>
 <td>1</td>
 <td>One of these will be set, depending on the compilation target.</td>
 </tr>
@@ -825,7 +837,7 @@ preprocessor runs:</p>
 <td>Major version of the <tt class="docutils literal">ispc</tt> compiler/language</td>
 </tr>
 <tr><td>ISPC_MINOR_VERSION</td>
-<td>3</td>
+<td>13</td>
 <td>Minor version of the <tt class="docutils literal">ispc</tt> compiler/language</td>
 </tr>
 <tr><td>PI</td>
@@ -839,6 +851,13 @@ preprocessor runs:</p>
 <tr><td>TARGET_ELEMENT_WIDTH</td>
 <td>Element width in bytes, e.g., 4 for i32.</td>
 <td>Static varying initialization.</td>
+</tr>
+<tr><td>ISPC_UINT_IS_DEFINED</td>
+<td><ol class="first last arabic simple">
+<li></li>
+</ol>
+</td>
+<td>Detecting if uint8/uint16/uint32/uint64 types are defined in the ISPC version.</td>
 </tr>
 </tbody>
 </table>
@@ -1130,7 +1149,7 @@ in the infinite loop in the example above.)</p>
 <p>The way that &quot;varying&quot; function pointers are handled in <tt class="docutils literal">ispc</tt> is also
 affected by this guarantee: if a function pointer is <tt class="docutils literal">varying</tt>, then it
 has a possibly-different value for all running program instances.  Given a
-call to a varying function pointer, <tt class="docutils literal">ispc</tt> must maintains as much
+call to a varying function pointer, <tt class="docutils literal">ispc</tt> must maintain as much
 execution convergence as possible; the assembly code generated finds the
 set of unique function pointers over the currently running program
 instances and calls each one just once, such that the executing program
@@ -1322,8 +1341,7 @@ through the <tt class="docutils literal">launch</tt> keyword.  (The syntax is do
 Parallelism: &quot;launch&quot; and &quot;sync&quot; Statements</a> section.)  A function called
 with <tt class="docutils literal">launch</tt> executes asynchronously from the function that called it;
 it may run immediately or it may run concurrently on another processor in
-the system, for example.  (This model is closely modeled on the model
-introduced by Intel® Cilk(tm).)</p>
+the system, for example.</p>
 <p>If a function launches multiple tasks, there are no guarantees about the
 order in which the tasks will execute.  Furthermore, multiple launched
 tasks from a single function may execute concurrently.</p>
@@ -1648,15 +1666,15 @@ basic types:</p>
 <li><tt class="docutils literal">bool</tt>: boolean value; may be assigned <tt class="docutils literal">true</tt>, <tt class="docutils literal">false</tt>, or the
 value of a boolean expression.</li>
 <li><tt class="docutils literal">int8</tt>: 8-bit signed integer.</li>
-<li><tt class="docutils literal">unsigned int8</tt>: 8-bit unsigned integer.</li>
+<li><tt class="docutils literal">unsigned int8</tt>: 8-bit unsigned integer; may also be specified as <tt class="docutils literal">uint8</tt>.</li>
 <li><tt class="docutils literal">int16</tt>: 16-bit signed integer.</li>
-<li><tt class="docutils literal">unsigned int16</tt>: 16-bit unsigned integer.</li>
+<li><tt class="docutils literal">unsigned int16</tt>: 16-bit unsigned integer; may also be specified as <tt class="docutils literal">uint16</tt>.</li>
 <li><tt class="docutils literal">int</tt>: 32-bit signed integer; may also be specified as <tt class="docutils literal">int32</tt>.</li>
 <li><tt class="docutils literal">unsigned int</tt>: 32-bit unsigned integer; may also be specified as
-<tt class="docutils literal">unsigned int32</tt>.</li>
+<tt class="docutils literal">unsigned int32</tt>, <tt class="docutils literal">uint32</tt> or <tt class="docutils literal">uint</tt>.</li>
 <li><tt class="docutils literal">float</tt>: 32-bit floating point value</li>
 <li><tt class="docutils literal">int64</tt>: 64-bit signed integer.</li>
-<li><tt class="docutils literal">unsigned int64</tt>: 64-bit unsigned integer.</li>
+<li><tt class="docutils literal">unsigned int64</tt>: 64-bit unsigned integer; may also be specified as <tt class="docutils literal">uint64</tt>.</li>
 <li><tt class="docutils literal">double</tt>: 64-bit double-precision floating point value.</li>
 </ul>
 <p>There are also a few built-in types related to pointers and memory:</p>
@@ -2253,7 +2271,7 @@ the expected syntax:</p>
 <pre class="literal-block">
 struct Foo { int x; float bar[3]; };
 Foo fa[2] = { { 1, { 2, 3, 4 } }, { 10, { 20, 30, 40 } } };
-// now, fa[1].bar[2] == 30, and so forth
+// now, fa[1].bar[2] == 40, and so forth
 </pre>
 </div>
 <div class="section" id="expressions">
@@ -2494,7 +2512,7 @@ int index = ...;
 Races Within a Gang</a> for details.)  The increment of <tt class="docutils literal">array[index]</tt>
 could instead be written inside a <tt class="docutils literal">foreach_active</tt> statement:</p>
 <pre class="literal-block">
-foreach_active (i) {
+foreach_active (index) {
     ++array[index];
 }
 </pre>
@@ -2885,11 +2903,11 @@ system.</p>
 <h2>Task Parallelism: &quot;launch&quot; and &quot;sync&quot; Statements</h2>
 <p>One option for combining task-parallelism with <tt class="docutils literal">ispc</tt> is to just use
 regular task parallelism in the C/C++ application code (be it through
-Intel® Cilk(tm), Intel® Thread Building Blocks or another task system), and
+Intel® Thread Building Blocks, OpenMP or another task system), and
 for tasks to use <tt class="docutils literal">ispc</tt> for SPMD parallelism across the vector lanes as
 appropriate.  Alternatively, <tt class="docutils literal">ispc</tt> also has support for launching tasks
-from <tt class="docutils literal">ispc</tt> code.  The approach is similar to Intel® Cilk's task launch
-feature.  (Check the <tt class="docutils literal">examples/mandelbrot_tasks</tt> example to see how it is used.)</p>
+from <tt class="docutils literal">ispc</tt> code.  (Check the <tt class="docutils literal">examples/mandelbrot_tasks</tt> example to
+see how it is used.)</p>
 <p>Any function that is launched as a task must be declared with the
 <tt class="docutils literal">task</tt> qualifier:</p>
 <pre class="literal-block">
@@ -3210,6 +3228,16 @@ is on (i.e. the value is negative) and zero if it is off.</p>
 <pre class="literal-block">
 float abs(float a)
 uniform float abs(uniform float a)
+double abs(double a)
+uniform double abs(uniform double a)
+int8 abs(int8 a)
+uniform int8 abs(uniform int8 a)
+int16 abs(int16 a)
+uniform int16 abs(uniform int16 a)
+int abs(int a)
+uniform int abs(uniform int a)
+int64 abs(int64 a)
+uniform int64 abs(uniform int64 a)
 unsigned int signbits(float x)
 </pre>
 <p>Standard rounding functions are provided.  (On machines that support Intel®
@@ -3416,7 +3444,7 @@ uniform float frandom(uniform RNGState * uniform state)
 </div>
 <div class="section" id="random-numbers">
 <h2>Random Numbers</h2>
-<p>Some recent CPUs (including those based on the Intel(r) Ivy Bridge
+<p>Some recent CPUs (including those based on the Intel® Ivy Bridge
 micro-architecture), provide support for generating true random numbers.  A
 few standard library functions make this functionality available:</p>
 <pre class="literal-block">
@@ -3485,7 +3513,7 @@ statements to <tt class="docutils literal">ispc</tt> program code.  Like <tt cla
 the expression evaluates to false at runtime, then a diagnostic error
 message printed and the <tt class="docutils literal">abort()</tt> function is called.</p>
 <p>When called with a <tt class="docutils literal">varying</tt> quantity, an assertion triggers if the
-expression evaluates to false for any any of the executing program instances
+expression evaluates to false for any of the executing program instances
 at the point where it is called.  Thus, given code like:</p>
 <pre class="literal-block">
 int x = programIndex - 2;  // (-2, -1, 0, ... )
@@ -3588,6 +3616,7 @@ other reductions and cross-lane communication that isn't included in the
 above, though.  Given a <tt class="docutils literal">varying</tt> value, <tt class="docutils literal">extract()</tt> returns the i'th
 element of it as a single <tt class="docutils literal">uniform</tt> value.  .</p>
 <pre class="literal-block">
+uniform bool extract(bool x, uniform int i)
 uniform int8 extract(int8 x, uniform int i)
 uniform int16 extract(int16 x, uniform int i)
 uniform int32 extract(int32 x, uniform int i)
@@ -3597,6 +3626,7 @@ uniform float extract(float x, uniform int i)
 <p>Similarly, <tt class="docutils literal">insert</tt> returns a new value
 where the <tt class="docutils literal">i</tt> th element of <tt class="docutils literal">x</tt> has been replaced with the value <tt class="docutils literal">v</tt></p>
 <pre class="literal-block">
+bool insert(bool x, uniform int i, uniform bool v)
 int8 insert(int8 x, uniform int i, uniform int8 v)
 int16 insert(int16 x, uniform int i, uniform int16 v)
 int32 insert(int32 x, uniform int i, uniform int32 v)
@@ -3684,7 +3714,7 @@ uniform bool reduce_equal(double, uniform double * uniform sameval)
 <p>If called when none of the program instances are running,
 <tt class="docutils literal">reduce_equal()</tt> will return <tt class="docutils literal">false</tt>.</p>
 <p>There are also a number of functions to compute &quot;scan&quot;s of values across
-the program instances.  For example, the <tt class="docutils literal">exclusive_scan_and()</tt> function
+the program instances.  For example, the <tt class="docutils literal">exclusive_scan_add()</tt> function
 computes, for each program instance, the sum of the given value over all of
 the preceding program instances.  (The scans currently available in
 <tt class="docutils literal">ispc</tt> are all so-called &quot;exclusive&quot; scans, meaning that the value
@@ -3716,6 +3746,9 @@ unsigned int32 exclusive_scan_or(unsigned int32 v)
 int64 exclusive_scan_or(int64 v)
 unsigned int64 exclusive_scan_or(unsigned int64 v)
 </pre>
+<p>The returned value for the first program instance will be <tt class="docutils literal">0</tt> for
+<tt class="docutils literal">exclusive_scan_add</tt> and <tt class="docutils literal">exclusive_scan_or</tt>, and have all bits set to
+<tt class="docutils literal">1</tt> for <tt class="docutils literal">exclusive_scan_and</tt>.</p>
 <p>The use of exclusive scan to generate variable amounts of output from
 program instances into a compact output buffer is <a class="reference external" href="faq.html#how-can-a-gang-of-program-instances-generate-variable-amounts-of-output-efficiently">discussed in the FAQ</a>.</p>
 </div>
@@ -4380,9 +4413,9 @@ struct Node {
 </pre>
 <p>Because <tt class="docutils literal">varying</tt> types have size that depends on the size of the gang of
 program instances, <tt class="docutils literal">ispc</tt> has restrictrictions on using varying types in
-parameters to functions with the <tt class="docutils literal">export</tt> qualifier.  <tt class="docutils literal">ispc `` prohibits
+parameters to functions with the <tt class="docutils literal">export</tt> qualifier.  <tt class="docutils literal">ispc</tt> prohibits
 parameters to exported functions to have varying type unless the parameter is
-of pointer type.&nbsp; (That is, ``varying float</tt> isn't allowed, but <tt class="docutils literal">varying float * uniform</tt>
+of pointer type.  (That is, <tt class="docutils literal">varying float</tt> isn't allowed, but <tt class="docutils literal">varying float * uniform</tt>
 (uniform pointer to varying float) is permitted.)  Care must be taken
 by the programmer to ensure that the data being accessed through any
 pointers to varying data has the correct organization.</p>
@@ -4483,196 +4516,42 @@ groups of work that will tend to do similar computation across the SPMD
 program instances improves performance.</p>
 </div>
 </div>
-<div class="section" id="experimental-support-for-ptx">
-<h1>Experimental support for PTX</h1>
-<p><tt class="docutils literal">ispc</tt> provides experimental support for PTX code generation which currently
-targets NVIDIA GPUs with compute capability &gt;3.5 [Kepler GPUs with support for
-dynamic parallelism]. Due to its nature, the PTX backend currently impose
-several restrictions on the <tt class="docutils literal">ispc</tt> program, which will be described below.</p>
-<div class="section" id="overview">
-<h2>Overview</h2>
-<p>SPMD programming in <tt class="docutils literal">ispc</tt> is similar to a warp-synchronous CUDA programming.
-Namely, program instances in a gang are equivalent of CUDA threads in a single
-warp. Hence, to run efficiently on a GPU <tt class="docutils literal">ispc</tt> program must use tasking
-functionality via <tt class="docutils literal">launch</tt> keyword to ensure multiple number of warps are
-executed concurrently on the GPU.</p>
-<p><tt class="docutils literal">export</tt> functions are equipped with a CUDA C wrapper which schedules a
-single warp--a thread-block with a total of 32 threads. In contract to CPU
-programming, this exported function, either directly or otherwise, should
-utilize <tt class="docutils literal">launch</tt> keyword to schedule work on a GPU.</p>
-<p>At the PTX level, <tt class="docutils literal">launch</tt> keyword is mapped to CUDA Dynamic Parallelism and
-it schedules a grid of thread-blocks each 4 warps-wide (128 threads).  As a
-result, <tt class="docutils literal">ispc</tt> has a tasking-granularity of 4 tasks with PTX target; this
-restriction will be eliminated in future.</p>
-<p>When passing pointers to an <tt class="docutils literal">export</tt> function, it is important that they
-remain legal when are accessed from GPU. Prior to CUDA 6.0, such a pointer were
-holding an address that is only accessible from the GPU.  With the release of
-CUDA 6.0, it is possible to pass a pointer to a unified memory allocated with
-<tt class="docutils literal">cudaMallocManaged</tt>. Examples provides rudimentary wrapper functions that
-call CUDA API for managed memory allocations, allowing the programmers to avoid
-explicit memory copies.</p>
-</div>
-<div class="section" id="compiling-for-the-nvidia-kepler-gpu">
-<h2>Compiling For The NVIDIA Kepler GPU</h2>
-<p>Compilation for NVIDIA Kepler GPU is a several step procedure.</p>
-<p>First, we need to generate a LLVM assembly from <tt class="docutils literal">ispc</tt> source file (<tt class="docutils literal">ispc</tt>
-generates LLVM assembly instead of bitcode when <tt class="docutils literal">nvptx</tt> target is chosen):</p>
-<pre class="literal-block">
-$ISPC_HOME/ispc foo.ispc --emit-llvm --target=nvptx -o foo.ll
-</pre>
-<p>This LLVM assembly can immediately be compiled into PTX with the help of
-<tt class="docutils literal">ptxgen</tt> tool; this tool uses <tt class="docutils literal">libNVVM</tt> which is a part of a CUDA Toolkit.</p>
-<pre class="literal-block">
-$ISPC_HOME/ptxtools/ptxgen --use_fast_math foo.ll -o foo.ptx
-</pre>
-<!-- If ``ispc`` is compiled with  LLVM >3.2, the resulting bitcode must first be -->
-<!-- decompiled with the ``llvm-dis`` from LLVM 3.2 distribution; this "trick" is -->
-<!-- required to generate an IR compatible with libNVVM: -->
-<!-- :: -->
-<!--  -->
-<!-- $LLVM32/bin/llvm-dis foo.bc -o foo.ll -->
-<!-- $ISPC_HOME/ptxtools/ptxgen - -use_fast_math foo.ll -o foo.ptx -->
-<p>This PTX is ready for execution on a GPU, for example via CUDA
-Driver API. Alternatively, we also provide a simple <tt class="docutils literal">ptxcc</tt> tool, which
-compiles the resulting PTX code into an object file:</p>
-<pre class="literal-block">
-$ISPC_HOME/ptxtools/ptxcc foo.ptx -o foo_cu.o -Xnvcc=&quot;--maxrregcount=64
--Xptxas=-v&quot;
-</pre>
-<p>This object file can be linked with the main program via <tt class="docutils literal">nvcc</tt>:</p>
-<pre class="literal-block">
-nvcc foo_cu.o foo_main.o -o foo
-</pre>
-</div>
-<div class="section" id="hints">
-<h2>Hints</h2>
-<ul class="simple">
-<li><tt class="docutils literal">uniform</tt> arrays in a function scope are statically allocated in
-<tt class="docutils literal">__shared__</tt> memory, with all ensuing consequences. For example, if more
-than avaiable shared memory per SMX is allocated, a link- or runtime-error will occur</li>
-<li>If <tt class="docutils literal">uniform</tt> arrays of large size are desired, we recommend to use
-<tt class="docutils literal">uniform new uniform T[size]</tt> for their allocation, ideally outside the
-tasking function (see <tt class="docutils literal">deferred/kernels.ispc</tt> in the deferred shading example)</li>
-</ul>
-<p>Examples that produces executables for CPU, XeonPhi and Kepler GPU display
-several tuning approaches that can benefit GPU performance.
-<tt class="docutils literal">ispc</tt> may also generate performance warning, that if followed, may improve
-GPU application performance.</p>
-</div>
-<div class="section" id="limitations-known-issues">
-<h2>Limitations &amp; known issues</h2>
-<p>Due to its experimental form, PTX code generation is known to impose several
-limitation on the <tt class="docutils literal">ispc</tt> program which are documented in the following list:</p>
-<ul class="simple">
-<li>Must use <tt class="docutils literal">ispc</tt> tasking functionality to run efficiently on GPU</li>
-<li>Must use <tt class="docutils literal">new/delete</tt> and/or <tt class="docutils literal">ispc_malloc</tt>/<tt class="docutils literal">ispc_free</tt>/<tt class="docutils literal">ispc_memset</tt>/<tt class="docutils literal">ispc_memcpy</tt> to allocate/free/set/copy memory that is visible to GPU</li>
-<li><tt class="docutils literal">export</tt> functions must have <tt class="docutils literal">void</tt> return type.</li>
-<li><tt class="docutils literal">task</tt>/<tt class="docutils literal">export</tt> functions do not accept varying data-types</li>
-<li><tt class="docutils literal">new</tt>/<tt class="docutils literal">delete</tt> currently only works with <tt class="docutils literal">uniform</tt> data-types</li>
-<li><tt class="docutils literal">aossoa</tt>/<tt class="docutils literal">soaaos</tt> is not yet supported</li>
-<li><tt class="docutils literal">sizeof(varying)</tt> is not yet unsupported</li>
-<li>Function pointers do not work yet (may or may not generate compilation fail)</li>
-<li><tt class="docutils literal">memset</tt>/<tt class="docutils literal">memcpy</tt>/<tt class="docutils literal">memmove</tt> is not yet supported</li>
-<li><tt class="docutils literal">uniform</tt> arrays in global scope are mapped to global memory</li>
-<li><tt class="docutils literal">varying</tt> arrays in global scope are not yet supported</li>
-<li><tt class="docutils literal">uniform</tt> arrays in local  scope are mapped to shared memory</li>
-<li><tt class="docutils literal">varying</tt> arrays in local  scope are mapped to local  memory</li>
-<li><tt class="docutils literal">const uniform/varying</tt> arrays are mapped to local memory</li>
-<li><tt class="docutils literal">const static uniform</tt> arrays are mapped to constant memory</li>
-<li><tt class="docutils literal">const static varying</tt>  arrays are mapped to global   memory</li>
-<li><tt class="docutils literal">static</tt> data types in local scope are not allowed; compilation will fail</li>
-<li>Best performance is obtained with libNVVM (LLVM PTX backend can also be used but it requires libdevice.compute_35.10.bc that comes with libNVVM)</li>
-</ul>
-<p>Likely there are more... which, together with some of the above-mentioned
-issues, will be fixed in due time.</p>
-</div>
-</div>
-<div class="section" id="disclaimer-and-legal-information">
-<h1>Disclaimer and Legal Information</h1>
-<p>INFORMATION IN THIS DOCUMENT IS PROVIDED IN CONNECTION WITH INTEL(R) PRODUCTS.
-NO LICENSE, EXPRESS OR IMPLIED, BY ESTOPPEL OR OTHERWISE, TO ANY INTELLECTUAL
-PROPERTY RIGHTS IS GRANTED BY THIS DOCUMENT. EXCEPT AS PROVIDED IN INTEL'S TERMS
-AND CONDITIONS OF SALE FOR SUCH PRODUCTS, INTEL ASSUMES NO LIABILITY WHATSOEVER,
-AND INTEL DISCLAIMS ANY EXPRESS OR IMPLIED WARRANTY, RELATING TO SALE AND/OR USE
-OF INTEL PRODUCTS INCLUDING LIABILITY OR WARRANTIES RELATING TO FITNESS FOR A
-PARTICULAR PURPOSE, MERCHANTABILITY, OR INFRINGEMENT OF ANY PATENT, COPYRIGHT
-OR OTHER INTELLECTUAL PROPERTY RIGHT.</p>
-<p>UNLESS OTHERWISE AGREED IN WRITING BY INTEL, THE INTEL PRODUCTS ARE NOT DESIGNED
-NOR INTENDED FOR ANY APPLICATION IN WHICH THE FAILURE OF THE INTEL PRODUCT COULD
-CREATE A SITUATION WHERE PERSONAL INJURY OR DEATH MAY OCCUR.</p>
-<p>Intel may make changes to specifications and product descriptions at any time,
-without notice. Designers must not rely on the absence or characteristics of any
-features or instructions marked &quot;reserved&quot; or &quot;undefined.&quot; Intel reserves these
-for future definition and shall have no responsibility whatsoever for conflicts
-or incompatibilities arising from future changes to them. The information here
-is subject to change without notice. Do not finalize a design with this
-information.</p>
-<p>The products described in this document may contain design defects or errors
-known as errata which may cause the product to deviate from published
-specifications. Current characterized errata are available on request.</p>
-<p>Contact your local Intel sales office or your distributor to obtain the latest
-specifications and before placing your product order.</p>
-<p>Copies of documents which have an order number and are referenced in this
-document, or other Intel literature, may be obtained by calling 1-800-548-4725,
-or by visiting Intel's Web Site.</p>
-<p>Intel processor numbers are not a measure of performance. Processor numbers
-differentiate features within each processor family, not across different
-processor families. See <a class="reference external" href="http://www.intel.com/products/processor_number">http://www.intel.com/products/processor_number</a> for
-details.</p>
-<p>BunnyPeople, Celeron, Celeron Inside, Centrino, Centrino Atom,
-Centrino Atom Inside, Centrino Inside, Centrino logo, Core Inside, FlashFile,
-i960, InstantIP, Intel, Intel logo, Intel386, Intel486, IntelDX2, IntelDX4,
-IntelSX2, Intel Atom, Intel Atom Inside, Intel Core, Intel Inside,
-Intel Inside logo, Intel. Leap ahead., Intel. Leap ahead. logo, Intel NetBurst,
-Intel NetMerge, Intel NetStructure, Intel SingleDriver, Intel SpeedStep,
-Intel StrataFlash, Intel Viiv, Intel vPro, Intel XScale, Itanium,
-Itanium Inside, MCS, MMX, Oplus, OverDrive, PDCharm, Pentium, Pentium Inside,
-skoool, Sound Mark, The Journey Inside, Viiv Inside, vPro Inside, VTune, Xeon,
-and Xeon Inside are trademarks of Intel Corporation in the U.S. and other
-countries.</p>
-<ul class="simple">
-<li>Other names and brands may be claimed as the property of others.</li>
-</ul>
-<p>Copyright(C) 2011-2019, Intel Corporation. All rights reserved.</p>
+<div class="section" id="notices-disclaimers">
+<h1>Notices &amp; Disclaimers</h1>
+<p>Software and workloads used in performance tests may have been optimized for
+performance only on Intel microprocessors.</p>
+<p>Performance tests, such as SYSmark and MobileMark, are measured using specific
+computer systems, components, software, operations and functions.  Any change
+to any of those factors may cause the results to vary.  You should consult
+other information and performance tests to assist you in fully evaluating your
+contemplated purchases, including the performance of that product when combined
+with other products.   For more complete information visit
+www.intel.com/benchmarks.</p>
+<p>Performance results are based on testing as of dates shown in configurations and
+may not reflect all publicly available updates.  See backup for configuration
+details.  No product or component can be absolutely secure.</p>
+<p>Your costs and results may vary.</p>
+<p>Intel technologies may require enabled hardware, software or service activation.</p>
+<p>© Intel Corporation.  Intel, the Intel logo, and other Intel marks are
+trademarks of Intel Corporation or its subsidiaries.  Other names and brands may
+be claimed as the property of others.</p>
 </div>
 <div class="section" id="optimization-notice">
 <h1>Optimization Notice</h1>
-<p>Intel compilers, associated libraries and associated development tools may
-include or utilize options that optimize for instruction sets that are
-available in both Intel and non-Intel microprocessors (for example SIMD
-instruction sets), but do not optimize equally for non-Intel
-microprocessors.  In addition, certain compiler options for Intel
-compilers, including some that are not specific to Intel
-micro-architecture, are reserved for Intel microprocessors.  For a detailed
-description of Intel compiler options, including the instruction sets and
-specific microprocessors they implicate, please refer to the &quot;Intel
-Compiler User and Reference Guides&quot; under &quot;Compiler Options.&quot;  Many library
-routines that are part of Intel compiler products are more highly optimized
-for Intel microprocessors than for other microprocessors.  While the
-compilers and libraries in Intel compiler products offer optimizations for
-both Intel and Intel-compatible microprocessors, depending on the options
-you select, your code and other factors, you likely will get extra
-performance on Intel microprocessors.</p>
-<p>Intel compilers, associated libraries and associated development tools may
-or may not optimize to the same degree for non-Intel microprocessors for
-optimizations that are not unique to Intel microprocessors.  These
-optimizations include Intel® Streaming SIMD Extensions 2 (Intel® SSE2),
-Intel® Streaming SIMD Extensions 3 (Intel® SSE3), and Supplemental
-Streaming SIMD Extensions 3 (Intel SSSE3) instruction sets and other
-optimizations.  Intel does not guarantee the availability, functionality,
-or effectiveness of any optimization on microprocessors not manufactured by
-Intel.  Microprocessor-dependent optimizations in this product are intended
-for use with Intel microprocessors.</p>
-<p>While Intel believes our compilers and libraries are excellent choices to
-assist in obtaining the best performance on Intel and non-Intel
-microprocessors, Intel recommends that you evaluate other compilers and
-libraries to determine which best meet your requirements.  We hope to win
-your business by striving to offer the best performance of any compiler or
-library; please let us know if you find we do not.</p>
+<p>Intel's compilers may or may not optimize to the same degree for non-Intel
+microprocessors for optimizations that are not unique to Intel microprocessors.
+These optimizations include SSE2, SSE3, and SSSE3 instruction sets and other
+optimizations. Intel does not guarantee the availability, functionality, or
+effectiveness of any optimization on microprocessors not manufactured by Intel.
+Microprocessor-dependent optimizations in this product are intended for use with
+Intel microprocessors. Certain optimizations not specific to Intel
+microarchitecture are reserved for Intel microprocessors. Please refer to the
+applicable product User and Reference Guides for more information regarding the
+specific instruction sets covered by this notice.</p>
 </div>
 </div>
     <div class="clearfix"></div>
-    <div id="footer"> &copy; 2011-2019 <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
+    <div id="footer"> &copy; <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
       <!-- Please Do Not remove this link, thank u -->
       </div>
       </div>
