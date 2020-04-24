@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: func.cpp File Reference</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): func.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -64,34 +64,38 @@ $(function() {
 <code>#include &lt;llvm/IR/LLVMContext.h&gt;</code><br />
 <code>#include &lt;llvm/IR/Module.h&gt;</code><br />
 <code>#include &lt;llvm/IR/Type.h&gt;</code><br />
-<code>#include &quot;llvm/PassManager.h&quot;</code><br />
+<code>#include &quot;llvm/IR/LegacyPassManager.h&quot;</code><br />
+<code>#include &lt;llvm/IR/CFG.h&gt;</code><br />
+<code>#include &lt;llvm/IR/IRPrintingPasses.h&gt;</code><br />
+<code>#include &lt;llvm/IR/Verifier.h&gt;</code><br />
 <code>#include &lt;llvm/PassRegistry.h&gt;</code><br />
 <code>#include &lt;llvm/Support/FileUtilities.h&gt;</code><br />
 <code>#include &lt;llvm/Support/FormattedStream.h&gt;</code><br />
 <code>#include &lt;llvm/Target/TargetMachine.h&gt;</code><br />
 <code>#include &lt;llvm/Target/TargetOptions.h&gt;</code><br />
 <code>#include &lt;llvm/Transforms/IPO.h&gt;</code><br />
-<code>#include &lt;llvm/Analysis/Verifier.h&gt;</code><br />
-<code>#include &lt;llvm/Assembly/PrintModulePass.h&gt;</code><br />
-<code>#include &lt;llvm/Support/CFG.h&gt;</code><br />
 <code>#include &lt;llvm/Support/ToolOutputFile.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for func.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="func_8cpp__incl.png" border="0" usemap="#func_8cpp" alt=""/></div>
 <map name="func_8cpp" id="func_8cpp">
-<area shape="rect" id="node2" href="func_8h.html" title="Representation of a function in a source file. " alt="" coords="923,244,981,271"/>
-<area shape="rect" id="node12" href="ctx_8h.html" title="Declaration of the FunctionEmitContext class " alt="" coords="2053,87,2102,114"/>
-<area shape="rect" id="node17" href="expr_8h.html" title="Expr abstract base class and expression implementations. " alt="" coords="1245,87,1301,114"/>
-<area shape="rect" id="node26" href="type_8h.html" title="File with declarations for classes related to type representation. " alt="" coords="1560,169,1616,196"/>
-<area shape="rect" id="node27" href="util_8h.html" title="util.h" alt="" coords="1319,244,1369,271"/>
-<area shape="rect" id="node31" href="llvmutil_8h.html" title="Header file with declarations for various LLVM utility stuff. " alt="" coords="1905,169,1977,196"/>
-<area shape="rect" id="node34" href="module_8h.html" title="Declaration of the Module class, which is the ispc&#45;side representation of the results of compiling a ..." alt="" coords="992,169,1067,196"/>
-<area shape="rect" id="node35" href="stmt_8h.html" title="File with declarations for classes related to statements in the language. " alt="" coords="1091,169,1149,196"/>
-<area shape="rect" id="node36" href="sym_8h.html" title="header file with declarations for symbol and symbol table classes. " alt="" coords="1463,169,1518,196"/>
-<area shape="rect" id="node3" href="ispc_8h.html" title="Main ispc.header file. Defines Target, Globals and Opt classes. " alt="" coords="1351,326,1406,353"/>
-<area shape="rect" id="node18" href="ast_8h.html" title="ast.h" alt="" coords="1005,244,1054,271"/>
-<area shape="rect" id="node37" href="decl_8h.html" title="Declarations related to type declarations; the parser basically creates instances of these classes..." alt="" coords="1444,244,1500,271"/>
+<area shape="rect" id="node2" href="func_8h.html" title="Representation of a function in a source file. " alt="" coords="556,229,613,256"/>
+<area shape="rect" id="node17" href="ctx_8h.html" title="Declaration of the FunctionEmitContext class " alt="" coords="443,155,492,181"/>
+<area shape="rect" id="node22" href="expr_8h.html" title="Expr abstract base class and expression implementations. " alt="" coords="1154,80,1210,107"/>
+<area shape="rect" id="node24" href="type_8h.html" title="File with declarations for classes related to type representation. " alt="" coords="1317,155,1373,181"/>
+<area shape="rect" id="node25" href="util_8h.html" title="util.h" alt="" coords="1257,229,1307,256"/>
+<area shape="rect" id="node29" href="llvmutil_8h.html" title="Header file with declarations for various LLVM utility stuff. " alt="" coords="1498,155,1570,181"/>
+<area shape="rect" id="node32" href="module_8h.html" title="Declaration of the Module class, which is the ispc&#45;side representation of the results of compiling a ..." alt="" coords="826,155,901,181"/>
+<area shape="rect" id="node33" href="stmt_8h.html" title="File with declarations for classes related to statements in the language. " alt="" coords="927,155,984,181"/>
+<area shape="rect" id="node34" href="sym_8h.html" title="header file with declarations for symbol and symbol table classes. " alt="" coords="1060,155,1115,181"/>
+<area shape="rect" id="node3" href="ispc_8h.html" title="Main ispc.header file. Defines Target, Globals and Opt classes. " alt="" coords="1061,304,1116,331"/>
+<area shape="rect" id="node4" href="ispc__version_8h.html" title="defines the ISPC version " alt="" coords="1569,379,1672,405"/>
+<area shape="rect" id="node6" href="target__enums_8h.html" title="Define enums describing target platform. " alt="" coords="1164,528,1275,555"/>
+<area shape="rect" id="node9" href="target__registry_8h.html" title="Registry to handle bitcode libraries. " alt="" coords="932,379,1045,405"/>
+<area shape="rect" id="node10" href="bitcode__lib_8h.html" title="a header to host BitcodeLib &#45; a wrapper for single bitcode library. " alt="" coords="1123,453,1217,480"/>
+<area shape="rect" id="node23" href="ast_8h.html" title="ast.h" alt="" coords="900,229,949,256"/>
+<area shape="rect" id="node35" href="decl_8h.html" title="Declarations related to type declarations; the parser basically creates instances of these classes..." alt="" coords="1177,229,1233,256"/>
 </map>
 </div>
 </div>
@@ -150,18 +154,18 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Parameters for tasks are stored in a big structure; this utility function emits code to copy those values out of the task structure into local stack-allocated variables. (Which we expect that LLVM's 'mem2reg' pass will in turn promote to SSA registers.. </p>
 
-<p class="definition">Definition at line <a class="el" href="func_8cpp_source.html#l00190">190</a> of file <a class="el" href="func_8cpp_source.html">func.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="func_8cpp_source.html#l00165">165</a> of file <a class="el" href="func_8cpp_source.html">func.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ctx_8cpp_source.html#l02179">FunctionEmitContext::AddElementOffset()</a>, <a class="el" href="ctx_8cpp_source.html#l02579">FunctionEmitContext::AllocaInst()</a>, <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l01545">FunctionEmitContext::EmitFunctionParameterDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l02367">FunctionEmitContext::LoadInst()</a>, <a class="el" href="sym_8h_source.html#l00070">Symbol::name</a>, <a class="el" href="sym_8h_source.html#l00071">Symbol::storagePtr</a>, <a class="el" href="ctx_8cpp_source.html#l02827">FunctionEmitContext::StoreInst()</a>, and <a class="el" href="func_8h_source.html#l00057">Function::sym</a>.</p>
+<p class="reference">References <a class="el" href="ctx_8cpp_source.html#l01951">FunctionEmitContext::AddElementOffset()</a>, <a class="el" href="ctx_8cpp_source.html#l02401">FunctionEmitContext::AllocaInst()</a>, <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l01348">FunctionEmitContext::EmitFunctionParameterDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l02172">FunctionEmitContext::LoadInst()</a>, <a class="el" href="sym_8h_source.html#l00069">Symbol::name</a>, <a class="el" href="sym_8h_source.html#l00070">Symbol::storagePtr</a>, <a class="el" href="ctx_8cpp_source.html#l02674">FunctionEmitContext::StoreInst()</a>, <a class="el" href="func_8h_source.html#l00056">Function::sym</a>, and <a class="el" href="sym_8h_source.html#l00082">Symbol::type</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="func_8cpp_source.html#l00226">Function::emitCode()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="func_8cpp_source.html#l00200">Function::emitCode()</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:25 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

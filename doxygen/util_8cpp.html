@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: util.cpp File Reference</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): util.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -69,10 +69,14 @@ Include dependency graph for util.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="util_8cpp__incl.png" border="0" usemap="#util_8cpp" alt=""/></div>
 <map name="util_8cpp" id="util_8cpp">
-<area shape="rect" id="node2" href="util_8h.html" title="util.h" alt="" coords="2759,169,2809,196"/>
-<area shape="rect" id="node12" href="module_8h.html" title="Declaration of the Module class, which is the ispc&#45;side representation of the results of compiling a ..." alt="" coords="2684,87,2759,114"/>
-<area shape="rect" id="node3" href="ispc_8h.html" title="Main ispc.header file. Defines Target, Globals and Opt classes. " alt="" coords="2714,251,2769,278"/>
-<area shape="rect" id="node13" href="ast_8h.html" title="ast.h" alt="" coords="1627,169,1677,196"/>
+<area shape="rect" id="node2" href="util_8h.html" title="util.h" alt="" coords="653,169,702,196"/>
+<area shape="rect" id="node17" href="module_8h.html" title="Declaration of the Module class, which is the ispc&#45;side representation of the results of compiling a ..." alt="" coords="472,87,547,114"/>
+<area shape="rect" id="node3" href="ispc_8h.html" title="Main ispc.header file. Defines Target, Globals and Opt classes. " alt="" coords="493,244,547,271"/>
+<area shape="rect" id="node4" href="ispc__version_8h.html" title="defines the ISPC version " alt="" coords="469,319,571,345"/>
+<area shape="rect" id="node6" href="target__enums_8h.html" title="Define enums describing target platform. " alt="" coords="366,468,477,495"/>
+<area shape="rect" id="node9" href="target__registry_8h.html" title="Registry to handle bitcode libraries. " alt="" coords="193,319,306,345"/>
+<area shape="rect" id="node10" href="bitcode__lib_8h.html" title="a header to host BitcodeLib &#45; a wrapper for single bitcode library. " alt="" coords="222,393,317,420"/>
+<area shape="rect" id="node18" href="ast_8h.html" title="ast.h" alt="" coords="369,169,418,196"/>
 </map>
 </div>
 </div>
@@ -128,6 +132,8 @@ Functions</h2></td></tr>
 <tr class="separator:adb8ffc178520e7aa490831d72c51000a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05c89b4aa818625e7765d86c59710b16"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8cpp.html#a05c89b4aa818625e7765d86c59710b16">VerifyDataLayoutCompatibility</a> (const std::string &amp;module_dl, const std::string &amp;lib_dl)</td></tr>
 <tr class="separator:a05c89b4aa818625e7765d86c59710b16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe7c682fe2b09ec0ef156faa105fca42"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8cpp.html#afe7c682fe2b09ec0ef156faa105fca42">IsStdin</a> (const char *filepath)</td></tr>
+<tr class="separator:afe7c682fe2b09ec0ef156faa105fca42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Various small utility routines. </p>
@@ -167,11 +173,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Prints a debugging message. These messages are only printed if g-&gt;debugPrint is <code>true</code>. In addition to a program source code position to associate with the message, a printf()-style format string is passed along with any values needed for items in the format string. </p>
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00363">363</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00366">366</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00568">Globals::debugPrint</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>, and <a class="el" href="ispc_8h_source.html#l00604">Globals::quiet</a>.</p>
+<p class="reference">References <a class="el" href="ispc_8h_source.html#l00536">Globals::debugPrint</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>, and <a class="el" href="ispc_8h_source.html#l00572">Globals::quiet</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="builtins_8cpp_source.html#l00829">AddBitcodeToModule()</a>, <a class="el" href="func_8cpp_source.html#l00226">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00683">IfStmt::emitVaryingIf()</a>, <a class="el" href="expr_8cpp_source.html#l05707">ConstExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l03033">SelectExpr::GetValue()</a>, <a class="el" href="opt_8cpp_source.html#l03382">lApplyLoad1()</a>, <a class="el" href="opt_8cpp_source.html#l03403">lApplyLoad2()</a>, <a class="el" href="opt_8cpp_source.html#l03462">lApplyLoad4()</a>, <a class="el" href="opt_8cpp_source.html#l03501">lAssemble4Vector()</a>, <a class="el" href="builtins_8cpp_source.html#l00183">lCreateISPCSymbol()</a>, <a class="el" href="builtins_8cpp_source.html#l00165">lCreateSymbol()</a>, <a class="el" href="opt_8cpp_source.html#l03299">lEmitLoads()</a>, <a class="el" href="opt_8cpp_source.html#l02594">lGSToLoadStore()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01326">LLVMVectorIsLinear()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01061">LLVMVectorValuesAllEqual()</a>, <a class="el" href="opt_8cpp_source.html#l03169">lSelectLoads()</a>, <a class="el" href="module_8cpp_source.html#l00168">lStripUnusedDebugInfo()</a>, <a class="el" href="expr_8cpp_source.html#l02198">BinaryExpr::Optimize()</a>, <a class="el" href="opt_8cpp_source.html#l03850">GatherCoalescePass::runOnBasicBlock()</a>, and <a class="el" href="expr_8cpp_source.html#l00549">TypeConvertExpr()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="builtins_8cpp_source.html#l00746">AddBitcodeToModule()</a>, <a class="el" href="func_8cpp_source.html#l00200">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00500">IfStmt::emitVaryingIf()</a>, <a class="el" href="expr_8cpp_source.html#l03126">SelectExpr::GetValue()</a>, <a class="el" href="opt_8cpp_source.html#l03185">lApplyLoad1()</a>, <a class="el" href="opt_8cpp_source.html#l03206">lApplyLoad2()</a>, <a class="el" href="opt_8cpp_source.html#l03265">lApplyLoad4()</a>, <a class="el" href="opt_8cpp_source.html#l03304">lAssemble4Vector()</a>, <a class="el" href="builtins_8cpp_source.html#l00166">lCreateISPCSymbol()</a>, <a class="el" href="builtins_8cpp_source.html#l00148">lCreateSymbol()</a>, <a class="el" href="opt_8cpp_source.html#l03102">lEmitLoads()</a>, <a class="el" href="expr_8cpp_source.html#l05824">lGetConstExprConstant()</a>, <a class="el" href="opt_8cpp_source.html#l02373">lGSToLoadStore()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01361">LLVMVectorIsLinear()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01080">LLVMVectorValuesAllEqual()</a>, <a class="el" href="opt_8cpp_source.html#l02968">lSelectLoads()</a>, <a class="el" href="expr_8cpp_source.html#l02200">BinaryExpr::Optimize()</a>, <a class="el" href="opt_8cpp_source.html#l03654">GatherCoalescePass::runOnBasicBlock()</a>, and <a class="el" href="expr_8cpp_source.html#l00548">TypeConvertExpr()</a>.</p>
 
 </div>
 </div>
@@ -206,10 +212,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>This function generally shouldn't be called directly, but should be used via the Assert macro, which includes the file and line number where the assertion happens. Note: avoid adding [[noreturn]] as VS2017 treats Assert macros as never returning. </p>
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00437">437</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00440">440</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8cpp_source.html#l00417">lPrintBugText()</a>.</p>
+<p class="reference">References <a class="el" href="util_8cpp_source.html#l00420">lPrintBugText()</a>.</p>
 
 </div>
 </div>
@@ -250,10 +257,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>This function generally shouldn't be called directly, but should be used via the AssertPos macro, which includes the file and line number where the assertion happens. Note: avoid adding [[noreturn]] as VS2017 treats AssertPos macros as never returning. </p>
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00443">443</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00446">446</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8cpp_source.html#l00351">Error()</a>, and <a class="el" href="util_8cpp_source.html#l00417">lPrintBugText()</a>.</p>
+<p class="reference">References <a class="el" href="util_8cpp_source.html#l00351">Error()</a>, and <a class="el" href="util_8cpp_source.html#l00420">lPrintBugText()</a>.</p>
 
 </div>
 </div>
@@ -292,9 +300,9 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00351">351</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="module_8h_source.html#l00149">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, and <a class="el" href="ispc_8h_source.html#l00604">Globals::quiet</a>.</p>
+<p class="reference">References <a class="el" href="module_8h_source.html#l00144">Module::errorCount</a>, <a class="el" href="ispc_8h_source.html#l00639">Globals::errorLimit</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, and <a class="el" href="ispc_8h_source.html#l00572">Globals::quiet</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="builtins_8cpp_source.html#l00829">AddBitcodeToModule()</a>, <a class="el" href="module_8cpp_source.html#l01151">Module::AddExportedTypes()</a>, <a class="el" href="module_8cpp_source.html#l00863">Module::AddFunctionDeclaration()</a>, <a class="el" href="module_8cpp_source.html#l00536">Module::AddGlobalVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00165">SymbolTable::AddType()</a>, <a class="el" href="sym_8cpp_source.html#l00085">SymbolTable::AddVariable()</a>, <a class="el" href="ctx_8cpp_source.html#l00653">FunctionEmitContext::Break()</a>, <a class="el" href="type_8cpp_source.html#l02105">StructType::checkIfCanBeSOA()</a>, <a class="el" href="stmt_8cpp_source.html#l00436">checkInit()</a>, <a class="el" href="module_8cpp_source.html#l02991">Module::CompileAndOutput()</a>, <a class="el" href="ctx_8cpp_source.html#l00724">FunctionEmitContext::Continue()</a>, <a class="el" href="expr_8cpp_source.html#l04694">MemberExpr::create()</a>, <a class="el" href="ctx_8cpp_source.html#l01119">FunctionEmitContext::CurrentLanesReturned()</a>, <a class="el" href="builtins_8cpp_source.html#l01133">DefineStdlib()</a>, <a class="el" href="util_8cpp_source.html#l00443">DoAssertPos()</a>, <a class="el" href="ctx_8cpp_source.html#l00966">FunctionEmitContext::EmitCaseLabel()</a>, <a class="el" href="stmt_8cpp_source.html#l00185">DeclStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02723">ReturnStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02779">GotoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l03099">AssertStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00907">FunctionEmitContext::EmitDefaultLabel()</a>, <a class="el" href="module_8cpp_source.html#l01889">emitOffloadParamStruct()</a>, <a class="el" href="func_8cpp_source.html#l00486">Function::GenerateIR()</a>, <a class="el" href="decl_8cpp_source.html#l00147">DeclSpecs::GetBaseType()</a>, <a class="el" href="expr_8cpp_source.html#l03686">ExprList::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l07479">FunctionSymbolExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l04463">StructMemberExpr::getElementNumber()</a>, <a class="el" href="expr_8cpp_source.html#l04685">VectorMemberExpr::getElementNumber()</a>, <a class="el" href="decl_8cpp_source.html#l00686">GetStructTypesNamesPositions()</a>, <a class="el" href="ispc_8cpp_source.html#l01264">Target::GetTripleString()</a>, <a class="el" href="expr_8cpp_source.html#l07450">FunctionSymbolExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l04386">StructMemberExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l02792">AssignExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03348">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04619">VectorMemberExpr::GetValue()</a>, <a class="el" href="decl_8cpp_source.html#l00630">Declaration::GetVariableDeclarations()</a>, <a class="el" href="decl_8cpp_source.html#l00262">Declarator::InitFromDeclSpecs()</a>, <a class="el" href="decl_8cpp_source.html#l00335">Declarator::InitFromType()</a>, <a class="el" href="ctx_8cpp_source.html#l01079">FunctionEmitContext::initLabelBBlocks()</a>, <a class="el" href="expr_8cpp_source.html#l00595">InitSymbol()</a>, <a class="el" href="decl_8cpp_source.html#l00074">lApplyTypeQualifiers()</a>, <a class="el" href="module_8cpp_source.html#l00803">lCheckExportedParameterTypes()</a>, <a class="el" href="expr_8cpp_source.html#l02858">lCheckForConstStructMember()</a>, <a class="el" href="module_8cpp_source.html#l00845">lCheckForStructParameters()</a>, <a class="el" href="expr_8cpp_source.html#l02075">lConstFoldBinaryArithOp()</a>, <a class="el" href="expr_8cpp_source.html#l01573">lCreateBinaryOperatorCall()</a>, <a class="el" href="expr_8cpp_source.html#l00187">lDoTypeConv()</a>, <a class="el" href="expr_8cpp_source.html#l02698">lEmitOpAssign()</a>, <a class="el" href="expr_8cpp_source.html#l00941">lEmitPrePostIncDec()</a>, <a class="el" href="ispc_8cpp_source.html#l00157">lGetSystemISA()</a>, <a class="el" href="stmt_8cpp_source.html#l00111">lHasUnsizedArrays()</a>, <a class="el" href="ctx_8cpp_source.html#l02367">FunctionEmitContext::LoadInst()</a>, <a class="el" href="stmt_8cpp_source.html#l02953">lProcessPrintArg()</a>, <a class="el" href="stmt_8cpp_source.html#l02531">lSwitchASTPreVisit()</a>, <a class="el" href="expr_8cpp_source.html#l03895">lVaryingStructHasUniformMember()</a>, <a class="el" href="type_8cpp_source.html#l02839">lVectorConvert()</a>, <a class="el" href="type_8cpp_source.html#l02863">Type::MoreGeneralType()</a>, <a class="el" href="expr_8cpp_source.html#l07885">NewExpr::NewExpr()</a>, <a class="el" href="expr_8cpp_source.html#l07725">FunctionSymbolExpr::ResolveOverloads()</a>, <a class="el" href="type_8cpp_source.html#l01413">ArrayType::SizeUnsizedArrays()</a>, <a class="el" href="ctx_8cpp_source.html#l00589">FunctionEmitContext::StartForeach()</a>, <a class="el" href="ctx_8cpp_source.html#l02846">FunctionEmitContext::StoreInst()</a>, <a class="el" href="type_8cpp_source.html#l01700">StructType::StructType()</a>, <a class="el" href="ispc_8cpp_source.html#l00516">Target::Target()</a>, <a class="el" href="expr_8cpp_source.html#l01194">UnaryExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l02325">BinaryExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l02883">AssignExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l01952">ForeachStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l03509">FunctionCallExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l02404">ForeachUniqueStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l04244">IndexExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l02858">LabeledStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l06749">TypeCastExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l03212">DeleteStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l07120">PtrDerefExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l07274">AddressOfExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l07353">SizeOfExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l08033">NewExpr::TypeCheck()</a>, <a class="el" href="module_8cpp_source.html#l01923">Module::writeDevStub()</a>, and <a class="el" href="module_8cpp_source.html#l01164">Module::writeOutput()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="builtins_8cpp_source.html#l00746">AddBitcodeToModule()</a>, <a class="el" href="module_8cpp_source.html#l00802">Module::AddExportedTypes()</a>, <a class="el" href="module_8cpp_source.html#l00549">Module::AddFunctionDeclaration()</a>, <a class="el" href="module_8cpp_source.html#l00272">Module::AddGlobalVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00165">SymbolTable::AddType()</a>, <a class="el" href="sym_8cpp_source.html#l00085">SymbolTable::AddVariable()</a>, <a class="el" href="target__enums_8cpp_source.html#l00060">ArchToString()</a>, <a class="el" href="ctx_8cpp_source.html#l00589">FunctionEmitContext::Break()</a>, <a class="el" href="type_8cpp_source.html#l01895">StructType::checkIfCanBeSOA()</a>, <a class="el" href="stmt_8cpp_source.html#l00266">checkInit()</a>, <a class="el" href="module_8cpp_source.html#l02390">Module::CompileAndOutput()</a>, <a class="el" href="ctx_8cpp_source.html#l00660">FunctionEmitContext::Continue()</a>, <a class="el" href="expr_8cpp_source.html#l04811">MemberExpr::create()</a>, <a class="el" href="ctx_8cpp_source.html#l01055">FunctionEmitContext::CurrentLanesReturned()</a>, <a class="el" href="util_8cpp_source.html#l00446">DoAssertPos()</a>, <a class="el" href="main_8cpp_source.html#l00399">ArgErrors::Emit()</a>, <a class="el" href="ctx_8cpp_source.html#l00902">FunctionEmitContext::EmitCaseLabel()</a>, <a class="el" href="stmt_8cpp_source.html#l00111">DeclStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02420">ReturnStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02476">GotoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02790">AssertStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00843">FunctionEmitContext::EmitDefaultLabel()</a>, <a class="el" href="module_8cpp_source.html#l01388">emitOffloadParamStruct()</a>, <a class="el" href="func_8cpp_source.html#l00412">Function::GenerateIR()</a>, <a class="el" href="decl_8cpp_source.html#l00147">DeclSpecs::GetBaseType()</a>, <a class="el" href="expr_8cpp_source.html#l07694">FunctionSymbolExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l04580">StructMemberExpr::getElementNumber()</a>, <a class="el" href="expr_8cpp_source.html#l04802">VectorMemberExpr::getElementNumber()</a>, <a class="el" href="decl_8cpp_source.html#l00669">GetStructTypesNamesPositions()</a>, <a class="el" href="ispc_8cpp_source.html#l01124">Target::GetTripleString()</a>, <a class="el" href="expr_8cpp_source.html#l07665">FunctionSymbolExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l04503">StructMemberExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l02886">AssignExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03446">FunctionCallExpr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l04736">VectorMemberExpr::GetValue()</a>, <a class="el" href="decl_8cpp_source.html#l00613">Declaration::GetVariableDeclarations()</a>, <a class="el" href="decl_8cpp_source.html#l00253">Declarator::InitFromDeclSpecs()</a>, <a class="el" href="decl_8cpp_source.html#l00326">Declarator::InitFromType()</a>, <a class="el" href="ctx_8cpp_source.html#l01015">FunctionEmitContext::initLabelBBlocks()</a>, <a class="el" href="expr_8cpp_source.html#l00594">InitSymbol()</a>, <a class="el" href="target__enums_8cpp_source.html#l00182">ISPCTargetToString()</a>, <a class="el" href="decl_8cpp_source.html#l00074">lApplyTypeQualifiers()</a>, <a class="el" href="module_8cpp_source.html#l00505">lCheckExportedParameterTypes()</a>, <a class="el" href="expr_8cpp_source.html#l02951">lCheckForConstStructMember()</a>, <a class="el" href="module_8cpp_source.html#l00531">lCheckForStructParameters()</a>, <a class="el" href="expr_8cpp_source.html#l02077">lConstFoldBinaryArithOp()</a>, <a class="el" href="expr_8cpp_source.html#l01576">lCreateBinaryOperatorCall()</a>, <a class="el" href="expr_8cpp_source.html#l00175">lDoTypeConv()</a>, <a class="el" href="expr_8cpp_source.html#l02792">lEmitOpAssign()</a>, <a class="el" href="expr_8cpp_source.html#l00944">lEmitPrePostIncDec()</a>, <a class="el" href="expr_8cpp_source.html#l03781">lGetExprListConstant()</a>, <a class="el" href="ispc_8cpp_source.html#l00128">lGetSystemISA()</a>, <a class="el" href="ctx_8cpp_source.html#l02172">FunctionEmitContext::LoadInst()</a>, <a class="el" href="stmt_8cpp_source.html#l02650">lProcessPrintArg()</a>, <a class="el" href="stmt_8cpp_source.html#l02228">lSwitchASTPreVisit()</a>, <a class="el" href="expr_8cpp_source.html#l04011">lVaryingStructHasUniformMember()</a>, <a class="el" href="type_8cpp_source.html#l02578">lVectorConvert()</a>, <a class="el" href="main_8cpp_source.html#l00482">main()</a>, <a class="el" href="module_8cpp_source.html#l00131">Module::Module()</a>, <a class="el" href="type_8cpp_source.html#l02602">Type::MoreGeneralType()</a>, <a class="el" href="expr_8cpp_source.html#l08099">NewExpr::NewExpr()</a>, <a class="el" href="expr_8cpp_source.html#l07939">FunctionSymbolExpr::ResolveOverloads()</a>, <a class="el" href="type_8cpp_source.html#l01288">ArrayType::SizeUnsizedArrays()</a>, <a class="el" href="ctx_8cpp_source.html#l00525">FunctionEmitContext::StartForeach()</a>, <a class="el" href="ctx_8cpp_source.html#l02708">FunctionEmitContext::StoreInst()</a>, <a class="el" href="type_8cpp_source.html#l01568">StructType::StructType()</a>, <a class="el" href="ispc_8cpp_source.html#l00443">Target::Target()</a>, <a class="el" href="expr_8cpp_source.html#l01197">UnaryExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l02327">BinaryExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l02976">AssignExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l01662">ForeachStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l03604">FunctionCallExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l02101">ForeachUniqueStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l04361">IndexExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l02555">LabeledStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l06895">TypeCastExpr::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l02903">DeleteStmt::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l07286">PtrDerefExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l07440">AddressOfExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l07555">SizeOfExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l08247">NewExpr::TypeCheck()</a>, <a class="el" href="module_8cpp_source.html#l01422">Module::writeDevStub()</a>, <a class="el" href="module_8cpp_source.html#l00955">Module::writeObjectFileOrAssembly()</a>, and <a class="el" href="module_8cpp_source.html#l00815">Module::writeOutput()</a>.</p>
 
 </div>
 </div>
@@ -331,9 +339,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>This function generally shouldn't be called directly, but should be used via the FATAL macro, which includes the file and line number where the error was issued. </p>
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00431">431</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00434">434</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8cpp_source.html#l00417">lPrintBugText()</a>.</p>
+<p class="reference">References <a class="el" href="util_8cpp_source.html#l00420">lPrintBugText()</a>.</p>
 
 </div>
 </div>
@@ -376,11 +384,36 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given the current working directory and a filename relative to that directory, this function returns the final directory that the resulting file is in and the base name of the file itself. </p>
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00513">513</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00516">516</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ispc_8h_source.html#l00649">Globals::currentDirectory</a>, and <a class="el" href="ispc_8cpp_source.html#l00101">g</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8h_source.html#l00615">Globals::currentDirectory</a>, and <a class="el" href="ispc_8cpp_source.html#l00072">g</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ispc_8cpp_source.html#l01638">SourcePos::GetDIFile()</a>, and <a class="el" href="module_8cpp_source.html#l00376">Module::Module()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ispc_8cpp_source.html#l01507">SourcePos::GetDIFile()</a>, and <a class="el" href="module_8cpp_source.html#l00131">Module::Module()</a>.</p>
+
+</div>
+</div>
+<a id="afe7c682fe2b09ec0ef156faa105fca42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe7c682fe2b09ec0ef156faa105fca42">&#9670;&nbsp;</a></span>IsStdin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool IsStdin </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true is the filepath represents stdin, otherwise false. </p>
+
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00621">621</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l02390">Module::CompileAndOutput()</a>, <a class="el" href="module_8cpp_source.html#l00203">Module::CompileFile()</a>, <a class="el" href="module_8cpp_source.html#l00131">Module::Module()</a>, and <a class="el" href="module_8cpp_source.html#l01350">Module::writeDeps()</a>.</p>
 
 </div>
 </div>
@@ -450,7 +483,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given a pointer into a string, find the end of the current word and return a pointer to its last character. </p>
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00139">139</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00135">135</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00210">PrintWithWordBreaks()</a>.</p>
 
@@ -480,11 +513,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00548">548</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00551">551</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00565">VerifyDataLayoutCompatibility()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00568">VerifyDataLayoutCompatibility()</a>.</p>
 
 </div>
 </div>
@@ -511,11 +544,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00099">99</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00095">95</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00608">Globals::forceColoredOutput</a>, and <a class="el" href="ispc_8cpp_source.html#l00101">g</a>.</p>
+<p class="reference">References <a class="el" href="ispc_8h_source.html#l00576">Globals::forceColoredOutput</a>, and <a class="el" href="ispc_8cpp_source.html#l00072">g</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00129">lResetColor()</a>, <a class="el" href="util_8cpp_source.html#l00122">lStartBlue()</a>, <a class="el" href="util_8cpp_source.html#l00108">lStartBold()</a>, and <a class="el" href="util_8cpp_source.html#l00115">lStartRed()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00125">lResetColor()</a>, <a class="el" href="util_8cpp_source.html#l00118">lStartBlue()</a>, <a class="el" href="util_8cpp_source.html#l00104">lStartBold()</a>, and <a class="el" href="util_8cpp_source.html#l00111">lStartRed()</a>.</p>
 
 </div>
 </div>
@@ -583,9 +616,9 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00304">304</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00136">SourcePos::first_column</a>, <a class="el" href="ispc_8h_source.html#l00135">SourcePos::first_line</a>, <a class="el" href="util_8cpp_source.html#l00187">lFindIndent()</a>, <a class="el" href="util_8cpp_source.html#l00150">lPrintFileLineContext()</a>, <a class="el" href="util_8cpp_source.html#l00129">lResetColor()</a>, <a class="el" href="util_8cpp_source.html#l00122">lStartBlue()</a>, <a class="el" href="util_8cpp_source.html#l00108">lStartBold()</a>, <a class="el" href="util_8cpp_source.html#l00115">lStartRed()</a>, <a class="el" href="ispc_8h_source.html#l00134">SourcePos::name</a>, <a class="el" href="util_8cpp_source.html#l00210">PrintWithWordBreaks()</a>, and <a class="el" href="util_8cpp_source.html#l00080">TerminalWidth()</a>.</p>
+<p class="reference">References <a class="el" href="ispc_8h_source.html#l00128">SourcePos::first_column</a>, <a class="el" href="ispc_8h_source.html#l00127">SourcePos::first_line</a>, <a class="el" href="util_8cpp_source.html#l00187">lFindIndent()</a>, <a class="el" href="util_8cpp_source.html#l00146">lPrintFileLineContext()</a>, <a class="el" href="util_8cpp_source.html#l00125">lResetColor()</a>, <a class="el" href="util_8cpp_source.html#l00118">lStartBlue()</a>, <a class="el" href="util_8cpp_source.html#l00104">lStartBold()</a>, <a class="el" href="util_8cpp_source.html#l00111">lStartRed()</a>, <a class="el" href="ispc_8h_source.html#l00126">SourcePos::name</a>, <a class="el" href="util_8cpp_source.html#l00210">PrintWithWordBreaks()</a>, and <a class="el" href="util_8cpp_source.html#l00076">TerminalWidth()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00363">Debug()</a>, <a class="el" href="util_8cpp_source.html#l00351">Error()</a>, <a class="el" href="util_8cpp_source.html#l00394">PerformanceWarning()</a>, and <a class="el" href="util_8cpp_source.html#l00375">Warning()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00366">Debug()</a>, <a class="el" href="util_8cpp_source.html#l00351">Error()</a>, <a class="el" href="util_8cpp_source.html#l00397">PerformanceWarning()</a>, and <a class="el" href="util_8cpp_source.html#l00378">Warning()</a>.</p>
 
 </div>
 </div>
@@ -612,9 +645,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00417">417</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00420">420</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00437">DoAssert()</a>, <a class="el" href="util_8cpp_source.html#l00443">DoAssertPos()</a>, and <a class="el" href="util_8cpp_source.html#l00431">FatalError()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00440">DoAssert()</a>, <a class="el" href="util_8cpp_source.html#l00446">DoAssertPos()</a>, and <a class="el" href="util_8cpp_source.html#l00434">FatalError()</a>.</p>
 
 </div>
 </div>
@@ -643,9 +676,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>When printing error messages, we sometimes want to include the source file line for context. This function print the line(s) of the file corresponding to the provided <a class="el" href="structSourcePos.html" title="Representation of a range of positions in a source file. ">SourcePos</a> and underlines the range of the <a class="el" href="structSourcePos.html" title="Representation of a range of positions in a source file. ">SourcePos</a> with '^' symbols. </p>
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00150">150</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00146">146</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00136">SourcePos::first_column</a>, <a class="el" href="ispc_8h_source.html#l00135">SourcePos::first_line</a>, <a class="el" href="ispc_8h_source.html#l00138">SourcePos::last_column</a>, <a class="el" href="ispc_8h_source.html#l00137">SourcePos::last_line</a>, and <a class="el" href="ispc_8h_source.html#l00134">SourcePos::name</a>.</p>
+<p class="reference">References <a class="el" href="ispc_8h_source.html#l00128">SourcePos::first_column</a>, <a class="el" href="ispc_8h_source.html#l00127">SourcePos::first_line</a>, <a class="el" href="ispc_8h_source.html#l00130">SourcePos::last_column</a>, <a class="el" href="ispc_8h_source.html#l00129">SourcePos::last_line</a>, and <a class="el" href="ispc_8h_source.html#l00126">SourcePos::name</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>.</p>
 
@@ -674,9 +707,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00129">129</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00125">125</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8cpp_source.html#l00099">lHaveANSIColors()</a>.</p>
+<p class="reference">References <a class="el" href="util_8cpp_source.html#l00095">lHaveANSIColors()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>.</p>
 
@@ -705,9 +738,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00122">122</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00118">118</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8cpp_source.html#l00099">lHaveANSIColors()</a>.</p>
+<p class="reference">References <a class="el" href="util_8cpp_source.html#l00095">lHaveANSIColors()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>.</p>
 
@@ -736,9 +769,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00108">108</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00104">104</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8cpp_source.html#l00099">lHaveANSIColors()</a>.</p>
+<p class="reference">References <a class="el" href="util_8cpp_source.html#l00095">lHaveANSIColors()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>.</p>
 
@@ -767,9 +800,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00115">115</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00111">111</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8cpp_source.html#l00099">lHaveANSIColors()</a>.</p>
+<p class="reference">References <a class="el" href="util_8cpp_source.html#l00095">lHaveANSIColors()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>.</p>
 
@@ -802,11 +835,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given a string and a set of candidate strings, returns the set of candidates that are "close" to the given string, where distance is measured by the number of single-character changes needed to transform between the two. An empty vector may be returned if none of the options is close to <code>str</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00487">487</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00490">490</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8cpp_source.html#l00452">StringEditDistance()</a>.</p>
+<p class="reference">References <a class="el" href="util_8cpp_source.html#l00455">StringEditDistance()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="stmt_8cpp_source.html#l02779">GotoStmt::EmitCode()</a>, and <a class="el" href="expr_8cpp_source.html#l04875">MemberExpr::getCandidateNearMatches()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="stmt_8cpp_source.html#l02476">GotoStmt::EmitCode()</a>, and <a class="el" href="expr_8cpp_source.html#l04992">MemberExpr::getCandidateNearMatches()</a>.</p>
 
 </div>
 </div>
@@ -843,11 +876,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Prints a message about a potential performance issue in the user's code. These messages are purely informative and don't affect the completion of compilation. In addition to a program source code position to associate with the message, a printf()-style format string is passed along with any values needed for items in the format string. </p>
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00394">394</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00397">397</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00601">Globals::emitPerfWarnings</a>, <a class="el" href="module_8h_source.html#l00149">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00137">SourcePos::last_line</a>, <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="ispc_8h_source.html#l00134">SourcePos::name</a>, <a class="el" href="ispc_8h_source.html#l00604">Globals::quiet</a>, <a class="el" href="ispc_8h_source.html#l00667">Globals::turnOffWarnings</a>, and <a class="el" href="ispc_8h_source.html#l00593">Globals::warningsAsErrors</a>.</p>
+<p class="reference">References <a class="el" href="ispc_8h_source.html#l00569">Globals::emitPerfWarnings</a>, <a class="el" href="module_8h_source.html#l00144">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00129">SourcePos::last_line</a>, <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, <a class="el" href="ispc_8h_source.html#l00126">SourcePos::name</a>, <a class="el" href="ispc_8h_source.html#l00572">Globals::quiet</a>, <a class="el" href="ispc_8h_source.html#l00633">Globals::turnOffWarnings</a>, and <a class="el" href="ispc_8h_source.html#l00561">Globals::warningsAsErrors</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="stmt_8cpp_source.html#l00185">DeclStmt::EmitCode()</a>, <a class="el" href="decl_8cpp_source.html#l00147">DeclSpecs::GetBaseType()</a>, <a class="el" href="expr_8cpp_source.html#l01883">BinaryExpr::GetValue()</a>, <a class="el" href="opt_8cpp_source.html#l03219">lCoalescePerfInfo()</a>, <a class="el" href="expr_8cpp_source.html#l01465">lEmitBinaryArith()</a>, <a class="el" href="opt_8cpp_source.html#l04101">lReplacePseudoGS()</a>, <a class="el" href="expr_8cpp_source.html#l05882">lTypeConvAtomic()</a>, and <a class="el" href="opt_8cpp_source.html#l04989">ReplaceStdlibShiftPass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="decl_8cpp_source.html#l00147">DeclSpecs::GetBaseType()</a>, <a class="el" href="expr_8cpp_source.html#l01885">BinaryExpr::GetValue()</a>, <a class="el" href="opt_8cpp_source.html#l03018">lCoalescePerfInfo()</a>, <a class="el" href="expr_8cpp_source.html#l01468">lEmitBinaryArith()</a>, <a class="el" href="opt_8cpp_source.html#l03911">lReplacePseudoGS()</a>, <a class="el" href="expr_8cpp_source.html#l06018">lTypeConvAtomic()</a>, and <a class="el" href="opt_8cpp_source.html#l04800">ReplaceStdlibShiftPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -892,9 +925,9 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00210">210</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8cpp_source.html#l00139">lFindWordEnd()</a>.</p>
+<p class="reference">References <a class="el" href="util_8cpp_source.html#l00135">lFindWordEnd()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>, and <a class="el" href="main_8cpp_source.html#l00089">usage()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>, and <a class="el" href="main_8cpp_source.html#l00090">usage()</a>.</p>
 
 </div>
 </div>
@@ -940,9 +973,9 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of single-character edits to transform from str1 to str2, or maxDist+1 if it's not psosible to do so in fewer than maxDist steps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00452">452</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00455">455</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sym_8cpp_source.html#l00242">SymbolTable::closestTypeMatch()</a>, <a class="el" href="sym_8cpp_source.html#l00199">SymbolTable::ClosestVariableOrFunctionMatch()</a>, and <a class="el" href="util_8cpp_source.html#l00487">MatchStrings()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sym_8cpp_source.html#l00242">SymbolTable::closestTypeMatch()</a>, <a class="el" href="sym_8cpp_source.html#l00199">SymbolTable::ClosestVariableOrFunctionMatch()</a>, and <a class="el" href="util_8cpp_source.html#l00490">MatchStrings()</a>.</p>
 
 </div>
 </div>
@@ -962,11 +995,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns the width of the terminal where the compiler is running. Finding this out may fail in a variety of reasonable situations (piping compiler output to 'less', redirecting output to a file, running the compiler under a debuffer; in this case, just return a reasonable default. </p>
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00080">80</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00076">76</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00597">Globals::disableLineWrap</a>, and <a class="el" href="ispc_8cpp_source.html#l00101">g</a>.</p>
+<p class="reference">References <a class="el" href="ispc_8h_source.html#l00565">Globals::disableLineWrap</a>, and <a class="el" href="ispc_8cpp_source.html#l00072">g</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>, and <a class="el" href="main_8cpp_source.html#l00089">usage()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>, and <a class="el" href="main_8cpp_source.html#l00090">usage()</a>.</p>
 
 </div>
 </div>
@@ -997,11 +1030,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Verification routine, which ensures that DataLayout of the module being compiled is compatible with DataLayout of the library. At the moment we allow the library DataLayout to a subset of the module DataLayout (and extra floating point and vector types to be defined for module) or empty library DataLayout. </p>
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00565">565</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00568">568</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8cpp_source.html#l00548">lGetStringArray()</a>.</p>
+<p class="reference">References <a class="el" href="util_8cpp_source.html#l00551">lGetStringArray()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="builtins_8cpp_source.html#l00829">AddBitcodeToModule()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="builtins_8cpp_source.html#l00746">AddBitcodeToModule()</a>.</p>
 
 </div>
 </div>
@@ -1038,18 +1071,18 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Prints a warning about an issue found during compilation. Compilation can still continue after warnings; they are purely informative for the user. In addition to a program source code position to associate with the message, a printf()-style format string is passed along with any values needed for items in the format string. </p>
 
-<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00375">375</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8cpp_source.html#l00378">378</a> of file <a class="el" href="util_8cpp_source.html">util.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00590">Globals::disableWarnings</a>, <a class="el" href="module_8h_source.html#l00149">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00137">SourcePos::last_line</a>, <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="ispc_8h_source.html#l00134">SourcePos::name</a>, <a class="el" href="ispc_8h_source.html#l00604">Globals::quiet</a>, <a class="el" href="ispc_8h_source.html#l00667">Globals::turnOffWarnings</a>, and <a class="el" href="ispc_8h_source.html#l00593">Globals::warningsAsErrors</a>.</p>
+<p class="reference">References <a class="el" href="ispc_8h_source.html#l00558">Globals::disableWarnings</a>, <a class="el" href="module_8h_source.html#l00144">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00129">SourcePos::last_line</a>, <a class="el" href="util_8cpp_source.html#l00304">lPrint()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, <a class="el" href="ispc_8h_source.html#l00126">SourcePos::name</a>, <a class="el" href="ispc_8h_source.html#l00572">Globals::quiet</a>, <a class="el" href="ispc_8h_source.html#l00633">Globals::turnOffWarnings</a>, and <a class="el" href="ispc_8h_source.html#l00561">Globals::warningsAsErrors</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="builtins_8cpp_source.html#l00829">AddBitcodeToModule()</a>, <a class="el" href="module_8cpp_source.html#l00863">Module::AddFunctionDeclaration()</a>, <a class="el" href="sym_8cpp_source.html#l00085">SymbolTable::AddVariable()</a>, <a class="el" href="func_8cpp_source.html#l00226">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00542">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00957">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01121">ForStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l00102">Expr::GetBaseSymbol()</a>, <a class="el" href="decl_8cpp_source.html#l00147">DeclSpecs::GetBaseType()</a>, <a class="el" href="expr_8cpp_source.html#l06430">TypeCastExpr::GetValue()</a>, <a class="el" href="decl_8cpp_source.html#l00335">Declarator::InitFromType()</a>, <a class="el" href="expr_8cpp_source.html#l04070">lCheckIndicesVersusBounds()</a>, <a class="el" href="module_8cpp_source.html#l02923">lExtractOrCheckGlobals()</a>, <a class="el" href="opt_8cpp_source.html#l02594">lGSToLoadStore()</a>, <a class="el" href="ctx_8cpp_source.html#l02367">FunctionEmitContext::LoadInst()</a>, <a class="el" href="main_8cpp_source.html#l00418">main()</a>, <a class="el" href="module_8cpp_source.html#l00376">Module::Module()</a>, <a class="el" href="expr_8cpp_source.html#l02198">BinaryExpr::Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l07725">FunctionSymbolExpr::ResolveOverloads()</a>, <a class="el" href="ispc_8cpp_source.html#l00516">Target::Target()</a>, <a class="el" href="expr_8cpp_source.html#l06749">TypeCastExpr::TypeCheck()</a>, <a class="el" href="module_8cpp_source.html#l01923">Module::writeDevStub()</a>, <a class="el" href="module_8cpp_source.html#l02058">Module::writeHostStub()</a>, and <a class="el" href="module_8cpp_source.html#l01164">Module::writeOutput()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="builtins_8cpp_source.html#l00746">AddBitcodeToModule()</a>, <a class="el" href="module_8cpp_source.html#l00549">Module::AddFunctionDeclaration()</a>, <a class="el" href="module_8cpp_source.html#l00272">Module::AddGlobalVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00085">SymbolTable::AddVariable()</a>, <a class="el" href="main_8cpp_source.html#l00399">ArgErrors::Emit()</a>, <a class="el" href="func_8cpp_source.html#l00200">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00372">IfStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00758">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00922">ForStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l00090">Expr::GetBaseSymbol()</a>, <a class="el" href="decl_8cpp_source.html#l00147">DeclSpecs::GetBaseType()</a>, <a class="el" href="expr_8cpp_source.html#l06567">TypeCastExpr::GetValue()</a>, <a class="el" href="decl_8cpp_source.html#l00326">Declarator::InitFromType()</a>, <a class="el" href="expr_8cpp_source.html#l04186">lCheckIndicesVersusBounds()</a>, <a class="el" href="expr_8cpp_source.html#l00175">lDoTypeConv()</a>, <a class="el" href="module_8cpp_source.html#l02343">lExtractOrCheckGlobals()</a>, <a class="el" href="opt_8cpp_source.html#l02373">lGSToLoadStore()</a>, <a class="el" href="ctx_8cpp_source.html#l02172">FunctionEmitContext::LoadInst()</a>, <a class="el" href="main_8cpp_source.html#l00482">main()</a>, <a class="el" href="module_8cpp_source.html#l00131">Module::Module()</a>, <a class="el" href="expr_8cpp_source.html#l02200">BinaryExpr::Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l07939">FunctionSymbolExpr::ResolveOverloads()</a>, <a class="el" href="ispc_8cpp_source.html#l00443">Target::Target()</a>, <a class="el" href="expr_8cpp_source.html#l06895">TypeCastExpr::TypeCheck()</a>, <a class="el" href="module_8cpp_source.html#l01422">Module::writeDevStub()</a>, <a class="el" href="module_8cpp_source.html#l01557">Module::writeHostStub()</a>, and <a class="el" href="module_8cpp_source.html#l00815">Module::writeOutput()</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:25 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

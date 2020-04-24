@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: opt.cpp File Reference</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): opt.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -63,33 +63,40 @@ $(function() {
 <code>#include &lt;map&gt;</code><br />
 <code>#include &lt;set&gt;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
-<code>#include &lt;llvm/Pass.h&gt;</code><br />
+<code>#include &quot;llvm/InitializePasses.h&quot;</code><br />
 <code>#include &lt;llvm/IR/BasicBlock.h&gt;</code><br />
 <code>#include &lt;llvm/IR/Constants.h&gt;</code><br />
 <code>#include &lt;llvm/IR/Function.h&gt;</code><br />
 <code>#include &lt;llvm/IR/Instructions.h&gt;</code><br />
 <code>#include &lt;llvm/IR/Intrinsics.h&gt;</code><br />
 <code>#include &lt;llvm/IR/Module.h&gt;</code><br />
-<code>#include &quot;llvm/PassManager.h&quot;</code><br />
+<code>#include &lt;llvm/Pass.h&gt;</code><br />
+<code>#include &lt;llvm/Transforms/Instrumentation.h&gt;</code><br />
+<code>#include &quot;llvm/IR/LegacyPassManager.h&quot;</code><br />
 <code>#include &lt;llvm/PassRegistry.h&gt;</code><br />
-<code>#include &lt;llvm/Analysis/Verifier.h&gt;</code><br />
-<code>#include &lt;llvm/Assembly/PrintModulePass.h&gt;</code><br />
-<code>#include &lt;llvm/DebugInfo.h&gt;</code><br />
-<code>#include &lt;llvm/Support/PatternMatch.h&gt;</code><br />
+<code>#include &lt;llvm/IR/DebugInfo.h&gt;</code><br />
+<code>#include &lt;llvm/IR/IRPrintingPasses.h&gt;</code><br />
+<code>#include &lt;llvm/IR/PatternMatch.h&gt;</code><br />
+<code>#include &lt;llvm/IR/Verifier.h&gt;</code><br />
 <code>#include &lt;llvm/Analysis/ConstantFolding.h&gt;</code><br />
-<code>#include &lt;llvm/Target/TargetLibraryInfo.h&gt;</code><br />
+<code>#include &lt;llvm/Analysis/TargetLibraryInfo.h&gt;</code><br />
 <code>#include &lt;llvm/ADT/SmallSet.h&gt;</code><br />
 <code>#include &lt;llvm/ADT/Triple.h&gt;</code><br />
+<code>#include &lt;llvm/Target/TargetOptions.h&gt;</code><br />
 <code>#include &lt;llvm/Transforms/IPO.h&gt;</code><br />
 <code>#include &lt;llvm/Transforms/Scalar.h&gt;</code><br />
-<code>#include &lt;llvm/Target/TargetOptions.h&gt;</code><br />
 <code>#include &lt;llvm/Transforms/Utils/BasicBlockUtils.h&gt;</code><br />
 <code>#include &lt;llvm/Analysis/TargetTransformInfo.h&gt;</code><br />
 <code>#include &lt;llvm/IR/DataLayout.h&gt;</code><br />
-<code>#include &lt;llvm/Target/TargetMachine.h&gt;</code><br />
+<code>#include &quot;llvm/Analysis/TypeBasedAliasAnalysis.h&quot;</code><br />
+<code>#include &quot;llvm/Transforms/IPO/FunctionAttrs.h&quot;</code><br />
+<code>#include &quot;llvm/Transforms/Scalar/GVN.h&quot;</code><br />
+<code>#include &lt;llvm/Analysis/BasicAliasAnalysis.h&gt;</code><br />
 <code>#include &lt;llvm/Analysis/Passes.h&gt;</code><br />
+<code>#include &lt;llvm/BinaryFormat/Dwarf.h&gt;</code><br />
 <code>#include &lt;llvm/Support/raw_ostream.h&gt;</code><br />
-<code>#include &lt;llvm/Support/Dwarf.h&gt;</code><br />
+<code>#include &lt;llvm/Target/TargetMachine.h&gt;</code><br />
+<code>#include &lt;llvm/IR/IntrinsicInst.h&gt;</code><br />
 <code>#include &lt;llvm/Support/FileSystem.h&gt;</code><br />
 <code>#include &lt;llvm/Support/Regex.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -97,15 +104,14 @@ Include dependency graph for opt.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="opt_8cpp__incl.png" border="0" usemap="#opt_8cpp" alt=""/></div>
 <map name="opt_8cpp" id="opt_8cpp">
-<area shape="rect" id="node2" href="opt_8h.html" title="Declarations related to optimization passes. " alt="" coords="879,169,930,196"/>
-<area shape="rect" id="node10" href="ctx_8h.html" title="Declaration of the FunctionEmitContext class " alt="" coords="331,87,380,114"/>
-<area shape="rect" id="node15" href="llvmutil_8h.html" title="Header file with declarations for various LLVM utility stuff. " alt="" coords="1183,87,1255,114"/>
-<area shape="rect" id="node20" href="module_8h.html" title="Declaration of the Module class, which is the ispc&#45;side representation of the results of compiling a ..." alt="" coords="1034,87,1109,114"/>
-<area shape="rect" id="node22" href="sym_8h.html" title="header file with declarations for symbol and symbol table classes. " alt="" coords="955,87,1009,114"/>
-<area shape="rect" id="node24" href="util_8h.html" title="util.h" alt="" coords="755,169,804,196"/>
-<area shape="rect" id="node3" href="ispc_8h.html" title="Main ispc.header file. Defines Target, Globals and Opt classes. " alt="" coords="877,244,932,271"/>
-<area shape="rect" id="node21" href="ast_8h.html" title="ast.h" alt="" coords="1136,169,1185,196"/>
-<area shape="rect" id="node23" href="decl_8h.html" title="Declarations related to type declarations; the parser basically creates instances of these classes..." alt="" coords="954,169,1010,196"/>
+<area shape="rect" id="node2" href="opt_8h.html" title="Declarations related to optimization passes. " alt="" coords="384,87,435,114"/>
+<area shape="rect" id="node8" href="ctx_8h.html" title="Declaration of the FunctionEmitContext class " alt="" coords="610,87,660,114"/>
+<area shape="rect" id="node13" href="llvmutil_8h.html" title="Header file with declarations for various LLVM utility stuff. " alt="" coords="32,87,104,114"/>
+<area shape="rect" id="node15" href="module_8h.html" title="Declaration of the Module class, which is the ispc&#45;side representation of the results of compiling a ..." alt="" coords="459,87,534,114"/>
+<area shape="rect" id="node16" href="sym_8h.html" title="header file with declarations for symbol and symbol table classes. " alt="" coords="232,87,286,114"/>
+<area shape="rect" id="node17" href="util_8h.html" title="util.h" alt="" coords="310,87,360,114"/>
+<area shape="rect" id="node3" href="ispc_8h.html" title="Main ispc.header file. Defines Target, Globals and Opt classes. " alt="" coords="281,169,336,196"/>
+<area shape="rect" id="node4" href="ispc__version_8h.html" title="defines the ISPC version " alt="" coords="45,244,148,271"/>
 </map>
 </div>
 </div>
@@ -140,6 +146,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMakeInternalFuncsStaticPass.html">MakeInternalFuncsStaticPass</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPeepholePass.html">PeepholePass</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCastClassTypes__match.html">CastClassTypes_match&lt; Op_t, Opcode &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structUDiv2__match.html">UDiv2_match&lt; Op_t &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDiv2__match.html">SDiv2_match&lt; Op_t &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReplaceStdlibShiftPass.html">ReplaceStdlibShiftPass</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -296,6 +308,50 @@ Functions</h2></td></tr>
 <tr class="separator:a9cccdfb4848eb19c4edd227272f38c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4bebf9b2d2d2724906e3049575c247b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#ae4bebf9b2d2d2724906e3049575c247b">sanitize</a> (std::string in)</td></tr>
 <tr class="separator:ae4bebf9b2d2d2724906e3049575c247b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a434e72c52a8cc53620e0b58bca471801"><td class="memTemplParams" colspan="2">template&lt;typename OpTy &gt; </td></tr>
+<tr class="memitem:a434e72c52a8cc53620e0b58bca471801"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structCastClassTypes__match.html">CastClassTypes_match</a>&lt; OpTy, llvm::Instruction::SExt &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#a434e72c52a8cc53620e0b58bca471801">m_SExt8To16</a> (const OpTy &amp;Op)</td></tr>
+<tr class="separator:a434e72c52a8cc53620e0b58bca471801"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c1bd7d0541d1b97511327d61a601882"><td class="memTemplParams" colspan="2">template&lt;typename OpTy &gt; </td></tr>
+<tr class="memitem:a4c1bd7d0541d1b97511327d61a601882"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structCastClassTypes__match.html">CastClassTypes_match</a>&lt; OpTy, llvm::Instruction::ZExt &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#a4c1bd7d0541d1b97511327d61a601882">m_ZExt8To16</a> (const OpTy &amp;Op)</td></tr>
+<tr class="separator:a4c1bd7d0541d1b97511327d61a601882"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8a7233fb8f6a3bec2b7fe6875c8de92"><td class="memTemplParams" colspan="2">template&lt;typename OpTy &gt; </td></tr>
+<tr class="memitem:ab8a7233fb8f6a3bec2b7fe6875c8de92"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structCastClassTypes__match.html">CastClassTypes_match</a>&lt; OpTy, llvm::Instruction::Trunc &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#ab8a7233fb8f6a3bec2b7fe6875c8de92">m_Trunc16To8</a> (const OpTy &amp;Op)</td></tr>
+<tr class="separator:ab8a7233fb8f6a3bec2b7fe6875c8de92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11f77244318bb78e3d1ed6e073dd2547"><td class="memTemplParams" colspan="2">template&lt;typename OpTy &gt; </td></tr>
+<tr class="memitem:a11f77244318bb78e3d1ed6e073dd2547"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structCastClassTypes__match.html">CastClassTypes_match</a>&lt; OpTy, llvm::Instruction::SExt &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#a11f77244318bb78e3d1ed6e073dd2547">m_SExt16To32</a> (const OpTy &amp;Op)</td></tr>
+<tr class="separator:a11f77244318bb78e3d1ed6e073dd2547"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd4843568d0954a661b71a81a9772dae"><td class="memTemplParams" colspan="2">template&lt;typename OpTy &gt; </td></tr>
+<tr class="memitem:afd4843568d0954a661b71a81a9772dae"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structCastClassTypes__match.html">CastClassTypes_match</a>&lt; OpTy, llvm::Instruction::ZExt &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#afd4843568d0954a661b71a81a9772dae">m_ZExt16To32</a> (const OpTy &amp;Op)</td></tr>
+<tr class="separator:afd4843568d0954a661b71a81a9772dae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89047c6f11e29503bd58a03105fe3dd9"><td class="memTemplParams" colspan="2">template&lt;typename OpTy &gt; </td></tr>
+<tr class="memitem:a89047c6f11e29503bd58a03105fe3dd9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structCastClassTypes__match.html">CastClassTypes_match</a>&lt; OpTy, llvm::Instruction::Trunc &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#a89047c6f11e29503bd58a03105fe3dd9">m_Trunc32To16</a> (const OpTy &amp;Op)</td></tr>
+<tr class="separator:a89047c6f11e29503bd58a03105fe3dd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef7f4bce8e585d3e9d9f857964215df4"><td class="memTemplParams" colspan="2">template&lt;typename V &gt; </td></tr>
+<tr class="memitem:aef7f4bce8e585d3e9d9f857964215df4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structUDiv2__match.html">UDiv2_match</a>&lt; V &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#aef7f4bce8e585d3e9d9f857964215df4">m_UDiv2</a> (const V &amp;v)</td></tr>
+<tr class="separator:aef7f4bce8e585d3e9d9f857964215df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86d6dbb36da5107dd3f42862194dcecb"><td class="memTemplParams" colspan="2">template&lt;typename V &gt; </td></tr>
+<tr class="memitem:a86d6dbb36da5107dd3f42862194dcecb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structSDiv2__match.html">SDiv2_match</a>&lt; V &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#a86d6dbb36da5107dd3f42862194dcecb">m_SDiv2</a> (const V &amp;v)</td></tr>
+<tr class="separator:a86d6dbb36da5107dd3f42862194dcecb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dbeaa386727dcbdd43b867244284e08"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#a7dbeaa386727dcbdd43b867244284e08">lHasIntrinsicInDefinition</a> (llvm::Function *func)</td></tr>
+<tr class="separator:a7dbeaa386727dcbdd43b867244284e08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62a4f95edc96d16e6e6b4ea619c5d8b7"><td class="memItemLeft" align="right" valign="top">static llvm::Instruction *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#a62a4f95edc96d16e6e6b4ea619c5d8b7">lGetBinaryIntrinsic</a> (const char *name, llvm::Value *opa, llvm::Value *opb)</td></tr>
+<tr class="separator:a62a4f95edc96d16e6e6b4ea619c5d8b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c1ad9641ce19dd8d9e5d7781fdbea5c"><td class="memItemLeft" align="right" valign="top">static llvm::Instruction *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#a1c1ad9641ce19dd8d9e5d7781fdbea5c">lMatchAvgUpUInt8</a> (llvm::Value *inst)</td></tr>
+<tr class="separator:a1c1ad9641ce19dd8d9e5d7781fdbea5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1014db8083ba6d5c0796a553fc9ac647"><td class="memItemLeft" align="right" valign="top">static llvm::Instruction *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#a1014db8083ba6d5c0796a553fc9ac647">lMatchAvgDownUInt8</a> (llvm::Value *inst)</td></tr>
+<tr class="separator:a1014db8083ba6d5c0796a553fc9ac647"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace16b6330ce023a742250e35289affbd"><td class="memItemLeft" align="right" valign="top">static llvm::Instruction *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#ace16b6330ce023a742250e35289affbd">lMatchAvgUpUInt16</a> (llvm::Value *inst)</td></tr>
+<tr class="separator:ace16b6330ce023a742250e35289affbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a745f90d49426ffa45952fabb568ea056"><td class="memItemLeft" align="right" valign="top">static llvm::Instruction *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#a745f90d49426ffa45952fabb568ea056">lMatchAvgDownUInt16</a> (llvm::Value *inst)</td></tr>
+<tr class="separator:a745f90d49426ffa45952fabb568ea056"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8049690de94291878a3310a953e6f8ea"><td class="memItemLeft" align="right" valign="top">static llvm::Instruction *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#a8049690de94291878a3310a953e6f8ea">lMatchAvgUpInt8</a> (llvm::Value *inst)</td></tr>
+<tr class="separator:a8049690de94291878a3310a953e6f8ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad66b9f4f7728666cdd176136aef1b91b"><td class="memItemLeft" align="right" valign="top">static llvm::Instruction *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#ad66b9f4f7728666cdd176136aef1b91b">lMatchAvgDownInt8</a> (llvm::Value *inst)</td></tr>
+<tr class="separator:ad66b9f4f7728666cdd176136aef1b91b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae377506a97cca85af3d091f5c8e19fbb"><td class="memItemLeft" align="right" valign="top">static llvm::Instruction *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#ae377506a97cca85af3d091f5c8e19fbb">lMatchAvgUpInt16</a> (llvm::Value *inst)</td></tr>
+<tr class="separator:ae377506a97cca85af3d091f5c8e19fbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08b6a109c0fae02d97730efa5b6964df"><td class="memItemLeft" align="right" valign="top">static llvm::Instruction *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#a08b6a109c0fae02d97730efa5b6964df">lMatchAvgDownInt16</a> (llvm::Value *inst)</td></tr>
+<tr class="separator:a08b6a109c0fae02d97730efa5b6964df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5c5520872f54d9b3b6843288b3a51d7"><td class="memItemLeft" align="right" valign="top">static int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="opt_8cpp.html#ae5c5520872f54d9b3b6843288b3a51d7">lGetIntValue</a> (llvm::Value *offset)</td></tr>
 <tr class="separator:ae5c5520872f54d9b3b6843288b3a51d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -319,12 +375,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a> &amp;&amp;                                                                                               \</div><div class="line">        (getenv(<span class="stringliteral">&quot;FUNC&quot;</span>) == NULL || (getenv(<span class="stringliteral">&quot;FUNC&quot;</span>) != NULL &amp;&amp; !strncmp(bb.getParent()-&gt;getName().str().c_str(),        \</div><div class="line">                                                                       getenv(<span class="stringliteral">&quot;FUNC&quot;</span>), strlen(getenv(<span class="stringliteral">&quot;FUNC&quot;</span>)))))) {    \</div><div class="line">        fprintf(stderr, <span class="stringliteral">&quot;End of &quot;</span> NAME <span class="stringliteral">&quot; %s\n&quot;</span>, modifiedAny ? <span class="stringliteral">&quot;** CHANGES **&quot;</span> : <span class="stringliteral">&quot;&quot;</span>);                                   \</div><div class="line">        fprintf(stderr, <span class="stringliteral">&quot;---------------\n&quot;</span>);                                                                          \</div><div class="line">        bb.dump();                                                                                                     \</div><div class="line">        fprintf(stderr, <span class="stringliteral">&quot;---------------\n\n&quot;</span>);                                                                        \</div><div class="line">    } <span class="keywordflow">else</span> <span class="comment">/* eat semicolon */</span></div><div class="ttc" id="ispc_8h_html_a246cb09c0c20eb8144838277e8733c86"><div class="ttname"><a href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a></div><div class="ttdeci">Globals * g</div><div class="ttdef"><b>Definition:</b> <a href="ispc_8cpp_source.html#l00101">ispc.cpp:101</a></div></div>
-<div class="ttc" id="structGlobals_html_a5fa83e18d8ae90aa4dd2f2c5cd88386d"><div class="ttname"><a href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">Globals::debugPrint</a></div><div class="ttdeci">bool debugPrint</div><div class="ttdef"><b>Definition:</b> <a href="ispc_8h_source.html#l00568">ispc.h:568</a></div></div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">if</span> (<a class="code" href="ispc_8cpp.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a> &amp;&amp;                                                                                               \</div><div class="line">        (getenv(<span class="stringliteral">&quot;FUNC&quot;</span>) == NULL || (getenv(<span class="stringliteral">&quot;FUNC&quot;</span>) != NULL &amp;&amp; !strncmp(bb.getParent()-&gt;getName().str().c_str(),        \</div><div class="line">                                                                       getenv(<span class="stringliteral">&quot;FUNC&quot;</span>), strlen(getenv(<span class="stringliteral">&quot;FUNC&quot;</span>)))))) {    \</div><div class="line">        fprintf(stderr, <span class="stringliteral">&quot;End of &quot;</span> NAME <span class="stringliteral">&quot; %s\n&quot;</span>, modifiedAny ? <span class="stringliteral">&quot;** CHANGES **&quot;</span> : <span class="stringliteral">&quot;&quot;</span>);                                   \</div><div class="line">        fprintf(stderr, <span class="stringliteral">&quot;---------------\n&quot;</span>);                                                                          \</div><div class="line">        bb.dump();                                                                                                     \</div><div class="line">        fprintf(stderr, <span class="stringliteral">&quot;---------------\n\n&quot;</span>);                                                                        \</div><div class="line">    } <span class="keywordflow">else</span> <span class="comment">/* eat semicolon */</span></div><div class="ttc" id="structGlobals_html_a5fa83e18d8ae90aa4dd2f2c5cd88386d"><div class="ttname"><a href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">Globals::debugPrint</a></div><div class="ttdeci">bool debugPrint</div><div class="ttdef"><b>Definition:</b> <a href="ispc_8h_source.html#l00536">ispc.h:536</a></div></div>
+<div class="ttc" id="ispc_8cpp_html_a246cb09c0c20eb8144838277e8733c86"><div class="ttname"><a href="ispc_8cpp.html#a246cb09c0c20eb8144838277e8733c86">g</a></div><div class="ttdeci">Globals * g</div><div class="ttdef"><b>Definition:</b> <a href="ispc_8cpp_source.html#l00072">ispc.cpp:72</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00187">187</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00151">151</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00991">IntrinsicsOpt::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l01312">InstructionSimplifyPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l02963">ImproveMemoryOpsPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l03850">GatherCoalescePass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l04256">ReplacePseudoMemoryOpsPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l04316">IsCompileTimeConstantPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l04915">PeepholePass::runOnBasicBlock()</a>, and <a class="el" href="opt_8cpp_source.html#l04989">ReplaceStdlibShiftPass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00743">IntrinsicsOpt::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l01080">InstructionSimplifyPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l02756">ImproveMemoryOpsPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l03654">GatherCoalescePass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l04066">ReplacePseudoMemoryOpsPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l04132">IsCompileTimeConstantPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l04722">PeepholePass::runOnBasicBlock()</a>, and <a class="el" href="opt_8cpp_source.html#l04800">ReplaceStdlibShiftPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -343,12 +399,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">if</span> (<a class="code" href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a> &amp;&amp;                                                                                               \</div><div class="line">        (getenv(<span class="stringliteral">&quot;FUNC&quot;</span>) == NULL || (getenv(<span class="stringliteral">&quot;FUNC&quot;</span>) != NULL &amp;&amp; !strncmp(bb.getParent()-&gt;getName().str().c_str(),        \</div><div class="line">                                                                       getenv(<span class="stringliteral">&quot;FUNC&quot;</span>), strlen(getenv(<span class="stringliteral">&quot;FUNC&quot;</span>)))))) {    \</div><div class="line">        fprintf(stderr, <span class="stringliteral">&quot;Start of &quot;</span> NAME <span class="stringliteral">&quot;\n&quot;</span>);                                                                        \</div><div class="line">        fprintf(stderr, <span class="stringliteral">&quot;---------------\n&quot;</span>);                                                                          \</div><div class="line">        bb.dump();                                                                                                     \</div><div class="line">        fprintf(stderr, <span class="stringliteral">&quot;---------------\n\n&quot;</span>);                                                                        \</div><div class="line">    } <span class="keywordflow">else</span> <span class="comment">/* eat semicolon */</span></div><div class="ttc" id="ispc_8h_html_a246cb09c0c20eb8144838277e8733c86"><div class="ttname"><a href="ispc_8h.html#a246cb09c0c20eb8144838277e8733c86">g</a></div><div class="ttdeci">Globals * g</div><div class="ttdef"><b>Definition:</b> <a href="ispc_8cpp_source.html#l00101">ispc.cpp:101</a></div></div>
-<div class="ttc" id="structGlobals_html_a5fa83e18d8ae90aa4dd2f2c5cd88386d"><div class="ttname"><a href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">Globals::debugPrint</a></div><div class="ttdeci">bool debugPrint</div><div class="ttdef"><b>Definition:</b> <a href="ispc_8h_source.html#l00568">ispc.h:568</a></div></div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">if</span> (<a class="code" href="ispc_8cpp.html#a246cb09c0c20eb8144838277e8733c86">g</a>-&gt;<a class="code" href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">debugPrint</a> &amp;&amp;                                                                                               \</div><div class="line">        (getenv(<span class="stringliteral">&quot;FUNC&quot;</span>) == NULL || (getenv(<span class="stringliteral">&quot;FUNC&quot;</span>) != NULL &amp;&amp; !strncmp(bb.getParent()-&gt;getName().str().c_str(),        \</div><div class="line">                                                                       getenv(<span class="stringliteral">&quot;FUNC&quot;</span>), strlen(getenv(<span class="stringliteral">&quot;FUNC&quot;</span>)))))) {    \</div><div class="line">        fprintf(stderr, <span class="stringliteral">&quot;Start of &quot;</span> NAME <span class="stringliteral">&quot;\n&quot;</span>);                                                                        \</div><div class="line">        fprintf(stderr, <span class="stringliteral">&quot;---------------\n&quot;</span>);                                                                          \</div><div class="line">        bb.dump();                                                                                                     \</div><div class="line">        fprintf(stderr, <span class="stringliteral">&quot;---------------\n\n&quot;</span>);                                                                        \</div><div class="line">    } <span class="keywordflow">else</span> <span class="comment">/* eat semicolon */</span></div><div class="ttc" id="structGlobals_html_a5fa83e18d8ae90aa4dd2f2c5cd88386d"><div class="ttname"><a href="structGlobals.html#a5fa83e18d8ae90aa4dd2f2c5cd88386d">Globals::debugPrint</a></div><div class="ttdeci">bool debugPrint</div><div class="ttdef"><b>Definition:</b> <a href="ispc_8h_source.html#l00536">ispc.h:536</a></div></div>
+<div class="ttc" id="ispc_8cpp_html_a246cb09c0c20eb8144838277e8733c86"><div class="ttname"><a href="ispc_8cpp.html#a246cb09c0c20eb8144838277e8733c86">g</a></div><div class="ttdeci">Globals * g</div><div class="ttdef"><b>Definition:</b> <a href="ispc_8cpp_source.html#l00072">ispc.cpp:72</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00177">177</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00141">141</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00991">IntrinsicsOpt::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l01312">InstructionSimplifyPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l02963">ImproveMemoryOpsPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l03850">GatherCoalescePass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l04256">ReplacePseudoMemoryOpsPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l04316">IsCompileTimeConstantPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l04915">PeepholePass::runOnBasicBlock()</a>, and <a class="el" href="opt_8cpp_source.html#l04989">ReplaceStdlibShiftPass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00743">IntrinsicsOpt::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l01080">InstructionSimplifyPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l02756">ImproveMemoryOpsPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l03654">GatherCoalescePass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l04066">ReplacePseudoMemoryOpsPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l04132">IsCompileTimeConstantPass::runOnBasicBlock()</a>, <a class="el" href="opt_8cpp_source.html#l04722">PeepholePass::runOnBasicBlock()</a>, and <a class="el" href="opt_8cpp_source.html#l04800">ReplaceStdlibShiftPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -364,9 +420,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00143">143</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00110">110</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03382">lApplyLoad1()</a>, <a class="el" href="opt_8cpp_source.html#l03403">lApplyLoad2()</a>, <a class="el" href="opt_8cpp_source.html#l03462">lApplyLoad4()</a>, <a class="el" href="opt_8cpp_source.html#l03501">lAssemble4Vector()</a>, <a class="el" href="opt_8cpp_source.html#l03299">lEmitLoads()</a>, <a class="el" href="opt_8cpp_source.html#l03169">lSelectLoads()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">ConstExpr::Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03185">lApplyLoad1()</a>, <a class="el" href="opt_8cpp_source.html#l03206">lApplyLoad2()</a>, <a class="el" href="opt_8cpp_source.html#l03265">lApplyLoad4()</a>, <a class="el" href="opt_8cpp_source.html#l03304">lAssemble4Vector()</a>, <a class="el" href="opt_8cpp_source.html#l03102">lEmitLoads()</a>, <a class="el" href="opt_8cpp_source.html#l02968">lSelectLoads()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">ConstExpr::Print()</a>.</p>
 
 </div>
 </div>
@@ -382,9 +438,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00146">146</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00113">113</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05823">ConstExpr::Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05959">ConstExpr::Print()</a>.</p>
 
 </div>
 </div>
@@ -407,7 +463,7 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a49b78092c0a6c04e2786364fe785528fa6ce26a62afab55d7606ad4e92428b30c"></a>UNKNOWN&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00424">424</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00371">371</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -436,9 +492,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04413">4413</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04234">4234</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00474">DebugPassManager::add()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00414">DebugPassManager::add()</a>.</p>
 
 </div>
 </div>
@@ -476,9 +532,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04473">4473</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04290">4290</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00474">DebugPassManager::add()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00414">DebugPassManager::add()</a>.</p>
 
 </div>
 </div>
@@ -505,11 +561,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l05211">5211</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04956">4956</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00645">Globals::ctx</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="opt_8cpp_source.html#l04668">PeepholePass::ID</a>, <a class="el" href="llvmutil_8h_source.html#l00078">LLVMTypes::Int64Type</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="module_8h_source.html#l00156">Module::module</a>, and <a class="el" href="opt_8cpp_source.html#l04915">PeepholePass::runOnBasicBlock()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>.</p>
 
 </div>
 </div>
@@ -536,9 +590,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03992">3992</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03805">3805</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>.</p>
 
 </div>
 </div>
@@ -565,9 +619,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03004">3004</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02806">2806</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>.</p>
 
 </div>
 </div>
@@ -594,9 +648,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01336">1336</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01113">1113</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>.</p>
 
 </div>
 </div>
@@ -623,9 +677,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01191">1191</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00961">961</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>.</p>
 
 </div>
 </div>
@@ -653,9 +707,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04378">4378</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04203">4203</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>.</p>
 
 </div>
 </div>
@@ -682,9 +736,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04652">4652</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04465">4465</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>.</p>
 
 </div>
 </div>
@@ -711,11 +765,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04954">4954</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04766">4766</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="opt_8cpp_source.html#l04673">PeepholePass::PeepholePass()</a>.</p>
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l04483">PeepholePass::PeepholePass()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>.</p>
 
 </div>
 </div>
@@ -742,9 +796,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04281">4281</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04100">4100</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>.</p>
 
 </div>
 </div>
@@ -771,9 +825,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l05041">5041</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04861">4861</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>.</p>
 
 </div>
 </div>
@@ -830,11 +884,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given a 1-wide load of a 32-bit value, merge its value into the result vector for any and all elements for which it applies. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03382">3382</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03185">3185</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="opt_8cpp_source.html#l03059">CoalescedLoadOp::count</a>, <a class="el" href="util_8cpp_source.html#l00363">Debug()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMInt32()</a>, <a class="el" href="opt_8cpp_source.html#l03062">CoalescedLoadOp::load</a>, <a class="el" href="opt_8cpp_source.html#l00143">PRId64</a>, and <a class="el" href="opt_8cpp_source.html#l03056">CoalescedLoadOp::start</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="opt_8cpp_source.html#l02858">CoalescedLoadOp::count</a>, <a class="el" href="util_8cpp_source.html#l00366">Debug()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00233">LLVMInt32()</a>, <a class="el" href="opt_8cpp_source.html#l02861">CoalescedLoadOp::load</a>, <a class="el" href="opt_8cpp_source.html#l00110">PRId64</a>, and <a class="el" href="opt_8cpp_source.html#l02855">CoalescedLoadOp::start</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03501">lAssemble4Vector()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03304">lAssemble4Vector()</a>.</p>
 
 </div>
 </div>
@@ -891,11 +945,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Similarly, incorporate the values from a 2-wide load into any vector elements that they apply to. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03403">3403</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03206">3206</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="opt_8cpp_source.html#l03059">CoalescedLoadOp::count</a>, <a class="el" href="util_8cpp_source.html#l00363">Debug()</a>, <a class="el" href="opt_8cpp_source.html#l03066">CoalescedLoadOp::element0</a>, <a class="el" href="opt_8cpp_source.html#l03066">CoalescedLoadOp::element1</a>, <a class="el" href="llvmutil_8h_source.html#l00077">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00078">LLVMTypes::Int64Type</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMInt32()</a>, <a class="el" href="opt_8cpp_source.html#l03062">CoalescedLoadOp::load</a>, <a class="el" href="opt_8cpp_source.html#l00143">PRId64</a>, and <a class="el" href="opt_8cpp_source.html#l03056">CoalescedLoadOp::start</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="opt_8cpp_source.html#l02858">CoalescedLoadOp::count</a>, <a class="el" href="util_8cpp_source.html#l00366">Debug()</a>, <a class="el" href="opt_8cpp_source.html#l02865">CoalescedLoadOp::element0</a>, <a class="el" href="opt_8cpp_source.html#l02865">CoalescedLoadOp::element1</a>, <a class="el" href="llvmutil_8h_source.html#l00067">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00068">LLVMTypes::Int64Type</a>, <a class="el" href="llvmutil_8cpp_source.html#l00233">LLVMInt32()</a>, <a class="el" href="opt_8cpp_source.html#l02861">CoalescedLoadOp::load</a>, <a class="el" href="opt_8cpp_source.html#l00110">PRId64</a>, and <a class="el" href="opt_8cpp_source.html#l02855">CoalescedLoadOp::start</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03501">lAssemble4Vector()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03304">lAssemble4Vector()</a>.</p>
 
 </div>
 </div>
@@ -952,11 +1006,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>And handle a 4-wide load </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03462">3462</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03265">3265</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="opt_8cpp_source.html#l03059">CoalescedLoadOp::count</a>, <a class="el" href="util_8cpp_source.html#l00363">Debug()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01502">LLVMShuffleVectors()</a>, <a class="el" href="opt_8cpp_source.html#l03062">CoalescedLoadOp::load</a>, <a class="el" href="opt_8cpp_source.html#l00143">PRId64</a>, and <a class="el" href="opt_8cpp_source.html#l03056">CoalescedLoadOp::start</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="opt_8cpp_source.html#l02858">CoalescedLoadOp::count</a>, <a class="el" href="util_8cpp_source.html#l00366">Debug()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01533">LLVMShuffleVectors()</a>, <a class="el" href="opt_8cpp_source.html#l02861">CoalescedLoadOp::load</a>, <a class="el" href="opt_8cpp_source.html#l00110">PRId64</a>, and <a class="el" href="opt_8cpp_source.html#l02855">CoalescedLoadOp::start</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03501">lAssemble4Vector()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03304">lAssemble4Vector()</a>.</p>
 
 </div>
 </div>
@@ -1001,11 +1055,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>We're need to fill in the values for a 4-wide result vector. This function looks at all of the generated loads and extracts the appropriate elements from the appropriate loads to assemble the result. Here the offsets[] parameter gives the 4 offsets from the base pointer for the four elements of the result. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03501">3501</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03304">3304</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="opt_8cpp_source.html#l03059">CoalescedLoadOp::count</a>, <a class="el" href="util_8cpp_source.html#l00363">Debug()</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="llvmutil_8h_source.html#l00077">LLVMTypes::Int32Type</a>, <a class="el" href="opt_8cpp_source.html#l03382">lApplyLoad1()</a>, <a class="el" href="opt_8cpp_source.html#l03403">lApplyLoad2()</a>, <a class="el" href="opt_8cpp_source.html#l03462">lApplyLoad4()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01502">LLVMShuffleVectors()</a>, <a class="el" href="opt_8cpp_source.html#l03062">CoalescedLoadOp::load</a>, <a class="el" href="opt_8cpp_source.html#l00143">PRId64</a>, and <a class="el" href="opt_8cpp_source.html#l03056">CoalescedLoadOp::start</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="opt_8cpp_source.html#l02858">CoalescedLoadOp::count</a>, <a class="el" href="util_8cpp_source.html#l00366">Debug()</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="llvmutil_8h_source.html#l00067">LLVMTypes::Int32Type</a>, <a class="el" href="opt_8cpp_source.html#l03185">lApplyLoad1()</a>, <a class="el" href="opt_8cpp_source.html#l03206">lApplyLoad2()</a>, <a class="el" href="opt_8cpp_source.html#l03265">lApplyLoad4()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01533">LLVMShuffleVectors()</a>, <a class="el" href="opt_8cpp_source.html#l02861">CoalescedLoadOp::load</a>, <a class="el" href="opt_8cpp_source.html#l00110">PRId64</a>, and <a class="el" href="opt_8cpp_source.html#l02855">CoalescedLoadOp::start</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03658">lAssembleResultVectors()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03461">lAssembleResultVectors()</a>.</p>
 
 </div>
 </div>
@@ -1056,11 +1110,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given the set of loads that we've done and the set of result values to be computed, this function computes the final llvm::Value *s for each result vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03658">3658</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03461">3461</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00279">Target::getVectorWidth()</a>, <a class="el" href="opt_8cpp_source.html#l03501">lAssemble4Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01483">LLVMConcatVectors()</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00245">Target::getVectorWidth()</a>, <a class="el" href="opt_8cpp_source.html#l03304">lAssemble4Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01514">LLVMConcatVectors()</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03752">lCoalesceGathers()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03556">lCoalesceGathers()</a>.</p>
 
 </div>
 </div>
@@ -1116,9 +1170,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00297">297</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00247">247</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02084">lGSToGSBaseOffsets()</a>, <a class="el" href="opt_8cpp_source.html#l02594">lGSToLoadStore()</a>, <a class="el" href="opt_8cpp_source.html#l04050">lReplacePseudoMaskedStore()</a>, and <a class="el" href="opt_8cpp_source.html#l04673">PeepholePass::PeepholePass()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04603">lGetBinaryIntrinsic()</a>, <a class="el" href="opt_8cpp_source.html#l01863">lGSToGSBaseOffsets()</a>, <a class="el" href="opt_8cpp_source.html#l02373">lGSToLoadStore()</a>, and <a class="el" href="opt_8cpp_source.html#l03860">lReplacePseudoMaskedStore()</a>.</p>
 
 </div>
 </div>
@@ -1180,7 +1234,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00304">304</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00254">254</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -1248,7 +1302,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00311">311</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00261">261</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -1322,7 +1376,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00318">318</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00268">268</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -1402,7 +1456,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00326">326</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00276">276</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -1431,9 +1485,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Check to make sure that this value is actually a pointer in the end. We need to make sure that given an expression like vec(offset) + ptr2int(ptr), <a class="el" href="opt_8cpp.html#a6e873301ca221b89183f789e2b929c8e">lGetBasePointer()</a> doesn't return vec(offset) for the base pointer such that we then treat ptr2int(ptr) as an offset. This ends up being important so that we don't generate LLVM GEP instructions like "gep inttoptr 8, i64 %ptr", which in turn can lead to incorrect code since LLVM's pointer aliasing analysis assumes that operands after the first one to a GEP aren't pointers. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01375">1375</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01151">1151</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01413">lGetBasePointer()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01188">lGetBasePointer()</a>.</p>
 
 </div>
 </div>
@@ -1464,11 +1518,11 @@ Functions</h2></td></tr>
 <p>(ptr + {1,2,4,8} * varyingOffset) + constOffset, a.k.a. basePtr + constOffset</p>
 <p>where varyingOffset actually has the same value across all of the SIMD lanes and where the part in parenthesis has the same value for all of the gathers in the group. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03752">3752</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03556">3556</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="llvmutil_8h_source.html#l00098">LLVMTypes::DoubleVectorType</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="llvmutil_8h_source.html#l00097">LLVMTypes::FloatVectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00095">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00096">LLVMTypes::Int64VectorType</a>, <a class="el" href="opt_8cpp_source.html#l03658">lAssembleResultVectors()</a>, <a class="el" href="opt_8cpp_source.html#l03219">lCoalescePerfInfo()</a>, <a class="el" href="opt_8cpp_source.html#l03701">lComputeBasePtr()</a>, <a class="el" href="opt_8cpp_source.html#l03299">lEmitLoads()</a>, <a class="el" href="opt_8cpp_source.html#l03725">lExtractConstOffsets()</a>, <a class="el" href="opt_8cpp_source.html#l03169">lSelectLoads()</a>, and <a class="el" href="opt_8cpp_source.html#l03357">lSplit8WideLoads()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="llvmutil_8h_source.html#l00089">LLVMTypes::DoubleVectorType</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="llvmutil_8h_source.html#l00088">LLVMTypes::FloatVectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00086">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00087">LLVMTypes::Int64VectorType</a>, <a class="el" href="opt_8cpp_source.html#l03461">lAssembleResultVectors()</a>, <a class="el" href="opt_8cpp_source.html#l03018">lCoalescePerfInfo()</a>, <a class="el" href="opt_8cpp_source.html#l03504">lComputeBasePtr()</a>, <a class="el" href="opt_8cpp_source.html#l03102">lEmitLoads()</a>, <a class="el" href="opt_8cpp_source.html#l03529">lExtractConstOffsets()</a>, <a class="el" href="opt_8cpp_source.html#l02968">lSelectLoads()</a>, and <a class="el" href="opt_8cpp_source.html#l03160">lSplit8WideLoads()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03850">GatherCoalescePass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03654">GatherCoalescePass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -1507,11 +1561,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Print a performance message with the details of the result of coalescing over a group of gathers. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03219">3219</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03018">3018</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00135">SourcePos::first_line</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00432">Opt::level</a>, <a class="el" href="opt_8cpp_source.html#l00246">lGetSourcePosFromMetadata()</a>, <a class="el" href="ispc_8h_source.html#l00542">Globals::opt</a>, and <a class="el" href="util_8cpp_source.html#l00394">PerformanceWarning()</a>.</p>
+<p class="reference">References <a class="el" href="ispc_8h_source.html#l00127">SourcePos::first_line</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00392">Opt::level</a>, <a class="el" href="opt_8cpp_source.html#l00210">lGetSourcePosFromMetadata()</a>, <a class="el" href="ispc_8h_source.html#l00509">Globals::opt</a>, and <a class="el" href="util_8cpp_source.html#l00397">PerformanceWarning()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03752">lCoalesceGathers()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03556">lCoalesceGathers()</a>.</p>
 
 </div>
 </div>
@@ -1550,11 +1604,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given a call to a gather function, extract the base pointer, the 2/4/8 scale, and the first varying offsets value to use them to compute that scalar base pointer that is shared by all of the gathers in the group. (Thus, this base pointer plus the constant offsets term for each gather gives the set of addresses to use for each gather. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03701">3701</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03504">3504</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00078">LLVMTypes::Int64Type</a>, <a class="el" href="opt_8cpp_source.html#l00334">lGEPInst()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l01472">LLVMExtractFirstVectorElement()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="llvmutil_8h_source.html#l00068">LLVMTypes::Int64Type</a>, <a class="el" href="opt_8cpp_source.html#l00284">lGEPInst()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l01503">LLVMExtractFirstVectorElement()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03752">lCoalesceGathers()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03556">lCoalesceGathers()</a>.</p>
 
 </div>
 </div>
@@ -1598,11 +1652,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02557">2557</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02336">2336</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00334">lGEPInst()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l01472">LLVMExtractFirstVectorElement()</a>.</p>
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00284">lGEPInst()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l01503">LLVMExtractFirstVectorElement()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02594">lGSToLoadStore()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02373">lGSToLoadStore()</a>.</p>
 
 </div>
 </div>
@@ -1631,11 +1685,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given a vector of constant values (int, float, or bool) representing an execution mask, convert it to a bitvector where the 0th bit corresponds to the first vector value and so forth. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00349">349</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00296">296</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00381">lGetMask()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00328">lGetMask()</a>.</p>
 
 </div>
 </div>
@@ -1675,9 +1729,9 @@ Functions</h2></td></tr>
 <p>This utility routine copies the metadata (if any) attached to the 'from' instruction in the IR to the 'to' instruction.</p>
 <p>For flexibility, this function takes an llvm::Value rather than an llvm::Instruction for the 'to' parameter; at some places in the code below, we sometimes use a llvm::Value to start out storing a value and then later store instructions. If a llvm::Value is passed to this, the routine just returns without doing anything; if it is in fact an LLVM::Instruction, then the metadata can be copied to it. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00213">213</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00177">177</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02084">lGSToGSBaseOffsets()</a>, <a class="el" href="opt_8cpp_source.html#l02594">lGSToLoadStore()</a>, <a class="el" href="opt_8cpp_source.html#l02913">lImproveMaskedLoad()</a>, <a class="el" href="opt_8cpp_source.html#l02850">lImproveMaskedStore()</a>, <a class="el" href="opt_8cpp_source.html#l04050">lReplacePseudoMaskedStore()</a>, and <a class="el" href="opt_8cpp_source.html#l00991">IntrinsicsOpt::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01863">lGSToGSBaseOffsets()</a>, <a class="el" href="opt_8cpp_source.html#l02373">lGSToLoadStore()</a>, <a class="el" href="opt_8cpp_source.html#l02701">lImproveMaskedLoad()</a>, <a class="el" href="opt_8cpp_source.html#l02633">lImproveMaskedStore()</a>, <a class="el" href="opt_8cpp_source.html#l03860">lReplacePseudoMaskedStore()</a>, and <a class="el" href="opt_8cpp_source.html#l00743">IntrinsicsOpt::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -1727,11 +1781,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03299">3299</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03102">3102</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8cpp_source.html#l00363">Debug()</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="ispc_8h_source.html#l00466">Opt::forceAlignedMemory</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00275">Target::getNativeVectorAlignment()</a>, <a class="el" href="llvmutil_8h_source.html#l00077">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00078">LLVMTypes::Int64Type</a>, <a class="el" href="opt_8cpp_source.html#l03288">lGEPAndLoad()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00236">LLVMInt64()</a>, <a class="el" href="ispc_8h_source.html#l00542">Globals::opt</a>, <a class="el" href="opt_8cpp_source.html#l00143">PRId64</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="util_8cpp_source.html#l00366">Debug()</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="ispc_8h_source.html#l00426">Opt::forceAlignedMemory</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00241">Target::getNativeVectorAlignment()</a>, <a class="el" href="llvmutil_8h_source.html#l00067">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00068">LLVMTypes::Int64Type</a>, <a class="el" href="opt_8cpp_source.html#l03087">lGEPAndLoad()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00241">LLVMInt64()</a>, <a class="el" href="ispc_8h_source.html#l00509">Globals::opt</a>, <a class="el" href="opt_8cpp_source.html#l00110">PRId64</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03752">lCoalesceGathers()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03556">lCoalesceGathers()</a>.</p>
 
 </div>
 </div>
@@ -1781,11 +1835,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01776">1776</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01555">1555</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="llvmutil_8h_source.html#l00095">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00308">LLVMInt32Vector()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00368">LLVMInt64Vector()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="llvmutil_8h_source.html#l00086">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8cpp_source.html#l00233">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00313">LLVMInt32Vector()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00373">LLVMInt64Vector()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01818">lExtractOffsetVector248Scale()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01597">lExtractOffsetVector248Scale()</a>.</p>
 
 </div>
 </div>
@@ -1838,11 +1892,11 @@ Functions</h2></td></tr>
 <p>This routine only handles some (important) patterns; in some cases it will fail and return components that are actually compile-time constants in *variableOffset.</p>
 <p>Finally, if there aren't any constant (or, respectivaly, variable) components, the corresponding return value may be set to NULL. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01629">1629</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01408">1408</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="llvmutil_8cpp_source.html#l01518">LLVMGetName()</a>.</p>
+<p class="reference">References <a class="el" href="llvmutil_8cpp_source.html#l01098">IsOrEquivalentToAdd()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l01549">LLVMGetName()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02400">lGSBaseOffsetsGetMoreConst()</a>, and <a class="el" href="opt_8cpp_source.html#l02084">lGSToGSBaseOffsets()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02179">lGSBaseOffsetsGetMoreConst()</a>, and <a class="el" href="opt_8cpp_source.html#l01863">lGSToGSBaseOffsets()</a>.</p>
 
 </div>
 </div>
@@ -1887,11 +1941,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Extract the constant offsets (from the common base pointer) from each of the gathers in a set to be coalesced. These come in as byte offsets, but we'll transform them into offsets in terms of the size of the base scalar type being gathered. (e.g. for an i32 gather, we might have offsets like &lt;0,4,16,20&gt;, which would be transformed to &lt;0,1,4,5&gt; here.) </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03725">3725</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03529">3529</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00279">Target::getVectorWidth()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00690">LLVMExtractVectorInts()</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00245">Target::getVectorWidth()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00709">LLVMExtractVectorInts()</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03752">lCoalesceGathers()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03556">lCoalesceGathers()</a>.</p>
 
 </div>
 </div>
@@ -1929,11 +1983,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01468">1468</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01243">1243</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01485">lGetBasePtrAndOffsets()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01260">lGetBasePtrAndOffsets()</a>.</p>
 
 </div>
 </div>
@@ -1964,11 +2018,11 @@ Functions</h2></td></tr>
 <p>If it is return an i32 value of 2, 4, 8 from the function and modify vec so that it points to the operand that is being multiplied by 2/4/8.</p>
 <p>We go through all this trouble so that we can pass the i32 scale factor to the {gather,scatter}_base_offsets function as a separate scale factor for the offsets. This in turn is used in a way so that the LLVM x86 code generator matches it to apply x86's free scale by 2x, 4x, or 8x to one of two registers being added together for an addressing calculation. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01818">1818</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01597">1597</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="opt_8cpp_source.html#l01776">lExtract248Scale()</a>, <a class="el" href="opt_8cpp_source.html#l00334">lGEPInst()</a>, <a class="el" href="opt_8cpp_source.html#l01758">lIsIntegerSplat()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMInt32()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l01061">LLVMVectorValuesAllEqual()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="llvmutil_8cpp_source.html#l01098">IsOrEquivalentToAdd()</a>, <a class="el" href="opt_8cpp_source.html#l01555">lExtract248Scale()</a>, <a class="el" href="opt_8cpp_source.html#l00284">lGEPInst()</a>, <a class="el" href="opt_8cpp_source.html#l01537">lIsIntegerSplat()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00233">LLVMInt32()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l01080">LLVMVectorValuesAllEqual()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02084">lGSToGSBaseOffsets()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01863">lGSToGSBaseOffsets()</a>.</p>
 
 </div>
 </div>
@@ -2018,11 +2072,11 @@ Functions</h2></td></tr>
 <p>Utility routine that computes an offset from a base pointer and then returns the result of a load of the given type from the resulting location:</p>
 <p>return *((type *)(basePtr + offset)) </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03288">3288</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03087">3087</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00334">lGEPInst()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00236">LLVMInt64()</a>.</p>
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00284">lGEPInst()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00241">LLVMInt64()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03299">lEmitLoads()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03102">lEmitLoads()</a>.</p>
 
 </div>
 </div>
@@ -2072,11 +2126,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00334">334</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00284">284</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00055">PTYPE</a>.</p>
+<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00047">PTYPE</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03701">lComputeBasePtr()</a>, <a class="el" href="opt_8cpp_source.html#l02557">lComputeCommonPointer()</a>, <a class="el" href="opt_8cpp_source.html#l01818">lExtractOffsetVector248Scale()</a>, and <a class="el" href="opt_8cpp_source.html#l03288">lGEPAndLoad()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03504">lComputeBasePtr()</a>, <a class="el" href="opt_8cpp_source.html#l02336">lComputeCommonPointer()</a>, <a class="el" href="opt_8cpp_source.html#l01597">lExtractOffsetVector248Scale()</a>, and <a class="el" href="opt_8cpp_source.html#l03087">lGEPAndLoad()</a>.</p>
 
 </div>
 </div>
@@ -2121,11 +2175,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given a llvm::Value representing a varying pointer, this function checks to see if all of the elements of the vector have the same value (i.e. there's a common base pointer). If broadcast has been already detected it checks that the first element of the vector is not undef. If one of the conditions is true, it returns the common pointer value; otherwise it returns NULL. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01413">1413</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01188">1188</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00279">Target::getVectorWidth()</a>, <a class="el" href="opt_8cpp_source.html#l01375">lCheckForActualPointer()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00565">LLVMFlattenInsertChain()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01518">LLVMGetName()</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00245">Target::getVectorWidth()</a>, <a class="el" href="opt_8cpp_source.html#l01151">lCheckForActualPointer()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00587">LLVMFlattenInsertChain()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01549">LLVMGetName()</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01485">lGetBasePtrAndOffsets()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01260">lGetBasePtrAndOffsets()</a>.</p>
 
 </div>
 </div>
@@ -2170,11 +2224,59 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given a varying pointer in ptrs, this function checks to see if it can be determined to be indexing from a common uniform base pointer. If so, the function returns the base pointer llvm::Value and initializes offsets with an int vector of the per-lane offsets </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01485">1485</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01260">1260</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ispc_8h_source.html#l00645">Globals::ctx</a>, <a class="el" href="ispc_8h_source.html#l00568">Globals::debugPrint</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00269">Target::is32Bit()</a>, <a class="el" href="ispc_8h_source.html#l00066">ISPC_MAX_NVEC</a>, <a class="el" href="opt_8cpp_source.html#l01468">lExtractFromInserts()</a>, <a class="el" href="opt_8cpp_source.html#l01413">lGetBasePointer()</a>, <a class="el" href="opt_8cpp_source.html#l01453">lGetConstantAddExprBaseOffset()</a>, <a class="el" href="opt_8cpp_source.html#l00980">lIsUndef()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01362">LLVMDumpValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00308">LLVMInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00236">LLVMInt64()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00368">LLVMInt64Vector()</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8h_source.html#l00611">Globals::ctx</a>, <a class="el" href="ispc_8h_source.html#l00536">Globals::debugPrint</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00235">Target::is32Bit()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01098">IsOrEquivalentToAdd()</a>, <a class="el" href="ispc_8h_source.html#l00069">ISPC_MAX_NVEC</a>, <a class="el" href="opt_8cpp_source.html#l01243">lExtractFromInserts()</a>, <a class="el" href="opt_8cpp_source.html#l01188">lGetBasePointer()</a>, <a class="el" href="opt_8cpp_source.html#l01228">lGetConstantAddExprBaseOffset()</a>, <a class="el" href="opt_8cpp_source.html#l00732">lIsUndef()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01397">LLVMDumpValue()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00233">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00313">LLVMInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00241">LLVMInt64()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00373">LLVMInt64Vector()</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02084">lGSToGSBaseOffsets()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01863">lGSToGSBaseOffsets()</a>.</p>
+
+</div>
+</div>
+<a id="a62a4f95edc96d16e6e6b4ea619c5d8b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62a4f95edc96d16e6e6b4ea619c5d8b7">&#9670;&nbsp;</a></span>lGetBinaryIntrinsic()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static llvm::Instruction* lGetBinaryIntrinsic </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>opa</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>opb</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04603">4603</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="opt_8cpp_source.html#l00247">lCallInst()</a>, <a class="el" href="opt_8cpp_source.html#l04592">lHasIntrinsicInDefinition()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, and <a class="el" href="module_8h_source.html#l00151">Module::module</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04713">lMatchAvgDownInt16()</a>, <a class="el" href="opt_8cpp_source.html#l04687">lMatchAvgDownInt8()</a>, <a class="el" href="opt_8cpp_source.html#l04662">lMatchAvgDownUInt16()</a>, <a class="el" href="opt_8cpp_source.html#l04636">lMatchAvgDownUInt8()</a>, <a class="el" href="opt_8cpp_source.html#l04696">lMatchAvgUpInt16()</a>, <a class="el" href="opt_8cpp_source.html#l04671">lMatchAvgUpInt8()</a>, <a class="el" href="opt_8cpp_source.html#l04645">lMatchAvgUpUInt16()</a>, and <a class="el" href="opt_8cpp_source.html#l04620">lMatchAvgUpUInt8()</a>.</p>
 
 </div>
 </div>
@@ -2219,9 +2321,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given the two operands to a constant add expression, see if we have the form "base pointer + offset", whee op0 is the base pointer and op1 is the offset; if so return the base and the offset. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01453">1453</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01228">1228</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01485">lGetBasePtrAndOffsets()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01260">lGetBasePtrAndOffsets()</a>.</p>
 
 </div>
 </div>
@@ -2250,11 +2352,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given an llvm::Value known to be an integer, return its value as an int64_t. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04959">4959</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04771">4771</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04989">ReplaceStdlibShiftPass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04800">ReplaceStdlibShiftPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -2293,11 +2395,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given an llvm::Value represinting a vector mask, see if the value is a constant. If so, return true and set *bits to be the integer mask found by taking the high bits of the mask values in turn and concatenating them into a single integer. In other words, given the 4-wide mask: &lt; 0xffffffff, 0, 0, 0xffffffff &gt;, we have 0b1001 = 9. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00381">381</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00328">328</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00228">Target::GetTargetMachine()</a>, <a class="el" href="opt_8cpp_source.html#l00349">lConstElementsToMask()</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00191">Target::GetTargetMachine()</a>, <a class="el" href="opt_8cpp_source.html#l00296">lConstElementsToMask()</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00429">lGetMaskStatus()</a>, <a class="el" href="opt_8cpp_source.html#l00991">IntrinsicsOpt::runOnBasicBlock()</a>, and <a class="el" href="opt_8cpp_source.html#l01296">InstructionSimplifyPass::simplifyCall()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00376">lGetMaskStatus()</a>, <a class="el" href="opt_8cpp_source.html#l00743">IntrinsicsOpt::runOnBasicBlock()</a>, and <a class="el" href="opt_8cpp_source.html#l01064">InstructionSimplifyPass::simplifyCall()</a>.</p>
 
 </div>
 </div>
@@ -2336,11 +2438,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Determines if the given mask value is all on, all off, mixed, or unknown at compile time. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00429">429</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00376">376</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00424">ALL_OFF</a>, <a class="el" href="opt_8cpp_source.html#l00424">ALL_ON</a>, <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00279">Target::getVectorWidth()</a>, <a class="el" href="opt_8cpp_source.html#l00381">lGetMask()</a>, <a class="el" href="opt_8cpp_source.html#l00424">MIXED</a>, <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>, and <a class="el" href="opt_8cpp_source.html#l00424">UNKNOWN</a>.</p>
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00371">ALL_OFF</a>, <a class="el" href="opt_8cpp_source.html#l00371">ALL_ON</a>, <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00245">Target::getVectorWidth()</a>, <a class="el" href="opt_8cpp_source.html#l00328">lGetMask()</a>, <a class="el" href="opt_8cpp_source.html#l00371">MIXED</a>, <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>, and <a class="el" href="opt_8cpp_source.html#l00371">UNKNOWN</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02913">lImproveMaskedLoad()</a>, <a class="el" href="opt_8cpp_source.html#l02850">lImproveMaskedStore()</a>, <a class="el" href="opt_8cpp_source.html#l03850">GatherCoalescePass::runOnBasicBlock()</a>, and <a class="el" href="opt_8cpp_source.html#l01261">InstructionSimplifyPass::simplifySelect()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02701">lImproveMaskedLoad()</a>, <a class="el" href="opt_8cpp_source.html#l02633">lImproveMaskedStore()</a>, <a class="el" href="opt_8cpp_source.html#l03654">GatherCoalescePass::runOnBasicBlock()</a>, and <a class="el" href="opt_8cpp_source.html#l01028">InstructionSimplifyPass::simplifySelect()</a>.</p>
 
 </div>
 </div>
@@ -2378,11 +2480,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02562">2562</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02341">2341</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00279">Target::getVectorWidth()</a>, <a class="el" href="llvmutil_8h_source.html#l00095">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00096">LLVMTypes::Int64VectorType</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00236">LLVMInt64()</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00245">Target::getVectorWidth()</a>, <a class="el" href="llvmutil_8h_source.html#l00086">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00087">LLVMTypes::Int64VectorType</a>, <a class="el" href="llvmutil_8cpp_source.html#l00233">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00241">LLVMInt64()</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02594">lGSToLoadStore()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02373">lGSToLoadStore()</a>.</p>
 
 </div>
 </div>
@@ -2430,11 +2532,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if source file position metadata was present and *pos has been set. False otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00246">246</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00210">210</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03219">lCoalescePerfInfo()</a>, <a class="el" href="opt_8cpp_source.html#l02594">lGSToLoadStore()</a>, <a class="el" href="opt_8cpp_source.html#l04101">lReplacePseudoGS()</a>, and <a class="el" href="opt_8cpp_source.html#l03850">GatherCoalescePass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03018">lCoalescePerfInfo()</a>, <a class="el" href="opt_8cpp_source.html#l02373">lGSToLoadStore()</a>, <a class="el" href="opt_8cpp_source.html#l03911">lReplacePseudoGS()</a>, and <a class="el" href="opt_8cpp_source.html#l03654">GatherCoalescePass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -2463,11 +2565,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Try to improve the decomposition between compile-time constant and compile-time unknown offsets in calls to the __pseudo_*_base_offsets* functions. Other other optimizations have run, we will sometimes be able to pull more terms out of the unknown part and add them into the compile-time-known part. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02400">2400</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02179">2179</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00291">Target::hasGather()</a>, <a class="el" href="ispc_8h_source.html#l00293">Target::hasScatter()</a>, <a class="el" href="ispc_8h_source.html#l00303">Target::hasVecPrefetch()</a>, <a class="el" href="llvmutil_8h_source.html#l00096">LLVMTypes::Int64VectorType</a>, <a class="el" href="opt_8cpp_source.html#l01629">lExtractConstantOffset()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00308">LLVMInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00368">LLVMInt64Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00441">LLVMIntAsType()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="module_8h_source.html#l00156">Module::module</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00257">Target::hasGather()</a>, <a class="el" href="ispc_8h_source.html#l00259">Target::hasScatter()</a>, <a class="el" href="ispc_8h_source.html#l00269">Target::hasVecPrefetch()</a>, <a class="el" href="llvmutil_8h_source.html#l00087">LLVMTypes::Int64VectorType</a>, <a class="el" href="opt_8cpp_source.html#l01408">lExtractConstantOffset()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00313">LLVMInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00373">LLVMInt64Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00463">LLVMIntAsType()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, <a class="el" href="module_8h_source.html#l00151">Module::module</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02963">ImproveMemoryOpsPass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02756">ImproveMemoryOpsPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -2495,11 +2597,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02084">2084</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01863">1863</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ispc_8h_source.html#l00452">Opt::force32BitAddressing</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00291">Target::hasGather()</a>, <a class="el" href="ispc_8h_source.html#l00293">Target::hasScatter()</a>, <a class="el" href="ispc_8h_source.html#l00303">Target::hasVecPrefetch()</a>, <a class="el" href="opt_8cpp_source.html#l00297">lCallInst()</a>, <a class="el" href="opt_8cpp_source.html#l00213">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l01629">lExtractConstantOffset()</a>, <a class="el" href="opt_8cpp_source.html#l01818">lExtractOffsetVector248Scale()</a>, <a class="el" href="opt_8cpp_source.html#l01485">lGetBasePtrAndOffsets()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01518">LLVMGetName()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00441">LLVMIntAsType()</a>, <a class="el" href="opt_8cpp_source.html#l01993">lOffsets32BitSafe()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="module_8h_source.html#l00156">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00542">Globals::opt</a>, <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>, and <a class="el" href="llvmutil_8h_source.html#l00071">LLVMTypes::VoidPointerType</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8h_source.html#l00412">Opt::force32BitAddressing</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00257">Target::hasGather()</a>, <a class="el" href="ispc_8h_source.html#l00259">Target::hasScatter()</a>, <a class="el" href="ispc_8h_source.html#l00269">Target::hasVecPrefetch()</a>, <a class="el" href="opt_8cpp_source.html#l00247">lCallInst()</a>, <a class="el" href="opt_8cpp_source.html#l00177">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l01408">lExtractConstantOffset()</a>, <a class="el" href="opt_8cpp_source.html#l01597">lExtractOffsetVector248Scale()</a>, <a class="el" href="opt_8cpp_source.html#l01260">lGetBasePtrAndOffsets()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01549">LLVMGetName()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00463">LLVMIntAsType()</a>, <a class="el" href="opt_8cpp_source.html#l01772">lOffsets32BitSafe()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, <a class="el" href="module_8h_source.html#l00151">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00509">Globals::opt</a>, <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>, and <a class="el" href="llvmutil_8h_source.html#l00060">LLVMTypes::VoidPointerType</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02963">ImproveMemoryOpsPass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02756">ImproveMemoryOpsPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -2527,13 +2629,43 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>After earlier optimization passes have run, we are sometimes able to determine that gathers/scatters are actually accessing memory in a more regular fashion and then change the operation to something simpler and more efficient. For example, if all of the lanes in a gather are reading from the same location, we can instead do a scalar load and broadcast. This pass examines gathers and scatters and tries to simplify them if at all possible.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Currently, this only looks for all program instances going to the same location and all going to a linear sequence of locations in memory. There are a number of other cases that might make sense to look for, including things that could be handled with a vector load + shuffle or things that could be handled with hybrids of e.g. 2 4-wide vector loads with AVX, etc. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Currently, this only looks for all program instances going to the same location and all going to a linear sequence of locations in memory. There are a number of other cases that might make sense to look for, including things that could be handled with a vector load + shuffle or things that could be handled with hybrids of e.g. 2 4-wide vector loads with AVX, etc. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02594">2594</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02373">2373</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ispc_8h_source.html#l00645">Globals::ctx</a>, <a class="el" href="util_8cpp_source.html#l00363">Debug()</a>, <a class="el" href="llvmutil_8h_source.html#l00080">LLVMTypes::DoubleType</a>, <a class="el" href="llvmutil_8h_source.html#l00105">LLVMTypes::DoubleVectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00079">LLVMTypes::FloatType</a>, <a class="el" href="llvmutil_8h_source.html#l00104">LLVMTypes::FloatVectorPointerType</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00279">Target::getVectorWidth()</a>, <a class="el" href="ispc_8h_source.html#l00291">Target::hasGather()</a>, <a class="el" href="ispc_8h_source.html#l00293">Target::hasScatter()</a>, <a class="el" href="llvmutil_8h_source.html#l00076">LLVMTypes::Int16Type</a>, <a class="el" href="llvmutil_8h_source.html#l00101">LLVMTypes::Int16VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00077">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00102">LLVMTypes::Int32VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00078">LLVMTypes::Int64Type</a>, <a class="el" href="llvmutil_8h_source.html#l00103">LLVMTypes::Int64VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00075">LLVMTypes::Int8Type</a>, <a class="el" href="llvmutil_8h_source.html#l00100">LLVMTypes::Int8VectorPointerType</a>, <a class="el" href="opt_8cpp_source.html#l00297">lCallInst()</a>, <a class="el" href="opt_8cpp_source.html#l02557">lComputeCommonPointer()</a>, <a class="el" href="opt_8cpp_source.html#l00213">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l02562">lGetOffsetScaleVec()</a>, <a class="el" href="opt_8cpp_source.html#l00246">lGetSourcePosFromMetadata()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01518">LLVMGetName()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01326">LLVMVectorIsLinear()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01061">LLVMVectorValuesAllEqual()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="module_8h_source.html#l00156">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>, and <a class="el" href="util_8cpp_source.html#l00375">Warning()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8h_source.html#l00611">Globals::ctx</a>, <a class="el" href="util_8cpp_source.html#l00366">Debug()</a>, <a class="el" href="llvmutil_8h_source.html#l00070">LLVMTypes::DoubleType</a>, <a class="el" href="llvmutil_8h_source.html#l00096">LLVMTypes::DoubleVectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00069">LLVMTypes::FloatType</a>, <a class="el" href="llvmutil_8h_source.html#l00095">LLVMTypes::FloatVectorPointerType</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00245">Target::getVectorWidth()</a>, <a class="el" href="ispc_8h_source.html#l00257">Target::hasGather()</a>, <a class="el" href="ispc_8h_source.html#l00259">Target::hasScatter()</a>, <a class="el" href="llvmutil_8h_source.html#l00066">LLVMTypes::Int16Type</a>, <a class="el" href="llvmutil_8h_source.html#l00092">LLVMTypes::Int16VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00067">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00093">LLVMTypes::Int32VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00068">LLVMTypes::Int64Type</a>, <a class="el" href="llvmutil_8h_source.html#l00094">LLVMTypes::Int64VectorPointerType</a>, <a class="el" href="llvmutil_8h_source.html#l00065">LLVMTypes::Int8Type</a>, <a class="el" href="llvmutil_8h_source.html#l00091">LLVMTypes::Int8VectorPointerType</a>, <a class="el" href="opt_8cpp_source.html#l00247">lCallInst()</a>, <a class="el" href="opt_8cpp_source.html#l02336">lComputeCommonPointer()</a>, <a class="el" href="opt_8cpp_source.html#l00177">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l02341">lGetOffsetScaleVec()</a>, <a class="el" href="opt_8cpp_source.html#l00210">lGetSourcePosFromMetadata()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01549">LLVMGetName()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00233">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01361">LLVMVectorIsLinear()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01080">LLVMVectorValuesAllEqual()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, <a class="el" href="module_8h_source.html#l00151">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>, and <a class="el" href="util_8cpp_source.html#l00378">Warning()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02963">ImproveMemoryOpsPass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02756">ImproveMemoryOpsPass::runOnBasicBlock()</a>.</p>
+
+</div>
+</div>
+<a id="a7dbeaa386727dcbdd43b867244284e08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7dbeaa386727dcbdd43b867244284e08">&#9670;&nbsp;</a></span>lHasIntrinsicInDefinition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool lHasIntrinsicInDefinition </td>
+          <td>(</td>
+          <td class="paramtype">llvm::Function *&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04592">4592</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04603">lGetBinaryIntrinsic()</a>.</p>
 
 </div>
 </div>
@@ -2571,11 +2703,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02913">2913</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02701">2701</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00424">ALL_OFF</a>, <a class="el" href="opt_8cpp_source.html#l00424">ALL_ON</a>, <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ispc_8h_source.html#l00466">Opt::forceAlignedMemory</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00275">Target::getNativeVectorAlignment()</a>, <a class="el" href="opt_8cpp_source.html#l00213">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l00429">lGetMaskStatus()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="module_8h_source.html#l00156">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00542">Globals::opt</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00371">ALL_OFF</a>, <a class="el" href="opt_8cpp_source.html#l00371">ALL_ON</a>, <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8h_source.html#l00426">Opt::forceAlignedMemory</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00241">Target::getNativeVectorAlignment()</a>, <a class="el" href="opt_8cpp_source.html#l00177">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l00376">lGetMaskStatus()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, <a class="el" href="module_8h_source.html#l00151">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00509">Globals::opt</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02963">ImproveMemoryOpsPass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02756">ImproveMemoryOpsPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -2604,11 +2736,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Masked stores are generally more complex than regular stores; for example, they require multiple instructions to simulate under SSE. This optimization detects cases where masked stores can be replaced with regular stores or removed entirely, for the cases of an 'all on' mask and an 'all off' mask, respectively. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02850">2850</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02633">2633</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00424">ALL_OFF</a>, <a class="el" href="opt_8cpp_source.html#l00424">ALL_ON</a>, <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ispc_8h_source.html#l00466">Opt::forceAlignedMemory</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00275">Target::getNativeVectorAlignment()</a>, <a class="el" href="opt_8cpp_source.html#l00213">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l00429">lGetMaskStatus()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="module_8h_source.html#l00156">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00542">Globals::opt</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00371">ALL_OFF</a>, <a class="el" href="opt_8cpp_source.html#l00371">ALL_ON</a>, <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8h_source.html#l00426">Opt::forceAlignedMemory</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00241">Target::getNativeVectorAlignment()</a>, <a class="el" href="ispc__version_8h_source.html#l00051">ISPC_LLVM_9_0</a>, <a class="el" href="ispc__version_8h_source.html#l00045">ISPC_LLVM_VERSION</a>, <a class="el" href="opt_8cpp_source.html#l00177">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l00376">lGetMaskStatus()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, <a class="el" href="module_8h_source.html#l00151">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00509">Globals::opt</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02963">ImproveMemoryOpsPass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02756">ImproveMemoryOpsPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -2637,9 +2769,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given an instruction, returns true if the instructon may write to memory. This is a conservative test in that it may return true for some instructions that don't actually end up writing to memory, but should never return false for an instruction that does write to memory. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03826">3826</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03630">3630</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03850">GatherCoalescePass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03654">GatherCoalescePass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -2668,11 +2800,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Check to see if the offset value is composed of a string of Adds, SExts, and Constant Vectors that are 32-bit safe. Recursively explores the operands of Add instructions (as they might themselves be adds that eventually terminate in constant vectors or a SExt.) </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02043">2043</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01822">1822</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00095">LLVMTypes::Int32VectorType</a>, and <a class="el" href="opt_8cpp_source.html#l01977">lVectorIs32BitInts()</a>.</p>
+<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00086">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8cpp_source.html#l01098">IsOrEquivalentToAdd()</a>, and <a class="el" href="opt_8cpp_source.html#l01756">lVectorIs32BitInts()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02059">lOffsets32BitSafe()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01838">lOffsets32BitSafe()</a>.</p>
 
 </div>
 </div>
@@ -2710,9 +2842,9 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01758">1758</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01537">1537</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01818">lExtractOffsetVector248Scale()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01597">lExtractOffsetVector248Scale()</a>.</p>
 
 </div>
 </div>
@@ -2741,11 +2873,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>This routine attempts to determine if the given pointer in lvalue is pointing to stack-allocated memory. It's conservative in that it should never return true for non-stack allocated memory, but may return false for memory that actually is stack allocated. The basic strategy is to traverse through the operands and see if the pointer originally comes from an AllocaInst. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04023">4023</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03833">3833</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00279">Target::getVectorWidth()</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00245">Target::getVectorWidth()</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04050">lReplacePseudoMaskedStore()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03860">lReplacePseudoMaskedStore()</a>.</p>
 
 </div>
 </div>
@@ -2773,11 +2905,267 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Given an llvm::Value, return true if we can determine that it's an undefined value. This only makes a weak attempt at chasing this down, only detecting flat-out undef values, and bitcasts of undef values.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Is it worth working harder to find more of these? It starts to get tricky, since having an undef operand doesn't necessarily mean that the result will be undefined. (And for that matter, is there an LLVM call that will do this for us?) </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Is it worth working harder to find more of these? It starts to get tricky, since having an undef operand doesn't necessarily mean that the result will be undefined. (And for that matter, is there an LLVM call that will do this for us?) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00980">980</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00732">732</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01485">lGetBasePtrAndOffsets()</a>, and <a class="el" href="opt_8cpp_source.html#l00991">IntrinsicsOpt::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01260">lGetBasePtrAndOffsets()</a>, and <a class="el" href="opt_8cpp_source.html#l00743">IntrinsicsOpt::runOnBasicBlock()</a>.</p>
+
+</div>
+</div>
+<a id="a08b6a109c0fae02d97730efa5b6964df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08b6a109c0fae02d97730efa5b6964df">&#9670;&nbsp;</a></span>lMatchAvgDownInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static llvm::Instruction* lMatchAvgDownInt16 </td>
+          <td>(</td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>inst</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04713">4713</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l04603">lGetBinaryIntrinsic()</a>, <a class="el" href="opt_8cpp_source.html#l04588">m_SDiv2()</a>, <a class="el" href="opt_8cpp_source.html#l04517">m_SExt16To32()</a>, and <a class="el" href="opt_8cpp_source.html#l04527">m_Trunc32To16()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04722">PeepholePass::runOnBasicBlock()</a>.</p>
+
+</div>
+</div>
+<a id="ad66b9f4f7728666cdd176136aef1b91b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad66b9f4f7728666cdd176136aef1b91b">&#9670;&nbsp;</a></span>lMatchAvgDownInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static llvm::Instruction* lMatchAvgDownInt8 </td>
+          <td>(</td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>inst</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04687">4687</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l04603">lGetBinaryIntrinsic()</a>, <a class="el" href="opt_8cpp_source.html#l04588">m_SDiv2()</a>, <a class="el" href="opt_8cpp_source.html#l04502">m_SExt8To16()</a>, and <a class="el" href="opt_8cpp_source.html#l04512">m_Trunc16To8()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04722">PeepholePass::runOnBasicBlock()</a>.</p>
+
+</div>
+</div>
+<a id="a745f90d49426ffa45952fabb568ea056"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a745f90d49426ffa45952fabb568ea056">&#9670;&nbsp;</a></span>lMatchAvgDownUInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static llvm::Instruction* lMatchAvgDownUInt16 </td>
+          <td>(</td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>inst</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04662">4662</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l04603">lGetBinaryIntrinsic()</a>, <a class="el" href="opt_8cpp_source.html#l04527">m_Trunc32To16()</a>, <a class="el" href="opt_8cpp_source.html#l04559">m_UDiv2()</a>, and <a class="el" href="opt_8cpp_source.html#l04522">m_ZExt16To32()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04722">PeepholePass::runOnBasicBlock()</a>.</p>
+
+</div>
+</div>
+<a id="a1014db8083ba6d5c0796a553fc9ac647"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1014db8083ba6d5c0796a553fc9ac647">&#9670;&nbsp;</a></span>lMatchAvgDownUInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static llvm::Instruction* lMatchAvgDownUInt8 </td>
+          <td>(</td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>inst</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04636">4636</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l04603">lGetBinaryIntrinsic()</a>, <a class="el" href="opt_8cpp_source.html#l04512">m_Trunc16To8()</a>, <a class="el" href="opt_8cpp_source.html#l04559">m_UDiv2()</a>, and <a class="el" href="opt_8cpp_source.html#l04507">m_ZExt8To16()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04722">PeepholePass::runOnBasicBlock()</a>.</p>
+
+</div>
+</div>
+<a id="ae377506a97cca85af3d091f5c8e19fbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae377506a97cca85af3d091f5c8e19fbb">&#9670;&nbsp;</a></span>lMatchAvgUpInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static llvm::Instruction* lMatchAvgUpInt16 </td>
+          <td>(</td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>inst</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04696">4696</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l04603">lGetBinaryIntrinsic()</a>, <a class="el" href="opt_8cpp_source.html#l04588">m_SDiv2()</a>, <a class="el" href="opt_8cpp_source.html#l04517">m_SExt16To32()</a>, and <a class="el" href="opt_8cpp_source.html#l04527">m_Trunc32To16()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04722">PeepholePass::runOnBasicBlock()</a>.</p>
+
+</div>
+</div>
+<a id="a8049690de94291878a3310a953e6f8ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8049690de94291878a3310a953e6f8ea">&#9670;&nbsp;</a></span>lMatchAvgUpInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static llvm::Instruction* lMatchAvgUpInt8 </td>
+          <td>(</td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>inst</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04671">4671</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l04603">lGetBinaryIntrinsic()</a>, <a class="el" href="opt_8cpp_source.html#l04588">m_SDiv2()</a>, <a class="el" href="opt_8cpp_source.html#l04502">m_SExt8To16()</a>, and <a class="el" href="opt_8cpp_source.html#l04512">m_Trunc16To8()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04722">PeepholePass::runOnBasicBlock()</a>.</p>
+
+</div>
+</div>
+<a id="ace16b6330ce023a742250e35289affbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace16b6330ce023a742250e35289affbd">&#9670;&nbsp;</a></span>lMatchAvgUpUInt16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static llvm::Instruction* lMatchAvgUpUInt16 </td>
+          <td>(</td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>inst</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04645">4645</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l04603">lGetBinaryIntrinsic()</a>, <a class="el" href="opt_8cpp_source.html#l04527">m_Trunc32To16()</a>, <a class="el" href="opt_8cpp_source.html#l04559">m_UDiv2()</a>, and <a class="el" href="opt_8cpp_source.html#l04522">m_ZExt16To32()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04722">PeepholePass::runOnBasicBlock()</a>.</p>
+
+</div>
+</div>
+<a id="a1c1ad9641ce19dd8d9e5d7781fdbea5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c1ad9641ce19dd8d9e5d7781fdbea5c">&#9670;&nbsp;</a></span>lMatchAvgUpUInt8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static llvm::Instruction* lMatchAvgUpUInt8 </td>
+          <td>(</td>
+          <td class="paramtype">llvm::Value *&#160;</td>
+          <td class="paramname"><em>inst</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04620">4620</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l04603">lGetBinaryIntrinsic()</a>, <a class="el" href="opt_8cpp_source.html#l04512">m_Trunc16To8()</a>, <a class="el" href="opt_8cpp_source.html#l04559">m_UDiv2()</a>, and <a class="el" href="opt_8cpp_source.html#l04507">m_ZExt8To16()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04722">PeepholePass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -2822,11 +3210,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Check to see if the two offset vectors can safely be represented with 32-bit values. If so, return true and update the pointed-to llvm::Value *s to be the 32-bit equivalents. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01993">1993</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01772">1772</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00095">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8cpp_source.html#l01518">LLVMGetName()</a>, and <a class="el" href="opt_8cpp_source.html#l01977">lVectorIs32BitInts()</a>.</p>
+<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00086">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8cpp_source.html#l01549">LLVMGetName()</a>, and <a class="el" href="opt_8cpp_source.html#l01756">lVectorIs32BitInts()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02084">lGSToGSBaseOffsets()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01863">lGSToGSBaseOffsets()</a>.</p>
 
 </div>
 </div>
@@ -2865,9 +3253,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Check to see if the single offset vector can safely be represented with 32-bit values. If so, return true and update the pointed-to llvm::Value * to be the 32-bit equivalent. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02059">2059</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01838">1838</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00095">LLVMTypes::Int32VectorType</a>, <a class="el" href="opt_8cpp_source.html#l02043">lIs32BitSafeHelper()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l01518">LLVMGetName()</a>.</p>
+<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00086">LLVMTypes::Int32VectorType</a>, <a class="el" href="opt_8cpp_source.html#l01822">lIs32BitSafeHelper()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l01549">LLVMGetName()</a>.</p>
 
 </div>
 </div>
@@ -2895,11 +3283,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04101">4101</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03911">3911</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00279">Target::getVectorWidth()</a>, <a class="el" href="ispc_8h_source.html#l00432">Opt::level</a>, <a class="el" href="opt_8cpp_source.html#l00246">lGetSourcePosFromMetadata()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="module_8h_source.html#l00156">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00542">Globals::opt</a>, <a class="el" href="util_8cpp_source.html#l00394">PerformanceWarning()</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00245">Target::getVectorWidth()</a>, <a class="el" href="ispc_8h_source.html#l00392">Opt::level</a>, <a class="el" href="opt_8cpp_source.html#l00210">lGetSourcePosFromMetadata()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, <a class="el" href="module_8h_source.html#l00151">Module::module</a>, <a class="el" href="ispc_8h_source.html#l00509">Globals::opt</a>, <a class="el" href="util_8cpp_source.html#l00397">PerformanceWarning()</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04256">ReplacePseudoMemoryOpsPass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04066">ReplacePseudoMemoryOpsPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -2927,11 +3315,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04050">4050</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03860">3860</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ispc_8h_source.html#l00487">Opt::disableBlendedMaskedStores</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="opt_8cpp_source.html#l00297">lCallInst()</a>, <a class="el" href="opt_8cpp_source.html#l00213">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l04023">lIsSafeToBlend()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="module_8h_source.html#l00156">Module::module</a>, and <a class="el" href="ispc_8h_source.html#l00542">Globals::opt</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8h_source.html#l00447">Opt::disableBlendedMaskedStores</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="opt_8cpp_source.html#l00247">lCallInst()</a>, <a class="el" href="opt_8cpp_source.html#l00177">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l03833">lIsSafeToBlend()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, <a class="el" href="module_8h_source.html#l00151">Module::module</a>, and <a class="el" href="ispc_8h_source.html#l00509">Globals::opt</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04256">ReplacePseudoMemoryOpsPass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04066">ReplacePseudoMemoryOpsPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -2970,11 +3358,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given a set of offsets from a common base pointer that we need to get loaded into memory, determine a reasonable set of load operations that gets all of the corresponding values in memory (ideally, including as many as possible wider vector loads rather than scalar loads). Return a <a class="el" href="structCoalescedLoadOp.html">CoalescedLoadOp</a> for each one in the *loads array. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03169">3169</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02968">2968</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8cpp_source.html#l00363">Debug()</a>, <a class="el" href="opt_8cpp_source.html#l03075">lVectorLoadIsEfficient()</a>, and <a class="el" href="opt_8cpp_source.html#l00143">PRId64</a>.</p>
+<p class="reference">References <a class="el" href="util_8cpp_source.html#l00366">Debug()</a>, <a class="el" href="opt_8cpp_source.html#l02874">lVectorLoadIsEfficient()</a>, and <a class="el" href="opt_8cpp_source.html#l00110">PRId64</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03752">lCoalesceGathers()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03556">lCoalesceGathers()</a>.</p>
 
 </div>
 </div>
@@ -3013,11 +3401,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Convert any loads of 8-wide vectors into two 4-wide vectors (logically). This allows the assembly code below to always operate on 4-wide vectors, which leads to better code. Returns a new vector of load operations. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03357">3357</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03160">3160</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="llvmutil_8cpp_source.html#l01502">LLVMShuffleVectors()</a>.</p>
+<p class="reference">References <a class="el" href="llvmutil_8cpp_source.html#l01533">LLVMShuffleVectors()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03752">lCoalesceGathers()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03556">lCoalesceGathers()</a>.</p>
 
 </div>
 </div>
@@ -3045,11 +3433,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01977">1977</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01756">1756</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00066">ISPC_MAX_NVEC</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00690">LLVMExtractVectorInts()</a>.</p>
+<p class="reference">References <a class="el" href="ispc_8h_source.html#l00069">ISPC_MAX_NVEC</a>, and <a class="el" href="llvmutil_8cpp_source.html#l00709">LLVMExtractVectorInts()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02043">lIs32BitSafeHelper()</a>, and <a class="el" href="opt_8cpp_source.html#l01993">lOffsets32BitSafe()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l01822">lIs32BitSafeHelper()</a>, and <a class="el" href="opt_8cpp_source.html#l01772">lOffsets32BitSafe()</a>.</p>
 
 </div>
 </div>
@@ -3100,9 +3488,277 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>This function determines whether it makes sense (and is safe) to generate a vector load of width vectorWidth, starting at *iter. It returns true if so, setting *newIter to point to the next element in the set that isn't taken care of by the generated load. If a vector load of the given width doesn't make sense, then false is returned. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l03075">3075</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l02874">2874</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03169">lSelectLoads()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l02968">lSelectLoads()</a>.</p>
+
+</div>
+</div>
+<a id="a86d6dbb36da5107dd3f42862194dcecb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86d6dbb36da5107dd3f42862194dcecb">&#9670;&nbsp;</a></span>m_SDiv2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDiv2__match.html">SDiv2_match</a>&lt;V&gt; m_SDiv2 </td>
+          <td>(</td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04588">4588</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04713">lMatchAvgDownInt16()</a>, <a class="el" href="opt_8cpp_source.html#l04687">lMatchAvgDownInt8()</a>, <a class="el" href="opt_8cpp_source.html#l04696">lMatchAvgUpInt16()</a>, and <a class="el" href="opt_8cpp_source.html#l04671">lMatchAvgUpInt8()</a>.</p>
+
+</div>
+</div>
+<a id="a11f77244318bb78e3d1ed6e073dd2547"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11f77244318bb78e3d1ed6e073dd2547">&#9670;&nbsp;</a></span>m_SExt16To32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename OpTy &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structCastClassTypes__match.html">CastClassTypes_match</a>&lt;OpTy, llvm::Instruction::SExt&gt; m_SExt16To32 </td>
+          <td>(</td>
+          <td class="paramtype">const OpTy &amp;&#160;</td>
+          <td class="paramname"><em>Op</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04517">4517</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00085">LLVMTypes::Int16VectorType</a>, and <a class="el" href="llvmutil_8h_source.html#l00086">LLVMTypes::Int32VectorType</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04713">lMatchAvgDownInt16()</a>, and <a class="el" href="opt_8cpp_source.html#l04696">lMatchAvgUpInt16()</a>.</p>
+
+</div>
+</div>
+<a id="a434e72c52a8cc53620e0b58bca471801"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a434e72c52a8cc53620e0b58bca471801">&#9670;&nbsp;</a></span>m_SExt8To16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename OpTy &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structCastClassTypes__match.html">CastClassTypes_match</a>&lt;OpTy, llvm::Instruction::SExt&gt; m_SExt8To16 </td>
+          <td>(</td>
+          <td class="paramtype">const OpTy &amp;&#160;</td>
+          <td class="paramname"><em>Op</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04502">4502</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00085">LLVMTypes::Int16VectorType</a>, and <a class="el" href="llvmutil_8h_source.html#l00084">LLVMTypes::Int8VectorType</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04687">lMatchAvgDownInt8()</a>, and <a class="el" href="opt_8cpp_source.html#l04671">lMatchAvgUpInt8()</a>.</p>
+
+</div>
+</div>
+<a id="ab8a7233fb8f6a3bec2b7fe6875c8de92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8a7233fb8f6a3bec2b7fe6875c8de92">&#9670;&nbsp;</a></span>m_Trunc16To8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename OpTy &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structCastClassTypes__match.html">CastClassTypes_match</a>&lt;OpTy, llvm::Instruction::Trunc&gt; m_Trunc16To8 </td>
+          <td>(</td>
+          <td class="paramtype">const OpTy &amp;&#160;</td>
+          <td class="paramname"><em>Op</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04512">4512</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00085">LLVMTypes::Int16VectorType</a>, and <a class="el" href="llvmutil_8h_source.html#l00084">LLVMTypes::Int8VectorType</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04687">lMatchAvgDownInt8()</a>, <a class="el" href="opt_8cpp_source.html#l04636">lMatchAvgDownUInt8()</a>, <a class="el" href="opt_8cpp_source.html#l04671">lMatchAvgUpInt8()</a>, and <a class="el" href="opt_8cpp_source.html#l04620">lMatchAvgUpUInt8()</a>.</p>
+
+</div>
+</div>
+<a id="a89047c6f11e29503bd58a03105fe3dd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89047c6f11e29503bd58a03105fe3dd9">&#9670;&nbsp;</a></span>m_Trunc32To16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename OpTy &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structCastClassTypes__match.html">CastClassTypes_match</a>&lt;OpTy, llvm::Instruction::Trunc&gt; m_Trunc32To16 </td>
+          <td>(</td>
+          <td class="paramtype">const OpTy &amp;&#160;</td>
+          <td class="paramname"><em>Op</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04527">4527</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00085">LLVMTypes::Int16VectorType</a>, and <a class="el" href="llvmutil_8h_source.html#l00086">LLVMTypes::Int32VectorType</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04713">lMatchAvgDownInt16()</a>, <a class="el" href="opt_8cpp_source.html#l04662">lMatchAvgDownUInt16()</a>, <a class="el" href="opt_8cpp_source.html#l04696">lMatchAvgUpInt16()</a>, and <a class="el" href="opt_8cpp_source.html#l04645">lMatchAvgUpUInt16()</a>.</p>
+
+</div>
+</div>
+<a id="aef7f4bce8e585d3e9d9f857964215df4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef7f4bce8e585d3e9d9f857964215df4">&#9670;&nbsp;</a></span>m_UDiv2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structUDiv2__match.html">UDiv2_match</a>&lt;V&gt; m_UDiv2 </td>
+          <td>(</td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04559">4559</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04662">lMatchAvgDownUInt16()</a>, <a class="el" href="opt_8cpp_source.html#l04636">lMatchAvgDownUInt8()</a>, <a class="el" href="opt_8cpp_source.html#l04645">lMatchAvgUpUInt16()</a>, and <a class="el" href="opt_8cpp_source.html#l04620">lMatchAvgUpUInt8()</a>.</p>
+
+</div>
+</div>
+<a id="afd4843568d0954a661b71a81a9772dae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd4843568d0954a661b71a81a9772dae">&#9670;&nbsp;</a></span>m_ZExt16To32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename OpTy &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structCastClassTypes__match.html">CastClassTypes_match</a>&lt;OpTy, llvm::Instruction::ZExt&gt; m_ZExt16To32 </td>
+          <td>(</td>
+          <td class="paramtype">const OpTy &amp;&#160;</td>
+          <td class="paramname"><em>Op</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04522">4522</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00085">LLVMTypes::Int16VectorType</a>, and <a class="el" href="llvmutil_8h_source.html#l00086">LLVMTypes::Int32VectorType</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04662">lMatchAvgDownUInt16()</a>, and <a class="el" href="opt_8cpp_source.html#l04645">lMatchAvgUpUInt16()</a>.</p>
+
+</div>
+</div>
+<a id="a4c1bd7d0541d1b97511327d61a601882"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c1bd7d0541d1b97511327d61a601882">&#9670;&nbsp;</a></span>m_ZExt8To16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename OpTy &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structCastClassTypes__match.html">CastClassTypes_match</a>&lt;OpTy, llvm::Instruction::ZExt&gt; m_ZExt8To16 </td>
+          <td>(</td>
+          <td class="paramtype">const OpTy &amp;&#160;</td>
+          <td class="paramname"><em>Op</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04507">4507</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00085">LLVMTypes::Int16VectorType</a>, and <a class="el" href="llvmutil_8h_source.html#l00084">LLVMTypes::Int8VectorType</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04636">lMatchAvgDownUInt8()</a>, and <a class="el" href="opt_8cpp_source.html#l04620">lMatchAvgUpUInt8()</a>.</p>
 
 </div>
 </div>
@@ -3133,9 +3789,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Optimize the functions in the given module, applying the specified level of optimization. optLevel zero corresponds to essentially no optimization&ndash;just enough to generate correct code, while level one corresponds to full optimization. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00514">514</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00441">441</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00474">DebugPassManager::add()</a>, <a class="el" href="opt_8cpp_source.html#l05211">CreateFixBooleanSelectPass()</a>, <a class="el" href="opt_8cpp_source.html#l03992">CreateGatherCoalescePass()</a>, <a class="el" href="opt_8cpp_source.html#l03004">CreateImproveMemoryOpsPass()</a>, <a class="el" href="opt_8cpp_source.html#l01336">CreateInstructionSimplifyPass()</a>, <a class="el" href="opt_8cpp_source.html#l01191">CreateIntrinsicsOptPass()</a>, <a class="el" href="opt_8cpp_source.html#l04378">CreateIsCompileTimeConstantPass()</a>, <a class="el" href="opt_8cpp_source.html#l04652">CreateMakeInternalFuncsStaticPass()</a>, <a class="el" href="opt_8cpp_source.html#l04954">CreatePeepholePass()</a>, <a class="el" href="opt_8cpp_source.html#l04281">CreateReplacePseudoMemoryOpsPass()</a>, <a class="el" href="opt_8cpp_source.html#l05041">CreateReplaceStdlibShiftPass()</a>, <a class="el" href="ispc_8h_source.html#l00568">Globals::debugPrint</a>, <a class="el" href="ispc_8h_source.html#l00527">Opt::disableCoalescing</a>, <a class="el" href="ispc_8h_source.html#l00505">Opt::disableGatherScatterOptimizations</a>, <a class="el" href="ispc_8h_source.html#l00477">Opt::disableHandlePseudoMemoryOps</a>, <a class="el" href="ispc_8h_source.html#l00471">Opt::disableMaskAllOnOptimizations</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00188">Target::GENERIC</a>, <a class="el" href="ispc_8h_source.html#l00258">Target::getDataLayout()</a>, <a class="el" href="ispc_8h_source.html#l00263">Target::getISA()</a>, <a class="el" href="opt_8cpp_source.html#l00461">DebugPassManager::getPM()</a>, <a class="el" href="ispc_8h_source.html#l00228">Target::GetTargetMachine()</a>, <a class="el" href="ispc_8h_source.html#l00279">Target::getVectorWidth()</a>, <a class="el" href="ispc_8h_source.html#l00069">LAST_OPT_NUMBER</a>, <a class="el" href="ispc_8h_source.html#l00542">Globals::opt</a>, <a class="el" href="opt_8cpp_source.html#l00459">DebugPassManager::run()</a>, <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00446">Opt::unrollLoops</a>.</p>
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00414">DebugPassManager::add()</a>, <a class="el" href="opt_8cpp_source.html#l04956">CreateFixBooleanSelectPass()</a>, <a class="el" href="opt_8cpp_source.html#l03805">CreateGatherCoalescePass()</a>, <a class="el" href="opt_8cpp_source.html#l02806">CreateImproveMemoryOpsPass()</a>, <a class="el" href="opt_8cpp_source.html#l01113">CreateInstructionSimplifyPass()</a>, <a class="el" href="opt_8cpp_source.html#l00961">CreateIntrinsicsOptPass()</a>, <a class="el" href="opt_8cpp_source.html#l04203">CreateIsCompileTimeConstantPass()</a>, <a class="el" href="opt_8cpp_source.html#l04465">CreateMakeInternalFuncsStaticPass()</a>, <a class="el" href="opt_8cpp_source.html#l04766">CreatePeepholePass()</a>, <a class="el" href="opt_8cpp_source.html#l04100">CreateReplacePseudoMemoryOpsPass()</a>, <a class="el" href="opt_8cpp_source.html#l04861">CreateReplaceStdlibShiftPass()</a>, <a class="el" href="ispc_8h_source.html#l00536">Globals::debugPrint</a>, <a class="el" href="ispc_8h_source.html#l00487">Opt::disableCoalescing</a>, <a class="el" href="ispc_8h_source.html#l00465">Opt::disableGatherScatterOptimizations</a>, <a class="el" href="ispc_8h_source.html#l00437">Opt::disableHandlePseudoMemoryOps</a>, <a class="el" href="ispc_8h_source.html#l00431">Opt::disableMaskAllOnOptimizations</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00166">Target::GENERIC</a>, <a class="el" href="ispc_8h_source.html#l00231">Target::getISA()</a>, <a class="el" href="opt_8cpp_source.html#l00407">DebugPassManager::getPM()</a>, <a class="el" href="ispc_8h_source.html#l00191">Target::GetTargetMachine()</a>, <a class="el" href="ispc_8h_source.html#l00245">Target::getVectorWidth()</a>, <a class="el" href="ispc_8h_source.html#l00072">LAST_OPT_NUMBER</a>, <a class="el" href="ispc_8h_source.html#l00509">Globals::opt</a>, <a class="el" href="opt_8cpp_source.html#l00406">DebugPassManager::run()</a>, <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>, and <a class="el" href="ispc_8h_source.html#l00406">Opt::unrollLoops</a>.</p>
 
 </div>
 </div>
@@ -3156,16 +3812,16 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Strips all non-alphanumeric characters from given string. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04447">4447</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04264">4264</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04454">DebugPassFile::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04271">DebugPassFile::run()</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:25 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

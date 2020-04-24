@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: Symbol Class Reference</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): Symbol Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -97,9 +97,9 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Representation of a program symbol. </p>
 <p>The <a class="el" href="classSymbol.html" title="Representation of a program symbol. ">Symbol</a> class represents a symbol in an ispc program. Symbols can include variables, functions, and named types. Note that all of the members are publically accessible; other code throughout the system accesses and modifies the members directly.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Should we break function symbols into a separate FunctionSymbol class and then not have these members that are not applicable for function symbols (and vice versa, for non-function symbols)? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Should we break function symbols into a separate FunctionSymbol class and then not have these members that are not applicable for function symbols (and vice versa, for non-function symbols)? </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00063">63</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00062">62</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a910511e05616b638508767cca5b9ac7f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a910511e05616b638508767cca5b9ac7f">&#9670;&nbsp;</a></span>Symbol()</h2>
@@ -142,7 +142,7 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="sym_8cpp_source.html#l00046">46</a> of file <a class="el" href="sym_8cpp_source.html">sym.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="sym_8h_source.html#l00086">constValue</a>, <a class="el" href="sym_8h_source.html#l00078">exportedFunction</a>, <a class="el" href="sym_8h_source.html#l00103">parentFunction</a>, <a class="el" href="sym_8h_source.html#l00095">storageClass</a>, <a class="el" href="sym_8h_source.html#l00071">storagePtr</a>, <a class="el" href="sym_8h_source.html#l00083">type</a>, and <a class="el" href="sym_8h_source.html#l00097">varyingCFDepth</a>.</p>
+<p class="reference">References <a class="el" href="sym_8h_source.html#l00085">constValue</a>, <a class="el" href="sym_8h_source.html#l00077">exportedFunction</a>, <a class="el" href="sym_8h_source.html#l00102">parentFunction</a>, <a class="el" href="sym_8h_source.html#l00094">storageClass</a>, <a class="el" href="sym_8h_source.html#l00070">storagePtr</a>, <a class="el" href="sym_8h_source.html#l00082">type</a>, and <a class="el" href="sym_8h_source.html#l00096">varyingCFDepth</a>.</p>
 
 </div>
 </div>
@@ -160,9 +160,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>For symbols with const-qualified types, this may store the symbol's compile-time constant value. This value may validly be NULL for a const-qualified type, however; for example, the <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> class can't currently represent struct types. For cases like these, <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> is NULL, though for all const symbols, the value pointed to by the storagePtr member will be its constant value. (This messiness is due to needing an ispc <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> for the early constant folding optimizations). </p>
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00086">86</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00085">85</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l00536">Module::AddGlobalVariable()</a>, <a class="el" href="builtins_8cpp_source.html#l00970">lDefineConstantInt()</a>, <a class="el" href="builtins_8cpp_source.html#l01052">lDefineProgramIndex()</a>, <a class="el" href="module_8cpp_source.html#l01644">lEmitEnumDecls()</a>, <a class="el" href="stmt_8cpp_source.html#l00405">DeclStmt::Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l07415">SymbolExpr::Optimize()</a>, and <a class="el" href="sym_8cpp_source.html#l00046">Symbol()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l00272">Module::AddGlobalVariable()</a>, <a class="el" href="builtins_8cpp_source.html#l00822">lDefineConstantInt()</a>, <a class="el" href="builtins_8cpp_source.html#l00869">lDefineProgramIndex()</a>, <a class="el" href="module_8cpp_source.html#l01133">lEmitEnumDecls()</a>, <a class="el" href="stmt_8cpp_source.html#l00235">DeclStmt::Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l07630">SymbolExpr::Optimize()</a>, and <a class="el" href="sym_8cpp_source.html#l00046">Symbol()</a>.</p>
 
 </div>
 </div>
@@ -179,9 +179,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>For symbols that represent functions with 'export' qualifiers, this points to the LLVM <a class="el" href="classFunction.html">Function</a> for the application-callable version of the function. </p>
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00078">78</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00077">77</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="func_8cpp_source.html#l00486">Function::GenerateIR()</a>, <a class="el" href="module_8cpp_source.html#l02633">lSymbolIsExported()</a>, and <a class="el" href="sym_8cpp_source.html#l00046">Symbol()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="func_8cpp_source.html#l00412">Function::GenerateIR()</a>, <a class="el" href="module_8cpp_source.html#l02065">lSymbolIsExported()</a>, and <a class="el" href="sym_8cpp_source.html#l00046">Symbol()</a>.</p>
 
 </div>
 </div>
@@ -198,9 +198,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>For symbols that represent functions, this stores the LLVM <a class="el" href="classFunction.html">Function</a> value for the symbol once it has been created. </p>
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00075">75</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00074">74</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l00863">Module::AddFunctionDeclaration()</a>, <a class="el" href="func_8cpp_source.html#l00486">Function::GenerateIR()</a>, <a class="el" href="expr_8cpp_source.html#l07479">FunctionSymbolExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l07459">FunctionSymbolExpr::GetValue()</a>, <a class="el" href="builtins_8cpp_source.html#l00183">lCreateISPCSymbol()</a>, and <a class="el" href="builtins_8cpp_source.html#l01031">lDefineConstantIntFunc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l00549">Module::AddFunctionDeclaration()</a>, <a class="el" href="func_8cpp_source.html#l00412">Function::GenerateIR()</a>, <a class="el" href="expr_8cpp_source.html#l07694">FunctionSymbolExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l07674">FunctionSymbolExpr::GetValue()</a>, <a class="el" href="builtins_8cpp_source.html#l00166">lCreateISPCSymbol()</a>, and <a class="el" href="builtins_8cpp_source.html#l00852">lDefineConstantIntFunc()</a>.</p>
 
 </div>
 </div>
@@ -217,9 +217,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p><a class="el" href="classSymbol.html" title="Representation of a program symbol. ">Symbol</a>'s name </p>
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00070">70</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00069">69</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sym_8cpp_source.html#l00126">SymbolTable::AddFunction()</a>, <a class="el" href="module_8cpp_source.html#l00536">Module::AddGlobalVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00165">SymbolTable::AddType()</a>, <a class="el" href="sym_8cpp_source.html#l00085">SymbolTable::AddVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00199">SymbolTable::ClosestVariableOrFunctionMatch()</a>, <a class="el" href="func_8cpp_source.html#l00226">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00185">DeclStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02047">ForeachActiveStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02213">ForeachUniqueStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01545">FunctionEmitContext::EmitFunctionParameterDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l01506">FunctionEmitContext::EmitVariableDebugInfo()</a>, <a class="el" href="func_8cpp_source.html#l00092">Function::Function()</a>, <a class="el" href="ctx_8cpp_source.html#l00211">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="func_8cpp_source.html#l00486">Function::GenerateIR()</a>, <a class="el" href="expr_8cpp_source.html#l07382">SymbolExpr::GetValue()</a>, <a class="el" href="func_8cpp_source.html#l00190">lCopyInTaskParameter()</a>, <a class="el" href="builtins_8cpp_source.html#l01052">lDefineProgramIndex()</a>, <a class="el" href="module_8cpp_source.html#l01644">lEmitEnumDecls()</a>, <a class="el" href="sym_8cpp_source.html#l00272">SymbolTable::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l02172">ForeachActiveStmt::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l02375">ForeachUniqueStmt::Print()</a>, <a class="el" href="expr_8cpp_source.html#l07431">SymbolExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l07471">FunctionSymbolExpr::Print()</a>, <a class="el" href="module_8cpp_source.html#l01923">Module::writeDevStub()</a>, and <a class="el" href="module_8cpp_source.html#l02058">Module::writeHostStub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sym_8cpp_source.html#l00126">SymbolTable::AddFunction()</a>, <a class="el" href="module_8cpp_source.html#l00272">Module::AddGlobalVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00165">SymbolTable::AddType()</a>, <a class="el" href="sym_8cpp_source.html#l00085">SymbolTable::AddVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00199">SymbolTable::ClosestVariableOrFunctionMatch()</a>, <a class="el" href="func_8cpp_source.html#l00200">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00111">DeclStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01757">ForeachActiveStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01918">ForeachUniqueStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01348">FunctionEmitContext::EmitFunctionParameterDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l01333">FunctionEmitContext::EmitVariableDebugInfo()</a>, <a class="el" href="func_8cpp_source.html#l00069">Function::Function()</a>, <a class="el" href="ctx_8cpp_source.html#l00199">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="func_8cpp_source.html#l00412">Function::GenerateIR()</a>, <a class="el" href="expr_8cpp_source.html#l07597">SymbolExpr::GetValue()</a>, <a class="el" href="func_8cpp_source.html#l00165">lCopyInTaskParameter()</a>, <a class="el" href="builtins_8cpp_source.html#l00869">lDefineProgramIndex()</a>, <a class="el" href="module_8cpp_source.html#l01133">lEmitEnumDecls()</a>, <a class="el" href="sym_8cpp_source.html#l00272">SymbolTable::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l01877">ForeachActiveStmt::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l02072">ForeachUniqueStmt::Print()</a>, <a class="el" href="expr_8cpp_source.html#l07646">SymbolExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l07686">FunctionSymbolExpr::Print()</a>, <a class="el" href="module_8cpp_source.html#l01422">Module::writeDevStub()</a>, and <a class="el" href="module_8cpp_source.html#l01557">Module::writeHostStub()</a>.</p>
 
 </div>
 </div>
@@ -236,9 +236,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>For symbols that are parameters to functions or are variables declared inside functions, this gives the function they're in. </p>
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00103">103</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00102">102</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="stmt_8cpp_source.html#l00185">DeclStmt::EmitCode()</a>, <a class="el" href="func_8cpp_source.html#l00092">Function::Function()</a>, <a class="el" href="expr_8cpp_source.html#l00899">lMaskForSymbol()</a>, and <a class="el" href="sym_8cpp_source.html#l00046">Symbol()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="stmt_8cpp_source.html#l00111">DeclStmt::EmitCode()</a>, <a class="el" href="func_8cpp_source.html#l00069">Function::Function()</a>, <a class="el" href="expr_8cpp_source.html#l00902">lMaskForSymbol()</a>, and <a class="el" href="sym_8cpp_source.html#l00046">Symbol()</a>.</p>
 
 </div>
 </div>
@@ -255,9 +255,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Source file position where the symbol was defined </p>
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00069">69</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00068">68</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l00863">Module::AddFunctionDeclaration()</a>, <a class="el" href="module_8cpp_source.html#l01132">Module::AddFunctionDefinition()</a>, <a class="el" href="module_8cpp_source.html#l00536">Module::AddGlobalVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00085">SymbolTable::AddVariable()</a>, <a class="el" href="func_8cpp_source.html#l00226">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00185">DeclStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01545">FunctionEmitContext::EmitFunctionParameterDebugInfo()</a>, <a class="el" href="module_8cpp_source.html#l01889">emitOffloadParamStruct()</a>, <a class="el" href="ctx_8cpp_source.html#l01506">FunctionEmitContext::EmitVariableDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l00211">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="func_8cpp_source.html#l00486">Function::GenerateIR()</a>, <a class="el" href="module_8cpp_source.html#l02923">lExtractOrCheckGlobals()</a>, <a class="el" href="module_8cpp_source.html#l01923">Module::writeDevStub()</a>, and <a class="el" href="module_8cpp_source.html#l02058">Module::writeHostStub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l00549">Module::AddFunctionDeclaration()</a>, <a class="el" href="module_8cpp_source.html#l00783">Module::AddFunctionDefinition()</a>, <a class="el" href="module_8cpp_source.html#l00272">Module::AddGlobalVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00085">SymbolTable::AddVariable()</a>, <a class="el" href="func_8cpp_source.html#l00200">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00111">DeclStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01348">FunctionEmitContext::EmitFunctionParameterDebugInfo()</a>, <a class="el" href="module_8cpp_source.html#l01388">emitOffloadParamStruct()</a>, <a class="el" href="ctx_8cpp_source.html#l01333">FunctionEmitContext::EmitVariableDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l00199">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="func_8cpp_source.html#l00412">Function::GenerateIR()</a>, <a class="el" href="module_8cpp_source.html#l02343">lExtractOrCheckGlobals()</a>, <a class="el" href="module_8cpp_source.html#l01422">Module::writeDevStub()</a>, and <a class="el" href="module_8cpp_source.html#l01557">Module::writeHostStub()</a>.</p>
 
 </div>
 </div>
@@ -274,9 +274,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Records the storage class (if any) provided with the symbol's declaration. </p>
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00095">95</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00094">94</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l00536">Module::AddGlobalVariable()</a>, <a class="el" href="stmt_8cpp_source.html#l00185">DeclStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00211">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="expr_8cpp_source.html#l00899">lMaskForSymbol()</a>, <a class="el" href="expr_8cpp_source.html#l00918">lStoreAssignResult()</a>, and <a class="el" href="sym_8cpp_source.html#l00046">Symbol()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l00272">Module::AddGlobalVariable()</a>, <a class="el" href="stmt_8cpp_source.html#l00111">DeclStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l00199">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="expr_8cpp_source.html#l00902">lMaskForSymbol()</a>, <a class="el" href="expr_8cpp_source.html#l00921">lStoreAssignResult()</a>, and <a class="el" href="sym_8cpp_source.html#l00046">Symbol()</a>.</p>
 
 </div>
 </div>
@@ -293,9 +293,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>For symbols with storage associated with them (i.e. variables but not functions), this member stores a pointer to its location in memory.) </p>
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00071">71</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00070">70</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l00536">Module::AddGlobalVariable()</a>, <a class="el" href="func_8cpp_source.html#l00226">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00185">DeclStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02047">ForeachActiveStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02213">ForeachUniqueStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01545">FunctionEmitContext::EmitFunctionParameterDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l01506">FunctionEmitContext::EmitVariableDebugInfo()</a>, <a class="el" href="expr_8cpp_source.html#l07392">SymbolExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l07382">SymbolExpr::GetValue()</a>, <a class="el" href="func_8cpp_source.html#l00190">lCopyInTaskParameter()</a>, <a class="el" href="builtins_8cpp_source.html#l00970">lDefineConstantInt()</a>, <a class="el" href="builtins_8cpp_source.html#l01052">lDefineProgramIndex()</a>, and <a class="el" href="sym_8cpp_source.html#l00046">Symbol()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l00272">Module::AddGlobalVariable()</a>, <a class="el" href="func_8cpp_source.html#l00200">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00111">DeclStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01757">ForeachActiveStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01918">ForeachUniqueStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01348">FunctionEmitContext::EmitFunctionParameterDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l01333">FunctionEmitContext::EmitVariableDebugInfo()</a>, <a class="el" href="expr_8cpp_source.html#l07095">TypeCastExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l07462">AddressOfExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l07607">SymbolExpr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l07597">SymbolExpr::GetValue()</a>, <a class="el" href="func_8cpp_source.html#l00165">lCopyInTaskParameter()</a>, <a class="el" href="builtins_8cpp_source.html#l00822">lDefineConstantInt()</a>, <a class="el" href="builtins_8cpp_source.html#l00869">lDefineProgramIndex()</a>, and <a class="el" href="sym_8cpp_source.html#l00046">Symbol()</a>.</p>
 
 </div>
 </div>
@@ -312,9 +312,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The type of the symbol; if not set by the constructor, this is set after the declaration around the symbol has been parsed. </p>
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00083">83</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00082">82</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sym_8cpp_source.html#l00126">SymbolTable::AddFunction()</a>, <a class="el" href="module_8cpp_source.html#l00863">Module::AddFunctionDeclaration()</a>, <a class="el" href="module_8cpp_source.html#l01132">Module::AddFunctionDefinition()</a>, <a class="el" href="module_8cpp_source.html#l00536">Module::AddGlobalVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00165">SymbolTable::AddType()</a>, <a class="el" href="func_8cpp_source.html#l00226">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00185">DeclStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02047">ForeachActiveStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l02213">ForeachUniqueStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01545">FunctionEmitContext::EmitFunctionParameterDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l01506">FunctionEmitContext::EmitVariableDebugInfo()</a>, <a class="el" href="func_8cpp_source.html#l00092">Function::Function()</a>, <a class="el" href="func_8cpp_source.html#l00486">Function::GenerateIR()</a>, <a class="el" href="expr_8cpp_source.html#l07479">FunctionSymbolExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l07399">SymbolExpr::GetLValueType()</a>, <a class="el" href="func_8cpp_source.html#l00173">Function::GetReturnType()</a>, <a class="el" href="func_8cpp_source.html#l00179">Function::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l07411">SymbolExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l07450">FunctionSymbolExpr::GetType()</a>, <a class="el" href="builtins_8cpp_source.html#l00970">lDefineConstantInt()</a>, <a class="el" href="builtins_8cpp_source.html#l01052">lDefineProgramIndex()</a>, <a class="el" href="module_8cpp_source.html#l01815">lIsExported()</a>, <a class="el" href="module_8cpp_source.html#l01821">lIsExternC()</a>, <a class="el" href="expr_8cpp_source.html#l00899">lMaskForSymbol()</a>, <a class="el" href="expr_8cpp_source.html#l00918">lStoreAssignResult()</a>, <a class="el" href="stmt_8cpp_source.html#l00405">DeclStmt::Optimize()</a>, <a class="el" href="sym_8cpp_source.html#l00272">SymbolTable::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l02172">ForeachActiveStmt::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l02375">ForeachUniqueStmt::Print()</a>, <a class="el" href="sym_8cpp_source.html#l00046">Symbol()</a>, <a class="el" href="module_8cpp_source.html#l01923">Module::writeDevStub()</a>, and <a class="el" href="module_8cpp_source.html#l02058">Module::writeHostStub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sym_8cpp_source.html#l00126">SymbolTable::AddFunction()</a>, <a class="el" href="module_8cpp_source.html#l00549">Module::AddFunctionDeclaration()</a>, <a class="el" href="module_8cpp_source.html#l00783">Module::AddFunctionDefinition()</a>, <a class="el" href="module_8cpp_source.html#l00272">Module::AddGlobalVariable()</a>, <a class="el" href="sym_8cpp_source.html#l00165">SymbolTable::AddType()</a>, <a class="el" href="func_8cpp_source.html#l00200">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00111">DeclStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01757">ForeachActiveStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01918">ForeachUniqueStmt::EmitCode()</a>, <a class="el" href="ctx_8cpp_source.html#l01348">FunctionEmitContext::EmitFunctionParameterDebugInfo()</a>, <a class="el" href="ctx_8cpp_source.html#l01333">FunctionEmitContext::EmitVariableDebugInfo()</a>, <a class="el" href="func_8cpp_source.html#l00069">Function::Function()</a>, <a class="el" href="func_8cpp_source.html#l00412">Function::GenerateIR()</a>, <a class="el" href="expr_8cpp_source.html#l07694">FunctionSymbolExpr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l07614">SymbolExpr::GetLValueType()</a>, <a class="el" href="func_8cpp_source.html#l00148">Function::GetReturnType()</a>, <a class="el" href="func_8cpp_source.html#l00154">Function::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l07626">SymbolExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l07665">FunctionSymbolExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l07597">SymbolExpr::GetValue()</a>, <a class="el" href="func_8cpp_source.html#l00165">lCopyInTaskParameter()</a>, <a class="el" href="builtins_8cpp_source.html#l00822">lDefineConstantInt()</a>, <a class="el" href="builtins_8cpp_source.html#l00869">lDefineProgramIndex()</a>, <a class="el" href="module_8cpp_source.html#l01307">lIsExported()</a>, <a class="el" href="module_8cpp_source.html#l01313">lIsExternC()</a>, <a class="el" href="expr_8cpp_source.html#l00902">lMaskForSymbol()</a>, <a class="el" href="expr_8cpp_source.html#l00921">lStoreAssignResult()</a>, <a class="el" href="stmt_8cpp_source.html#l00235">DeclStmt::Optimize()</a>, <a class="el" href="sym_8cpp_source.html#l00272">SymbolTable::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l01877">ForeachActiveStmt::Print()</a>, <a class="el" href="stmt_8cpp_source.html#l02072">ForeachUniqueStmt::Print()</a>, <a class="el" href="sym_8cpp_source.html#l00046">Symbol()</a>, <a class="el" href="module_8cpp_source.html#l01422">Module::writeDevStub()</a>, and <a class="el" href="module_8cpp_source.html#l01557">Module::writeHostStub()</a>.</p>
 
 </div>
 </div>
@@ -331,9 +331,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>This member records the number of levels of nested 'varying' control flow within which the symbol was declared. Having this value available makes it possible to avoid performing masked stores when modifying the symbol's value when the store is done at the same 'varying' control flow depth as the one where the symbol was originally declared. </p>
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00097">97</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00096">96</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="stmt_8cpp_source.html#l00185">DeclStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l00918">lStoreAssignResult()</a>, and <a class="el" href="sym_8cpp_source.html#l00046">Symbol()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="stmt_8cpp_source.html#l00111">DeclStmt::EmitCode()</a>, <a class="el" href="expr_8cpp_source.html#l00921">lStoreAssignResult()</a>, and <a class="el" href="sym_8cpp_source.html#l00046">Symbol()</a>.</p>
 
 </div>
 </div>
@@ -344,7 +344,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:25 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

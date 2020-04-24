@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: IntrinsicsOpt Class Reference</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): IntrinsicsOpt Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -71,10 +71,12 @@ Classes</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8bf54ce5e9b0cc3c17ca5574d81d3ba7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIntrinsicsOpt.html#a8bf54ce5e9b0cc3c17ca5574d81d3ba7">IntrinsicsOpt</a> ()</td></tr>
 <tr class="separator:a8bf54ce5e9b0cc3c17ca5574d81d3ba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a780215e371b41e861e32ae7f2952cd54"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIntrinsicsOpt.html#a780215e371b41e861e32ae7f2952cd54">getPassName</a> () const</td></tr>
-<tr class="separator:a780215e371b41e861e32ae7f2952cd54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7836114c6804c4abb39dd43f48d20343"><td class="memItemLeft" align="right" valign="top">llvm::StringRef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIntrinsicsOpt.html#a7836114c6804c4abb39dd43f48d20343">getPassName</a> () const</td></tr>
+<tr class="separator:a7836114c6804c4abb39dd43f48d20343"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab05215a4b96664fb22cd823ebe1b8d2b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIntrinsicsOpt.html#ab05215a4b96664fb22cd823ebe1b8d2b">runOnBasicBlock</a> (llvm::BasicBlock &amp;BB)</td></tr>
 <tr class="separator:ab05215a4b96664fb22cd823ebe1b8d2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a353fad075afeab66468f062b8f5b19cb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIntrinsicsOpt.html#a353fad075afeab66468f062b8f5b19cb">runOnFunction</a> (llvm::Function &amp;F)</td></tr>
+<tr class="separator:a353fad075afeab66468f062b8f5b19cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -97,9 +99,9 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is a relatively simple optimization pass that does a few small optimizations that LLVM's x86 optimizer doesn't currently handle. (Specifically, MOVMSK of a constant can be replaced with the corresponding constant value, BLENDVPS and AVX masked load/store with either an 'all on' or 'all off' masks can be replaced with simpler operations.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>The better thing to do would be to submit a patch to LLVM to get these; they're presumably pretty simple patterns to match. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>The better thing to do would be to submit a patch to LLVM to get these; they're presumably pretty simple patterns to match. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00923">923</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00676">676</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8bf54ce5e9b0cc3c17ca5574d81d3ba7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8bf54ce5e9b0cc3c17ca5574d81d3ba7">&#9670;&nbsp;</a></span>IntrinsicsOpt()</h2>
@@ -124,13 +126,13 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00925">925</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00678">678</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a780215e371b41e861e32ae7f2952cd54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a780215e371b41e861e32ae7f2952cd54">&#9670;&nbsp;</a></span>getPassName()</h2>
+<a id="a7836114c6804c4abb39dd43f48d20343"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7836114c6804c4abb39dd43f48d20343">&#9670;&nbsp;</a></span>getPassName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -139,7 +141,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const char* IntrinsicsOpt::getPassName </td>
+          <td class="memname">llvm::StringRef IntrinsicsOpt::getPassName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -152,7 +154,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00928">928</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00680">680</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -180,7 +182,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01173">1173</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00943">943</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -208,7 +210,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01182">1182</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00952">952</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -228,9 +230,29 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00991">991</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00743">743</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00952">IntrinsicsOpt::BlendInstruction::allOnMask</a>, <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="opt_8cpp_source.html#l00187">DEBUG_END_PASS</a>, <a class="el" href="opt_8cpp_source.html#l00177">DEBUG_START_PASS</a>, <a class="el" href="ispc_8h_source.html#l00466">Opt::forceAlignedMemory</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00275">Target::getNativeVectorAlignment()</a>, <a class="el" href="llvmutil_8h_source.html#l00077">LLVMTypes::Int32Type</a>, <a class="el" href="opt_8cpp_source.html#l00213">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l00381">lGetMask()</a>, <a class="el" href="opt_8cpp_source.html#l00980">lIsUndef()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01518">LLVMGetName()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00236">LLVMInt64()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="module_8h_source.html#l00156">Module::module</a>, <a class="el" href="opt_8cpp_source.html#l00955">IntrinsicsOpt::BlendInstruction::op0</a>, <a class="el" href="opt_8cpp_source.html#l00958">IntrinsicsOpt::BlendInstruction::op1</a>, <a class="el" href="opt_8cpp_source.html#l00961">IntrinsicsOpt::BlendInstruction::opFactor</a>, <a class="el" href="ispc_8h_source.html#l00542">Globals::opt</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00704">IntrinsicsOpt::BlendInstruction::allOnMask</a>, <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="opt_8cpp_source.html#l00151">DEBUG_END_PASS</a>, <a class="el" href="opt_8cpp_source.html#l00141">DEBUG_START_PASS</a>, <a class="el" href="ispc_8h_source.html#l00426">Opt::forceAlignedMemory</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00241">Target::getNativeVectorAlignment()</a>, <a class="el" href="llvmutil_8h_source.html#l00067">LLVMTypes::Int32Type</a>, <a class="el" href="opt_8cpp_source.html#l00177">lCopyMetadata()</a>, <a class="el" href="opt_8cpp_source.html#l00328">lGetMask()</a>, <a class="el" href="opt_8cpp_source.html#l00732">lIsUndef()</a>, <a class="el" href="llvmutil_8cpp_source.html#l01549">LLVMGetName()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00233">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00241">LLVMInt64()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, <a class="el" href="module_8h_source.html#l00151">Module::module</a>, <a class="el" href="opt_8cpp_source.html#l00707">IntrinsicsOpt::BlendInstruction::op0</a>, <a class="el" href="opt_8cpp_source.html#l00710">IntrinsicsOpt::BlendInstruction::op1</a>, <a class="el" href="opt_8cpp_source.html#l00713">IntrinsicsOpt::BlendInstruction::opFactor</a>, <a class="el" href="ispc_8h_source.html#l00509">Globals::opt</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
+
+</div>
+</div>
+<a id="a353fad075afeab66468f062b8f5b19cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a353fad075afeab66468f062b8f5b19cb">&#9670;&nbsp;</a></span>runOnFunction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool IntrinsicsOpt::runOnFunction </td>
+          <td>(</td>
+          <td class="paramtype">llvm::Function &amp;&#160;</td>
+          <td class="paramname"><em>F</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00934">934</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -255,7 +277,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00963">963</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00715">715</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -279,7 +301,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00934">934</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00686">686</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -303,7 +325,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00941">941</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00693">693</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -313,7 +335,7 @@ Private Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:25 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

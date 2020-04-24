@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: Opt Struct Reference</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): Opt Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -100,12 +100,14 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ade00ce91375beef743b1dc773a526d12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1d46f2e5700ea95e8a9903225f37a6e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOpt.html#ae1d46f2e5700ea95e8a9903225f37a6e">disableCoalescing</a></td></tr>
 <tr class="separator:ae1d46f2e5700ea95e8a9903225f37a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0051d4e1c2b64e4d326d18a7481d1060"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOpt.html#a0051d4e1c2b64e4d326d18a7481d1060">disableZMM</a></td></tr>
+<tr class="separator:a0051d4e1c2b64e4d326d18a7481d1060"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Structure that collects optimization options. </p>
 <p>This structure collects all of the options related to optimization of generated code. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00426">426</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00386">386</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae1ec631e0d039be80e5182b5d79ec0dd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae1ec631e0d039be80e5182b5d79ec0dd">&#9670;&nbsp;</a></span>Opt()</h2>
@@ -122,7 +124,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ispc_8cpp_source.html#l01549">1549</a> of file <a class="el" href="ispc_8cpp_source.html">ispc.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8cpp_source.html#l01419">1419</a> of file <a class="el" href="ispc_8cpp_source.html">ispc.cpp</a>.</p>
 
 </div>
 </div>
@@ -138,11 +140,11 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Indicates whether <a class="el" href="ispc_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert()</a> statements should be ignored (for performance in the generated code). </p>
+<p>Indicates whether <a class="el" href="util_8h.html#aab1e54dcc40192f9704e8b252635450f">Assert()</a> statements should be ignored (for performance in the generated code). </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00456">456</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00416">416</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l02409">Module::execPreprocessor()</a>, and <a class="el" href="main_8cpp_source.html#l00418">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l01907">Module::execPreprocessor()</a>, and <a class="el" href="main_8cpp_source.html#l00482">main()</a>.</p>
 
 </div>
 </div>
@@ -159,9 +161,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>On targets that don't have a masked store instruction but do have a blending instruction, by default, we simulate masked stores by loading the old value, blending, and storing the result. This can potentially be unsafe in multi-threaded code, in that it writes to locations that aren't supposed to be written to. Setting this value to true disables this work-around, and instead implements masked stores by 'scalarizing' them, so that we iterate over the ISIMD lanes and do a scalar write for the ones that are running. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00487">487</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00447">447</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04050">lReplacePseudoMaskedStore()</a>, and <a class="el" href="main_8cpp_source.html#l00418">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l03860">lReplacePseudoMaskedStore()</a>, and <a class="el" href="main_8cpp_source.html#l00482">main()</a>.</p>
 
 </div>
 </div>
@@ -178,9 +180,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Disables optimizations that coalesce incoherent scalar memory access from gathers into wider vector operations, when possible. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00527">527</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00487">487</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00418">main()</a>, and <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00482">main()</a>, and <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>.</p>
 
 </div>
 </div>
@@ -197,9 +199,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Disables the 'coherent control flow' constructs in the language. (e.g. this causes "cif" statements to be demoted to "if" statements.) This is likely only useful for measuring the impact of coherent control flow. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00493">493</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00453">453</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="func_8cpp_source.html#l00226">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00754">IfStmt::emitMaskAllOn()</a>, <a class="el" href="stmt_8cpp_source.html#l00683">IfStmt::emitVaryingIf()</a>, and <a class="el" href="main_8cpp_source.html#l00418">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="func_8cpp_source.html#l00200">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00571">IfStmt::emitMaskAllOn()</a>, <a class="el" href="stmt_8cpp_source.html#l00500">IfStmt::emitVaryingIf()</a>, and <a class="el" href="main_8cpp_source.html#l00482">main()</a>.</p>
 
 </div>
 </div>
@@ -216,9 +218,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Indicates whether FMA instructions should be disabled (on targets that support them). </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00460">460</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00420">420</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00418">main()</a>, and <a class="el" href="ispc_8cpp_source.html#l00516">Target::Target()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00482">main()</a>, and <a class="el" href="ispc_8cpp_source.html#l00443">Target::Target()</a>.</p>
 
 </div>
 </div>
@@ -235,9 +237,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Disables the optimization that detects when the execution mask is all on and emits code for gathers and scatters that doesn't loop over the SIMD lanes but just does the scalar loads and stores directly. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00517">517</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00477">477</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00418">main()</a>, and <a class="el" href="opt_8cpp_source.html#l04316">IsCompileTimeConstantPass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00482">main()</a>, and <a class="el" href="opt_8cpp_source.html#l04132">IsCompileTimeConstantPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -254,9 +256,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Disables the backend optimizations related to gather/scatter (e.g. transforming gather from sequential locations to an unaligned load, etc.) This is likely only useful for measuring the impact of these optimizations. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00505">505</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00465">465</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00418">main()</a>, and <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00482">main()</a>, and <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>.</p>
 
 </div>
 </div>
@@ -273,9 +275,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>If enabled, the various __pseudo* memory ops (gather/scatter, masked load/store) are left in their __pseudo* form, for better understanding of the structure of generated code when reading it. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00477">477</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00437">437</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00418">main()</a>, and <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00482">main()</a>, and <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>.</p>
 
 </div>
 </div>
@@ -292,9 +294,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>If enabled, disables the various optimizations that kick in when the execution mask can be determined to be "all on" at compile time. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00471">471</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00431">431</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="func_8cpp_source.html#l00226">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00957">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01121">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00754">IfStmt::emitMaskAllOn()</a>, <a class="el" href="ctx_8cpp_source.html#l00211">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="expr_8cpp_source.html#l00918">lStoreAssignResult()</a>, <a class="el" href="main_8cpp_source.html#l00418">main()</a>, <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>, <a class="el" href="opt_8cpp_source.html#l04316">IsCompileTimeConstantPass::runOnBasicBlock()</a>, and <a class="el" href="ctx_8cpp_source.html#l02846">FunctionEmitContext::StoreInst()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="func_8cpp_source.html#l00200">Function::emitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00758">DoStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00922">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00571">IfStmt::emitMaskAllOn()</a>, <a class="el" href="ctx_8cpp_source.html#l00199">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="expr_8cpp_source.html#l00921">lStoreAssignResult()</a>, <a class="el" href="main_8cpp_source.html#l00482">main()</a>, <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>, <a class="el" href="opt_8cpp_source.html#l04132">IsCompileTimeConstantPass::runOnBasicBlock()</a>, and <a class="el" href="ctx_8cpp_source.html#l02708">FunctionEmitContext::StoreInst()</a>.</p>
 
 </div>
 </div>
@@ -311,9 +313,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Disables the optimization that demotes masked stores to regular stores when the store is happening at the same control flow level where the variable was declared. This is likely only useful for measuring the impact of this optimization. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00511">511</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00471">471</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l00918">lStoreAssignResult()</a>, and <a class="el" href="main_8cpp_source.html#l00418">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l00921">lStoreAssignResult()</a>, and <a class="el" href="main_8cpp_source.html#l00482">main()</a>.</p>
 
 </div>
 </div>
@@ -330,9 +332,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Disables uniform control flow optimizations (e.g. this changes an "if" statement with a uniform condition to have a varying condition). This is likely only useful for measuring the impact of uniform control flow. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00499">499</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00459">459</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="stmt_8cpp_source.html#l01121">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l01093">DoStmt::EstimateCost()</a>, <a class="el" href="stmt_8cpp_source.html#l01266">ForStmt::EstimateCost()</a>, <a class="el" href="main_8cpp_source.html#l00418">main()</a>, <a class="el" href="stmt_8cpp_source.html#l00623">IfStmt::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l01065">DoStmt::TypeCheck()</a>, and <a class="el" href="stmt_8cpp_source.html#l01250">ForStmt::TypeCheck()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="stmt_8cpp_source.html#l00922">ForStmt::EmitCode()</a>, <a class="el" href="stmt_8cpp_source.html#l00894">DoStmt::EstimateCost()</a>, <a class="el" href="stmt_8cpp_source.html#l01067">ForStmt::EstimateCost()</a>, <a class="el" href="main_8cpp_source.html#l00482">main()</a>, <a class="el" href="stmt_8cpp_source.html#l00440">IfStmt::TypeCheck()</a>, <a class="el" href="stmt_8cpp_source.html#l00866">DoStmt::TypeCheck()</a>, and <a class="el" href="stmt_8cpp_source.html#l01051">ForStmt::TypeCheck()</a>.</p>
 
 </div>
 </div>
@@ -349,9 +351,28 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Disables the optimizations that detect when arrays are being indexed with 'uniform' values and issue scalar loads/stores rather than gathers/scatters. This is likely only useful for measuring the impact of this optimization. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00523">523</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00483">483</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00418">main()</a>, and <a class="el" href="expr_8cpp_source.html#l04244">IndexExpr::TypeCheck()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00482">main()</a>, and <a class="el" href="expr_8cpp_source.html#l04361">IndexExpr::TypeCheck()</a>.</p>
+
+</div>
+</div>
+<a id="a0051d4e1c2b64e4d326d18a7481d1060"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0051d4e1c2b64e4d326d18a7481d1060">&#9670;&nbsp;</a></span>disableZMM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Opt::disableZMM</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Disable using zmm registers for avx512 target in favour of ymm. Affects only &gt;= 512 bit wide targets and only if avx512vl is available </p>
+
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00491">491</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00482">main()</a>, and <a class="el" href="ispc_8cpp_source.html#l00443">Target::Target()</a>.</p>
 
 </div>
 </div>
@@ -368,9 +389,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Indicates whether an vector load should be issued for masked loads on platforms that don't have a native masked vector load. (This may lead to accessing memory up to programCount-1 elements past the end of arrays, so is unsafe in general.) </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00442">442</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00402">402</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="builtins_8cpp_source.html#l01133">DefineStdlib()</a>, and <a class="el" href="main_8cpp_source.html#l00418">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="builtins_8cpp_source.html#l00920">DefineStdlib()</a>, and <a class="el" href="main_8cpp_source.html#l00482">main()</a>.</p>
 
 </div>
 </div>
@@ -387,9 +408,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Indicates whether "fast and loose" numerically unsafe optimizations should be performed. This is false by default. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00436">436</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00396">396</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00418">main()</a>, <a class="el" href="expr_8cpp_source.html#l02198">BinaryExpr::Optimize()</a>, and <a class="el" href="cbackend_8cpp_source.html#l02472">PrintEscapedString()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00482">main()</a>, <a class="el" href="expr_8cpp_source.html#l02200">BinaryExpr::Optimize()</a>, and <a class="el" href="cbackend_8cpp_source.html#l02269">PrintEscapedString()</a>.</p>
 
 </div>
 </div>
@@ -406,9 +427,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Indicates if addressing math will be done with 32-bit math, even on 64-bit systems. (This is generally noticably more efficient, though at the cost of addressing &gt;2GB). </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00452">452</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00412">412</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l02179">FunctionEmitContext::AddElementOffset()</a>, <a class="el" href="ctx_8cpp_source.html#l03491">FunctionEmitContext::addVaryingOffsetsIfNeeded()</a>, <a class="el" href="ctx_8cpp_source.html#l01913">FunctionEmitContext::applyVaryingGEP()</a>, <a class="el" href="expr_8cpp_source.html#l01934">BinaryExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l07337">SizeOfExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l07911">NewExpr::GetValue()</a>, <a class="el" href="module_8cpp_source.html#l00148">lDeclareSizeAndPtrIntTypes()</a>, <a class="el" href="expr_8cpp_source.html#l01384">lEmitBinaryPointerArith()</a>, <a class="el" href="opt_8cpp_source.html#l02084">lGSToGSBaseOffsets()</a>, <a class="el" href="main_8cpp_source.html#l00418">main()</a>, <a class="el" href="ispc_8cpp_source.html#l01475">Target::SizeOf()</a>, <a class="el" href="ispc_8cpp_source.html#l01500">Target::StructOffset()</a>, <a class="el" href="expr_8cpp_source.html#l04244">IndexExpr::TypeCheck()</a>, and <a class="el" href="expr_8cpp_source.html#l08033">NewExpr::TypeCheck()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l01951">FunctionEmitContext::AddElementOffset()</a>, <a class="el" href="ctx_8cpp_source.html#l03253">FunctionEmitContext::addVaryingOffsetsIfNeeded()</a>, <a class="el" href="ctx_8cpp_source.html#l01693">FunctionEmitContext::applyVaryingGEP()</a>, <a class="el" href="expr_8cpp_source.html#l01936">BinaryExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l07539">SizeOfExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l08125">NewExpr::GetValue()</a>, <a class="el" href="module_8cpp_source.html#l00106">lDeclareSizeAndPtrIntTypes()</a>, <a class="el" href="expr_8cpp_source.html#l01387">lEmitBinaryPointerArith()</a>, <a class="el" href="opt_8cpp_source.html#l01863">lGSToGSBaseOffsets()</a>, <a class="el" href="main_8cpp_source.html#l00482">main()</a>, <a class="el" href="ispc_8cpp_source.html#l01359">Target::SizeOf()</a>, <a class="el" href="ispc_8cpp_source.html#l01380">Target::StructOffset()</a>, <a class="el" href="expr_8cpp_source.html#l04361">IndexExpr::TypeCheck()</a>, and <a class="el" href="expr_8cpp_source.html#l08247">NewExpr::TypeCheck()</a>.</p>
 
 </div>
 </div>
@@ -425,9 +446,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Always generate aligned vector load/store instructions; this implies a guarantee that all dynamic access through pointers that becomes a vector load/store will be a cache-aligned sequence of locations. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00466">466</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00426">426</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l02409">Module::execPreprocessor()</a>, <a class="el" href="ctx_8cpp_source.html#l00211">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="opt_8cpp_source.html#l03299">lEmitLoads()</a>, <a class="el" href="opt_8cpp_source.html#l02913">lImproveMaskedLoad()</a>, <a class="el" href="opt_8cpp_source.html#l02850">lImproveMaskedStore()</a>, <a class="el" href="ctx_8cpp_source.html#l02283">FunctionEmitContext::LoadInst()</a>, <a class="el" href="main_8cpp_source.html#l00418">main()</a>, <a class="el" href="cbackend_8cpp_source.html#l02472">PrintEscapedString()</a>, <a class="el" href="opt_8cpp_source.html#l00991">IntrinsicsOpt::runOnBasicBlock()</a>, and <a class="el" href="ctx_8cpp_source.html#l02827">FunctionEmitContext::StoreInst()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l01907">Module::execPreprocessor()</a>, <a class="el" href="ctx_8cpp_source.html#l00199">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="opt_8cpp_source.html#l03102">lEmitLoads()</a>, <a class="el" href="opt_8cpp_source.html#l02701">lImproveMaskedLoad()</a>, <a class="el" href="opt_8cpp_source.html#l02633">lImproveMaskedStore()</a>, <a class="el" href="ctx_8cpp_source.html#l02071">FunctionEmitContext::LoadInst()</a>, <a class="el" href="main_8cpp_source.html#l00482">main()</a>, <a class="el" href="cbackend_8cpp_source.html#l02269">PrintEscapedString()</a>, <a class="el" href="opt_8cpp_source.html#l00743">IntrinsicsOpt::runOnBasicBlock()</a>, and <a class="el" href="ctx_8cpp_source.html#l02674">FunctionEmitContext::StoreInst()</a>.</p>
 
 </div>
 </div>
@@ -444,9 +465,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Optimization level. Currently, the only valid values are 0, indicating essentially no optimization, and 1, indicating as much optimization as possible. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00432">432</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00392">392</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l00465">Module::CompileFile()</a>, <a class="el" href="ctx_8cpp_source.html#l00211">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="opt_8cpp_source.html#l03219">lCoalescePerfInfo()</a>, <a class="el" href="opt_8cpp_source.html#l04101">lReplacePseudoGS()</a>, <a class="el" href="main_8cpp_source.html#l00418">main()</a>, <a class="el" href="module_8cpp_source.html#l00376">Module::Module()</a>, and <a class="el" href="opt_8cpp_source.html#l04989">ReplaceStdlibShiftPass::runOnBasicBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="module_8cpp_source.html#l00203">Module::CompileFile()</a>, <a class="el" href="ctx_8cpp_source.html#l00199">FunctionEmitContext::FunctionEmitContext()</a>, <a class="el" href="opt_8cpp_source.html#l03018">lCoalescePerfInfo()</a>, <a class="el" href="opt_8cpp_source.html#l03911">lReplacePseudoGS()</a>, <a class="el" href="main_8cpp_source.html#l00482">main()</a>, <a class="el" href="module_8cpp_source.html#l00131">Module::Module()</a>, and <a class="el" href="opt_8cpp_source.html#l04800">ReplaceStdlibShiftPass::runOnBasicBlock()</a>.</p>
 
 </div>
 </div>
@@ -463,9 +484,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Indicates when loops should be unrolled (when doing so seems like it will make sense. </p>
 
-<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00446">446</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ispc_8h_source.html#l00406">406</a> of file <a class="el" href="ispc_8h_source.html">ispc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00418">main()</a>, and <a class="el" href="opt_8cpp_source.html#l00514">Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00482">main()</a>, and <a class="el" href="opt_8cpp_source.html#l00441">Optimize()</a>.</p>
 
 </div>
 </div>
@@ -476,7 +497,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:25 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

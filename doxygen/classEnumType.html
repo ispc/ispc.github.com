@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: EnumType Class Reference</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): EnumType Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -115,8 +115,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a239e725c9fe630aa16b31737282c48ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ff26311dc903b2f2b9f44cc977ee871"><td class="memItemLeft" align="right" valign="top">llvm::Type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnumType.html#a4ff26311dc903b2f2b9f44cc977ee871">LLVMType</a> (llvm::LLVMContext *ctx) const</td></tr>
 <tr class="separator:a4ff26311dc903b2f2b9f44cc977ee871"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b1186487e76c79fc9e1361214135919"><td class="memItemLeft" align="right" valign="top">llvm::DIType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnumType.html#a3b1186487e76c79fc9e1361214135919">GetDIType</a> (llvm::DIDescriptor scope) const</td></tr>
-<tr class="separator:a3b1186487e76c79fc9e1361214135919"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2342b929607f3d3625c68bcb23cbce1b"><td class="memItemLeft" align="right" valign="top">llvm::DIType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnumType.html#a2342b929607f3d3625c68bcb23cbce1b">GetDIType</a> (llvm::DIScope *scope) const</td></tr>
+<tr class="separator:a2342b929607f3d3625c68bcb23cbce1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3dc6d2e5b2fdeef3866ad9e533331fa7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnumType.html#a3dc6d2e5b2fdeef3866ad9e533331fa7">SetEnumerators</a> (const std::vector&lt; <a class="el" href="classSymbol.html">Symbol</a> *&gt; &amp;<a class="el" href="classEnumType.html#ae85274b284c2fce1dc151383edd4de3e">enumerators</a>)</td></tr>
 <tr class="separator:a3dc6d2e5b2fdeef3866ad9e533331fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66720c3a60343beb324b5f6b9b3f6d73"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnumType.html#a66720c3a60343beb324b5f6b9b3f6d73">GetEnumeratorCount</a> () const</td></tr>
@@ -148,6 +148,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a429d666b04662ecb96fc6aba86888ab1 inherit pub_methods_classType"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f09be1885ea192d10204385e2177277 inherit pub_methods_classType"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classType.html">Type</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classType.html#a7f09be1885ea192d10204385e2177277">GetReferenceTarget</a> () const</td></tr>
 <tr class="separator:a7f09be1885ea192d10204385e2177277 inherit pub_methods_classType"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab311bc549bbf9b4a1136a78eb276897c inherit pub_methods_classType"><td class="memItemLeft" align="right" valign="top">virtual llvm::Type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classType.html#ab311bc549bbf9b4a1136a78eb276897c">LLVMStorageType</a> (llvm::LLVMContext *ctx) const</td></tr>
+<tr class="separator:ab311bc549bbf9b4a1136a78eb276897c inherit pub_methods_classType"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -185,8 +187,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classType.html" title="Interface class that defines the type abstraction. ">Type</a> implementation for enumerated types. </p>
+<p>Note that ISPC enum assumes 32 bit int as underlying type. </p>
 
-<p class="definition">Definition at line <a class="el" href="type_8h_source.html#l00355">355</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8h_source.html#l00347">347</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6774ca40ce5f5dcefeed0b4b0c949304"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6774ca40ce5f5dcefeed0b4b0c949304">&#9670;&nbsp;</a></span>EnumType() <span class="overload">[1/2]</span></h2>
@@ -205,11 +208,11 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Constructor for anonymous enumerated types </p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00644">644</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00578">578</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8h_source.html#l00406">isConst</a>, <a class="el" href="type_8h_source.html#l00059">Variability::Unbound</a>, and <a class="el" href="type_8h_source.html#l00405">variability</a>.</p>
+<p class="reference">References <a class="el" href="type_8h_source.html#l00395">isConst</a>, <a class="el" href="type_8h_source.html#l00054">Variability::Unbound</a>, and <a class="el" href="type_8h_source.html#l00394">variability</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="type_8cpp_source.html#l00719">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00729">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00709">GetAsSOAType()</a>, <a class="el" href="type_8cpp_source.html#l00699">GetAsUnboundVariabilityType()</a>, <a class="el" href="type_8cpp_source.html#l00669">GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00689">GetAsVaryingType()</a>, and <a class="el" href="type_8cpp_source.html#l00679">ResolveUnboundVariability()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="type_8cpp_source.html#l00653">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00663">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00643">GetAsSOAType()</a>, <a class="el" href="type_8cpp_source.html#l00633">GetAsUnboundVariabilityType()</a>, <a class="el" href="type_8cpp_source.html#l00603">GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00623">GetAsVaryingType()</a>, and <a class="el" href="type_8cpp_source.html#l00613">ResolveUnboundVariability()</a>.</p>
 
 </div>
 </div>
@@ -240,9 +243,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Constructor for named enumerated types </p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00650">650</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00584">584</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8h_source.html#l00406">isConst</a>, <a class="el" href="type_8h_source.html#l00059">Variability::Unbound</a>, and <a class="el" href="type_8h_source.html#l00405">variability</a>.</p>
+<p class="reference">References <a class="el" href="type_8h_source.html#l00395">isConst</a>, <a class="el" href="type_8h_source.html#l00054">Variability::Unbound</a>, and <a class="el" href="type_8h_source.html#l00394">variability</a>.</p>
 
 </div>
 </div>
@@ -273,9 +276,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00719">719</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00653">653</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8cpp_source.html#l00644">EnumType()</a>, and <a class="el" href="type_8h_source.html#l00406">isConst</a>.</p>
+<p class="reference">References <a class="el" href="type_8cpp_source.html#l00578">EnumType()</a>, and <a class="el" href="type_8h_source.html#l00395">isConst</a>.</p>
 
 </div>
 </div>
@@ -305,9 +308,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00729">729</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00663">663</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8cpp_source.html#l00644">EnumType()</a>, and <a class="el" href="type_8h_source.html#l00406">isConst</a>.</p>
+<p class="reference">References <a class="el" href="type_8cpp_source.html#l00578">EnumType()</a>, and <a class="el" href="type_8h_source.html#l00395">isConst</a>.</p>
 
 </div>
 </div>
@@ -337,9 +340,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#af3681d5c019998d033aec355d0157c54">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00709">709</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00643">643</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8cpp_source.html#l00644">EnumType()</a>, <a class="el" href="type_8h_source.html#l00150">Type::GetSOAWidth()</a>, <a class="el" href="type_8h_source.html#l00059">Variability::SOA</a>, and <a class="el" href="type_8h_source.html#l00405">variability</a>.</p>
+<p class="reference">References <a class="el" href="type_8cpp_source.html#l00578">EnumType()</a>, <a class="el" href="type_8h_source.html#l00145">Type::GetSOAWidth()</a>, <a class="el" href="type_8h_source.html#l00054">Variability::SOA</a>, and <a class="el" href="type_8h_source.html#l00394">variability</a>.</p>
 
 </div>
 </div>
@@ -369,9 +372,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a11499a547136ca713db16214f71ecbf2">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00699">699</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00633">633</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8cpp_source.html#l00644">EnumType()</a>, <a class="el" href="type_8h_source.html#l00154">Type::HasUnboundVariability()</a>, <a class="el" href="type_8h_source.html#l00059">Variability::Unbound</a>, and <a class="el" href="type_8h_source.html#l00405">variability</a>.</p>
+<p class="reference">References <a class="el" href="type_8cpp_source.html#l00578">EnumType()</a>, <a class="el" href="type_8h_source.html#l00149">Type::HasUnboundVariability()</a>, <a class="el" href="type_8h_source.html#l00054">Variability::Unbound</a>, and <a class="el" href="type_8h_source.html#l00394">variability</a>.</p>
 
 </div>
 </div>
@@ -401,9 +404,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#ab0eff8692794d3437a91404c98985d20">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00669">669</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00603">603</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8cpp_source.html#l00644">EnumType()</a>, <a class="el" href="type_8h_source.html#l00139">Type::IsUniformType()</a>, <a class="el" href="type_8h_source.html#l00059">Variability::Uniform</a>, and <a class="el" href="type_8h_source.html#l00405">variability</a>.</p>
+<p class="reference">References <a class="el" href="type_8cpp_source.html#l00578">EnumType()</a>, <a class="el" href="type_8h_source.html#l00134">Type::IsUniformType()</a>, <a class="el" href="type_8h_source.html#l00054">Variability::Uniform</a>, and <a class="el" href="type_8h_source.html#l00394">variability</a>.</p>
 
 </div>
 </div>
@@ -433,9 +436,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#aedfa3c719db7ab073c5e1f75b4041e55">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00689">689</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00623">623</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8cpp_source.html#l00644">EnumType()</a>, <a class="el" href="type_8h_source.html#l00142">Type::IsVaryingType()</a>, <a class="el" href="type_8h_source.html#l00405">variability</a>, and <a class="el" href="type_8h_source.html#l00059">Variability::Varying</a>.</p>
+<p class="reference">References <a class="el" href="type_8cpp_source.html#l00578">EnumType()</a>, <a class="el" href="type_8h_source.html#l00137">Type::IsVaryingType()</a>, <a class="el" href="type_8h_source.html#l00394">variability</a>, and <a class="el" href="type_8h_source.html#l00054">Variability::Varying</a>.</p>
 
 </div>
 </div>
@@ -465,7 +468,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a51af28faf17eb05982547d9b340429eb">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00667">667</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00601">601</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
 </div>
 </div>
@@ -496,14 +499,14 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a7e35141766bbc63333953263cd85d883">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00763">763</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00697">697</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="module_8h_source.html#l00149">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00279">Target::getVectorWidth()</a>, <a class="el" href="type_8h_source.html#l00406">isConst</a>, <a class="el" href="type_8cpp_source.html#l00073">lShouldPrintName()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="type_8h_source.html#l00404">name</a>, <a class="el" href="type_8h_source.html#l00059">Variability::SOA</a>, <a class="el" href="type_8h_source.html#l00073">Variability::soaWidth</a>, <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>, <a class="el" href="type_8h_source.html#l00059">Variability::Unbound</a>, <a class="el" href="type_8h_source.html#l00405">variability</a>, and <a class="el" href="type_8h_source.html#l00059">Variability::Varying</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="module_8h_source.html#l00144">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00245">Target::getVectorWidth()</a>, <a class="el" href="type_8h_source.html#l00395">isConst</a>, <a class="el" href="type_8cpp_source.html#l00059">lShouldPrintName()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, <a class="el" href="type_8h_source.html#l00393">name</a>, <a class="el" href="type_8h_source.html#l00054">Variability::SOA</a>, <a class="el" href="type_8h_source.html#l00068">Variability::soaWidth</a>, <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>, <a class="el" href="type_8h_source.html#l00054">Variability::Unbound</a>, <a class="el" href="type_8h_source.html#l00394">variability</a>, and <a class="el" href="type_8h_source.html#l00054">Variability::Varying</a>.</p>
 
 </div>
 </div>
-<a id="a3b1186487e76c79fc9e1361214135919"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b1186487e76c79fc9e1361214135919">&#9670;&nbsp;</a></span>GetDIType()</h2>
+<a id="a2342b929607f3d3625c68bcb23cbce1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2342b929607f3d3625c68bcb23cbce1b">&#9670;&nbsp;</a></span>GetDIType()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -512,9 +515,9 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">llvm::DIType EnumType::GetDIType </td>
+          <td class="memname">llvm::DIType * EnumType::GetDIType </td>
           <td>(</td>
-          <td class="paramtype">llvm::DIDescriptor&#160;</td>
+          <td class="paramtype">llvm::DIScope *&#160;</td>
           <td class="paramname"><em>scope</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -527,11 +530,11 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns the DIType (LLVM's debugging information structure), corresponding to this type. </p>
 
-<p>Implements <a class="el" href="classType.html#a8b6ded269378020c769915bbbff3d73c">Type</a>.</p>
+<p>Implements <a class="el" href="classType.html#a6b0d6084272d19bd614d5cce2c738c6d">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00810">810</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00743">743</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="module_8h_source.html#l00159">Module::diBuilder</a>, <a class="el" href="type_8h_source.html#l00407">enumerators</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="ispc_8h_source.html#l00135">SourcePos::first_line</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8cpp_source.html#l01638">SourcePos::GetDIFile()</a>, <a class="el" href="type_8cpp_source.html#l00521">AtomicType::GetDIType()</a>, <a class="el" href="ispc_8h_source.html#l00279">Target::getVectorWidth()</a>, <a class="el" href="type_8cpp_source.html#l00085">lCreateDIArray()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="type_8h_source.html#l00404">name</a>, <a class="el" href="type_8h_source.html#l00401">pos</a>, <a class="el" href="type_8h_source.html#l00059">Variability::SOA</a>, <a class="el" href="type_8h_source.html#l00073">Variability::soaWidth</a>, <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>, <a class="el" href="type_8h_source.html#l00072">Variability::type</a>, <a class="el" href="type_8h_source.html#l00059">Variability::Uniform</a>, <a class="el" href="type_8h_source.html#l00405">variability</a>, and <a class="el" href="type_8h_source.html#l00059">Variability::Varying</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="module_8h_source.html#l00154">Module::diBuilder</a>, <a class="el" href="type_8h_source.html#l00396">enumerators</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="ispc_8h_source.html#l00127">SourcePos::first_line</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8cpp_source.html#l01507">SourcePos::GetDIFile()</a>, <a class="el" href="type_8cpp_source.html#l00512">AtomicType::GetDIType()</a>, <a class="el" href="ispc_8h_source.html#l00245">Target::getVectorWidth()</a>, <a class="el" href="type_8cpp_source.html#l00070">lCreateDIArray()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, <a class="el" href="type_8h_source.html#l00393">name</a>, <a class="el" href="type_8h_source.html#l00390">pos</a>, <a class="el" href="type_8h_source.html#l00054">Variability::SOA</a>, <a class="el" href="type_8h_source.html#l00068">Variability::soaWidth</a>, <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>, <a class="el" href="type_8h_source.html#l00067">Variability::type</a>, <a class="el" href="type_8h_source.html#l00054">Variability::Uniform</a>, <a class="el" href="type_8h_source.html#l00394">variability</a>, and <a class="el" href="type_8h_source.html#l00054">Variability::Varying</a>.</p>
 
 </div>
 </div>
@@ -552,9 +555,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns the symbol for the given enumerator number. </p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00887">887</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00787">787</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8h_source.html#l00407">enumerators</a>, <a class="el" href="type_8h_source.html#l00059">Variability::Uniform</a>, and <a class="el" href="type_8h_source.html#l00477">PointerType::Void</a>.</p>
+<p class="reference">References <a class="el" href="type_8h_source.html#l00396">enumerators</a>, <a class="el" href="type_8h_source.html#l00054">Variability::Uniform</a>, and <a class="el" href="type_8h_source.html#l00463">PointerType::Void</a>.</p>
 
 </div>
 </div>
@@ -574,9 +577,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns the total number of enuemrators in this enum type. </p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00885">885</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00785">785</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8h_source.html#l00407">enumerators</a>.</p>
+<p class="reference">References <a class="el" href="type_8h_source.html#l00396">enumerators</a>.</p>
 
 </div>
 </div>
@@ -604,7 +607,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns the name of the enum type. (e.g. struct Foo -&gt; "Foo".) </p>
 
-<p class="definition">Definition at line <a class="el" href="type_8h_source.html#l00385">385</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8h_source.html#l00377">377</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 
 </div>
 </div>
@@ -634,9 +637,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00739">739</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00673">673</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8cpp_source.html#l00128">Variability::GetString()</a>, <a class="el" href="type_8h_source.html#l00406">isConst</a>, <a class="el" href="type_8h_source.html#l00404">name</a>, and <a class="el" href="type_8h_source.html#l00405">variability</a>.</p>
+<p class="reference">References <a class="el" href="type_8cpp_source.html#l00085">Variability::GetString()</a>, <a class="el" href="type_8h_source.html#l00395">isConst</a>, <a class="el" href="type_8h_source.html#l00393">name</a>, and <a class="el" href="type_8h_source.html#l00394">variability</a>.</p>
 
 </div>
 </div>
@@ -666,11 +669,11 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a619effc9d2d2517bd884076eb9559b65">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00655">655</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00589">589</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8h_source.html#l00405">variability</a>.</p>
+<p class="reference">References <a class="el" href="type_8h_source.html#l00394">variability</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="type_8cpp_source.html#l03028">lCheckTypeEquality()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="type_8cpp_source.html#l02767">lCheckTypeEquality()</a>.</p>
 
 </div>
 </div>
@@ -700,7 +703,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a38ff6178597171c11f6e24566b251dea">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00657">657</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00591">591</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
 </div>
 </div>
@@ -730,9 +733,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a9a6d77fb89abc534e2ee1726cc13cf05">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00665">665</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00599">599</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8h_source.html#l00406">isConst</a>.</p>
+<p class="reference">References <a class="el" href="type_8h_source.html#l00395">isConst</a>.</p>
 
 </div>
 </div>
@@ -762,7 +765,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#aeee9fe8b11fc75a300cf37f8b5c9f034">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00659">659</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00593">593</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
 </div>
 </div>
@@ -792,7 +795,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a3b2b570093e27170d582b67211dd6836">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00661">661</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00595">595</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
 </div>
 </div>
@@ -822,7 +825,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a9fb5648ec4eb5b432723cf0b3332f8d0">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00663">663</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00597">597</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
 </div>
 </div>
@@ -849,13 +852,13 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Returns the LLVM type corresponding to this ispc type </p>
+<p>Returns the LLVM type corresponding to this ispc type. </p>
 
 <p>Implements <a class="el" href="classType.html#a04eb42d850a697fc181b388688b6393e">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00791">791</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00725">725</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="llvmutil_8h_source.html#l00077">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00095">LLVMTypes::Int32VectorType</a>, <a class="el" href="type_8cpp_source.html#l01198">ArrayType::LLVMType()</a>, <a class="el" href="type_8h_source.html#l00059">Variability::SOA</a>, <a class="el" href="type_8h_source.html#l00073">Variability::soaWidth</a>, <a class="el" href="type_8h_source.html#l00072">Variability::type</a>, <a class="el" href="type_8h_source.html#l00059">Variability::Unbound</a>, <a class="el" href="type_8h_source.html#l00059">Variability::Uniform</a>, <a class="el" href="type_8h_source.html#l00405">variability</a>, and <a class="el" href="type_8h_source.html#l00059">Variability::Varying</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="llvmutil_8h_source.html#l00067">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00086">LLVMTypes::Int32VectorType</a>, <a class="el" href="type_8cpp_source.html#l01080">ArrayType::LLVMType()</a>, <a class="el" href="type_8h_source.html#l00054">Variability::SOA</a>, <a class="el" href="type_8h_source.html#l00068">Variability::soaWidth</a>, <a class="el" href="type_8h_source.html#l00067">Variability::type</a>, <a class="el" href="type_8h_source.html#l00054">Variability::Unbound</a>, <a class="el" href="type_8h_source.html#l00054">Variability::Uniform</a>, <a class="el" href="type_8h_source.html#l00394">variability</a>, and <a class="el" href="type_8h_source.html#l00054">Variability::Varying</a>.</p>
 
 </div>
 </div>
@@ -885,9 +888,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#a7bd23bd909d493d271dbe1024d212c06">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00751">751</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00685">685</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="type_8h_source.html#l00406">isConst</a>, <a class="el" href="type_8cpp_source.html#l00147">Variability::MangleString()</a>, <a class="el" href="type_8h_source.html#l00404">name</a>, <a class="el" href="type_8h_source.html#l00059">Variability::Unbound</a>, and <a class="el" href="type_8h_source.html#l00405">variability</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="type_8h_source.html#l00395">isConst</a>, <a class="el" href="type_8cpp_source.html#l00104">Variability::MangleString()</a>, <a class="el" href="type_8h_source.html#l00393">name</a>, <a class="el" href="type_8h_source.html#l00054">Variability::Unbound</a>, and <a class="el" href="type_8h_source.html#l00394">variability</a>.</p>
 
 </div>
 </div>
@@ -917,9 +920,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classType.html#adced497622fac125548ef5531495c738">Type</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00679">679</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00613">613</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8cpp_source.html#l00644">EnumType()</a>, <a class="el" href="type_8h_source.html#l00059">Variability::Unbound</a>, and <a class="el" href="type_8h_source.html#l00405">variability</a>.</p>
+<p class="reference">References <a class="el" href="type_8cpp_source.html#l00578">EnumType()</a>, <a class="el" href="type_8h_source.html#l00054">Variability::Unbound</a>, and <a class="el" href="type_8h_source.html#l00394">variability</a>.</p>
 
 </div>
 </div>
@@ -940,9 +943,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Provides the enumerators defined in the enum definition. </p>
 
-<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00883">883</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8cpp_source.html#l00783">783</a> of file <a class="el" href="type_8cpp_source.html">type.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="type_8h_source.html#l00407">enumerators</a>.</p>
+<p class="reference">References <a class="el" href="type_8h_source.html#l00396">enumerators</a>.</p>
 
 </div>
 </div>
@@ -967,9 +970,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="type_8h_source.html#l00407">407</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8h_source.html#l00396">396</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="type_8cpp_source.html#l00810">GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00887">GetEnumerator()</a>, <a class="el" href="type_8cpp_source.html#l00885">GetEnumeratorCount()</a>, and <a class="el" href="type_8cpp_source.html#l00883">SetEnumerators()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="type_8cpp_source.html#l00743">GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00787">GetEnumerator()</a>, <a class="el" href="type_8cpp_source.html#l00785">GetEnumeratorCount()</a>, and <a class="el" href="type_8cpp_source.html#l00783">SetEnumerators()</a>.</p>
 
 </div>
 </div>
@@ -993,9 +996,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="type_8h_source.html#l00406">406</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8h_source.html#l00395">395</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="type_8cpp_source.html#l00644">EnumType()</a>, <a class="el" href="type_8cpp_source.html#l00719">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00729">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00763">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00739">GetString()</a>, <a class="el" href="type_8cpp_source.html#l00665">IsConstType()</a>, and <a class="el" href="type_8cpp_source.html#l00751">Mangle()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="type_8cpp_source.html#l00578">EnumType()</a>, <a class="el" href="type_8cpp_source.html#l00653">GetAsConstType()</a>, <a class="el" href="type_8cpp_source.html#l00663">GetAsNonConstType()</a>, <a class="el" href="type_8cpp_source.html#l00697">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00673">GetString()</a>, <a class="el" href="type_8cpp_source.html#l00599">IsConstType()</a>, and <a class="el" href="type_8cpp_source.html#l00685">Mangle()</a>.</p>
 
 </div>
 </div>
@@ -1019,9 +1022,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="type_8h_source.html#l00404">404</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8h_source.html#l00393">393</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="type_8cpp_source.html#l00763">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00810">GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00739">GetString()</a>, and <a class="el" href="type_8cpp_source.html#l00751">Mangle()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="type_8cpp_source.html#l00697">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00743">GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00673">GetString()</a>, and <a class="el" href="type_8cpp_source.html#l00685">Mangle()</a>.</p>
 
 </div>
 </div>
@@ -1037,9 +1040,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="type_8h_source.html#l00401">401</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8h_source.html#l00390">390</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="type_8cpp_source.html#l00810">GetDIType()</a>, and <a class="el" href="type_8cpp_source.html#l03028">lCheckTypeEquality()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="type_8cpp_source.html#l00743">GetDIType()</a>, and <a class="el" href="type_8cpp_source.html#l02767">lCheckTypeEquality()</a>.</p>
 
 </div>
 </div>
@@ -1063,9 +1066,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="type_8h_source.html#l00405">405</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="type_8h_source.html#l00394">394</a> of file <a class="el" href="type_8h_source.html">type.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="type_8cpp_source.html#l00644">EnumType()</a>, <a class="el" href="type_8cpp_source.html#l00709">GetAsSOAType()</a>, <a class="el" href="type_8cpp_source.html#l00699">GetAsUnboundVariabilityType()</a>, <a class="el" href="type_8cpp_source.html#l00669">GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00689">GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l00763">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00810">GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00739">GetString()</a>, <a class="el" href="type_8cpp_source.html#l00655">GetVariability()</a>, <a class="el" href="type_8cpp_source.html#l00791">LLVMType()</a>, <a class="el" href="type_8cpp_source.html#l00751">Mangle()</a>, and <a class="el" href="type_8cpp_source.html#l00679">ResolveUnboundVariability()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="type_8cpp_source.html#l00578">EnumType()</a>, <a class="el" href="type_8cpp_source.html#l00643">GetAsSOAType()</a>, <a class="el" href="type_8cpp_source.html#l00633">GetAsUnboundVariabilityType()</a>, <a class="el" href="type_8cpp_source.html#l00603">GetAsUniformType()</a>, <a class="el" href="type_8cpp_source.html#l00623">GetAsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l00697">GetCDeclaration()</a>, <a class="el" href="type_8cpp_source.html#l00743">GetDIType()</a>, <a class="el" href="type_8cpp_source.html#l00673">GetString()</a>, <a class="el" href="type_8cpp_source.html#l00589">GetVariability()</a>, <a class="el" href="type_8cpp_source.html#l00725">LLVMType()</a>, <a class="el" href="type_8cpp_source.html#l00685">Mangle()</a>, and <a class="el" href="type_8cpp_source.html#l00613">ResolveUnboundVariability()</a>.</p>
 
 </div>
 </div>
@@ -1076,7 +1079,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:25 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: Class Members</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): Class Members</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -53,6 +53,9 @@ $(function() {
 <li>generateDebuggingSymbols
 : <a class="el" href="structGlobals.html#afb3de7f5ef8aa30cc4381989d94e389f">Globals</a>
 </li>
+<li>generateDWARFVersion
+: <a class="el" href="structGlobals.html#a32949f2fa47815063fae232b987f11d0">Globals</a>
+</li>
 <li>GenerateFlatDeps
 : <a class="el" href="classModule.html#aab005fd8c359949daa0beb6b4be4ed07a7fb2994c551eabbfcac52a2962419e04">Module</a>
 </li>
@@ -73,7 +76,8 @@ $(function() {
 : <a class="el" href="classMakeInternalFuncsStaticPass.html#a92cfdda939c8f3d86293660e779f8887">MakeInternalFuncsStaticPass</a>
 </li>
 <li>getArch()
-: <a class="el" href="classTarget.html#ac868425988bde5f92779b1dcaed61dc0">Target</a>
+: <a class="el" href="classBitcodeLib.html#a8bb92bbd976d02eeb87434798b55e5ec">BitcodeLib</a>
+, <a class="el" href="classTarget.html#ad98b4fdf567dab0a84904b3a10a9671d">Target</a>
 </li>
 <li>GetAsConstType()
 : <a class="el" href="classArrayType.html#a00826dfff913dc0b760fdde4b85ca3c0">ArrayType</a>
@@ -189,6 +193,9 @@ $(function() {
 <li>getBasicType()
 : <a class="el" href="classConstExpr.html#a8b925cc1a80d95ad4d8edf9374fb38f9">ConstExpr</a>
 </li>
+<li>getBuiltinsCLib()
+: <a class="el" href="classTargetLibRegistry.html#ac4cf1f90ee79d857767bb5f810d9f185">TargetLibRegistry</a>
+</li>
 <li>getCandidateFunctions()
 : <a class="el" href="classFunctionSymbolExpr.html#a18fb60253dfab3fad5a591ebeafbb586">FunctionSymbolExpr</a>
 </li>
@@ -211,13 +218,15 @@ $(function() {
 : <a class="el" href="classFunctionType.html#ac8914d0e22c72e1a0a03013f4cafa9e5">FunctionType</a>
 </li>
 <li>GetConstant()
-: <a class="el" href="classAddressOfExpr.html#ab2b67f04990a1ebe66b717dbe2605c80">AddressOfExpr</a>
-, <a class="el" href="classConstExpr.html#a21c964a07532dfef6bbdb915bdfee3fa">ConstExpr</a>
-, <a class="el" href="classExpr.html#a581f9fe9b09e947872c3cef86d8c6596">Expr</a>
-, <a class="el" href="classExprList.html#acc474812b59d9d152818ba3a9928793f">ExprList</a>
-, <a class="el" href="classFunctionSymbolExpr.html#ad87f02d8d6034e77ddd937e1da096f25">FunctionSymbolExpr</a>
-, <a class="el" href="classNullPointerExpr.html#a4aada41fe1ffad1c6daec752dbf02be7">NullPointerExpr</a>
-, <a class="el" href="classTypeCastExpr.html#a139882cbc40b8ddbbba1592c77f694bb">TypeCastExpr</a>
+: <a class="el" href="classAddressOfExpr.html#a128c46b52bf01e66f6233864f552552f">AddressOfExpr</a>
+, <a class="el" href="classBinaryExpr.html#af5ec780edb1a43a45a2d2a0d64caa7c5">BinaryExpr</a>
+, <a class="el" href="classConstExpr.html#ab03f1590d44792a024bc8b598480715d">ConstExpr</a>
+, <a class="el" href="classExpr.html#a5857584a23e82ebe147bdf2111d825e5">Expr</a>
+, <a class="el" href="classExprList.html#a7866d8768f1ece31ef032ceba908ac48">ExprList</a>
+, <a class="el" href="classFunctionSymbolExpr.html#a34f5315740eae6059cb3ec10b88bd897">FunctionSymbolExpr</a>
+, <a class="el" href="classNullPointerExpr.html#aeb824ead536215c6f6d49952b11acea6">NullPointerExpr</a>
+, <a class="el" href="classSizeOfExpr.html#a589e9fc61d7c1033e8626a4ef1758049">SizeOfExpr</a>
+, <a class="el" href="classTypeCastExpr.html#ab8cb47ac2a48eb7bca5087b31a914917">TypeCastExpr</a>
 </li>
 <li>getCPU()
 : <a class="el" href="classTarget.html#aef65767688208260c6ea0b07949e02ec">Target</a>
@@ -241,22 +250,25 @@ $(function() {
 : <a class="el" href="classAllCPUs.html#a035c830f24dffb34bba7c73a059d7228">AllCPUs</a>
 </li>
 <li>GetDIFile()
-: <a class="el" href="structSourcePos.html#a992951b04fb43a1b8d9dd0c84c4ed6ad">SourcePos</a>
+: <a class="el" href="structSourcePos.html#a2460b72c14dbe5109ba10865b8d4ae92">SourcePos</a>
 </li>
 <li>GetDIScope()
-: <a class="el" href="classFunctionEmitContext.html#a60e5928dcb321269fe9d6f14027ee2a9">FunctionEmitContext</a>
+: <a class="el" href="classFunctionEmitContext.html#a4c3bc662f3286994289642d9aebbf93e">FunctionEmitContext</a>
+</li>
+<li>getDispatchLib()
+: <a class="el" href="classTargetLibRegistry.html#ac752bc2e43b70261c47defcd85f27639">TargetLibRegistry</a>
 </li>
 <li>GetDIType()
-: <a class="el" href="classArrayType.html#ad09bddf6774cc60af0693b6e6f42c49d">ArrayType</a>
-, <a class="el" href="classAtomicType.html#aa9652418d33908640ecf0443512afed1">AtomicType</a>
-, <a class="el" href="classEnumType.html#a3b1186487e76c79fc9e1361214135919">EnumType</a>
-, <a class="el" href="classFunctionType.html#a9d7bf5e11ed1868f24cded809654d164">FunctionType</a>
-, <a class="el" href="classPointerType.html#a647c767e2b5c497ec7b37f4c6fb149bd">PointerType</a>
-, <a class="el" href="classReferenceType.html#a978bfd78fa0684ee77b313d180281689">ReferenceType</a>
-, <a class="el" href="classStructType.html#a1ad28271efe223668111ce4c6c3651c8">StructType</a>
-, <a class="el" href="classType.html#a8b6ded269378020c769915bbbff3d73c">Type</a>
-, <a class="el" href="classUndefinedStructType.html#adc359751cc6213c1f901e44205f1a44a">UndefinedStructType</a>
-, <a class="el" href="classVectorType.html#a69f992859ea8eda8cfedcd5a7a639564">VectorType</a>
+: <a class="el" href="classArrayType.html#a8fc5e674d9d3b6161b7b955d2e2deac0">ArrayType</a>
+, <a class="el" href="classAtomicType.html#a3406c4487f7c6eae7c69a3ff8eb48a77">AtomicType</a>
+, <a class="el" href="classEnumType.html#a2342b929607f3d3625c68bcb23cbce1b">EnumType</a>
+, <a class="el" href="classFunctionType.html#a931130a232b6c9f14a1d3be28a60ad32">FunctionType</a>
+, <a class="el" href="classPointerType.html#addecd46bd86877c36776eda87723cabd">PointerType</a>
+, <a class="el" href="classReferenceType.html#a922870b5da890a2eeeda2f415b815e21">ReferenceType</a>
+, <a class="el" href="classStructType.html#ae432af54749a3e0d3a4384447ebd6734">StructType</a>
+, <a class="el" href="classType.html#a6b0d6084272d19bd614d5cce2c738c6d">Type</a>
+, <a class="el" href="classUndefinedStructType.html#afb8e58c893493804fc703bdba98b6652">UndefinedStructType</a>
+, <a class="el" href="classVectorType.html#af8723608080ba0eeb919efc599bc22a9">VectorType</a>
 </li>
 <li>GetElementCount()
 : <a class="el" href="classArrayType.html#ad4b1f71b8c7e2cfcf0c350633b358ab7">ArrayType</a>
@@ -350,11 +362,21 @@ $(function() {
 <li>GetISATargetString()
 : <a class="el" href="classTarget.html#af3d824e9130502d6f390bfecdf137fbe">Target</a>
 </li>
+<li>getISPCTarget()
+: <a class="el" href="classBitcodeLib.html#af11ff0982922e94b91fddd18dc004424">BitcodeLib</a>
+, <a class="el" href="classTarget.html#a4e5827e44206bbfa444d47dc2e1c5871">Target</a>
+</li>
+<li>getISPCTargetLib()
+: <a class="el" href="classTargetLibRegistry.html#a02a5dd126da526f4af75641e78bf3500">TargetLibRegistry</a>
+</li>
 <li>GetLabeledBasicBlock()
 : <a class="el" href="classFunctionEmitContext.html#ae972a239b7dec8cf4c5af875932c1513">FunctionEmitContext</a>
 </li>
 <li>GetLabels()
 : <a class="el" href="classFunctionEmitContext.html#aa3bcc40c622e584a1335e9581b383648">FunctionEmitContext</a>
+</li>
+<li>getLib()
+: <a class="el" href="classBitcodeLib.html#a0751fe74089266a1cff2ce629cc154cd">BitcodeLib</a>
 </li>
 <li>GetLoop()
 : <a class="el" href="structCFInfo.html#ab794e26fa998613f4046e27957f486f2">CFInfo</a>
@@ -417,6 +439,9 @@ $(function() {
 <li>GetNumParameters()
 : <a class="el" href="classFunctionType.html#a6bc8b3482d1d70219401430689e9765d">FunctionType</a>
 </li>
+<li>getOS()
+: <a class="el" href="classBitcodeLib.html#afd066fd797589d1ef044f25c8cafcdda">BitcodeLib</a>
+</li>
 <li>GetParameterDefault()
 : <a class="el" href="classFunctionType.html#a7c8f971fcefb5b16618cb0468d1b5355">FunctionType</a>
 </li>
@@ -430,24 +455,24 @@ $(function() {
 : <a class="el" href="classFunctionType.html#afd49d1c24cbe73198e35248201090389">FunctionType</a>
 </li>
 <li>getPassName()
-: <a class="el" href="classAndCmpCleanupPass.html#aa4ad6da4c8b77e07617af448fb819801">AndCmpCleanupPass</a>
-, <a class="el" href="classDebugPass.html#adebe66739b1b2248bf9e20a5975e061f">DebugPass</a>
-, <a class="el" href="classDebugPassFile.html#aa973d737789b09e47887f59fb609bc35">DebugPassFile</a>
-, <a class="el" href="classFixBooleanSelectPass.html#a56aab062a28107bcf3374002fbcdf4ff">FixBooleanSelectPass</a>
-, <a class="el" href="classGatherCoalescePass.html#a9b258afcad32345ed396b7a830ef4c3a">GatherCoalescePass</a>
-, <a class="el" href="classImproveMemoryOpsPass.html#aa94fcb86be52862c1e82ac89772de486">ImproveMemoryOpsPass</a>
-, <a class="el" href="classInstructionSimplifyPass.html#a3683da1c8ad1bd01704fe60bb177e3f1">InstructionSimplifyPass</a>
-, <a class="el" href="classIntrinsicsOpt.html#a780215e371b41e861e32ae7f2952cd54">IntrinsicsOpt</a>
-, <a class="el" href="classIsCompileTimeConstantPass.html#aaa61352cc4323419e2482cdb4ec23183">IsCompileTimeConstantPass</a>
-, <a class="el" href="classMakeInternalFuncsStaticPass.html#aa3097708c91b0ac552d0de36d7a15431">MakeInternalFuncsStaticPass</a>
-, <a class="el" href="classMaskOpsCleanupPass.html#a12700e25654ffdf01858480bad8ed38e">MaskOpsCleanupPass</a>
-, <a class="el" href="classPeepholePass.html#aebf07da5f46cfe2402197c50805b9491">PeepholePass</a>
-, <a class="el" href="classReplacePseudoMemoryOpsPass.html#aa3c0f75e16f3c1efbec2347aea8e7f0c">ReplacePseudoMemoryOpsPass</a>
-, <a class="el" href="classReplaceStdlibShiftPass.html#a758509c1710d2e844c8bf423544e4930">ReplaceStdlibShiftPass</a>
-, <a class="el" href="classSmearCleanupPass.html#a6a8c7028a7d16b9fbe6ac2b1344b1341">SmearCleanupPass</a>
+: <a class="el" href="classAndCmpCleanupPass.html#a5be8c6ee240860ae25b295ad777f25f3">AndCmpCleanupPass</a>
+, <a class="el" href="classDebugPass.html#a27651bb2936b75fe0f7c85adba0198db">DebugPass</a>
+, <a class="el" href="classDebugPassFile.html#a511e923560161e2d319bedf653e261cc">DebugPassFile</a>
+, <a class="el" href="classFixBooleanSelectPass.html#a54e8a589f7dcd0868be3d6b11420a7e0">FixBooleanSelectPass</a>
+, <a class="el" href="classGatherCoalescePass.html#ab54dc4e11824e6ff0ea8e2a6231f194c">GatherCoalescePass</a>
+, <a class="el" href="classImproveMemoryOpsPass.html#ae54953828d72f26a626e1ad1725f4670">ImproveMemoryOpsPass</a>
+, <a class="el" href="classInstructionSimplifyPass.html#a2eac76ceaf2832347ebbd9d0dfabeb45">InstructionSimplifyPass</a>
+, <a class="el" href="classIntrinsicsOpt.html#a7836114c6804c4abb39dd43f48d20343">IntrinsicsOpt</a>
+, <a class="el" href="classIsCompileTimeConstantPass.html#aeaa1c0c356ad66c352928b0337fefd75">IsCompileTimeConstantPass</a>
+, <a class="el" href="classMakeInternalFuncsStaticPass.html#a1c823bc58ca7201036821d6ecab879e5">MakeInternalFuncsStaticPass</a>
+, <a class="el" href="classMaskOpsCleanupPass.html#a1c59af134c6d1e0f9784e1192c4d1109">MaskOpsCleanupPass</a>
+, <a class="el" href="classPeepholePass.html#a1d9c6cc0715a393bb7afcf6ca6b8595d">PeepholePass</a>
+, <a class="el" href="classReplacePseudoMemoryOpsPass.html#a29aa0f565d96dc19a304fbba7326e777">ReplacePseudoMemoryOpsPass</a>
+, <a class="el" href="classReplaceStdlibShiftPass.html#ac533f2c619d10262577a54c876559dd9">ReplaceStdlibShiftPass</a>
+, <a class="el" href="classSmearCleanupPass.html#ab9c149bacde98f52d45dec8819a56025">SmearCleanupPass</a>
 </li>
 <li>getPM()
-: <a class="el" href="classDebugPassManager.html#a791b784947e1a2f8e621757a32f3b98f">DebugPassManager</a>
+: <a class="el" href="classDebugPassManager.html#a12a1cb98d7497f7a20347c390d71e674">DebugPassManager</a>
 </li>
 <li>GetReferenceTarget()
 : <a class="el" href="classReferenceType.html#a7c71b5f12ff7b1dc53119ab361f245a4">ReferenceType</a>
@@ -463,11 +488,20 @@ $(function() {
 <li>getShuffleSmearValue()
 : <a class="el" href="classSmearCleanupPass.html#a296af03a281d19aa263a4623314a3e87">SmearCleanupPass</a>
 </li>
+<li>getSize()
+: <a class="el" href="classBitcodeLib.html#a24d4b0c9110a995568b2d18c4a20ed42">BitcodeLib</a>
+</li>
 <li>GetSizedArray()
 : <a class="el" href="classArrayType.html#a6d92835ddf18c8e041e7f227326d4047">ArrayType</a>
 </li>
 <li>GetSOAWidth()
 : <a class="el" href="classType.html#ae3edd6a2d7a3760b4e10715de5e8c7eb">Type</a>
+</li>
+<li>GetStorageConstant()
+: <a class="el" href="classBinaryExpr.html#a6e82959c0c0e1e96bb974a5fc9f858d3">BinaryExpr</a>
+, <a class="el" href="classConstExpr.html#aadd271213870ae68ba2ec92bbccb9ff4">ConstExpr</a>
+, <a class="el" href="classExpr.html#a784bd4accefb6246398727496fd8e7cf">Expr</a>
+, <a class="el" href="classExprList.html#ac2e108c0349b0a9fde0d3d1407749035">ExprList</a>
 </li>
 <li>GetString()
 : <a class="el" href="classArrayType.html#a6f8522e44b1d920393d206f266ffa3fe">ArrayType</a>
@@ -492,17 +526,26 @@ $(function() {
 <li>getStructType()
 : <a class="el" href="classStructMemberExpr.html#abe12dbcabd0bab834e4bcace51c106b3">StructMemberExpr</a>
 </li>
+<li>getSupportedArchs()
+: <a class="el" href="classTargetLibRegistry.html#ac6596c24a89fc16150cceb5849d16ef3">TargetLibRegistry</a>
+</li>
+<li>getSupportedOSes()
+: <a class="el" href="classTargetLibRegistry.html#a351ed121896fcdc5bd9d9d23939029dc">TargetLibRegistry</a>
+</li>
+<li>getSupportedTargets()
+: <a class="el" href="classTargetLibRegistry.html#aad6420a83ceb2c41c8cbb1a0dd0e3a22">TargetLibRegistry</a>
+</li>
 <li>GetSwitch()
 : <a class="el" href="structCFInfo.html#ab3b02f03d9be1fc243e1a9b974f8e960">CFInfo</a>
 </li>
 <li>getTarget()
 : <a class="el" href="classTarget.html#adce1acbf12a7ef9009dff44670277239">Target</a>
 </li>
+<li>getTargetLibRegistry()
+: <a class="el" href="classTargetLibRegistry.html#a16bd8411ab8a596714e224e0e4e37263">TargetLibRegistry</a>
+</li>
 <li>GetTargetMachine()
 : <a class="el" href="classTarget.html#a15f05e3f2a1a08a89769aa1e457e37c0">Target</a>
-</li>
-<li>getTreatGenericAsSmth()
-: <a class="el" href="classTarget.html#a1296ae5ab3040a23e8273cb227a20d5a">Target</a>
 </li>
 <li>GetTripleString()
 : <a class="el" href="classTarget.html#af5bd35601f9f315bf4fa89aeb620d031">Target</a>
@@ -511,7 +554,12 @@ $(function() {
 : <a class="el" href="classAddressOfExpr.html#a08e9c1f1a45959a656bd342af5acf2e3">AddressOfExpr</a>
 , <a class="el" href="classAssignExpr.html#a23879c6fea8ca1c780fced35330c4629">AssignExpr</a>
 , <a class="el" href="classBinaryExpr.html#a00c3ccecb8e397585aa8c4d6bdcfbc50">BinaryExpr</a>
-, <a class="el" href="classConstExpr.html#a1d2ca1f255e2e1862eaea957531e13fc">ConstExpr</a>
+</li>
+<li>getType()
+: <a class="el" href="classBitcodeLib.html#abf2d26ed317e65093414faa4e4393838">BitcodeLib</a>
+</li>
+<li>GetType()
+: <a class="el" href="classConstExpr.html#a1d2ca1f255e2e1862eaea957531e13fc">ConstExpr</a>
 , <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr</a>
 , <a class="el" href="classExprList.html#a23d34e51c67a964336ec29bd9a31dc6c">ExprList</a>
 , <a class="el" href="classFunction.html#aaf2da5476ca7170d80614863cf1b2f9e">Function</a>
@@ -566,7 +614,7 @@ $(function() {
 : <a class="el" href="classASTNode.html#a975dcbfbdffa65b1f8ed8a881a3df0a6">ASTNode</a>
 </li>
 <li>GetValues()
-: <a class="el" href="classConstExpr.html#a2751c102c9663bd9f76e8df6c2d8656e">ConstExpr</a>
+: <a class="el" href="classConstExpr.html#a68c5b9c5dc26935d9f5011724637a3ec">ConstExpr</a>
 </li>
 <li>GetVariability()
 : <a class="el" href="classArrayType.html#ad57f9b06d2873ab74455ae13be95e60b">ArrayType</a>
@@ -608,7 +656,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:26 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

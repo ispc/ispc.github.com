@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: ctx.cpp File Reference</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): ctx.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -61,8 +61,8 @@ $(function() {
 <code>#include &quot;<a class="el" href="sym_8h_source.html">sym.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="type_8h_source.html">type.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="util_8h_source.html">util.h</a>&quot;</code><br />
+<code>#include &lt;llvm/BinaryFormat/Dwarf.h&gt;</code><br />
 <code>#include &lt;map&gt;</code><br />
-<code>#include &lt;llvm/Support/Dwarf.h&gt;</code><br />
 <code>#include &lt;llvm/IR/DerivedTypes.h&gt;</code><br />
 <code>#include &lt;llvm/IR/Instructions.h&gt;</code><br />
 <code>#include &lt;llvm/IR/Metadata.h&gt;</code><br />
@@ -72,18 +72,22 @@ Include dependency graph for ctx.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="ctx_8cpp__incl.png" border="0" usemap="#ctx_8cpp" alt=""/></div>
 <map name="ctx_8cpp" id="ctx_8cpp">
-<area shape="rect" id="node2" href="ctx_8h.html" title="Declaration of the FunctionEmitContext class " alt="" coords="3598,80,3647,107"/>
-<area shape="rect" id="node16" href="expr_8h.html" title="Expr abstract base class and expression implementations. " alt="" coords="2776,80,2832,107"/>
-<area shape="rect" id="node34" href="type_8h.html" title="File with declarations for classes related to type representation. " alt="" coords="2956,155,3012,181"/>
-<area shape="rect" id="node35" href="util_8h.html" title="util.h" alt="" coords="2745,229,2794,256"/>
-<area shape="rect" id="node39" href="func_8h.html" title="Representation of a function in a source file. " alt="" coords="2510,229,2567,256"/>
-<area shape="rect" id="node40" href="llvmutil_8h.html" title="Header file with declarations for various LLVM utility stuff. " alt="" coords="3260,155,3332,181"/>
-<area shape="rect" id="node43" href="module_8h.html" title="Declaration of the Module class, which is the ispc&#45;side representation of the results of compiling a ..." alt="" coords="2427,155,2501,181"/>
-<area shape="rect" id="node44" href="stmt_8h.html" title="File with declarations for classes related to statements in the language. " alt="" coords="2627,155,2685,181"/>
-<area shape="rect" id="node45" href="sym_8h.html" title="header file with declarations for symbol and symbol table classes. " alt="" coords="3037,155,3091,181"/>
-<area shape="rect" id="node3" href="ispc_8h.html" title="Main ispc.header file. Defines Target, Globals and Opt classes. " alt="" coords="2855,311,2910,338"/>
-<area shape="rect" id="node17" href="ast_8h.html" title="ast.h" alt="" coords="1685,229,1734,256"/>
-<area shape="rect" id="node46" href="decl_8h.html" title="Declarations related to type declarations; the parser basically creates instances of these classes..." alt="" coords="2920,229,2976,256"/>
+<area shape="rect" id="node2" href="ctx_8h.html" title="Declaration of the FunctionEmitContext class " alt="" coords="511,155,561,181"/>
+<area shape="rect" id="node21" href="expr_8h.html" title="Expr abstract base class and expression implementations. " alt="" coords="1195,80,1251,107"/>
+<area shape="rect" id="node23" href="type_8h.html" title="File with declarations for classes related to type representation. " alt="" coords="1325,155,1381,181"/>
+<area shape="rect" id="node24" href="util_8h.html" title="util.h" alt="" coords="1275,229,1325,256"/>
+<area shape="rect" id="node28" href="func_8h.html" title="Representation of a function in a source file. " alt="" coords="835,229,893,256"/>
+<area shape="rect" id="node29" href="llvmutil_8h.html" title="Header file with declarations for various LLVM utility stuff. " alt="" coords="1708,155,1780,181"/>
+<area shape="rect" id="node32" href="module_8h.html" title="Declaration of the Module class, which is the ispc&#45;side representation of the results of compiling a ..." alt="" coords="905,155,980,181"/>
+<area shape="rect" id="node33" href="stmt_8h.html" title="File with declarations for classes related to statements in the language. " alt="" coords="1091,155,1149,181"/>
+<area shape="rect" id="node34" href="sym_8h.html" title="header file with declarations for symbol and symbol table classes. " alt="" coords="1010,155,1065,181"/>
+<area shape="rect" id="node3" href="ispc_8h.html" title="Main ispc.header file. Defines Target, Globals and Opt classes. " alt="" coords="1085,304,1139,331"/>
+<area shape="rect" id="node4" href="ispc__version_8h.html" title="defines the ISPC version " alt="" coords="1777,379,1879,405"/>
+<area shape="rect" id="node6" href="target__enums_8h.html" title="Define enums describing target platform. " alt="" coords="1183,528,1294,555"/>
+<area shape="rect" id="node9" href="target__registry_8h.html" title="Registry to handle bitcode libraries. " alt="" coords="891,379,1005,405"/>
+<area shape="rect" id="node10" href="bitcode__lib_8h.html" title="a header to host BitcodeLib &#45; a wrapper for single bitcode library. " alt="" coords="1143,453,1238,480"/>
+<area shape="rect" id="node22" href="ast_8h.html" title="ast.h" alt="" coords="1150,229,1199,256"/>
+<area shape="rect" id="node35" href="decl_8h.html" title="Declarations related to type declarations; the parser basically creates instances of these classes..." alt="" coords="1019,229,1075,256"/>
 </map>
 </div>
 </div>
@@ -141,11 +145,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>If the given type is an array of vector types, then it's the representation of an ispc <a class="el" href="classVectorType.html" title="A (short) vector of atomic types. ">VectorType</a> with varying elements. If it is one of these, return the array size (i.e. the <a class="el" href="classVectorType.html" title="A (short) vector of atomic types. ">VectorType</a>'s size). Otherwise return zero. </p>
 
-<p class="definition">Definition at line <a class="el" href="ctx_8cpp_source.html#l01595">1595</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ctx_8cpp_source.html#l01370">1370</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00279">Target::getVectorWidth()</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00245">Target::getVectorWidth()</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l01608">FunctionEmitContext::BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01679">FunctionEmitContext::CmpInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l01637">FunctionEmitContext::NotOperator()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l01383">FunctionEmitContext::BinaryOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l01454">FunctionEmitContext::CmpInst()</a>, and <a class="el" href="ctx_8cpp_source.html#l01412">FunctionEmitContext::NotOperator()</a>.</p>
 
 </div>
 </div>
@@ -184,11 +188,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given a value representing a function to be called or possibly-varying pointer to a function to be called, figure out how many arguments the function has. </p>
 
-<p class="definition">Definition at line <a class="el" href="ctx_8cpp_source.html#l03095">3095</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ctx_8cpp_source.html#l02958">2958</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, and <a class="el" href="type_8h_source.html#l00906">FunctionType::GetNumParameters()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, and <a class="el" href="type_8h_source.html#l00874">FunctionType::GetNumParameters()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l03112">FunctionEmitContext::CallInst()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l02975">FunctionEmitContext::CallInst()</a>.</p>
 
 </div>
 </div>
@@ -246,11 +250,11 @@ Functions</h2></td></tr>
 <p>Given an integer index in indexValue that's indexing into an array of soa&lt;&gt; structures with given soaWidth, compute the two sub-indices we need to do the actual indexing calculation:</p>
 <p>subIndices[0] = (indexValue &gt;&gt; log(soaWidth)) subIndices[1] = (indexValue &amp; (soaWidth-1)) </p>
 
-<p class="definition">Definition at line <a class="el" href="ctx_8cpp_source.html#l01999">1999</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ctx_8cpp_source.html#l01779">1779</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l01608">FunctionEmitContext::BinaryOperator()</a>, <a class="el" href="llvmutil_8h_source.html#l00077">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00095">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00078">LLVMTypes::Int64Type</a>, <a class="el" href="llvmutil_8h_source.html#l00096">LLVMTypes::Int64VectorType</a>, <a class="el" href="llvmutil_8cpp_source.html#l00441">LLVMIntAsType()</a>, <a class="el" href="ctx_8cpp_source.html#l01966">FunctionEmitContext::MatchIntegerTypes()</a>, and <a class="el" href="ctx_8cpp_source.html#l01826">FunctionEmitContext::TruncInst()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l01383">FunctionEmitContext::BinaryOperator()</a>, <a class="el" href="llvmutil_8h_source.html#l00067">LLVMTypes::Int32Type</a>, <a class="el" href="llvmutil_8h_source.html#l00086">LLVMTypes::Int32VectorType</a>, <a class="el" href="llvmutil_8h_source.html#l00068">LLVMTypes::Int64Type</a>, <a class="el" href="llvmutil_8h_source.html#l00087">LLVMTypes::Int64VectorType</a>, <a class="el" href="llvmutil_8cpp_source.html#l00463">LLVMIntAsType()</a>, <a class="el" href="ctx_8cpp_source.html#l01746">FunctionEmitContext::MatchIntegerTypes()</a>, and <a class="el" href="ctx_8cpp_source.html#l01606">FunctionEmitContext::TruncInst()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l02045">FunctionEmitContext::GetElementPtrInst()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l01825">FunctionEmitContext::GetElementPtrInst()</a>.</p>
 
 </div>
 </div>
@@ -278,11 +282,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ctx_8cpp_source.html#l00716">716</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ctx_8cpp_source.html#l00652">652</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ctx_8cpp_source.html#l00103">CFInfo::ForeachActive</a>, and <a class="el" href="ctx_8cpp_source.html#l00104">CFInfo::type</a>.</p>
+<p class="reference">References <a class="el" href="ctx_8cpp_source.html#l00089">CFInfo::ForeachActive</a>, and <a class="el" href="ctx_8cpp_source.html#l00090">CFInfo::type</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l00724">FunctionEmitContext::Continue()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l00660">FunctionEmitContext::Continue()</a>.</p>
 
 </div>
 </div>
@@ -327,11 +331,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Given a slice pointer to soa'd data that is a basic type (atomic, pointer, or enum type), use the slice offset to compute pointer(s) to the appropriate individual data element(s). </p>
 
-<p class="definition">Definition at line <a class="el" href="ctx_8cpp_source.html#l02309">2309</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ctx_8cpp_source.html#l02114">2114</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l01738">FunctionEmitContext::BitCastInst()</a>, <a class="el" href="ispc_8h_source.html#l00645">Globals::ctx</a>, <a class="el" href="ctx_8cpp_source.html#l02976">FunctionEmitContext::ExtractInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="classType.html#ab0eff8692794d3437a91404c98985d20">Type::GetAsUniformType()</a>, <a class="el" href="classType.html#a51af28faf17eb05982547d9b340429eb">Type::GetBaseType()</a>, <a class="el" href="ctx_8cpp_source.html#l02045">FunctionEmitContext::GetElementPtrInst()</a>, <a class="el" href="type_8cpp_source.html#l00899">PointerType::GetUniform()</a>, <a class="el" href="type_8cpp_source.html#l00903">PointerType::GetVarying()</a>, <a class="el" href="type_8cpp_source.html#l03023">Type::IsBasicType()</a>, <a class="el" href="type_8h_source.html#l00139">Type::IsUniformType()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l01518">LLVMGetName()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="ctx_8cpp_source.html#l01518">FunctionEmitContext::BitCastInst()</a>, <a class="el" href="ispc_8h_source.html#l00611">Globals::ctx</a>, <a class="el" href="ctx_8cpp_source.html#l02834">FunctionEmitContext::ExtractInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="classType.html#ab0eff8692794d3437a91404c98985d20">Type::GetAsUniformType()</a>, <a class="el" href="classType.html#a51af28faf17eb05982547d9b340429eb">Type::GetBaseType()</a>, <a class="el" href="ctx_8cpp_source.html#l01825">FunctionEmitContext::GetElementPtrInst()</a>, <a class="el" href="type_8cpp_source.html#l00799">PointerType::GetUniform()</a>, <a class="el" href="type_8cpp_source.html#l00803">PointerType::GetVarying()</a>, <a class="el" href="type_8cpp_source.html#l02762">Type::IsBasicType()</a>, <a class="el" href="type_8h_source.html#l00134">Type::IsUniformType()</a>, and <a class="el" href="llvmutil_8cpp_source.html#l01549">LLVMGetName()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l02450">FunctionEmitContext::gather()</a>, <a class="el" href="ctx_8cpp_source.html#l02338">FunctionEmitContext::loadUniformFromSOA()</a>, <a class="el" href="ctx_8cpp_source.html#l02728">FunctionEmitContext::scatter()</a>, and <a class="el" href="ctx_8cpp_source.html#l02892">FunctionEmitContext::storeUniformToSOA()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l02268">FunctionEmitContext::gather()</a>, <a class="el" href="ctx_8cpp_source.html#l02143">FunctionEmitContext::loadUniformFromSOA()</a>, <a class="el" href="ctx_8cpp_source.html#l02569">FunctionEmitContext::scatter()</a>, and <a class="el" href="ctx_8cpp_source.html#l02754">FunctionEmitContext::storeUniformToSOA()</a>.</p>
 
 </div>
 </div>
@@ -359,11 +363,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ctx_8cpp_source.html#l01667">1667</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ctx_8cpp_source.html#l01442">1442</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00163">Assert</a>, <a class="el" href="llvmutil_8h_source.html#l00073">LLVMTypes::BoolType</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="ispc_8h_source.html#l00279">Target::getVectorWidth()</a>, <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>, and <a class="el" href="ctx_8cpp_source.html#l00104">CFInfo::type</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00128">Assert</a>, <a class="el" href="llvmutil_8h_source.html#l00062">LLVMTypes::BoolType</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="ispc_8h_source.html#l00245">Target::getVectorWidth()</a>, <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>, and <a class="el" href="ctx_8cpp_source.html#l00090">CFInfo::type</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l01679">FunctionEmitContext::CmpInst()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l01454">FunctionEmitContext::CmpInst()</a>.</p>
 
 </div>
 </div>
@@ -401,18 +405,18 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ctx_8cpp_source.html#l01398">1398</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ctx_8cpp_source.html#l01258">1258</a> of file <a class="el" href="ctx_8cpp_source.html">ctx.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00645">Globals::ctx</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMInt32()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="module_8h_source.html#l00156">Module::module</a>, and <a class="el" href="llvmutil_8h_source.html#l00055">PTYPE</a>.</p>
+<p class="reference">References <a class="el" href="ispc_8h_source.html#l00611">Globals::ctx</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="llvmutil_8cpp_source.html#l00233">LLVMInt32()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, <a class="el" href="module_8h_source.html#l00151">Module::module</a>, and <a class="el" href="llvmutil_8h_source.html#l00047">PTYPE</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l01413">FunctionEmitContext::AddInstrumentationPoint()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ctx_8cpp_source.html#l01269">FunctionEmitContext::AddInstrumentationPoint()</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:25 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

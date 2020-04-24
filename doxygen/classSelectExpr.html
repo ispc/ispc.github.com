@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: SelectExpr Class Reference</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): SelectExpr Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -97,8 +97,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a31d66d8da63cf091a7e20f7a1675a0bd inherit pub_methods_classExpr"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b203c9207f50eaa58d09377e19ab2e7 inherit pub_methods_classExpr"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSymbol.html">Symbol</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classExpr.html#a7b203c9207f50eaa58d09377e19ab2e7">GetBaseSymbol</a> () const</td></tr>
 <tr class="separator:a7b203c9207f50eaa58d09377e19ab2e7 inherit pub_methods_classExpr"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a581f9fe9b09e947872c3cef86d8c6596 inherit pub_methods_classExpr"><td class="memItemLeft" align="right" valign="top">virtual llvm::Constant *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classExpr.html#a581f9fe9b09e947872c3cef86d8c6596">GetConstant</a> (const <a class="el" href="classType.html">Type</a> *type) const</td></tr>
-<tr class="separator:a581f9fe9b09e947872c3cef86d8c6596 inherit pub_methods_classExpr"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a784bd4accefb6246398727496fd8e7cf inherit pub_methods_classExpr"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; llvm::Constant *, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classExpr.html#a784bd4accefb6246398727496fd8e7cf">GetStorageConstant</a> (const <a class="el" href="classType.html">Type</a> *type) const</td></tr>
+<tr class="separator:a784bd4accefb6246398727496fd8e7cf inherit pub_methods_classExpr"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5857584a23e82ebe147bdf2111d825e5 inherit pub_methods_classExpr"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; llvm::Constant *, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classExpr.html#a5857584a23e82ebe147bdf2111d825e5">GetConstant</a> (const <a class="el" href="classType.html">Type</a> *type) const</td></tr>
+<tr class="separator:a5857584a23e82ebe147bdf2111d825e5 inherit pub_methods_classExpr"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classASTNode"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classASTNode')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classASTNode.html">ASTNode</a></td></tr>
 <tr class="memitem:ad7eab0806e1052de2b1a1abb2e519f8f inherit pub_methods_classASTNode"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classASTNode.html#ad7eab0806e1052de2b1a1abb2e519f8f">ASTNode</a> (<a class="el" href="structSourcePos.html">SourcePos</a> p, unsigned scid)</td></tr>
 <tr class="separator:ad7eab0806e1052de2b1a1abb2e519f8f inherit pub_methods_classASTNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -200,7 +202,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Selection expression, corresponding to "test ? a : b". </p>
 <p>Returns the value of "a" or "b", depending on the value of "test". </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00214">214</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00225">225</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abbf3ced36cd78acc07b566890e677661"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abbf3ced36cd78acc07b566890e677661">&#9670;&nbsp;</a></span>SelectExpr()</h2>
@@ -240,9 +242,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l02991">2991</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l03083">3083</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00229">expr1</a>, <a class="el" href="expr_8h_source.html#l00229">expr2</a>, and <a class="el" href="expr_8h_source.html#l00229">test</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00240">expr1</a>, <a class="el" href="expr_8h_source.html#l00240">expr2</a>, and <a class="el" href="expr_8h_source.html#l00240">test</a>.</p>
 
 </div>
 </div>
@@ -271,7 +273,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00218">218</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00229">229</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
 </div>
 </div>
@@ -299,9 +301,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00219">219</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00230">230</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">References <a class="el" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">ASTNode::EstimateCost()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="ast_8h_source.html#l00134">ASTNode::getValueID()</a>, <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr::Optimize()</a>, <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr::Print()</a>, <a class="el" href="ast_8h_source.html#l00099">ASTNode::SelectExprID</a>, and <a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">Expr::TypeCheck()</a>.</p>
+<p class="reference">References <a class="el" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">ASTNode::EstimateCost()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="ast_8h_source.html#l00133">ASTNode::getValueID()</a>, <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr::Optimize()</a>, <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr::Print()</a>, <a class="el" href="ast_8h_source.html#l00098">ASTNode::SelectExprID</a>, and <a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">Expr::TypeCheck()</a>.</p>
 
 </div>
 </div>
@@ -331,11 +333,11 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">ASTNode</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l03300">3300</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l03398">3398</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00684">COST_SELECT</a>.</p>
+<p class="reference">References <a class="el" href="ispc_8h_source.html#l00656">COST_SELECT</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l03033">GetValue()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l03126">GetValue()</a>.</p>
 
 </div>
 </div>
@@ -365,11 +367,11 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l03155">3155</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l03247">3247</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8h_source.html#l00229">expr1</a>, <a class="el" href="expr_8h_source.html#l00229">expr2</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="type_8h_source.html#l00142">Type::IsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l02863">Type::MoreGeneralType()</a>, <a class="el" href="ast_8h_source.html#l00077">ASTNode::pos</a>, <a class="el" href="expr_8h_source.html#l00229">test</a>, and <a class="el" href="ispc_8cpp_source.html#l01659">Union()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="expr_8h_source.html#l00240">expr1</a>, <a class="el" href="expr_8h_source.html#l00240">expr2</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="type_8h_source.html#l00137">Type::IsVaryingType()</a>, <a class="el" href="type_8cpp_source.html#l02602">Type::MoreGeneralType()</a>, <a class="el" href="ast_8h_source.html#l00076">ASTNode::pos</a>, <a class="el" href="expr_8h_source.html#l00240">test</a>, and <a class="el" href="ispc_8cpp_source.html#l01523">Union()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l03302">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l03400">Print()</a>.</p>
 
 </div>
 </div>
@@ -400,9 +402,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l03033">3033</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l03126">3126</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ctx_8cpp_source.html#l02579">FunctionEmitContext::AllocaInst()</a>, <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="ctx_8cpp_source.html#l02961">FunctionEmitContext::BranchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01368">FunctionEmitContext::CreateBasicBlock()</a>, <a class="el" href="ispc_8h_source.html#l00645">Globals::ctx</a>, <a class="el" href="util_8cpp_source.html#l00363">Debug()</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="expr_8cpp_source.html#l03300">EstimateCost()</a>, <a class="el" href="expr_8h_source.html#l00229">expr1</a>, <a class="el" href="expr_8h_source.html#l00229">expr2</a>, <a class="el" href="ctx_8cpp_source.html#l02976">FunctionEmitContext::ExtractInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, <a class="el" href="classType.html#a51af28faf17eb05982547d9b340429eb">Type::GetBaseType()</a>, <a class="el" href="ctx_8cpp_source.html#l00423">FunctionEmitContext::GetCurrentBasicBlock()</a>, <a class="el" href="type_8cpp_source.html#l01541">VectorType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l01543">VectorType::GetElementType()</a>, <a class="el" href="ctx_8cpp_source.html#l00431">FunctionEmitContext::GetFullMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00429">FunctionEmitContext::GetInternalMask()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l02997">FunctionEmitContext::InsertInst()</a>, <a class="el" href="type_8h_source.html#l00139">Type::IsUniformType()</a>, <a class="el" href="expr_8cpp_source.html#l03012">lEmitSelectExprCode()</a>, <a class="el" href="expr_8cpp_source.html#l03000">lEmitVaryingSelect()</a>, <a class="el" href="classType.html#a04eb42d850a697fc181b388688b6393e">Type::LLVMType()</a>, <a class="el" href="ctx_8cpp_source.html#l02367">FunctionEmitContext::LoadInst()</a>, <a class="el" href="llvmutil_8h_source.html#l00089">LLVMTypes::MaskType</a>, <a class="el" href="ctx_8cpp_source.html#l01637">FunctionEmitContext::NotOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l03071">FunctionEmitContext::PhiNode()</a>, <a class="el" href="ast_8h_source.html#l00077">ASTNode::pos</a>, <a class="el" href="ispc_8h_source.html#l00699">PREDICATE_SAFE_IF_STATEMENT_COST</a>, <a class="el" href="ast_8cpp_source.html#l00417">SafeToRunWithMaskAllOff()</a>, <a class="el" href="ctx_8cpp_source.html#l03077">FunctionEmitContext::SelectInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00425">FunctionEmitContext::SetCurrentBasicBlock()</a>, <a class="el" href="ctx_8cpp_source.html#l01432">FunctionEmitContext::SetDebugPos()</a>, <a class="el" href="ctx_8cpp_source.html#l00445">FunctionEmitContext::SetInternalMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00451">FunctionEmitContext::SetInternalMaskAnd()</a>, <a class="el" href="ctx_8cpp_source.html#l00456">FunctionEmitContext::SetInternalMaskAndNot()</a>, <a class="el" href="ctx_8cpp_source.html#l02827">FunctionEmitContext::StoreInst()</a>, <a class="el" href="expr_8h_source.html#l00229">test</a>, <a class="el" href="type_8h_source.html#l00332">AtomicType::UniformBool</a>, and <a class="el" href="type_8h_source.html#l00332">AtomicType::VaryingBool</a>.</p>
+<p class="reference">References <a class="el" href="ctx_8cpp_source.html#l02401">FunctionEmitContext::AllocaInst()</a>, <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="ctx_8cpp_source.html#l02819">FunctionEmitContext::BranchInst()</a>, <a class="el" href="ctx_8cpp_source.html#l01228">FunctionEmitContext::CreateBasicBlock()</a>, <a class="el" href="ispc_8h_source.html#l00611">Globals::ctx</a>, <a class="el" href="util_8cpp_source.html#l00366">Debug()</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="expr_8cpp_source.html#l03398">EstimateCost()</a>, <a class="el" href="expr_8h_source.html#l00240">expr1</a>, <a class="el" href="expr_8h_source.html#l00240">expr2</a>, <a class="el" href="ctx_8cpp_source.html#l02834">FunctionEmitContext::ExtractInst()</a>, <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, <a class="el" href="classType.html#a51af28faf17eb05982547d9b340429eb">Type::GetBaseType()</a>, <a class="el" href="ctx_8cpp_source.html#l00359">FunctionEmitContext::GetCurrentBasicBlock()</a>, <a class="el" href="type_8cpp_source.html#l01416">VectorType::GetElementCount()</a>, <a class="el" href="type_8cpp_source.html#l01418">VectorType::GetElementType()</a>, <a class="el" href="ctx_8cpp_source.html#l00367">FunctionEmitContext::GetFullMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00365">FunctionEmitContext::GetInternalMask()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="ctx_8cpp_source.html#l02854">FunctionEmitContext::InsertInst()</a>, <a class="el" href="type_8h_source.html#l00134">Type::IsUniformType()</a>, <a class="el" href="expr_8cpp_source.html#l03105">lEmitSelectExprCode()</a>, <a class="el" href="expr_8cpp_source.html#l03092">lEmitVaryingSelect()</a>, <a class="el" href="classType.html#a04eb42d850a697fc181b388688b6393e">Type::LLVMType()</a>, <a class="el" href="ctx_8cpp_source.html#l02172">FunctionEmitContext::LoadInst()</a>, <a class="el" href="llvmutil_8h_source.html#l00079">LLVMTypes::MaskType</a>, <a class="el" href="ctx_8cpp_source.html#l01412">FunctionEmitContext::NotOperator()</a>, <a class="el" href="ctx_8cpp_source.html#l02934">FunctionEmitContext::PhiNode()</a>, <a class="el" href="ast_8h_source.html#l00076">ASTNode::pos</a>, <a class="el" href="ispc_8h_source.html#l00671">PREDICATE_SAFE_IF_STATEMENT_COST</a>, <a class="el" href="ast_8cpp_source.html#l00417">SafeToRunWithMaskAllOff()</a>, <a class="el" href="ctx_8cpp_source.html#l02940">FunctionEmitContext::SelectInst()</a>, <a class="el" href="ctx_8cpp_source.html#l00361">FunctionEmitContext::SetCurrentBasicBlock()</a>, <a class="el" href="ctx_8cpp_source.html#l01288">FunctionEmitContext::SetDebugPos()</a>, <a class="el" href="ctx_8cpp_source.html#l00381">FunctionEmitContext::SetInternalMask()</a>, <a class="el" href="ctx_8cpp_source.html#l00387">FunctionEmitContext::SetInternalMaskAnd()</a>, <a class="el" href="ctx_8cpp_source.html#l00392">FunctionEmitContext::SetInternalMaskAndNot()</a>, <a class="el" href="ctx_8cpp_source.html#l02674">FunctionEmitContext::StoreInst()</a>, <a class="el" href="expr_8h_source.html#l00240">test</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::UniformBool</a>, and <a class="el" href="type_8h_source.html#l00322">AtomicType::VaryingBool</a>.</p>
 
 </div>
 </div>
@@ -432,9 +434,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l03189">3189</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l03281">3281</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="expr_8h_source.html#l00229">expr1</a>, <a class="el" href="expr_8h_source.html#l00229">expr2</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, <a class="el" href="expr_8cpp_source.html#l05184">ConstExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l05418">ConstExpr::GetValues()</a>, <a class="el" href="ispc_8h_source.html#l00066">ISPC_MAX_NVEC</a>, <a class="el" href="type_8h_source.html#l00142">Type::IsVaryingType()</a>, <a class="el" href="ast_8h_source.html#l00077">ASTNode::pos</a>, <a class="el" href="expr_8h_source.html#l00229">test</a>, <a class="el" href="type_8h_source.html#l00332">AtomicType::VaryingBool</a>, <a class="el" href="type_8h_source.html#l00342">AtomicType::VaryingDouble</a>, <a class="el" href="type_8h_source.html#l00339">AtomicType::VaryingFloat</a>, <a class="el" href="type_8h_source.html#l00334">AtomicType::VaryingInt16</a>, <a class="el" href="type_8h_source.html#l00335">AtomicType::VaryingInt32</a>, <a class="el" href="type_8h_source.html#l00340">AtomicType::VaryingInt64</a>, <a class="el" href="type_8h_source.html#l00333">AtomicType::VaryingInt8</a>, <a class="el" href="type_8h_source.html#l00337">AtomicType::VaryingUInt16</a>, <a class="el" href="type_8h_source.html#l00338">AtomicType::VaryingUInt32</a>, <a class="el" href="type_8h_source.html#l00341">AtomicType::VaryingUInt64</a>, and <a class="el" href="type_8h_source.html#l00336">AtomicType::VaryingUInt8</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="expr_8h_source.html#l00240">expr1</a>, <a class="el" href="expr_8h_source.html#l00240">expr2</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, <a class="el" href="expr_8cpp_source.html#l05301">ConstExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l05535">ConstExpr::GetValues()</a>, <a class="el" href="ispc_8h_source.html#l00069">ISPC_MAX_NVEC</a>, <a class="el" href="type_8h_source.html#l00137">Type::IsVaryingType()</a>, <a class="el" href="ast_8h_source.html#l00076">ASTNode::pos</a>, <a class="el" href="expr_8h_source.html#l00240">test</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::VaryingBool</a>, <a class="el" href="type_8h_source.html#l00332">AtomicType::VaryingDouble</a>, <a class="el" href="type_8h_source.html#l00329">AtomicType::VaryingFloat</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::VaryingInt16</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::VaryingInt32</a>, <a class="el" href="type_8h_source.html#l00330">AtomicType::VaryingInt64</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::VaryingInt8</a>, <a class="el" href="type_8h_source.html#l00327">AtomicType::VaryingUInt16</a>, <a class="el" href="type_8h_source.html#l00328">AtomicType::VaryingUInt32</a>, <a class="el" href="type_8h_source.html#l00331">AtomicType::VaryingUInt64</a>, and <a class="el" href="type_8h_source.html#l00326">AtomicType::VaryingUInt8</a>.</p>
 
 </div>
 </div>
@@ -464,9 +466,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l03302">3302</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l03400">3400</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00229">expr1</a>, <a class="el" href="expr_8h_source.html#l00229">expr2</a>, <a class="el" href="expr_8cpp_source.html#l03155">GetType()</a>, <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr::Print()</a>, <a class="el" href="ispc_8cpp_source.html#l01650">SourcePos::Print()</a>, and <a class="el" href="expr_8h_source.html#l00229">test</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00240">expr1</a>, <a class="el" href="expr_8h_source.html#l00240">expr2</a>, <a class="el" href="expr_8cpp_source.html#l03247">GetType()</a>, <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr::Print()</a>, <a class="el" href="ispc_8cpp_source.html#l01514">SourcePos::Print()</a>, and <a class="el" href="expr_8h_source.html#l00240">test</a>.</p>
 
 </div>
 </div>
@@ -496,9 +498,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l03257">3257</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l03349">3349</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00229">expr1</a>, <a class="el" href="expr_8h_source.html#l00229">expr2</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="type_8cpp_source.html#l00899">PointerType::GetUniform()</a>, <a class="el" href="type_8h_source.html#l00142">Type::IsVaryingType()</a>, <a class="el" href="expr_8cpp_source.html#l00776">lMatchingBoolType()</a>, <a class="el" href="type_8cpp_source.html#l02863">Type::MoreGeneralType()</a>, <a class="el" href="ast_8h_source.html#l00077">ASTNode::pos</a>, <a class="el" href="expr_8h_source.html#l00229">test</a>, <a class="el" href="expr_8cpp_source.html#l00549">TypeConvertExpr()</a>, and <a class="el" href="ispc_8cpp_source.html#l01659">Union()</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00240">expr1</a>, <a class="el" href="expr_8h_source.html#l00240">expr2</a>, <a class="el" href="type_8cpp_source.html#l02564">Type::GetReferenceTarget()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="type_8cpp_source.html#l00799">PointerType::GetUniform()</a>, <a class="el" href="type_8h_source.html#l00137">Type::IsVaryingType()</a>, <a class="el" href="expr_8cpp_source.html#l00779">lMatchingBoolType()</a>, <a class="el" href="type_8cpp_source.html#l02602">Type::MoreGeneralType()</a>, <a class="el" href="ast_8h_source.html#l00076">ASTNode::pos</a>, <a class="el" href="expr_8h_source.html#l00240">test</a>, <a class="el" href="expr_8cpp_source.html#l00548">TypeConvertExpr()</a>, and <a class="el" href="ispc_8cpp_source.html#l01523">Union()</a>.</p>
 
 </div>
 </div>
@@ -515,9 +517,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00229">229</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00240">240</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l03155">GetType()</a>, <a class="el" href="expr_8cpp_source.html#l03033">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03189">Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l03302">Print()</a>, <a class="el" href="expr_8cpp_source.html#l02991">SelectExpr()</a>, <a class="el" href="expr_8cpp_source.html#l03257">TypeCheck()</a>, and <a class="el" href="ast_8cpp_source.html#l00068">WalkAST()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l03247">GetType()</a>, <a class="el" href="expr_8cpp_source.html#l03126">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03281">Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l03400">Print()</a>, <a class="el" href="expr_8cpp_source.html#l03083">SelectExpr()</a>, <a class="el" href="expr_8cpp_source.html#l03349">TypeCheck()</a>, and <a class="el" href="ast_8cpp_source.html#l00068">WalkAST()</a>.</p>
 
 </div>
 </div>
@@ -533,9 +535,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00229">229</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00240">240</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l03155">GetType()</a>, <a class="el" href="expr_8cpp_source.html#l03033">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03189">Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l03302">Print()</a>, <a class="el" href="expr_8cpp_source.html#l02991">SelectExpr()</a>, <a class="el" href="expr_8cpp_source.html#l03257">TypeCheck()</a>, and <a class="el" href="ast_8cpp_source.html#l00068">WalkAST()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l03247">GetType()</a>, <a class="el" href="expr_8cpp_source.html#l03126">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03281">Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l03400">Print()</a>, <a class="el" href="expr_8cpp_source.html#l03083">SelectExpr()</a>, <a class="el" href="expr_8cpp_source.html#l03349">TypeCheck()</a>, and <a class="el" href="ast_8cpp_source.html#l00068">WalkAST()</a>.</p>
 
 </div>
 </div>
@@ -551,9 +553,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00229">229</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00240">240</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l03155">GetType()</a>, <a class="el" href="expr_8cpp_source.html#l03033">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03189">Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l03302">Print()</a>, <a class="el" href="expr_8cpp_source.html#l02991">SelectExpr()</a>, <a class="el" href="expr_8cpp_source.html#l03257">TypeCheck()</a>, and <a class="el" href="ast_8cpp_source.html#l00068">WalkAST()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l03247">GetType()</a>, <a class="el" href="expr_8cpp_source.html#l03126">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03281">Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l03400">Print()</a>, <a class="el" href="expr_8cpp_source.html#l03083">SelectExpr()</a>, <a class="el" href="expr_8cpp_source.html#l03349">TypeCheck()</a>, and <a class="el" href="ast_8cpp_source.html#l00068">WalkAST()</a>.</p>
 
 </div>
 </div>
@@ -564,7 +566,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:25 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

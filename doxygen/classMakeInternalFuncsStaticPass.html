@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: MakeInternalFuncsStaticPass Class Reference</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): MakeInternalFuncsStaticPass Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -63,9 +63,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad40400d46e02d9b24993aea5da5c7638"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92cfdda939c8f3d86293660e779f8887"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMakeInternalFuncsStaticPass.html#a92cfdda939c8f3d86293660e779f8887">getAnalysisUsage</a> (llvm::AnalysisUsage &amp;AU) const</td></tr>
 <tr class="separator:a92cfdda939c8f3d86293660e779f8887"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3097708c91b0ac552d0de36d7a15431"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMakeInternalFuncsStaticPass.html#aa3097708c91b0ac552d0de36d7a15431">getPassName</a> () const</td></tr>
-<tr class="separator:aa3097708c91b0ac552d0de36d7a15431"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04447eed71b984143fee98cc25d5ac34"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMakeInternalFuncsStaticPass.html#a04447eed71b984143fee98cc25d5ac34">runOnModule</a> (llvm::Module &amp;<a class="el" href="ispc_8cpp.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>)</td></tr>
+<tr class="memitem:a1c823bc58ca7201036821d6ecab879e5"><td class="memItemLeft" align="right" valign="top">llvm::StringRef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMakeInternalFuncsStaticPass.html#a1c823bc58ca7201036821d6ecab879e5">getPassName</a> () const</td></tr>
+<tr class="separator:a1c823bc58ca7201036821d6ecab879e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04447eed71b984143fee98cc25d5ac34"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMakeInternalFuncsStaticPass.html#a04447eed71b984143fee98cc25d5ac34">runOnModule</a> (llvm::Module &amp;<a class="el" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>)</td></tr>
 <tr class="separator:a04447eed71b984143fee98cc25d5ac34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
@@ -76,7 +76,7 @@ Static Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>There are a number of target-specific functions that we use during these optimization passes. By the time we are done with optimization, any uses of these should be inlined and no calls to these functions should remain. This pass marks all of these functions as having private linkage so that subsequent passes can eliminate them as dead code, thus cleaning up the final code output by the compiler. We can't just declare these as static from the start, however, since then they end up being eliminated as dead code during early optimization passes even though we may need to generate calls to them during later optimization passes. </p>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04490">4490</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04307">4307</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad40400d46e02d9b24993aea5da5c7638"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad40400d46e02d9b24993aea5da5c7638">&#9670;&nbsp;</a></span>MakeInternalFuncsStaticPass()</h2>
@@ -102,7 +102,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04493">4493</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04310">4310</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -131,12 +131,12 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04495">4495</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04312">4312</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aa3097708c91b0ac552d0de36d7a15431"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3097708c91b0ac552d0de36d7a15431">&#9670;&nbsp;</a></span>getPassName()</h2>
+<a id="a1c823bc58ca7201036821d6ecab879e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c823bc58ca7201036821d6ecab879e5">&#9670;&nbsp;</a></span>getPassName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -145,7 +145,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const char* MakeInternalFuncsStaticPass::getPassName </td>
+          <td class="memname">llvm::StringRef MakeInternalFuncsStaticPass::getPassName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -158,9 +158,9 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04498">4498</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04314">4314</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="opt_8cpp_source.html#l04492">ID</a>, and <a class="el" href="ispc_8cpp_source.html#l00102">m</a>.</p>
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l04309">ID</a>, and <a class="el" href="ispc_8cpp_source.html#l00073">m</a>.</p>
 
 </div>
 </div>
@@ -180,9 +180,9 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04507">4507</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04320">4320</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, and <a class="el" href="module_8h_source.html#l00156">Module::module</a>.</p>
+<p class="reference">References <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, and <a class="el" href="module_8h_source.html#l00151">Module::module</a>.</p>
 
 </div>
 </div>
@@ -207,9 +207,9 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04492">4492</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l04309">4309</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04498">getPassName()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l04314">getPassName()</a>.</p>
 
 </div>
 </div>
@@ -219,7 +219,7 @@ Static Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:25 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

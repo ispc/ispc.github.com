@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: InstructionSimplifyPass Class Reference</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): InstructionSimplifyPass Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -62,10 +62,12 @@ Collaboration diagram for InstructionSimplifyPass:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:adee340d5881701e9fae07fb48e723cf3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInstructionSimplifyPass.html#adee340d5881701e9fae07fb48e723cf3">InstructionSimplifyPass</a> ()</td></tr>
 <tr class="separator:adee340d5881701e9fae07fb48e723cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3683da1c8ad1bd01704fe60bb177e3f1"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInstructionSimplifyPass.html#a3683da1c8ad1bd01704fe60bb177e3f1">getPassName</a> () const</td></tr>
-<tr class="separator:a3683da1c8ad1bd01704fe60bb177e3f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2eac76ceaf2832347ebbd9d0dfabeb45"><td class="memItemLeft" align="right" valign="top">llvm::StringRef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInstructionSimplifyPass.html#a2eac76ceaf2832347ebbd9d0dfabeb45">getPassName</a> () const</td></tr>
+<tr class="separator:a2eac76ceaf2832347ebbd9d0dfabeb45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba966452b854047b700de46e42f4fbae"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInstructionSimplifyPass.html#aba966452b854047b700de46e42f4fbae">runOnBasicBlock</a> (llvm::BasicBlock &amp;BB)</td></tr>
 <tr class="separator:aba966452b854047b700de46e42f4fbae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e73258c2a263bede320d3e5e07c78ea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInstructionSimplifyPass.html#a3e73258c2a263bede320d3e5e07c78ea">runOnFunction</a> (llvm::Function &amp;F)</td></tr>
+<tr class="separator:a3e73258c2a263bede320d3e5e07c78ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -83,9 +85,9 @@ Static Private Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This simple optimization pass looks for a vector select instruction with an all-on or all-off constant mask, simplifying it to the appropriate operand if so.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>The better thing to do would be to submit a patch to LLVM to get these; they're presumably pretty simple patterns to match. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>The better thing to do would be to submit a patch to LLVM to get these; they're presumably pretty simple patterns to match. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01202">1202</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00972">972</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="adee340d5881701e9fae07fb48e723cf3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adee340d5881701e9fae07fb48e723cf3">&#9670;&nbsp;</a></span>InstructionSimplifyPass()</h2>
@@ -110,13 +112,13 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01204">1204</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00974">974</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3683da1c8ad1bd01704fe60bb177e3f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3683da1c8ad1bd01704fe60bb177e3f1">&#9670;&nbsp;</a></span>getPassName()</h2>
+<a id="a2eac76ceaf2832347ebbd9d0dfabeb45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2eac76ceaf2832347ebbd9d0dfabeb45">&#9670;&nbsp;</a></span>getPassName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -125,7 +127,7 @@ Static Private Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const char* InstructionSimplifyPass::getPassName </td>
+          <td class="memname">llvm::StringRef InstructionSimplifyPass::getPassName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -138,7 +140,7 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01207">1207</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00976">976</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -158,9 +160,29 @@ Static Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01312">1312</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01080">1080</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00187">DEBUG_END_PASS</a>, and <a class="el" href="opt_8cpp_source.html#l00177">DEBUG_START_PASS</a>.</p>
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00151">DEBUG_END_PASS</a>, and <a class="el" href="opt_8cpp_source.html#l00141">DEBUG_START_PASS</a>.</p>
+
+</div>
+</div>
+<a id="a3e73258c2a263bede320d3e5e07c78ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e73258c2a263bede320d3e5e07c78ea">&#9670;&nbsp;</a></span>runOnFunction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool InstructionSimplifyPass::runOnFunction </td>
+          <td>(</td>
+          <td class="paramtype">llvm::Function &amp;&#160;</td>
+          <td class="paramname"><em>F</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01104">1104</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -188,9 +210,9 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01223">1223</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00990">990</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00092">LLVMTypes::Int1VectorType</a>.</p>
+<p class="reference">References <a class="el" href="llvmutil_8h_source.html#l00083">LLVMTypes::Int1VectorType</a>.</p>
 
 </div>
 </div>
@@ -228,9 +250,9 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01296">1296</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01064">1064</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00381">lGetMask()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00236">LLVMInt64()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, and <a class="el" href="module_8h_source.html#l00156">Module::module</a>.</p>
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00328">lGetMask()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00241">LLVMInt64()</a>, <a class="el" href="ispc_8cpp_source.html#l00073">m</a>, and <a class="el" href="module_8h_source.html#l00151">Module::module</a>.</p>
 
 </div>
 </div>
@@ -268,9 +290,9 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01261">1261</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01028">1028</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00424">ALL_OFF</a>, <a class="el" href="opt_8cpp_source.html#l00424">ALL_ON</a>, and <a class="el" href="opt_8cpp_source.html#l00429">lGetMaskStatus()</a>.</p>
+<p class="reference">References <a class="el" href="opt_8cpp_source.html#l00371">ALL_OFF</a>, <a class="el" href="opt_8cpp_source.html#l00371">ALL_ON</a>, <a class="el" href="util_8h_source.html#l00128">Assert</a>, and <a class="el" href="opt_8cpp_source.html#l00376">lGetMaskStatus()</a>.</p>
 
 </div>
 </div>
@@ -295,7 +317,7 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l01213">1213</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="opt_8cpp_source.html#l00980">980</a> of file <a class="el" href="opt_8cpp_source.html">opt.cpp</a>.</p>
 
 </div>
 </div>
@@ -305,7 +327,7 @@ Static Private Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:25 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

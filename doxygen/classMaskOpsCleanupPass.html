@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: MaskOpsCleanupPass Class Reference</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): MaskOpsCleanupPass Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -61,12 +61,14 @@ Collaboration diagram for MaskOpsCleanupPass:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa3df948eb319e8e06c5d3aa40f865a2e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaskOpsCleanupPass.html#aa3df948eb319e8e06c5d3aa40f865a2e">MaskOpsCleanupPass</a> (llvm::Module *<a class="el" href="ispc_8cpp.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>)</td></tr>
+<tr class="memitem:aa3df948eb319e8e06c5d3aa40f865a2e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaskOpsCleanupPass.html#aa3df948eb319e8e06c5d3aa40f865a2e">MaskOpsCleanupPass</a> (llvm::Module *<a class="el" href="ispc_8h.html#a8a689c90deea0b4e040fdede6e79dc95">m</a>)</td></tr>
 <tr class="separator:aa3df948eb319e8e06c5d3aa40f865a2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12700e25654ffdf01858480bad8ed38e"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaskOpsCleanupPass.html#a12700e25654ffdf01858480bad8ed38e">getPassName</a> () const</td></tr>
-<tr class="separator:a12700e25654ffdf01858480bad8ed38e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c59af134c6d1e0f9784e1192c4d1109"><td class="memItemLeft" align="right" valign="top">llvm::StringRef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaskOpsCleanupPass.html#a1c59af134c6d1e0f9784e1192c4d1109">getPassName</a> () const</td></tr>
+<tr class="separator:a1c59af134c6d1e0f9784e1192c4d1109"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4424ffb94e91595fc6ded3ff349c815f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaskOpsCleanupPass.html#a4424ffb94e91595fc6ded3ff349c815f">runOnBasicBlock</a> (llvm::BasicBlock &amp;BB)</td></tr>
 <tr class="separator:a4424ffb94e91595fc6ded3ff349c815f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c45c18a0f0dc0f365d18aa3d0a0f0b7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMaskOpsCleanupPass.html#a8c45c18a0f0dc0f365d18aa3d0a0f0b7">runOnFunction</a> (llvm::Function &amp;F)</td></tr>
+<tr class="separator:a8c45c18a0f0dc0f365d18aa3d0a0f0b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -88,7 +90,7 @@ Static Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This pass does various peephole improvements to mask modification operations. In particular, it converts mask XORs with "all true" to calls to __not() and replaces operations like and(not(a), b) to __and_not1(a, b) (and similarly if the second operand has not applied to it...) </p>
 
-<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05512">5512</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05085">5085</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa3df948eb319e8e06c5d3aa40f865a2e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa3df948eb319e8e06c5d3aa40f865a2e">&#9670;&nbsp;</a></span>MaskOpsCleanupPass()</h2>
@@ -114,13 +116,13 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05514">5514</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05087">5087</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a12700e25654ffdf01858480bad8ed38e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12700e25654ffdf01858480bad8ed38e">&#9670;&nbsp;</a></span>getPassName()</h2>
+<a id="a1c59af134c6d1e0f9784e1192c4d1109"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c59af134c6d1e0f9784e1192c4d1109">&#9670;&nbsp;</a></span>getPassName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -129,7 +131,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const char* MaskOpsCleanupPass::getPassName </td>
+          <td class="memname">llvm::StringRef MaskOpsCleanupPass::getPassName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -142,7 +144,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05571">5571</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05122">5122</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -171,7 +173,7 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Checks to see if the given value is the NOT of some other value. If so, it returns the operand of the NOT; otherwise returns NULL. </p>
 
-<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05609">5609</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05158">5158</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -191,7 +193,27 @@ Static Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05623">5623</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05172">5172</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a8c45c18a0f0dc0f365d18aa3d0a0f0b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c45c18a0f0dc0f365d18aa3d0a0f0b7">&#9670;&nbsp;</a></span>runOnFunction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MaskOpsCleanupPass::runOnFunction </td>
+          <td>(</td>
+          <td class="paramtype">llvm::Function &amp;&#160;</td>
+          <td class="paramname"><em>F</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05224">5224</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -216,7 +238,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05580">5580</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05129">5129</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -240,7 +262,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05582">5582</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05131">5131</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -264,7 +286,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05580">5580</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cbackend_8cpp_source.html#l05129">5129</a> of file <a class="el" href="cbackend_8cpp_source.html">cbackend.cpp</a>.</p>
 
 </div>
 </div>
@@ -274,7 +296,7 @@ Static Private Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:25 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

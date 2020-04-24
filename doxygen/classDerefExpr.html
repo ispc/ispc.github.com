@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: DerefExpr Class Reference</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): DerefExpr Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -93,8 +93,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4115fb79fbf6814561470bbe2c57bb13 inherit pub_methods_classExpr"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8451d4988f430bea94e354dc44e6b094 inherit pub_methods_classExpr"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classType.html">Type</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">GetType</a> () const =0</td></tr>
 <tr class="separator:a8451d4988f430bea94e354dc44e6b094 inherit pub_methods_classExpr"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a581f9fe9b09e947872c3cef86d8c6596 inherit pub_methods_classExpr"><td class="memItemLeft" align="right" valign="top">virtual llvm::Constant *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classExpr.html#a581f9fe9b09e947872c3cef86d8c6596">GetConstant</a> (const <a class="el" href="classType.html">Type</a> *type) const</td></tr>
-<tr class="separator:a581f9fe9b09e947872c3cef86d8c6596 inherit pub_methods_classExpr"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a784bd4accefb6246398727496fd8e7cf inherit pub_methods_classExpr"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; llvm::Constant *, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classExpr.html#a784bd4accefb6246398727496fd8e7cf">GetStorageConstant</a> (const <a class="el" href="classType.html">Type</a> *type) const</td></tr>
+<tr class="separator:a784bd4accefb6246398727496fd8e7cf inherit pub_methods_classExpr"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5857584a23e82ebe147bdf2111d825e5 inherit pub_methods_classExpr"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; llvm::Constant *, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classExpr.html#a5857584a23e82ebe147bdf2111d825e5">GetConstant</a> (const <a class="el" href="classType.html">Type</a> *type) const</td></tr>
+<tr class="separator:a5857584a23e82ebe147bdf2111d825e5 inherit pub_methods_classExpr"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf568bb978a23556c8e40f2662715190 inherit pub_methods_classExpr"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classExpr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">TypeCheck</a> ()=0</td></tr>
 <tr class="separator:acf568bb978a23556c8e40f2662715190 inherit pub_methods_classExpr"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8d62a881604e554c36ec30738163423 inherit pub_methods_classExpr"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Print</a> () const =0</td></tr>
@@ -197,7 +199,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Common base class that provides shared functionality for <a class="el" href="classPtrDerefExpr.html" title="Expression that represents dereferencing a pointer to get its value. ">PtrDerefExpr</a> and <a class="el" href="classRefDerefExpr.html" title="Expression that represents dereferencing a reference to get its value. ">RefDerefExpr</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00523">523</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00536">536</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="afc5eb8cb29ede0757bd908471e659021"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afc5eb8cb29ede0757bd908471e659021">&#9670;&nbsp;</a></span>DerefExpr()</h2>
@@ -231,9 +233,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l07056">7056</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l07222">7222</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00539">expr</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00552">expr</a>.</p>
 
 </div>
 </div>
@@ -262,7 +264,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00527">527</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00540">540</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
 </div>
 </div>
@@ -290,9 +292,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00528">528</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00541">541</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ast_8h_source.html#l00087">ASTNode::DerefExprID</a>, <a class="el" href="expr_8cpp_source.html#l00102">Expr::GetBaseSymbol()</a>, <a class="el" href="expr_8cpp_source.html#l00086">Expr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l00091">Expr::GetLValueType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="ast_8h_source.html#l00134">ASTNode::getValueID()</a>, <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr::Optimize()</a>, <a class="el" href="ast_8h_source.html#l00088">ASTNode::PtrDerefExprID</a>, and <a class="el" href="ast_8h_source.html#l00089">ASTNode::RefDerefExprID</a>.</p>
+<p class="reference">References <a class="el" href="ast_8h_source.html#l00086">ASTNode::DerefExprID</a>, <a class="el" href="expr_8cpp_source.html#l00090">Expr::GetBaseSymbol()</a>, <a class="el" href="expr_8cpp_source.html#l00073">Expr::GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l00078">Expr::GetLValueType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="ast_8h_source.html#l00133">ASTNode::getValueID()</a>, <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr::Optimize()</a>, <a class="el" href="ast_8h_source.html#l00087">ASTNode::PtrDerefExprID</a>, and <a class="el" href="ast_8h_source.html#l00088">ASTNode::RefDerefExprID</a>.</p>
 
 </div>
 </div>
@@ -322,9 +324,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classExpr.html#a7b203c9207f50eaa58d09377e19ab2e7">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l07093">7093</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l07259">7259</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00539">expr</a>, and <a class="el" href="expr_8cpp_source.html#l00102">Expr::GetBaseSymbol()</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00552">expr</a>, and <a class="el" href="expr_8cpp_source.html#l00090">Expr::GetBaseSymbol()</a>.</p>
 
 </div>
 </div>
@@ -355,9 +357,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classExpr.html#ac3626a05b0c3fc1344ca8733a5e6a04e">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l07081">7081</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l07247">7247</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00539">expr</a>, and <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00552">expr</a>, and <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>.</p>
 
 </div>
 </div>
@@ -387,9 +389,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classExpr.html#a31d66d8da63cf091a7e20f7a1675a0bd">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l07087">7087</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l07253">7253</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00539">expr</a>, and <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00552">expr</a>, and <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>.</p>
 
 </div>
 </div>
@@ -420,9 +422,11 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l07058">7058</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l07224">7224</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00539">expr</a>, <a class="el" href="expr_8cpp_source.html#l00102">Expr::GetBaseSymbol()</a>, <a class="el" href="ctx_8cpp_source.html#l00431">FunctionEmitContext::GetFullMask()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03861">lAddVaryingOffsetsIfNeeded()</a>, <a class="el" href="expr_8cpp_source.html#l00899">lMaskForSymbol()</a>, <a class="el" href="ctx_8cpp_source.html#l02367">FunctionEmitContext::LoadInst()</a>, <a class="el" href="expr_8cpp_source.html#l03895">lVaryingStructHasUniformMember()</a>, and <a class="el" href="ctx_8cpp_source.html#l01432">FunctionEmitContext::SetDebugPos()</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00552">expr</a>, <a class="el" href="expr_8cpp_source.html#l00090">Expr::GetBaseSymbol()</a>, <a class="el" href="ctx_8cpp_source.html#l00367">FunctionEmitContext::GetFullMask()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l03977">lAddVaryingOffsetsIfNeeded()</a>, <a class="el" href="expr_8cpp_source.html#l00902">lMaskForSymbol()</a>, <a class="el" href="ctx_8cpp_source.html#l02172">FunctionEmitContext::LoadInst()</a>, <a class="el" href="expr_8cpp_source.html#l04011">lVaryingStructHasUniformMember()</a>, and <a class="el" href="ctx_8cpp_source.html#l01288">FunctionEmitContext::SetDebugPos()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l00944">lEmitPrePostIncDec()</a>.</p>
 
 </div>
 </div>
@@ -452,9 +456,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l07095">7095</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l07261">7261</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00539">expr</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00552">expr</a>.</p>
 
 </div>
 </div>
@@ -471,9 +475,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00539">539</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00552">552</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l07056">DerefExpr()</a>, <a class="el" href="expr_8cpp_source.html#l07140">PtrDerefExpr::EstimateCost()</a>, <a class="el" href="expr_8cpp_source.html#l07196">RefDerefExpr::EstimateCost()</a>, <a class="el" href="expr_8cpp_source.html#l07093">GetBaseSymbol()</a>, <a class="el" href="expr_8cpp_source.html#l07081">GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l07087">GetLValueType()</a>, <a class="el" href="expr_8cpp_source.html#l07106">PtrDerefExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l07170">RefDerefExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l07058">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l07095">Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l07155">PtrDerefExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l07203">RefDerefExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l07120">PtrDerefExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l07181">RefDerefExpr::TypeCheck()</a>, and <a class="el" href="ast_8cpp_source.html#l00068">WalkAST()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l07222">DerefExpr()</a>, <a class="el" href="expr_8cpp_source.html#l07306">PtrDerefExpr::EstimateCost()</a>, <a class="el" href="expr_8cpp_source.html#l07362">RefDerefExpr::EstimateCost()</a>, <a class="el" href="expr_8cpp_source.html#l07259">GetBaseSymbol()</a>, <a class="el" href="expr_8cpp_source.html#l07247">GetLValue()</a>, <a class="el" href="expr_8cpp_source.html#l07253">GetLValueType()</a>, <a class="el" href="expr_8cpp_source.html#l07272">PtrDerefExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l07336">RefDerefExpr::GetType()</a>, <a class="el" href="expr_8cpp_source.html#l07224">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l07261">Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l07321">PtrDerefExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l07369">RefDerefExpr::Print()</a>, <a class="el" href="expr_8cpp_source.html#l07286">PtrDerefExpr::TypeCheck()</a>, <a class="el" href="expr_8cpp_source.html#l07347">RefDerefExpr::TypeCheck()</a>, and <a class="el" href="ast_8cpp_source.html#l00068">WalkAST()</a>.</p>
 
 </div>
 </div>
@@ -484,7 +488,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:25 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

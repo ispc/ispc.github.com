@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intel SPMD Program Compiler: ConstExpr Class Reference</title>
+<title>Intel® Implicit SPMD Program Compiler (Intel® ISPC): ConstExpr Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,8 +18,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Intel SPMD Program Compiler
-   &#160;<span id="projectnumber">1.12.0</span>
+   <div id="projectname">Intel® Implicit SPMD Program Compiler (Intel® ISPC)
+   &#160;<span id="projectnumber">1.13.0</span>
    </div>
   </td>
  </tr>
@@ -130,8 +130,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1d2ca1f255e2e1862eaea957531e13fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa78149126f54145abcb6685aa2682916"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstExpr.html#aa78149126f54145abcb6685aa2682916">Print</a> () const</td></tr>
 <tr class="separator:aa78149126f54145abcb6685aa2682916"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21c964a07532dfef6bbdb915bdfee3fa"><td class="memItemLeft" align="right" valign="top">llvm::Constant *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstExpr.html#a21c964a07532dfef6bbdb915bdfee3fa">GetConstant</a> (const <a class="el" href="classType.html">Type</a> *<a class="el" href="classConstExpr.html#ad8eaecdf8a562262140ba193cb4d298d">type</a>) const</td></tr>
-<tr class="separator:a21c964a07532dfef6bbdb915bdfee3fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadd271213870ae68ba2ec92bbccb9ff4"><td class="memItemLeft" align="right" valign="top">std::pair&lt; llvm::Constant *, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstExpr.html#aadd271213870ae68ba2ec92bbccb9ff4">GetStorageConstant</a> (const <a class="el" href="classType.html">Type</a> *<a class="el" href="classConstExpr.html#ad8eaecdf8a562262140ba193cb4d298d">type</a>) const</td></tr>
+<tr class="separator:aadd271213870ae68ba2ec92bbccb9ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab03f1590d44792a024bc8b598480715d"><td class="memItemLeft" align="right" valign="top">std::pair&lt; llvm::Constant *, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstExpr.html#ab03f1590d44792a024bc8b598480715d">GetConstant</a> (const <a class="el" href="classType.html">Type</a> *constType) const</td></tr>
+<tr class="separator:ab03f1590d44792a024bc8b598480715d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a749ca36fc17440ef545f1c3bf728b24a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExpr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstExpr.html#a749ca36fc17440ef545f1c3bf728b24a">TypeCheck</a> ()</td></tr>
 <tr class="separator:a749ca36fc17440ef545f1c3bf728b24a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7c0dbc645dd375fe3a843e040201651"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classExpr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstExpr.html#ac7c0dbc645dd375fe3a843e040201651">Optimize</a> ()</td></tr>
@@ -298,7 +300,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Expression representing a compile-time constant value. </p>
 <p>This class can currently represent compile-time constants of anything that is an <a class="el" href="classAtomicType.html" title="AtomicType represents basic types like floats, ints, etc. ">AtomicType</a> or an <a class="el" href="classEnumType.html" title="Type implementation for enumerated types. ">EnumType</a>; for anything more complex, we don't currently have a representation of a compile-time constant that can be further reasoned about. </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00362">362</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00374">374</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a010516080d6bc0eb505d17990eff1c20"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a010516080d6bc0eb505d17990eff1c20">&#9670;&nbsp;</a></span>ConstExpr() <span class="overload">[1/24]</span></h2>
@@ -333,9 +335,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a uniform int8 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l04900">4900</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05017">5017</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, and <a class="el" href="type_8h_source.html#l00333">AtomicType::UniformInt8</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, and <a class="el" href="type_8h_source.html#l00323">AtomicType::UniformInt8</a>.</p>
 
 </div>
 </div>
@@ -372,9 +374,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a varying int8 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l04907">4907</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05024">5024</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="type_8h_source.html#l00333">AtomicType::UniformInt8</a>, and <a class="el" href="type_8h_source.html#l00333">AtomicType::VaryingInt8</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::UniformInt8</a>, and <a class="el" href="type_8h_source.html#l00323">AtomicType::VaryingInt8</a>.</p>
 
 </div>
 </div>
@@ -411,9 +413,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a uniform uint8 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l04916">4916</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05033">5033</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>, and <a class="el" href="type_8h_source.html#l00336">AtomicType::UniformUInt8</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>, and <a class="el" href="type_8h_source.html#l00326">AtomicType::UniformUInt8</a>.</p>
 
 </div>
 </div>
@@ -450,9 +452,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a varying uint8 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l04923">4923</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05040">5040</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>, <a class="el" href="type_8h_source.html#l00336">AtomicType::UniformUInt8</a>, and <a class="el" href="type_8h_source.html#l00336">AtomicType::VaryingUInt8</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::UniformUInt8</a>, and <a class="el" href="type_8h_source.html#l00326">AtomicType::VaryingUInt8</a>.</p>
 
 </div>
 </div>
@@ -489,9 +491,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a uniform int16 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l04932">4932</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05049">5049</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, and <a class="el" href="type_8h_source.html#l00334">AtomicType::UniformInt16</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, and <a class="el" href="type_8h_source.html#l00324">AtomicType::UniformInt16</a>.</p>
 
 </div>
 </div>
@@ -528,9 +530,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a varying int16 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l04939">4939</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05056">5056</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="type_8h_source.html#l00334">AtomicType::UniformInt16</a>, and <a class="el" href="type_8h_source.html#l00334">AtomicType::VaryingInt16</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::UniformInt16</a>, and <a class="el" href="type_8h_source.html#l00324">AtomicType::VaryingInt16</a>.</p>
 
 </div>
 </div>
@@ -567,9 +569,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a uniform uint16 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l04948">4948</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05065">5065</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, and <a class="el" href="type_8h_source.html#l00337">AtomicType::UniformUInt16</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, and <a class="el" href="type_8h_source.html#l00327">AtomicType::UniformUInt16</a>.</p>
 
 </div>
 </div>
@@ -606,9 +608,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a varying uint16 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l04955">4955</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05072">5072</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="type_8h_source.html#l00337">AtomicType::UniformUInt16</a>, and <a class="el" href="type_8h_source.html#l00337">AtomicType::VaryingUInt16</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="type_8h_source.html#l00327">AtomicType::UniformUInt16</a>, and <a class="el" href="type_8h_source.html#l00327">AtomicType::VaryingUInt16</a>.</p>
 
 </div>
 </div>
@@ -645,9 +647,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a uniform int32 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l04964">4964</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05081">5081</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, and <a class="el" href="type_8h_source.html#l00335">AtomicType::UniformInt32</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, and <a class="el" href="type_8h_source.html#l00325">AtomicType::UniformInt32</a>.</p>
 
 </div>
 </div>
@@ -684,9 +686,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a varying int32 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l04971">4971</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05088">5088</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="type_8h_source.html#l00335">AtomicType::UniformInt32</a>, and <a class="el" href="type_8h_source.html#l00335">AtomicType::VaryingInt32</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::UniformInt32</a>, and <a class="el" href="type_8h_source.html#l00325">AtomicType::VaryingInt32</a>.</p>
 
 </div>
 </div>
@@ -723,9 +725,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a uniform uint32 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l04980">4980</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05097">5097</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="type_8h_source.html#l00139">Type::IsUniformType()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, and <a class="el" href="type_8h_source.html#l00338">AtomicType::UniformUInt32</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="type_8h_source.html#l00134">Type::IsUniformType()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, and <a class="el" href="type_8h_source.html#l00328">AtomicType::UniformUInt32</a>.</p>
 
 </div>
 </div>
@@ -762,9 +764,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a varying uint32 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l04988">4988</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05105">5105</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="type_8h_source.html#l00338">AtomicType::UniformUInt32</a>, and <a class="el" href="type_8h_source.html#l00338">AtomicType::VaryingUInt32</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="type_8h_source.html#l00328">AtomicType::UniformUInt32</a>, and <a class="el" href="type_8h_source.html#l00328">AtomicType::VaryingUInt32</a>.</p>
 
 </div>
 </div>
@@ -801,9 +803,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a uniform float value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l04998">4998</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05115">5115</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, and <a class="el" href="type_8h_source.html#l00339">AtomicType::UniformFloat</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, and <a class="el" href="type_8h_source.html#l00329">AtomicType::UniformFloat</a>.</p>
 
 </div>
 </div>
@@ -840,9 +842,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a varying float value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05005">5005</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05122">5122</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="type_8h_source.html#l00339">AtomicType::UniformFloat</a>, and <a class="el" href="type_8h_source.html#l00339">AtomicType::VaryingFloat</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="type_8h_source.html#l00329">AtomicType::UniformFloat</a>, and <a class="el" href="type_8h_source.html#l00329">AtomicType::VaryingFloat</a>.</p>
 
 </div>
 </div>
@@ -879,9 +881,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a uniform double value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05046">5046</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05163">5163</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, and <a class="el" href="type_8h_source.html#l00342">AtomicType::UniformDouble</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, and <a class="el" href="type_8h_source.html#l00332">AtomicType::UniformDouble</a>.</p>
 
 </div>
 </div>
@@ -918,9 +920,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a varying double value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05053">5053</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05170">5170</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="type_8h_source.html#l00342">AtomicType::UniformDouble</a>, and <a class="el" href="type_8h_source.html#l00342">AtomicType::VaryingDouble</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="type_8h_source.html#l00332">AtomicType::UniformDouble</a>, and <a class="el" href="type_8h_source.html#l00332">AtomicType::VaryingDouble</a>.</p>
 
 </div>
 </div>
@@ -957,9 +959,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a uniform int64 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05014">5014</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05131">5131</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, and <a class="el" href="type_8h_source.html#l00340">AtomicType::UniformInt64</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, and <a class="el" href="type_8h_source.html#l00330">AtomicType::UniformInt64</a>.</p>
 
 </div>
 </div>
@@ -996,9 +998,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a varying int64 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05021">5021</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05138">5138</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="type_8h_source.html#l00340">AtomicType::UniformInt64</a>, and <a class="el" href="type_8h_source.html#l00340">AtomicType::VaryingInt64</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="type_8h_source.html#l00330">AtomicType::UniformInt64</a>, and <a class="el" href="type_8h_source.html#l00330">AtomicType::VaryingInt64</a>.</p>
 
 </div>
 </div>
@@ -1035,9 +1037,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a uniform uint64 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05030">5030</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05147">5147</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="type_8h_source.html#l00341">AtomicType::UniformUInt64</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="type_8h_source.html#l00331">AtomicType::UniformUInt64</a>.</p>
 
 </div>
 </div>
@@ -1074,9 +1076,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a varying uint64 value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05037">5037</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05154">5154</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, <a class="el" href="type_8h_source.html#l00341">AtomicType::UniformUInt64</a>, and <a class="el" href="type_8h_source.html#l00341">AtomicType::VaryingUInt64</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, <a class="el" href="type_8h_source.html#l00331">AtomicType::UniformUInt64</a>, and <a class="el" href="type_8h_source.html#l00331">AtomicType::VaryingUInt64</a>.</p>
 
 </div>
 </div>
@@ -1113,9 +1115,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a uniform bool value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05062">5062</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05179">5179</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, and <a class="el" href="type_8h_source.html#l00332">AtomicType::UniformBool</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, and <a class="el" href="type_8h_source.html#l00322">AtomicType::UniformBool</a>.</p>
 
 </div>
 </div>
@@ -1152,9 +1154,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> from a varying bool value </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05069">5069</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05186">5186</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="type_8h_source.html#l00332">AtomicType::UniformBool</a>, and <a class="el" href="type_8h_source.html#l00332">AtomicType::VaryingBool</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="type_8cpp_source.html#l02853">Type::Equal()</a>, <a class="el" href="classType.html#a91db376e89247992a5975936c5054eaa">Type::GetAsConstType()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::UniformBool</a>, and <a class="el" href="type_8h_source.html#l00322">AtomicType::VaryingBool</a>.</p>
 
 </div>
 </div>
@@ -1185,9 +1187,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> of the same type as the given old <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a>, with values given by the "vales" parameter. </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05078">5078</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05195">5195</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
 </div>
 </div>
@@ -1218,9 +1220,9 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Create <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a> with the same type and values as the given one, but at the given position. </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05130">5130</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05247">5247</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
 </div>
 </div>
@@ -1249,7 +1251,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00423">423</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00435">435</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
 </div>
 </div>
@@ -1277,9 +1279,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00424">424</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00436">436</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ast_8h_source.html#l00086">ASTNode::ConstExprID</a>, <a class="el" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">ASTNode::EstimateCost()</a>, <a class="el" href="expr_8cpp_source.html#l00097">Expr::GetConstant()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="ast_8h_source.html#l00134">ASTNode::getValueID()</a>, <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr::Optimize()</a>, <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr::Print()</a>, and <a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">Expr::TypeCheck()</a>.</p>
+<p class="reference">References <a class="el" href="ast_8h_source.html#l00085">ASTNode::ConstExprID</a>, <a class="el" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">ASTNode::EstimateCost()</a>, <a class="el" href="expr_8cpp_source.html#l00085">Expr::GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l00084">Expr::GetStorageConstant()</a>, <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr::GetType()</a>, <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr::GetValue()</a>, <a class="el" href="ast_8h_source.html#l00133">ASTNode::getValueID()</a>, <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr::Optimize()</a>, <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr::Print()</a>, and <a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">Expr::TypeCheck()</a>.</p>
 
 </div>
 </div>
@@ -1299,11 +1301,11 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Return the number of values in the <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a>; should be either 1, if it has uniform type, or the target's vector width if it's varying. </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05705">5705</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05822">5822</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="expr_8cpp_source.html#l05184">GetType()</a>, <a class="el" href="ispc_8h_source.html#l00279">Target::getVectorWidth()</a>, <a class="el" href="type_8h_source.html#l00142">Type::IsVaryingType()</a>, and <a class="el" href="ispc_8h_source.html#l00544">Globals::target</a>.</p>
+<p class="reference">References <a class="el" href="ispc_8cpp_source.html#l00072">g</a>, <a class="el" href="expr_8cpp_source.html#l05301">GetType()</a>, <a class="el" href="ispc_8h_source.html#l00245">Target::getVectorWidth()</a>, <a class="el" href="type_8h_source.html#l00137">Type::IsVaryingType()</a>, and <a class="el" href="ispc_8h_source.html#l00512">Globals::target</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l04907">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05707">GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l05254">GetValues()</a>, <a class="el" href="expr_8cpp_source.html#l02075">lConstFoldBinaryArithOp()</a>, <a class="el" href="expr_8cpp_source.html#l02030">lConstFoldBinaryIntOp()</a>, <a class="el" href="expr_8cpp_source.html#l02051">lConstFoldBinaryLogicalOp()</a>, <a class="el" href="expr_8cpp_source.html#l02102">lConstFoldBoolBinaryOp()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05024">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05371">GetValues()</a>, <a class="el" href="expr_8cpp_source.html#l02077">lConstFoldBinaryArithOp()</a>, <a class="el" href="expr_8cpp_source.html#l02032">lConstFoldBinaryIntOp()</a>, <a class="el" href="expr_8cpp_source.html#l02053">lConstFoldBinaryLogicalOp()</a>, <a class="el" href="expr_8cpp_source.html#l02104">lConstFoldBoolBinaryOp()</a>, <a class="el" href="expr_8cpp_source.html#l05824">lGetConstExprConstant()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">Print()</a>.</p>
 
 </div>
 </div>
@@ -1333,7 +1335,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classASTNode.html#add2ef84b57f0cda15ae3c7ad983ff909">ASTNode</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05821">5821</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05957">5957</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
 </div>
 </div>
@@ -1360,16 +1362,16 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05174">5174</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05291">5291</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="type_8h_source.html#l00330">AtomicType::basicType</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, and <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00142">AssertPos</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::basicType</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, and <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05078">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05186">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05254">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05195">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05303">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05371">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">Print()</a>.</p>
 
 </div>
 </div>
-<a id="a21c964a07532dfef6bbdb915bdfee3fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21c964a07532dfef6bbdb915bdfee3fa">&#9670;&nbsp;</a></span>GetConstant()</h2>
+<a id="ab03f1590d44792a024bc8b598480715d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab03f1590d44792a024bc8b598480715d">&#9670;&nbsp;</a></span>GetConstant()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1378,7 +1380,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">llvm::Constant * ConstExpr::GetConstant </td>
+          <td class="memname">std::pair&lt; llvm::Constant *, bool &gt; ConstExpr::GetConstant </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classType.html">Type</a> *&#160;</td>
           <td class="paramname"><em>type</em></td><td>)</td>
@@ -1391,13 +1393,50 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>If this is a constant expression that can be converted to a constant of the given type, this method should return the corresponding llvm::Constant value. Otherwise it should return NULL. </p>
+<p>If this is a constant expression that can be converted to a constant of the given type, this method should return the corresponding llvm::Constant value and a flag denoting if it's valid for multi-target compilation for use as an initializer of a global variable. Otherwise it should return the llvm::constant value as NULL. </p>
 
-<p>Reimplemented from <a class="el" href="classExpr.html#a581f9fe9b09e947872c3cef86d8c6596">Expr</a>.</p>
+<p>Reimplemented from <a class="el" href="classExpr.html#a5857584a23e82ebe147bdf2111d825e5">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05707">5707</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05949">5949</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ispc_8h_source.html#l00165">AssertPos</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="ispc_8h_source.html#l00645">Globals::ctx</a>, <a class="el" href="util_8cpp_source.html#l00363">Debug()</a>, <a class="el" href="type_8cpp_source.html#l03114">Type::Equal()</a>, <a class="el" href="module_8h_source.html#l00149">Module::errorCount</a>, <a class="el" href="ispc_8cpp_source.html#l00101">g</a>, <a class="el" href="classType.html#ad97d28e97d0955f6b19bb24dbfcc22bf">Type::GetAsNonConstType()</a>, <a class="el" href="classType.html#a4d1539ea0f1c563872676c3ed3cfa568">Type::GetString()</a>, <a class="el" href="expr_8cpp_source.html#l05418">GetValues()</a>, <a class="el" href="ispc_8h_source.html#l00066">ISPC_MAX_NVEC</a>, <a class="el" href="type_8h_source.html#l00139">Type::IsUniformType()</a>, <a class="el" href="type_8h_source.html#l00142">Type::IsVaryingType()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00398">LLVMBoolVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00246">LLVMDouble()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00353">LLVMDoubleVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00091">LLVMFalse</a>, <a class="el" href="llvmutil_8cpp_source.html#l00244">LLVMFloat()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00338">LLVMFloatVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00220">LLVMInt16()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00278">LLVMInt16Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00308">LLVMInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00236">LLVMInt64()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00368">LLVMInt64Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00212">LLVMInt8()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00248">LLVMInt8Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00090">LLVMTrue</a>, <a class="el" href="classType.html#a04eb42d850a697fc181b388688b6393e">Type::LLVMType()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00224">LLVMUInt16()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00293">LLVMUInt16Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00232">LLVMUInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00323">LLVMUInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00240">LLVMUInt64()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00383">LLVMUInt64Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00216">LLVMUInt8()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00263">LLVMUInt8Vector()</a>, <a class="el" href="ispc_8cpp_source.html#l00102">m</a>, <a class="el" href="type_8h_source.html#l00332">AtomicType::UniformBool</a>, <a class="el" href="type_8h_source.html#l00342">AtomicType::UniformDouble</a>, <a class="el" href="type_8h_source.html#l00339">AtomicType::UniformFloat</a>, <a class="el" href="type_8h_source.html#l00334">AtomicType::UniformInt16</a>, <a class="el" href="type_8h_source.html#l00335">AtomicType::UniformInt32</a>, <a class="el" href="type_8h_source.html#l00340">AtomicType::UniformInt64</a>, <a class="el" href="type_8h_source.html#l00333">AtomicType::UniformInt8</a>, <a class="el" href="type_8h_source.html#l00337">AtomicType::UniformUInt16</a>, <a class="el" href="type_8h_source.html#l00338">AtomicType::UniformUInt32</a>, <a class="el" href="type_8h_source.html#l00341">AtomicType::UniformUInt64</a>, <a class="el" href="type_8h_source.html#l00336">AtomicType::UniformUInt8</a>, <a class="el" href="type_8h_source.html#l00332">AtomicType::VaryingBool</a>, <a class="el" href="type_8h_source.html#l00342">AtomicType::VaryingDouble</a>, <a class="el" href="type_8h_source.html#l00339">AtomicType::VaryingFloat</a>, <a class="el" href="type_8h_source.html#l00334">AtomicType::VaryingInt16</a>, <a class="el" href="type_8h_source.html#l00335">AtomicType::VaryingInt32</a>, <a class="el" href="type_8h_source.html#l00340">AtomicType::VaryingInt64</a>, <a class="el" href="type_8h_source.html#l00333">AtomicType::VaryingInt8</a>, <a class="el" href="type_8h_source.html#l00337">AtomicType::VaryingUInt16</a>, <a class="el" href="type_8h_source.html#l00338">AtomicType::VaryingUInt32</a>, <a class="el" href="type_8h_source.html#l00341">AtomicType::VaryingUInt64</a>, and <a class="el" href="type_8h_source.html#l00336">AtomicType::VaryingUInt8</a>.</p>
+<p class="reference">References <a class="el" href="expr_8cpp_source.html#l05824">lGetConstExprConstant()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l02665">lGetBinaryExprStorageConstant()</a>.</p>
+
+</div>
+</div>
+<a id="aadd271213870ae68ba2ec92bbccb9ff4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadd271213870ae68ba2ec92bbccb9ff4">&#9670;&nbsp;</a></span>GetStorageConstant()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; llvm::Constant *, bool &gt; ConstExpr::GetStorageConstant </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classType.html">Type</a> *&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If this is a constant expression that can be converted to a constant of storage type of the given type, this method should return the corresponding llvm::Constant value and a flag denoting if it's valid for multi-target compilation for use as an initializer of a global variable. Otherwise it should return the llvm::constant value as NULL. </p>
+
+<p>Reimplemented from <a class="el" href="classExpr.html#a784bd4accefb6246398727496fd8e7cf">Expr</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05946">5946</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="expr_8cpp_source.html#l05824">lGetConstExprConstant()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l02665">lGetBinaryExprStorageConstant()</a>.</p>
 
 </div>
 </div>
@@ -1427,11 +1466,11 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#a8451d4988f430bea94e354dc44e6b094">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05184">5184</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05301">5301</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00460">type</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00473">type</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8cpp_source.html#l02075">lConstFoldBinaryArithOp()</a>, <a class="el" href="expr_8cpp_source.html#l02030">lConstFoldBinaryIntOp()</a>, <a class="el" href="expr_8cpp_source.html#l02051">lConstFoldBinaryLogicalOp()</a>, <a class="el" href="expr_8cpp_source.html#l02102">lConstFoldBoolBinaryOp()</a>, <a class="el" href="expr_8cpp_source.html#l01097">UnaryExpr::Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l03189">SelectExpr::Optimize()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8cpp_source.html#l02077">lConstFoldBinaryArithOp()</a>, <a class="el" href="expr_8cpp_source.html#l02032">lConstFoldBinaryIntOp()</a>, <a class="el" href="expr_8cpp_source.html#l02053">lConstFoldBinaryLogicalOp()</a>, <a class="el" href="expr_8cpp_source.html#l02104">lConstFoldBoolBinaryOp()</a>, <a class="el" href="expr_8cpp_source.html#l02665">lGetBinaryExprStorageConstant()</a>, <a class="el" href="expr_8cpp_source.html#l01100">UnaryExpr::Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l03281">SelectExpr::Optimize()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">Print()</a>.</p>
 
 </div>
 </div>
@@ -1462,9 +1501,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#a2bc3d2bff41746985dd2b07d0637d7e8">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05186">5186</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05303">5303</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="type_8h_source.html#l00142">Type::IsVaryingType()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00398">LLVMBoolVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00246">LLVMDouble()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00353">LLVMDoubleVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00091">LLVMFalse</a>, <a class="el" href="llvmutil_8cpp_source.html#l00244">LLVMFloat()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00338">LLVMFloatVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00220">LLVMInt16()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00278">LLVMInt16Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00228">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00308">LLVMInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00236">LLVMInt64()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00368">LLVMInt64Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00212">LLVMInt8()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00248">LLVMInt8Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00090">LLVMTrue</a>, <a class="el" href="llvmutil_8cpp_source.html#l00224">LLVMUInt16()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00293">LLVMUInt16Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00232">LLVMUInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00323">LLVMUInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00240">LLVMUInt64()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00383">LLVMUInt64Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00216">LLVMUInt8()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00263">LLVMUInt8Vector()</a>, <a class="el" href="ctx_8cpp_source.html#l01432">FunctionEmitContext::SetDebugPos()</a>, <a class="el" href="expr_8h_source.html#l00460">type</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="type_8h_source.html#l00137">Type::IsVaryingType()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00403">LLVMBoolVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00251">LLVMDouble()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00358">LLVMDoubleVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00091">LLVMFalse</a>, <a class="el" href="llvmutil_8cpp_source.html#l00249">LLVMFloat()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00343">LLVMFloatVector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00225">LLVMInt16()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00283">LLVMInt16Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00233">LLVMInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00313">LLVMInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00241">LLVMInt64()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00373">LLVMInt64Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00217">LLVMInt8()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00253">LLVMInt8Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00090">LLVMTrue</a>, <a class="el" href="llvmutil_8cpp_source.html#l00229">LLVMUInt16()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00298">LLVMUInt16Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00237">LLVMUInt32()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00328">LLVMUInt32Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00245">LLVMUInt64()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00388">LLVMUInt64Vector()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00221">LLVMUInt8()</a>, <a class="el" href="llvmutil_8cpp_source.html#l00268">LLVMUInt8Vector()</a>, <a class="el" href="ctx_8cpp_source.html#l01288">FunctionEmitContext::SetDebugPos()</a>, <a class="el" href="expr_8h_source.html#l00473">type</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
 </div>
 </div>
@@ -1495,11 +1534,11 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Return the <a class="el" href="classConstExpr.html" title="Expression representing a compile-time constant value. ">ConstExpr</a>'s values as the given pointer type, doing type conversion from the actual type if needed. If forceVarying is true, then type convert to 'varying' so as to always return a number of values equal to the target vector width into the given pointer. </p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05418">5418</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05535">5535</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05245">lConvert()</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05362">lConvert()</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05707">GetConstant()</a>, <a class="el" href="expr_8cpp_source.html#l02161">lCanImproveVectorDivide()</a>, <a class="el" href="ast_8cpp_source.html#l00280">lCheckAllOffSafety()</a>, <a class="el" href="expr_8cpp_source.html#l04070">lCheckIndicesVersusBounds()</a>, <a class="el" href="expr_8cpp_source.html#l02126">lConstFoldBinaryFPOp()</a>, <a class="el" href="expr_8cpp_source.html#l02141">lConstFoldBinaryIntOp()</a>, <a class="el" href="expr_8cpp_source.html#l03178">lConstFoldSelect()</a>, <a class="el" href="module_8cpp_source.html#l01644">lEmitEnumDecls()</a>, <a class="el" href="expr_8cpp_source.html#l00166">lIsAllIntZeros()</a>, <a class="el" href="expr_8cpp_source.html#l01855">lIsDifficultShiftAmount()</a>, <a class="el" href="expr_8cpp_source.html#l01081">lOptimizeBitNot()</a>, <a class="el" href="expr_8cpp_source.html#l01089">lOptimizeNegate()</a>, <a class="el" href="expr_8cpp_source.html#l01097">UnaryExpr::Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l02198">BinaryExpr::Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l03189">SelectExpr::Optimize()</a>, and <a class="el" href="expr_8cpp_source.html#l06827">TypeCastExpr::Optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l02163">lCanImproveVectorDivide()</a>, <a class="el" href="ast_8cpp_source.html#l00280">lCheckAllOffSafety()</a>, <a class="el" href="expr_8cpp_source.html#l04186">lCheckIndicesVersusBounds()</a>, <a class="el" href="expr_8cpp_source.html#l02128">lConstFoldBinaryFPOp()</a>, <a class="el" href="expr_8cpp_source.html#l02143">lConstFoldBinaryIntOp()</a>, <a class="el" href="expr_8cpp_source.html#l03270">lConstFoldSelect()</a>, <a class="el" href="module_8cpp_source.html#l01133">lEmitEnumDecls()</a>, <a class="el" href="expr_8cpp_source.html#l05824">lGetConstExprConstant()</a>, <a class="el" href="expr_8cpp_source.html#l00154">lIsAllIntZeros()</a>, <a class="el" href="expr_8cpp_source.html#l01857">lIsDifficultShiftAmount()</a>, <a class="el" href="expr_8cpp_source.html#l01084">lOptimizeBitNot()</a>, <a class="el" href="expr_8cpp_source.html#l01092">lOptimizeNegate()</a>, <a class="el" href="expr_8cpp_source.html#l01100">UnaryExpr::Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l02200">BinaryExpr::Optimize()</a>, <a class="el" href="expr_8cpp_source.html#l03281">SelectExpr::Optimize()</a>, and <a class="el" href="expr_8cpp_source.html#l06973">TypeCastExpr::Optimize()</a>.</p>
 
 </div>
 </div>
@@ -1529,9 +1568,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05459">5459</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05576">5576</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05245">lConvert()</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05362">lConvert()</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
 </div>
 </div>
@@ -1561,9 +1600,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05500">5500</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05617">5617</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05245">lConvert()</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05362">lConvert()</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
 </div>
 </div>
@@ -1593,9 +1632,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05541">5541</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05658">5658</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05245">lConvert()</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05362">lConvert()</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
 </div>
 </div>
@@ -1625,9 +1664,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05582">5582</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05699">5699</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05245">lConvert()</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05362">lConvert()</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
 </div>
 </div>
@@ -1657,9 +1696,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05623">5623</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05740">5740</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05245">lConvert()</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05362">lConvert()</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
 </div>
 </div>
@@ -1689,9 +1728,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05664">5664</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05781">5781</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05245">lConvert()</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05362">lConvert()</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
 </div>
 </div>
@@ -1721,9 +1760,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05377">5377</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05494">5494</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05245">lConvert()</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05362">lConvert()</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
 </div>
 </div>
@@ -1753,9 +1792,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05254">5254</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05371">5371</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05245">lConvert()</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05362">lConvert()</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
 </div>
 </div>
@@ -1785,9 +1824,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05295">5295</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05412">5412</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05245">lConvert()</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05362">lConvert()</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
 </div>
 </div>
@@ -1817,9 +1856,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05336">5336</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05453">5453</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05245">lConvert()</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="expr_8cpp_source.html#l05362">lConvert()</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
 </div>
 </div>
@@ -1849,7 +1888,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#aeffa58fc4e9b2b058c1d3931caed2ae4">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05817">5817</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05953">5953</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
 </div>
 </div>
@@ -1879,9 +1918,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#ac8d62a881604e554c36ec30738163423">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05823">5823</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05959">5959</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="expr_8h_source.html#l00468">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05705">Count()</a>, <a class="el" href="expr_8h_source.html#l00470">doubleVal</a>, <a class="el" href="util_8h_source.html#l00112">FATAL</a>, <a class="el" href="expr_8h_source.html#l00469">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8cpp_source.html#l05184">GetType()</a>, <a class="el" href="expr_8h_source.html#l00464">int16Val</a>, <a class="el" href="expr_8h_source.html#l00466">int32Val</a>, <a class="el" href="expr_8h_source.html#l00471">int64Val</a>, <a class="el" href="expr_8h_source.html#l00462">int8Val</a>, <a class="el" href="opt_8cpp_source.html#l00143">PRId64</a>, <a class="el" href="ispc_8cpp_source.html#l01650">SourcePos::Print()</a>, <a class="el" href="opt_8cpp_source.html#l00146">PRIu64</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00326">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00323">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00319">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00321">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00324">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00317">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00320">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00322">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00325">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00318">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00465">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00467">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00472">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00463">uint8Val</a>.</p>
+<p class="reference">References <a class="el" href="expr_8h_source.html#l00481">boolVal</a>, <a class="el" href="expr_8cpp_source.html#l05822">Count()</a>, <a class="el" href="expr_8h_source.html#l00483">doubleVal</a>, <a class="el" href="util_8h_source.html#l00116">FATAL</a>, <a class="el" href="expr_8h_source.html#l00482">floatVal</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8cpp_source.html#l05301">GetType()</a>, <a class="el" href="expr_8h_source.html#l00477">int16Val</a>, <a class="el" href="expr_8h_source.html#l00479">int32Val</a>, <a class="el" href="expr_8h_source.html#l00484">int64Val</a>, <a class="el" href="expr_8h_source.html#l00475">int8Val</a>, <a class="el" href="opt_8cpp_source.html#l00110">PRId64</a>, <a class="el" href="ispc_8cpp_source.html#l01514">SourcePos::Print()</a>, <a class="el" href="opt_8cpp_source.html#l00113">PRIu64</a>, <a class="el" href="type_8h_source.html#l00306">AtomicType::TYPE_BOOL</a>, <a class="el" href="type_8h_source.html#l00316">AtomicType::TYPE_DOUBLE</a>, <a class="el" href="type_8h_source.html#l00313">AtomicType::TYPE_FLOAT</a>, <a class="el" href="type_8h_source.html#l00309">AtomicType::TYPE_INT16</a>, <a class="el" href="type_8h_source.html#l00311">AtomicType::TYPE_INT32</a>, <a class="el" href="type_8h_source.html#l00314">AtomicType::TYPE_INT64</a>, <a class="el" href="type_8h_source.html#l00307">AtomicType::TYPE_INT8</a>, <a class="el" href="type_8h_source.html#l00310">AtomicType::TYPE_UINT16</a>, <a class="el" href="type_8h_source.html#l00312">AtomicType::TYPE_UINT32</a>, <a class="el" href="type_8h_source.html#l00315">AtomicType::TYPE_UINT64</a>, <a class="el" href="type_8h_source.html#l00308">AtomicType::TYPE_UINT8</a>, <a class="el" href="expr_8h_source.html#l00478">uint16Val</a>, <a class="el" href="expr_8h_source.html#l00480">uint32Val</a>, <a class="el" href="expr_8h_source.html#l00485">uint64Val</a>, and <a class="el" href="expr_8h_source.html#l00476">uint8Val</a>.</p>
 
 </div>
 </div>
@@ -1911,7 +1950,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classExpr.html#acf568bb978a23556c8e40f2662715190">Expr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05819">5819</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8cpp_source.html#l05955">5955</a> of file <a class="el" href="expr_8cpp_source.html">expr.cpp</a>.</p>
 
 </div>
 </div>
@@ -1942,9 +1981,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00468">468</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00481">481</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05062">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05186">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05254">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05179">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05303">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05371">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">Print()</a>.</p>
 
 </div>
 </div>
@@ -1960,9 +1999,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00470">470</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00483">483</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05046">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05186">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05254">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05163">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05303">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05371">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">Print()</a>.</p>
 
 </div>
 </div>
@@ -1978,9 +2017,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00469">469</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00482">482</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l04998">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05186">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05254">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05115">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05303">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05371">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">Print()</a>.</p>
 
 </div>
 </div>
@@ -1996,9 +2035,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00464">464</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00477">477</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l04932">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05186">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05254">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05049">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05303">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05371">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">Print()</a>.</p>
 
 </div>
 </div>
@@ -2014,9 +2053,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00466">466</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00479">479</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l04964">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05186">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05254">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05081">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05303">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05371">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">Print()</a>.</p>
 
 </div>
 </div>
@@ -2032,9 +2071,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00471">471</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00484">484</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05014">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05186">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05254">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05131">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05303">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05371">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">Print()</a>.</p>
 
 </div>
 </div>
@@ -2050,9 +2089,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00462">462</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00475">475</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l04900">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05186">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05254">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05017">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05303">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05371">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">Print()</a>.</p>
 
 </div>
 </div>
@@ -2076,9 +2115,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00460">460</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00473">473</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l04900">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05174">getBasicType()</a>, <a class="el" href="expr_8cpp_source.html#l05184">GetType()</a>, and <a class="el" href="expr_8cpp_source.html#l05186">GetValue()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05017">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05291">getBasicType()</a>, <a class="el" href="expr_8cpp_source.html#l05301">GetType()</a>, and <a class="el" href="expr_8cpp_source.html#l05303">GetValue()</a>.</p>
 
 </div>
 </div>
@@ -2094,9 +2133,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00465">465</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00478">478</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l04948">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05186">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05254">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05065">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05303">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05371">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">Print()</a>.</p>
 
 </div>
 </div>
@@ -2112,9 +2151,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00467">467</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00480">480</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l04980">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05186">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05254">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05097">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05303">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05371">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">Print()</a>.</p>
 
 </div>
 </div>
@@ -2130,9 +2169,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00472">472</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00485">485</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05030">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05186">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05254">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05147">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05303">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05371">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">Print()</a>.</p>
 
 </div>
 </div>
@@ -2148,9 +2187,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00463">463</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="expr_8h_source.html#l00476">476</a> of file <a class="el" href="expr_8h_source.html">expr.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l04916">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05186">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05254">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05823">Print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="expr_8cpp_source.html#l05033">ConstExpr()</a>, <a class="el" href="expr_8cpp_source.html#l05303">GetValue()</a>, <a class="el" href="expr_8cpp_source.html#l05371">GetValues()</a>, and <a class="el" href="expr_8cpp_source.html#l05959">Print()</a>.</p>
 
 </div>
 </div>
@@ -2161,7 +2200,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 15 2019 14:38:16 for Intel SPMD Program Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 24 2020 00:01:25 for Intel® Implicit SPMD Program Compiler (Intel® ISPC) by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>
