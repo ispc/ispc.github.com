@@ -42,7 +42,7 @@
     <div id="header">
       <h1 id="logo">Intel® Implicit SPMD Program Compiler</h1>
       <div id="slogan">An open-source compiler for high-performance SIMD programming on
-      the CPU</div>
+      the CPU and GPU</div>
     </div>
     <div id="nav">
       <div id="nbar">
@@ -84,21 +84,20 @@
           more details and examples that illustrate this concept.)</p>
 
         <p><tt>ispc</tt> compiles a C-based SPMD programming language to
-          run on the SIMD units of CPUs and the Intel Xeon
-          Phi&trade; architecture; it frequently provides a 3x or more
-          speedup on CPUs with 4-wide vector SSE units and 5x-6x on CPUs
-          with 8-wide AVX vector units, without any of the difficulty of
-          writing intrinsics code.  Parallelization across multiple cores
-          is also supported by <tt>ispc</tt>, making it possible to write
-          programs that achieve performance improvement that scales by both
-          number of cores and vector unit size.
+          run on the SIMD units of CPUs and GPUs; it frequently provides 
+          a 3x or more speedup on architectures with 4-wide vector SSE units
+          and 5x-6x on archituctures with 8-wide AVX vector units, without 
+          any of the difficulty of writing intrinsics code.  Parallelization
+          across multiple cores is also supported by <tt>ispc</tt>, making it
+          possible to write programs that achieve performance improvement 
+          that scales by both number of cores and vector unit size.
         </p>
 
         <p>There are a few key principles in the design of <tt>ispc</tt>:
         <ul>
           <li>To build a small set of extensions to the C language that
             would deliver excellent performance to performance-oriented
-            programmers who want to run SPMD programs on the CPU.</li>
+            programmers who want to run SPMD programs on the CPU and GPU.</li>
           <li>To provide a thin abstraction layer between the programmer
             and the hardware&mdash;in particular, to have an execution and
             data model where the programmer can cleanly reason about the
@@ -119,9 +118,11 @@
           <a href="http://llvm.org">LLVM Compiler Infrastructure</a> for
           back-end code generation and optimization and
           is <a href="http://github.com/ispc/ispc/">hosted on
-          github</a>. It supports Windows, Mac, and Linux, with both x86
+          github</a>. On CPU it supports Windows, Mac, and Linux, with both x86
           and x86-64 targets.  It currently supports the SSE2, SSE4, AVX1, 
-          AVX2, AVX512, and Xeon Phi "Knight's Corner" instruction sets.
+          AVX2, AVX512, and Xeon Phi "Knight's Corner" instruction sets. On GPU
+          <tt>ispc</tt> supports Intel(R) Processor Graphics Gen9 and later
+          on Linux platform.
         </p>
         <p><tt>ispc</tt> support is provided provided through github issues and the
 	  <a href="https://groups.google.com/forum/#!forum/ispc-users">Intel Implicit SPMD Compiler Users Forum</a>.
