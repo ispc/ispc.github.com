@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.14: http://docutils.sourceforge.net/" />
 <title>Intel® ISPC for GEN</title>
 <script type="text/javascript">
 
@@ -27,7 +27,7 @@
     <div id="header">
       <h1 id="logo">Intel® Implicit SPMD Program Compiler</h1>
       <div id="slogan">An open-source compiler for high-performance SIMD programming on
-      the CPU</div>
+      the CPU and GPU</div>
     </div>
     <div id="nav">
       <div id="nbar">
@@ -77,31 +77,38 @@ a unified abstraction for executing tasks on CPU and GPU.</p>
 <li><a class="reference internal" href="#ispc-run-time-ispcrt">ISPC Run Time (ISPCRT)</a><ul>
 <li><a class="reference internal" href="#ispcrt-objects">ISPCRT Objects</a></li>
 <li><a class="reference internal" href="#execution-model">Execution Model</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#compiling-and-running-simple-ispc-program">Compiling and Running Simple ISPC Program</a></li>
 <li><a class="reference internal" href="#language-limitations-and-known-issues">Language Limitations and Known Issues</a></li>
-<li><a class="reference internal" href="#performance">Performance</a></li>
+<li><a class="reference internal" href="#performance">Performance</a><ul>
+<li><a class="reference internal" href="#performance-guide-for-gpu-programming">Performance Guide for GPU Programming</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#faq">FAQ</a><ul>
 <li><a class="reference internal" href="#how-to-get-an-assembly-file-from-spir-v">How to Get an Assembly File from SPIR-V?</a></li>
+<li><a class="reference internal" href="#how-to-debug-on-gpu">How to Debug on GPU?</a></li>
 </ul>
 </li>
 </ul>
 <div class="section" id="using-the-ispc-compiler">
 <h1>Using The ISPC Compiler</h1>
-<p>The output from <tt class="docutils literal">ispc</tt> for GEN targets is SPIR-V file. SPIR-V output format
-is selected by default when one of <tt class="docutils literal">genx</tt> targets is used:</p>
+<p>The output from <tt class="docutils literal">ispc</tt> for GEN targets is SPIR-V file by default. It is used
+when one of <tt class="docutils literal">genx</tt> targets is selected:</p>
 <pre class="literal-block">
 ispc foo.ispc --target=genx-x8 -o foo.spv
 </pre>
 <p>The SPIR-V file is consumed by the runtime for further compilation and execution
 on GPU.</p>
+<p>You can also generate L0 binary using <tt class="docutils literal"><span class="pre">--emit-zebin</span></tt> flag. Please note that
+currently SPIR-V format is more stable but feel free to experiment with L0 binary.</p>
 <div class="section" id="environment">
 <h2>Environment</h2>
 <p>Currently, <tt class="docutils literal">Intel® ISPC for GEN</tt> is supported on Linux only but it is planned
 to be extended for Windows as well in a future release.
 Recommended and tested Linux distribution is Ubuntu 18.04.</p>
-<p>You need to have a system with <tt class="docutils literal">Intel(R) Processor Graphics Gen9</tt>.</p>
+<p>You need to have a system with <tt class="docutils literal">Intel(R) Processor Graphics Gen9</tt> or later.</p>
 <p>For the execution of ISPC programs on GPU, please install <a class="reference external" href="https://github.com/intel/compute-runtime/releases">Intel(R)
 Graphics Compute Runtime</a>
 and <a class="reference external" href="https://github.com/oneapi-src/level-zero/releases">Level Zero Loader</a>.</p>
@@ -117,6 +124,9 @@ Optionally you can use <tt class="docutils literal"><span class="pre">--emit-spi
 <pre class="literal-block">
 ispc --target=genx-x8 --emit-spirv foo.ispc -o foo.spv
 </pre>
+<p>To generate L0 binary, use <tt class="docutils literal"><span class="pre">--emit-zebin</span></tt> flag. When you use L0 binary you may
+want to pass some additional options to the vector backend. You can do this using
+<tt class="docutils literal"><span class="pre">--vc-options</span></tt> flag.</p>
 <p>Also two new <tt class="docutils literal">arch</tt> options were introduced: <tt class="docutils literal">genx32</tt> and <tt class="docutils literal">genx64</tt>.
 <tt class="docutils literal">genx64</tt> is default and corresponds to 64-bit host and has 64-bit pointer size,
 <tt class="docutils literal">genx32</tt> corresponds to 32-bit host and has 32-bit pointer size.</p>
@@ -146,7 +156,12 @@ The <tt class="docutils literal">ISPCRT</tt> provides C and C++ APIs which are d
 link to.
 Examples in <tt class="docutils literal">ispc/examples/portable/genx/</tt> directory demonstrate how to use
 this API to run SPMD programs on CPU or GPU. You can see how to use
-<tt class="docutils literal">oneAPI Level Zero</tt> runtime in <tt class="docutils literal">sgemm</tt> example.</p>
+<tt class="docutils literal">oneAPI Level Zero</tt> runtime in <tt class="docutils literal">sgemm</tt> example.
+It is also possible to run ISPC kernels and DPCPP kernels written with <tt class="docutils literal">oneAPI
+DPC++ Compiler</tt> using <tt class="docutils literal">oneAPI Level Zero</tt> from the same process and share data
+between them. Try <tt class="docutils literal"><span class="pre">Simple-DPCPP</span></tt> and <tt class="docutils literal"><span class="pre">Pipeline-DPCPP</span></tt> examples to learn
+more about this possibility. Please keep in mind though that this
+feature is experimental.</p>
 <div class="section" id="ispcrt-objects">
 <h2>ISPCRT Objects</h2>
 <p>The <tt class="docutils literal">ISPC Run Time</tt> uses the following abstractions to manage code execution:</p>
@@ -195,6 +210,27 @@ the regular ISPC execution model is copied). All built-in variables used for
 that purpose (such as <tt class="docutils literal">taskIndex</tt>, <tt class="docutils literal">taskCount</tt>, <tt class="docutils literal">programIndex</tt>,
 <tt class="docutils literal">programCount</tt>) are available for use on GPU.</p>
 </div>
+<div class="section" id="configuration">
+<h2>Configuration</h2>
+<p>The behavior of <tt class="docutils literal">ISPCRT</tt> can be configured using the following environment
+variables:</p>
+<ul class="simple">
+<li><tt class="docutils literal">ISPCRT_USE_ZEBIN</tt> - use experimental L0 native binary format.
+Unlike SPIR-V files, zebin files are not portable between different GPU types.</li>
+<li><tt class="docutils literal">ISPCRT_IGC_OPTIONS</tt> - <tt class="docutils literal">ISPCRT</tt> is using an Intel® Graphics Compiler (IGC)
+to produce binary code that can be executed on the GPU. <tt class="docutils literal">ISPCRT</tt> allows
+for passing certain options to the IGC via <tt class="docutils literal">ISPCRT_IGC_OPTIONS</tt> variable.
+The content of this variable should be prefixed with <tt class="docutils literal">+</tt> or <tt class="docutils literal">=</tt> sign.
+<tt class="docutils literal">+</tt> means that the content of the variable should be added to the default
+IGC options already passsed by the <tt class="docutils literal">ISPCRT</tt>, while <tt class="docutils literal">=</tt> tells the <tt class="docutils literal">ISPCRT</tt>
+to replace the default options with the content of the environment variable.</li>
+<li><tt class="docutils literal">ISPCRT_GPU_DEVICE</tt> - if more than one supported GPU is present in the system,
+the user can select the GPU device to be used by the <tt class="docutils literal">ISPCRT</tt> using <tt class="docutils literal">ISPCRT_GPU_DEVICE</tt>
+variable. It should be set to a number of a device as enumerated
+by the Level Zero runtime. For example, in a system with two GPUs present,
+the variable can be set to <tt class="docutils literal">0</tt> or <tt class="docutils literal">1</tt>.</li>
+</ul>
+</div>
 </div>
 <div class="section" id="compiling-and-running-simple-ispc-program">
 <h1>Compiling and Running Simple ISPC Program</h1>
@@ -236,7 +272,7 @@ example located in <tt class="docutils literal">examples/simple</tt>. The first 
 in this program is the usage of the <tt class="docutils literal">task</tt> keyword in the function definition
 instead of <tt class="docutils literal">export</tt>; this indicates that this function is a <tt class="docutils literal">kernel</tt> so it
 can be called from the host.</p>
-<p>Second thing to notice is <tt class="docutils literal">DEFINE_CPU_ENTRY_POINT</tt> which tells <tt class="docutils literal">ISPCRT</tt> what
+<p>The second thing to notice is <tt class="docutils literal">DEFINE_CPU_ENTRY_POINT</tt> which tells <tt class="docutils literal">ISPCRT</tt> what
 function is an entry point for CPU. If you look into the definition of
 <tt class="docutils literal">DEFINE_CPU_ENTRY_POINT</tt>, it is just simple <tt class="docutils literal">launch</tt> call:</p>
 <pre class="literal-block">
@@ -364,7 +400,7 @@ target_link_libraries(host_simple PRIVATE ispcrt::ispcrt)
 <pre class="literal-block">
 cmake ../ -DISPC_EXECUTABLE_GPU=/home/install/bin/ispc &amp;&amp; make
 </pre>
-<p>You can also run separate compilation commands to achive the same result:</p>
+<p>You can also run separate compilation commands to achieve the same result:</p>
 <ul>
 <li><p class="first">Compile ISPC kernel for GPU:</p>
 <pre class="literal-block">
@@ -398,43 +434,179 @@ simple.dev*.o
 </pre>
 </li>
 </ul>
+<dl class="docutils">
+<dt>By default examples uses SPIR-V format. You can try them with L0 binary format:</dt>
+<dd><pre class="first last literal-block">
+cd examples/portable/genx/build
+cmake -DISPC_GENX_FORMAT=zebin ../
+export ISPCRT_USE_ZEBIN=y
+cd simple &amp;&amp; ./host_simple --gpu
+</pre>
+</dd>
+</dl>
 </div>
 <div class="section" id="language-limitations-and-known-issues">
 <h1>Language Limitations and Known Issues</h1>
-<p>The current release of <tt class="docutils literal">Intel® ISPC for GEN</tt> is in alpha state so not all
-functionality is implemented yet. However, it is actively developed so we
-expect to cover missing features in the nearest future releases.
+<p>The current release of <tt class="docutils literal">Intel® ISPC for GEN</tt> is in beta state so you may face
+some issues. However, it is actively developed so we expect to fix remaining
+issues in the nearest future releases.
 Below is the list of known limitations:</p>
 <ul class="simple">
-<li>No function pointers support</li>
+<li>Limited function pointers support</li>
+<li>Double math functions like <tt class="docutils literal">sin</tt>, <tt class="docutils literal">cos</tt>, <tt class="docutils literal">log</tt> etc. are extremely slow.</li>
+<li>Integer fast division is not fast yet especially for unisgned types.</li>
+<li><tt class="docutils literal">print</tt> doesn't work perfectly especially in deep control flow statements.
+Also <tt class="docutils literal">print</tt> is not supported with L0 binary format.</li>
 <li>No <tt class="docutils literal">prefetch</tt> support</li>
-<li>No global atomics</li>
-<li>No double precision math functions</li>
-<li>Foreach inside varying control flow is not supported by default. However you
-can enable it by using experimental flag <tt class="docutils literal"><span class="pre">--opt=enable-genx-foreach-varying</span></tt>
-but performance will degrade with this flag.</li>
 </ul>
-<p>There are several features which we do not plan to implement for GPU:</p>
+<p>There are several features that we do not plan to implement for GPU:</p>
 <ul class="simple">
 <li><tt class="docutils literal">launch</tt> and <tt class="docutils literal">sync</tt> keywords are not supported for GPU in ISPC program
 since kernel execution is managed in the host code now.</li>
-<li><tt class="docutils literal">New</tt> and <tt class="docutils literal">delete</tt> keywords are not expected to be supported in ISPC
+<li><tt class="docutils literal">new</tt> and <tt class="docutils literal">delete</tt> keywords are not expected to be supported in ISPC
 program for GEN target. We expect all memory to be set up on the host side.</li>
 <li><tt class="docutils literal">export</tt> functions must return <tt class="docutils literal">void</tt> for GEN targets.</li>
 </ul>
 </div>
 <div class="section" id="performance">
 <h1>Performance</h1>
-<p>The performance of <tt class="docutils literal">Intel® ISPC for GEN</tt> is not the goal of the current release.
-It has a room for improvements and we're working hard to make it better for
+<p>The performance of <tt class="docutils literal">Intel® ISPC for GEN</tt> was significantly improved in this release
+but still has room for improvements and we're working hard to make it better for
 the next release. Here are our results for <tt class="docutils literal">mandelbrot</tt> which were obtained on
 Intel(R) Core(TM) i9-9900K CPU &#64; 3.60GHz with Intel(R) Gen9 HD Graphics
 (max compute units 24):</p>
 <ul class="simple">
 <li>&#64;time of CPU run:                     [16.343] milliseconds</li>
-<li>&#64;time of GPU run:                     [29.583] milliseconds</li>
-<li>&#64;time of serial run:                  [566] milliseconds</li>
+<li>&#64;time of GPU run:                     [17.294] milliseconds</li>
+<li>&#64;time of serial run:                  [562] milliseconds</li>
 </ul>
+<p>Talking about real-world workloads, usually we demonstrate a good performance on GPU
+that is on par with CPU.</p>
+<div class="section" id="performance-guide-for-gpu-programming">
+<h2>Performance Guide for GPU Programming</h2>
+<p>There are several rules for GPU programming which can bring you better performance.</p>
+<p><strong>Reduce register pressure</strong></p>
+<p>The first guidance is to reduce number of local variables. All variables are stored
+in GPU registers, and in the case when number of variables exceeds the number of
+registers, time-costly <tt class="docutils literal">register spill</tt> occurs.</p>
+<p>For example, Intel(R) Gen9 register file size is 128x8x32bit. Each 32-bit
+varying value takes 8x32bit in SIMD-8, and 16x32bit in SIMD-16.</p>
+<p>To reduce number of local variables you can follow these simple rules:</p>
+<ul class="simple">
+<li>Use uniform instead of varyings wherever it is possible. This practice
+is good for both CPU and GPU but on GPU it is essential.</li>
+</ul>
+<pre class="literal-block">
+// Good example
+for(uniform int j=0;  j&lt;3; j++) {
+    do_something();
+}
+</pre>
+<pre class="literal-block">
+// Bad example
+for(int j=0;  j&lt;3; j++) {
+    do_something();
+}
+</pre>
+<ul class="simple">
+<li>Avoid deep nesting code with lot of local variables. It is more effective
+to split kernel into stages with separate variable scopes.</li>
+<li>Avoid returning complex structures from functions. Instead of operation that
+may need work on structure copy, consider to use reference or pointer. We're
+working to make such optimization automatically for future release:</li>
+</ul>
+<pre class="literal-block">
+// Instead of this:
+struct ExampleStructure
+{
+  //...
+}
+
+ExampleStructure createExampleStructure()
+{
+  ExampleStructure retVal;
+  //... initialize
+  return retVal;
+}
+
+int test()
+{
+  ExampleStructure s;
+  s = createExampleStructure();
+}
+</pre>
+<pre class="literal-block">
+// Consider using pointer:
+struct ExampleStructure
+{
+  //...
+}
+
+void initExampleStructure(ExampleStructure* init)
+{
+  //... initialize
+}
+
+int test()
+{
+  ExampleStructure s;
+  initExampleStructure( &amp;s );
+}
+</pre>
+<ul class="simple">
+<li>Avoid recursion.</li>
+<li>Use SIMD-8 where it is impossible to fit in the available register number.
+If you see the warning message below during runtime, consider compiling your code
+for SIMD-8 target (<tt class="docutils literal"><span class="pre">--target=genx-x8</span></tt>)</li>
+</ul>
+<pre class="literal-block">
+Spill memory used = 32 bytes for kernel kernel_name___vyi
+</pre>
+<p><strong>Code Branching</strong></p>
+<p>The second set of rules is related to code branching.</p>
+<ul class="simple">
+<li>Use <tt class="docutils literal">select</tt> instead of branching:</li>
+</ul>
+<pre class="literal-block">
+if (x &gt; 0)
+  a = x;
+else
+  a = 7;
+</pre>
+<pre class="literal-block">
+// May be implemented without branch:
+a = (x &gt; 0)? x : 7;
+</pre>
+<ul class="simple">
+<li>Keep branches as small as possible. Common operations should be moved outside the branch.
+In case when large code branches are necessary, consider changing your algorithm to group
+data processed by one task to follow the same path in the branch.</li>
+</ul>
+<pre class="literal-block">
+// Both branches execute memory access to 'array'. In the case of split branch between
+// different lanes, two memory access instructions would be executed.
+if (x &gt; 0)
+  a = array[x];
+else
+  a = array[0];
+</pre>
+<pre class="literal-block">
+// Instead move common part outside of the branch:
+int i;
+if (x &gt; 0)
+  i = x;
+else
+  i = 0;
+a = array[i];
+</pre>
+<p><strong>Memory Operations</strong></p>
+<p>Remember that memory operations on GPU are expensive. We do not support dynamic
+memory allocations in kernel code for GPU so use fixed-size buffers preallocated
+by the host.</p>
+<p>We have several memory optimizations for GPU like gather/scatter coalescing. However
+current implementation covers only limited number of cases and we expect to improve it
+for the next release.</p>
+</div>
 </div>
 <div class="section" id="faq">
 <h1>FAQ</h1>
@@ -450,6 +622,13 @@ ocloc compile -file file.spv -spirv_input -options &quot;-vc-codegen&quot; -devi
 ocloc disasm -file file_Gen9core.bin -device &lt;name&gt; -dump &lt;FOLDER_TO_DUMP&gt;
 </pre>
 <p>You will get <tt class="docutils literal">.asm</tt> files for each kernel in &lt;FOLDER_TO_DUMP&gt;.</p>
+</div>
+<div class="section" id="how-to-debug-on-gpu">
+<h2>How to Debug on GPU?</h2>
+<p>To debug your application, you can use oneAPI Debugger as described here:
+<a class="reference external" href="https://software.intel.com/get-started-with-debugging-dpcpp-linux">Get Started with GDB* for oneAPI on Linux* OS Host</a>.
+Debugger support is quite limited at this time but you can set breakpoints
+in kernel code, do step-by-step execution and print variables.</p>
 </div>
 </div>
 </div>

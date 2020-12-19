@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.14: http://docutils.sourceforge.net/" />
 <title>Intel® ISPC User's Guide</title>
 <script type="text/javascript">
 
@@ -27,7 +27,7 @@
     <div id="header">
       <h1 id="logo">Intel® Implicit SPMD Program Compiler</h1>
       <div id="slogan">An open-source compiler for high-performance SIMD programming on
-      the CPU</div>
+      the CPU and GPU</div>
     </div>
     <div id="nav">
       <div id="nbar">
@@ -60,7 +60,7 @@
 
 <div id="content">
 <p>The Intel® Implicit SPMD Program Compiler (Intel® ISPC) is a compiler for
-writing SPMD (single program multiple data) programs to run on the CPU.
+writing SPMD (single program multiple data) programs to run on the CPU and GPU.
 The SPMD
 programming approach is widely known to graphics and GPGPU programmers; it
 is used for GPU shaders and CUDA* and OpenCL* kernels, for example.  The
@@ -73,7 +73,7 @@ for different pixels, for example).</p>
 <ul class="simple">
 <li>Build a variant of the C programming language that delivers good
 performance to performance-oriented programmers who want to run SPMD
-programs on CPUs.</li>
+programs on CPUs and GPUs.</li>
 <li>Provide a thin abstraction layer between the programmer and the
 hardware--in particular, to follow the lesson from C for serial programs
 of having an execution and data model where the programmer can cleanly
@@ -112,6 +112,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-13-0">Updating ISPC Programs For Changes In ISPC 1.13.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-14-0">Updating ISPC Programs For Changes In ISPC 1.14.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-14-1">Updating ISPC Programs For Changes In ISPC 1.14.1</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-15-0">Updating ISPC Programs For Changes In ISPC 1.15.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -244,7 +245,6 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 </ul>
 </li>
 <li><a class="reference internal" href="#notices-disclaimers">Notices &amp; Disclaimers</a></li>
-<li><a class="reference internal" href="#optimization-notice">Optimization Notice</a></li>
 </ul>
 <div class="section" id="recent-changes-to-ispc">
 <h1>Recent Changes to ISPC</h1>
@@ -458,6 +458,12 @@ It's off by default, can be enabled by <tt class="docutils literal"><span class=
 <p>The release doesn't contain language changes, which may affect compatibility with
 older versions.</p>
 </div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-15-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.15.0</h2>
+<p>The release has several new language features, which do not affect compatibility.
+Namely, packed_[load|store]_active() stdlib functions for 64 bit types, and loop
+unroll pragmas: &quot;#pragma unroll&quot; and &quot;#pragma nounroll&quot;.</p>
+</div>
 </div>
 <div class="section" id="getting-started-with-ispc">
 <h1>Getting Started with ISPC</h1>
@@ -499,9 +505,9 @@ qualifiers on the parameters to <tt class="docutils literal">simple</tt> indicat
 variables are non-vector quantities--this concept is discussed in detail in the
 <a class="reference internal" href="#uniform-and-varying-qualifiers">&quot;uniform&quot; and &quot;varying&quot; Qualifiers</a> section.</p>
 <p>Each iteration of the <tt class="docutils literal">foreach</tt> loop works on a number of input values in
-parallel--depending on the compilation target chosen, it may be 4, 8, or
-even 16 elements of the <tt class="docutils literal">vin</tt> array, processed efficiently with the CPU's
-SIMD hardware.  Here, the variable <tt class="docutils literal">index</tt> takes all values from 0 to
+parallel--depending on the compilation target chosen, it may be 4, 8, 16, 32, or
+even 64 elements of the <tt class="docutils literal">vin</tt> array, processed efficiently with the CPU's or
+GPU's SIMD hardware.  Here, the variable <tt class="docutils literal">index</tt> takes all values from 0 to
 <tt class="docutils literal"><span class="pre">count-1</span></tt>.  After the load from the array to the variable <tt class="docutils literal">v</tt>, the
 program can then proceed, doing computation and control flow based on the
 values loaded.  The result from the running program instances is written to
@@ -614,7 +620,7 @@ direct the compiler to treat any warnings as errors.</p>
 <div class="section" id="selecting-the-compilation-target">
 <h2>Selecting The Compilation Target</h2>
 <p>There are four options that affect the compilation target: <tt class="docutils literal"><span class="pre">--arch</span></tt>,
-which sets the target architecture, <tt class="docutils literal"><span class="pre">--cpu</span></tt>, which sets the target CPU,
+which sets the target architecture, <tt class="docutils literal"><span class="pre">--cpu</span></tt>, which sets the target CPU or GPU,
 <tt class="docutils literal"><span class="pre">--target</span></tt>, which sets the target instruction set, and <tt class="docutils literal"><span class="pre">--target-os</span></tt>,
 which sets the target operating system.</p>
 <p>If none of these options is specified, <tt class="docutils literal">ispc</tt> generates code for the host
@@ -625,7 +631,12 @@ the command line:</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.obj --arch=x86
 </pre>
-<p>Currently-supported architectures are <tt class="docutils literal"><span class="pre">x86-64</span></tt>, <tt class="docutils literal">x86</tt>, and <tt class="docutils literal">arm</tt>.</p>
+<p>To compile for Intel TGLLP platform:</p>
+<pre class="literal-block">
+ispc foo.ispc -o foo.bin --target=genx-x16 --cpu=TGLLP --emit-zebin
+</pre>
+<p>Currently-supported architectures are <tt class="docutils literal">x86</tt>, <tt class="docutils literal"><span class="pre">x86-64</span></tt>, <tt class="docutils literal">genx32</tt>,
+<tt class="docutils literal">genx64</tt>, and <tt class="docutils literal">arm</tt>.</p>
 <p>The target CPU determines both the default instruction set used as well as
 which CPU architecture the code is tuned for.  <tt class="docutils literal">ispc <span class="pre">--help</span></tt> provides a
 list of all of the supported CPUs.  By default, the CPU type of the system
@@ -667,6 +678,12 @@ a mask size of 32 bits, and a gang size of 16.</p>
 </tr>
 <tr><td>sse4</td>
 <td>SSE4 (generally 2008-2010 Intel CPUs)</td>
+</tr>
+<tr><td>genx-x8</td>
+<td>Intel GPU 8-wide SIMD</td>
+</tr>
+<tr><td>genx-x16</td>
+<td>Intel GPU 16-wide SIMD</td>
 </tr>
 </tbody>
 </table>
@@ -828,9 +845,17 @@ preprocessor runs:</p>
 </td>
 <td>Detecting if uint8/uint16/uint32/uint64 types are defined in the ISPC version.</td>
 </tr>
+<tr><td>ISPC_FP64_SUPPORTED</td>
+<td><ol class="first last arabic simple">
+<li></li>
+</ol>
+</td>
+<td>Detecting if double type is supported by the target.</td>
+</tr>
 </tbody>
 </table>
-<p><tt class="docutils literal">ispc</tt> also provides <tt class="docutils literal">#pragma ignore warning</tt> directives to ignore compiler warnings for individual lines.</p>
+<p><tt class="docutils literal">ispc</tt> supports the following <tt class="docutils literal">#pragma</tt> directives.</p>
+<p><tt class="docutils literal">#pragma ignore warning</tt> directives direct the compiler to ignore compiler warnings for individual lines.</p>
 <table border="1" class="docutils">
 <caption><tt class="docutils literal">#pragma ignore warning</tt> directives and their functions:</caption>
 <colgroup>
@@ -853,6 +878,30 @@ preprocessor runs:</p>
 </tbody>
 </table>
 <p>When using <tt class="docutils literal">#pragma ignore warning</tt> before a call to a macro, it suppresses warnings from the expanded macro code.</p>
+<p><tt class="docutils literal">#pragma unroll</tt> and <tt class="docutils literal">#pragma nounroll</tt> directives provide loop unrolling optimization hints to the compiler.
+This pragma is placed immediately before a loop statement. Currently, this functionality is limited to uniform <tt class="docutils literal">for</tt> and <tt class="docutils literal"><span class="pre">do-while</span></tt>.</p>
+<table border="1" class="docutils">
+<caption><tt class="docutils literal">#pragma unroll</tt> and <tt class="docutils literal">#pragma nounroll</tt> directives and their functions:</caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><tt class="docutils literal">#pragma</tt> name</td>
+<td>Use</td>
+</tr>
+<tr><td><tt class="docutils literal">#pragma unroll COUNT</tt></td>
+<td>Directs the loop unroller to unroll the loop <tt class="docutils literal">COUNT</tt> times.
+The parameter may optionally be enclosed in parentheses:  <tt class="docutils literal">#pragma unroll (COUNT)</tt>.</td>
+</tr>
+<tr><td><tt class="docutils literal">#pragma unroll</tt></td>
+<td>Directs the loop unroller to fully unroll the loop if possible.</td>
+</tr>
+<tr><td><tt class="docutils literal">#pragma nounroll</tt></td>
+<td>Directs the loop unroller to not unroll the loop.</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="debugging">
 <h2>Debugging</h2>
@@ -949,9 +998,10 @@ current processor, leading to excellent utilization of hardware SIMD units
 and high performance.</p>
 <p>The number of program instances in a gang is relatively small; in practice,
 it's no more than 2-4x the native SIMD width of the hardware it is
-executing on.  (Thus, four or eight program instances in a gang on a CPU
-using the the 4-wide SSE instruction set, and eight or sixteen on a CPU
-using 8-wide AVX.)</p>
+executing on.  Thus, four or eight program instances in a gang on a CPU
+using the 4-wide SSE instruction set, eight or sixteen on a CPU
+using 8-wide AVX/AVX2, eight, sixteen, thirty two, or sixty four on AVX512 CPU,
+and eight or sixteen on a Intel GPU.</p>
 </div>
 <div class="section" id="control-flow-within-a-gang">
 <h2>Control Flow Within A Gang</h2>
@@ -1333,7 +1383,7 @@ completed.</p>
 <h1>The ISPC Language</h1>
 <p><tt class="docutils literal">ispc</tt> is an extended version of the C programming language, providing a
 number of new features that make it easy to write high-performance SPMD
-programs for the CPU.  Note that between not only the few small syntactic
+programs for the CPU and GPU.  Note that between not only the few small syntactic
 differences between <tt class="docutils literal">ispc</tt> and C code but more importantly <tt class="docutils literal">ispc</tt>'s
 fundamentally parallel execution model, C code can't just be recompiled to
 correctly run in parallel with <tt class="docutils literal">ispc</tt>.  However, starting with working C
@@ -4500,36 +4550,8 @@ program instances improves performance.</p>
 </div>
 <div class="section" id="notices-disclaimers">
 <h1>Notices &amp; Disclaimers</h1>
-<p>Software and workloads used in performance tests may have been optimized for
-performance only on Intel microprocessors.</p>
-<p>Performance tests, such as SYSmark and MobileMark, are measured using specific
-computer systems, components, software, operations and functions.  Any change
-to any of those factors may cause the results to vary.  You should consult
-other information and performance tests to assist you in fully evaluating your
-contemplated purchases, including the performance of that product when combined
-with other products.   For more complete information visit
-www.intel.com/benchmarks.</p>
-<p>Performance results are based on testing as of dates shown in configurations and
-may not reflect all publicly available updates.  See backup for configuration
-details.  No product or component can be absolutely secure.</p>
-<p>Your costs and results may vary.</p>
-<p>Intel technologies may require enabled hardware, software or service activation.</p>
-<p>© Intel Corporation.  Intel, the Intel logo, and other Intel marks are
-trademarks of Intel Corporation or its subsidiaries.  Other names and brands may
-be claimed as the property of others.</p>
-</div>
-<div class="section" id="optimization-notice">
-<h1>Optimization Notice</h1>
-<p>Intel's compilers may or may not optimize to the same degree for non-Intel
-microprocessors for optimizations that are not unique to Intel microprocessors.
-These optimizations include SSE2, SSE3, and SSSE3 instruction sets and other
-optimizations. Intel does not guarantee the availability, functionality, or
-effectiveness of any optimization on microprocessors not manufactured by Intel.
-Microprocessor-dependent optimizations in this product are intended for use with
-Intel microprocessors. Certain optimizations not specific to Intel
-microarchitecture are reserved for Intel microprocessors. Please refer to the
-applicable product User and Reference Guides for more information regarding the
-specific instruction sets covered by this notice.</p>
+<p>Performance varies by use, configuration and other factors. Learn more at
+www.intel.com/PerformanceIndex.</p>
 </div>
 </div>
     <div class="clearfix"></div>
