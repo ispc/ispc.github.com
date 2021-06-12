@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.14: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.16: http://docutils.sourceforge.net/" />
 <title>Intel® ISPC for GEN</title>
 <script type="text/javascript">
 
@@ -59,8 +59,8 @@
 <h1 class="title">Intel® ISPC for GEN</h1>
 
 <div id="content">
-<p>The Intel® Implicit SPMD Program Compiler (Intel® ISPC) got initial support for
-Intel GPUs recently. The compilation for a GPU is pretty straightforward from
+<p>The Intel® Implicit SPMD Program Compiler (Intel® ISPC) is actively developed to support
+latest Intel GPUs. The compilation for a GPU is pretty straightforward from
 the user's point of view, but managing the execution of code on a GPU may add
 complexity. You can use a low-level API <a class="reference external" href="https://spec.oneapi.com/level-zero/latest/index.html">oneAPI Level Zero</a> to manage available GPU
 devices, memory transfers between CPU and GPU, code execution, and
@@ -102,18 +102,19 @@ ispc foo.ispc --target=genx-x8 -o foo.spv
 <p>The SPIR-V file is consumed by the runtime for further compilation and execution
 on GPU.</p>
 <p>You can also generate L0 binary using <tt class="docutils literal"><span class="pre">--emit-zebin</span></tt> flag. Please note that
-currently SPIR-V format is more stable but feel free to experiment with L0 binary.</p>
+currently SPIR-V format is more stable but feel free to experiment with L0 binary.
+L0 binary format is supported now on Linux platform only.</p>
 <div class="section" id="environment">
 <h2>Environment</h2>
-<p>Currently, <tt class="docutils literal">Intel® ISPC for GEN</tt> is supported on Linux only but it is planned
-to be extended for Windows as well in a future release.
-Recommended and tested Linux distribution is Ubuntu 18.04.</p>
+<p><tt class="docutils literal">Intel® ISPC for GEN</tt> is supported on Linux for quite a while (recommended
+and tested Linux distribution is Ubuntu 20.04) and it's got Windows support since
+v1.16.0.</p>
 <p>You need to have a system with <tt class="docutils literal">Intel(R) Processor Graphics Gen9</tt> or later.</p>
 <p>For the execution of ISPC programs on GPU, please install <a class="reference external" href="https://github.com/intel/compute-runtime/releases">Intel(R)
 Graphics Compute Runtime</a>
 and <a class="reference external" href="https://github.com/oneapi-src/level-zero/releases">Level Zero Loader</a>.</p>
 <p>To use ISPC Run Time for CPU you need to have <tt class="docutils literal">OpenMP runtime</tt> installed on
-your system. Consult your Linux distribution documentation for installation
+your system. Consult your Linux distribution documentation for the installation
 of OpenMP runtime instructions.</p>
 </div>
 <div class="section" id="basic-command-line-options">
@@ -132,9 +133,7 @@ want to pass some additional options to the vector backend. You can do this usin
 <tt class="docutils literal">genx32</tt> corresponds to 32-bit host and has 32-bit pointer size.</p>
 <p>To generate LLVM bitcode, use the <tt class="docutils literal"><span class="pre">--emit-llvm</span></tt> flag.
 To generate LLVM bitcode in textual form, use the <tt class="docutils literal"><span class="pre">--emit-llvm-text</span></tt> flag.</p>
-<p>Optimizations are on by default; they can be turned off with <tt class="docutils literal"><span class="pre">-O0</span></tt>. However,
-for the current release, it is not recommended to use <tt class="docutils literal"><span class="pre">-O0</span></tt>, there are several
-known issues.</p>
+<p>Optimizations are on by default; they can be turned off with <tt class="docutils literal"><span class="pre">-O0</span></tt>.</p>
 <p>Generating a text assembly file using <tt class="docutils literal"><span class="pre">--emit-asm</span></tt> is not supported yet.
 See <a class="reference internal" href="#how-to-get-an-assembly-file-from-spir-v">How to Get an Assembly File from SPIR-V?</a> section about how to get the
 assembly from SPIR-V file.</p>
@@ -154,7 +153,7 @@ and give us feedback!
 The <tt class="docutils literal">ISPCRT</tt> provides C and C++ APIs which are documented in the header files
 (see <tt class="docutils literal">ispcrt.h</tt> and <tt class="docutils literal">ispcrt.hpp</tt>) and distributed as a library that you can
 link to.
-Examples in <tt class="docutils literal">ispc/examples/portable/genx/</tt> directory demonstrate how to use
+Examples in <tt class="docutils literal">ispc/examples/xpu</tt> directory demonstrate how to use
 this API to run SPMD programs on CPU or GPU. You can see how to use
 <tt class="docutils literal">oneAPI Level Zero</tt> runtime in <tt class="docutils literal">sgemm</tt> example.
 It is also possible to run ISPC kernels and DPCPP kernels written with <tt class="docutils literal">oneAPI
@@ -172,7 +171,11 @@ device (CPU or GPU) or allow the runtime to decide which device will be used.</l
 <li><tt class="docutils literal">Memory view</tt> - represents data that need to be accessed by different
 <tt class="docutils literal">devices</tt>. For example, input data for code running on GPU must be firstly
 prepared by a CPU in its memory, then transferred to a GPU memory to perform
-computations on.</li>
+computations on. <tt class="docutils literal">Memory view</tt> can also represent memory allocated using
+a Unified Shared Memory mechanism provided by <tt class="docutils literal">oneAPI Level Zero</tt>. Pointers
+to data allocated in the USM are valid both on the host and on the device.
+Also, there is no need to explicitly handle data movement between the CPU
+and the GPU. This is handled automatically by the <tt class="docutils literal">oneAPI Level Zero</tt> runtime.</li>
 <li><tt class="docutils literal">Task queue</tt> - Each <tt class="docutils literal">device</tt> has a task (command) queue and executes
 commands from it. The execution may be asynchronous, which means that subsequent
 commands can begin executing before the previous ones complete. There are
@@ -193,6 +196,11 @@ valid.
 a <tt class="docutils literal">task queue</tt>. When the <tt class="docutils literal">task queue</tt> is executed on a device, the
 <tt class="docutils literal">future</tt> object becomes valid and can be used to retrieve information about
 the <tt class="docutils literal">kernel</tt> execution.</li>
+<li><tt class="docutils literal">Array</tt> - Conveniently wraps up memory view objects and allows for easy
+allocation of memory on the device or in the Unified Shared Memory (USM).
+The ISPCRT also provides an example allocator that makes it even more simple
+to allocate data in the USM and a SharedVector class that serves the same
+purpose. See XPU examples and documentation for more details.</li>
 </ul>
 <p>All <tt class="docutils literal">ISPCRT</tt> objects support reference counting, which means that it is not
 necessary to perform detailed memory management. The objects will be released
@@ -229,12 +237,18 @@ the user can select the GPU device to be used by the <tt class="docutils literal
 variable. It should be set to a number of a device as enumerated
 by the Level Zero runtime. For example, in a system with two GPUs present,
 the variable can be set to <tt class="docutils literal">0</tt> or <tt class="docutils literal">1</tt>.</li>
+<li><tt class="docutils literal">ISPCRT_MAX_KERNEL_LAUNCHES</tt> - there is a limit of the maximum number of enqueued
+kernel launches in a given task queue. If the limit is reached, sync() method
+needs to be called to submit the queue for execution. The limit is currently
+set to 100000, but can be lowered (for example for testing) using this environmental variable.
+Please note that the limit cannot be set to more than 100000. If a greater value is provided,
+the <tt class="docutils literal">ISPCRT</tt> will set the limit to the default value and display a warning message.</li>
 </ul>
 </div>
 </div>
 <div class="section" id="compiling-and-running-simple-ispc-program">
 <h1>Compiling and Running Simple ISPC Program</h1>
-<p>The directory <tt class="docutils literal">examples/portable/genx/simple</tt> in the <tt class="docutils literal">ispc</tt> distribution
+<p>The directory <tt class="docutils literal">examples/xpu/simple</tt> in the <tt class="docutils literal">ispc</tt> distribution
 includes a simple example of how to use <tt class="docutils literal">ispc</tt> with a short C++ program for
 CPU and GPU targets with ISPC Run Time. See the file <tt class="docutils literal">simple.ispc</tt> in that
 directory (also reproduced here.)</p>
@@ -291,7 +305,7 @@ depending on an input parameter. The device type is managed by
 <tt class="docutils literal">ISPCRTDeviceType</tt> which can be set to <tt class="docutils literal">ISPCRT_DEVICE_TYPE_CPU</tt>,
 <tt class="docutils literal">ISPCRT_DEVICE_TYPE_GPU</tt> or <tt class="docutils literal">ISPCRT_DEVICE_TYPE_AUTO</tt> (tries to use GPU, but
 fallback to CPU if no GPUs found).</p>
-<p>The prograam starts with including <tt class="docutils literal">ISPCRT</tt> header:</p>
+<p>The program starts with including <tt class="docutils literal">ISPCRT</tt> header:</p>
 <pre class="literal-block">
 #include &quot;ispcrt.hpp&quot;
 </pre>
@@ -358,18 +372,20 @@ queue.barrier();
 // Execute queue and sync
 queue.sync();
 </pre>
-<p>To build and run examples go to <tt class="docutils literal">examples/portable/genx</tt> and create
+<p>To build and run examples go to <tt class="docutils literal">examples/xpu</tt> and create
 <tt class="docutils literal">build</tt> folder. Run <tt class="docutils literal">cmake <span class="pre">-DISPC_EXECUTABLE=&lt;path_to_ispc_binary&gt;</span>
 <span class="pre">-Dispcrt_DIR=&lt;path_to_ispcrt_cmake&gt;</span> ../</tt> from <tt class="docutils literal">build</tt> folder. Or add path
-to <tt class="docutils literal">ispc</tt> to your PATH and just run <tt class="docutils literal">cmake ../</tt>. Build examples using <tt class="docutils literal">make</tt>.
+to <tt class="docutils literal">ispc</tt> to your PATH and just run <tt class="docutils literal">cmake ../</tt>. On Windows you also need
+to pass <tt class="docutils literal"><span class="pre">-DLEVEL_ZERO_ROOT=&lt;path_lo_level_zero&gt;</span></tt> with PATH to <tt class="docutils literal">oneAPI Level Zero</tt>
+on the system. Build examples using <tt class="docutils literal">make</tt> or using <tt class="docutils literal">Visual Studio</tt> solution.
 Go to <tt class="docutils literal">simple</tt> folder and see what files were generated:</p>
 <ul class="simple">
 <li><tt class="docutils literal">genx_simple.spv</tt> contains SPIR-V representation. This file is passed
 by <tt class="docutils literal">ISPCRT</tt> to <tt class="docutils literal">Intel(R) Graphics Compute Runtime</tt> for execution on GPU.</li>
-<li><tt class="docutils literal">libgenx_simple.so</tt> incorporates object files produced from ISPC kernel
-for different targets (you can find them in <tt class="docutils literal">local_ispc</tt> subfolder).
-This library is loaded from host application <tt class="docutils literal">host_simple</tt> and is used for
-execution on CPU.</li>
+<li><tt class="docutils literal">libgenx_simple.so</tt> on Linux / <tt class="docutils literal">genx_simple.dll</tt> on Windows incorporates
+object files produced from ISPC kernel for different targets (you can find
+them in <tt class="docutils literal">local_ispc</tt> subfolder). This library is loaded from host application
+<tt class="docutils literal">host_simple</tt> and is used for execution on CPU.</li>
 <li><tt class="docutils literal"><span class="pre">simple_ispc_&lt;target&gt;.h</span></tt> files include the declaration for the C-callable
 functions. They are not really used and produced just for the reference.</li>
 <li><tt class="docutils literal">host_simple</tt> is the main executable. When it runs, it generates
@@ -391,6 +407,7 @@ into ISPC distribution package.</p>
 build system is the following:</p>
 <pre class="literal-block">
 cmake_minimum_required(VERSION 3.14)
+project(simple)
 find_package(ispcrt REQUIRED)
 add_executable(host_simple simple.cpp)
 add_ispc_kernel(genx_simple simple.ispc &quot;&quot;)
@@ -398,25 +415,26 @@ target_link_libraries(host_simple PRIVATE ispcrt::ispcrt)
 </pre>
 <p>And you can configure and build it using:</p>
 <pre class="literal-block">
-cmake ../ -DISPC_EXECUTABLE_GPU=/home/install/bin/ispc &amp;&amp; make
+cmake ../ -DISPC_EXECUTABLE_GPU=/home/ispc_package/bin/ispc &amp;&amp; make
 </pre>
-<p>You can also run separate compilation commands to achieve the same result:</p>
+<p>You can also run separate compilation commands to achieve the same result.
+Here are example commands for Linux:</p>
 <ul>
 <li><p class="first">Compile ISPC kernel for GPU:</p>
 <pre class="literal-block">
-ispc -I /home/install/include/ispcrt -DISPC_GPU --target=genx-x8 --woff
--o /home/ispc/examples/portable/genx/simple/genx_simple.spv
-/home/ispc/examples/portable/genx/simple/simple.ispc
+ispc -I /home/ispc_package/include/ispcrt -DISPC_GPU --target=genx-x8 --woff
+-o /home/ispc_package/examples/xpu/simple/genx_simple.spv
+/home/ispc_package/examples/xpu/simple/simple.ispc
 </pre>
 </li>
 <li><p class="first">Compile ISPC kernel for CPU:</p>
 <pre class="literal-block">
-ispc -I /home/install/include/ispcrt --arch=x86-64
+ispc -I /home/ispc_package/include/ispcrt --arch=x86-64
 --target=sse4-i32x4,avx1-i32x8,avx2-i32x8,avx512knl-i32x16,avx512skx-i32x16
 --woff --pic --opt=disable-assertions
--h /home/ispc/examples/portable/genx/simple/simple_ispc.h
--o /home/ispc/examples/portable/genx/simple/simple.dev.o
-/home/ispc/examples/portable/genx/simple/simple.ispc
+-h /home/ispc_package/examples/xpu/simple/simple_ispc.h
+-o /home/ispc_package/examples/xpu/simple/simple.dev.o
+/home/ispc_package/examples/xpu/simple/simple.ispc
 </pre>
 </li>
 <li><p class="first">Produce a library from object files:</p>
@@ -427,18 +445,18 @@ simple.dev*.o
 </li>
 <li><p class="first">Compile and link host code:</p>
 <pre class="literal-block">
-/usr/bin/c++  -DISPCRT -isystem /home/install/include/ispcrt -fPIE
--o /home/ispc/examples/portable/genx/simple/host_simple
-/home/ispc/examples/portable/genx/simple/simple.cpp -L/usr/local/lib
--Wl,-rpath,/home/install/lib /home/install/lib/libispcrt.so.1.13.0
+/usr/bin/c++ -DISPCRT -isystem /home/ispc_package/include/ispcrt -fPIE
+-o /home/ispc_package/examples/xpu/simple/host_simple
+/home/ispc_package/examples/xpu/simple/simple.cpp -lispcrt -L/home/ispc_package/lib
+-Wl,-rpath,/home/ispc_package/lib
 </pre>
 </li>
 </ul>
 <dl class="docutils">
-<dt>By default examples uses SPIR-V format. You can try them with L0 binary format:</dt>
+<dt>By default, examples use SPIR-V format. You can try them with L0 binary format:</dt>
 <dd><pre class="first last literal-block">
-cd examples/portable/genx/build
-cmake -DISPC_GENX_FORMAT=zebin ../
+cd examples/xpu/build
+cmake -DISPC_GENX_FORMAT=zebin ../ &amp;&amp; make
 export ISPCRT_USE_ZEBIN=y
 cd simple &amp;&amp; ./host_simple --gpu
 </pre>
@@ -447,17 +465,20 @@ cd simple &amp;&amp; ./host_simple --gpu
 </div>
 <div class="section" id="language-limitations-and-known-issues">
 <h1>Language Limitations and Known Issues</h1>
-<p>The current release of <tt class="docutils literal">Intel® ISPC for GEN</tt> is in beta state so you may face
-some issues. However, it is actively developed so we expect to fix remaining
-issues in the nearest future releases.
+<p>The current release of <tt class="docutils literal">Intel® ISPC for GEN</tt> is still in Beta stage so you may face
+some issues. However, it is actively developed so we expect to fix the remaining
+issues in the future releases.
 Below is the list of known limitations:</p>
 <ul class="simple">
 <li>Limited function pointers support</li>
+<li>Limited stack calls support. We recommend inlining functions as much as you can
+by marking them <tt class="docutils literal">inline</tt>.</li>
 <li>Double math functions like <tt class="docutils literal">sin</tt>, <tt class="docutils literal">cos</tt>, <tt class="docutils literal">log</tt> etc. are extremely slow.</li>
-<li>Integer fast division is not fast yet especially for unisgned types.</li>
+<li>Integer fast division is not fast yet especially for unsigned types.</li>
+<li>Float precision is slightly different on CPU and GPU, GPU is more precise.
+Please consider it when designing your algorithms.</li>
 <li><tt class="docutils literal">print</tt> doesn't work perfectly especially in deep control flow statements.
-Also <tt class="docutils literal">print</tt> is not supported with L0 binary format.</li>
-<li>No <tt class="docutils literal">prefetch</tt> support</li>
+Also, <tt class="docutils literal">print</tt> is not supported with L0 binary format.</li>
 </ul>
 <p>There are several features that we do not plan to implement for GPU:</p>
 <ul class="simple">
@@ -476,11 +497,11 @@ the next release. Here are our results for <tt class="docutils literal">mandelbr
 Intel(R) Core(TM) i9-9900K CPU &#64; 3.60GHz with Intel(R) Gen9 HD Graphics
 (max compute units 24):</p>
 <ul class="simple">
-<li>&#64;time of CPU run:                     [16.343] milliseconds</li>
-<li>&#64;time of GPU run:                     [17.294] milliseconds</li>
-<li>&#64;time of serial run:                  [562] milliseconds</li>
+<li>&#64;time of CPU run:                     [9.285] milliseconds</li>
+<li>&#64;time of GPU run:                     [10.886] milliseconds</li>
+<li>&#64;time of serial run:                  [569] milliseconds</li>
 </ul>
-<p>Talking about real-world workloads, usually we demonstrate a good performance on GPU
+<p>Talking about real-world workloads, usually we demonstrate good performance on GPU
 that is on par with CPU.</p>
 <div class="section" id="performance-guide-for-gpu-programming">
 <h2>Performance Guide for GPU Programming</h2>
@@ -509,7 +530,7 @@ for(int j=0;  j&lt;3; j++) {
 }
 </pre>
 <ul class="simple">
-<li>Avoid deep nesting code with lot of local variables. It is more effective
+<li>Avoid nested code with a lot of local variables. It is more effective
 to split kernel into stages with separate variable scopes.</li>
 <li>Avoid returning complex structures from functions. Instead of operation that
 may need work on structure copy, consider to use reference or pointer. We're
@@ -557,7 +578,7 @@ int test()
 <li>Avoid recursion.</li>
 <li>Use SIMD-8 where it is impossible to fit in the available register number.
 If you see the warning message below during runtime, consider compiling your code
-for SIMD-8 target (<tt class="docutils literal"><span class="pre">--target=genx-x8</span></tt>)</li>
+for SIMD-8 target (<tt class="docutils literal"><span class="pre">--target=genx-x8</span></tt>).</li>
 </ul>
 <pre class="literal-block">
 Spill memory used = 32 bytes for kernel kernel_name___vyi
@@ -576,6 +597,18 @@ else
 <pre class="literal-block">
 // May be implemented without branch:
 a = (x &gt; 0)? x : 7;
+</pre>
+<p>When using <tt class="docutils literal">select</tt>, try to simplify it as much as possible:</p>
+<pre class="literal-block">
+// Not optimized version:
+varying int K;
+uniform bool Constant;
+...
+return bConstant == true ? inParam[0] : InParam[K];
+</pre>
+<pre class="literal-block">
+// Optimized version
+return InParam[bConstant == true ? 0 : K];
 </pre>
 <ul class="simple">
 <li>Keep branches as small as possible. Common operations should be moved outside the branch.
@@ -598,6 +631,29 @@ if (x &gt; 0)
 else
   i = 0;
 a = array[i];
+</pre>
+<p>Similar situation with loops:</p>
+<pre class="literal-block">
+// Good example
+foreach (i = 0 ... WIDTH) {
+  p-&gt;output[i + WIDTH * taskIndex] = 0;
+  int temp = p-&gt;output[i + WIDTH * taskIndex];
+  for (int j = 0; j &lt; DEPTH; j++) {
+    temp += N;
+    temp += M;
+  }
+  p-&gt;output[i + WIDTH * taskIndex] = temp;
+}
+</pre>
+<pre class="literal-block">
+// Bad example
+foreach (i = 0 ... WIDTH) {
+  p-&gt;output[i + WIDTH * taskIndex] = 0;
+  for (int j = 0; j &lt; DEPTH; j++) {
+    p-&gt;output[i + WIDTH * taskIndex] += N;
+    p-&gt;output[i + WIDTH * taskIndex] += M;
+  }
+}
 </pre>
 <p><strong>Memory Operations</strong></p>
 <p>Remember that memory operations on GPU are expensive. We do not support dynamic

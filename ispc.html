@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.14: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.16: http://docutils.sourceforge.net/" />
 <title>Intel® ISPC User's Guide</title>
 <script type="text/javascript">
 
@@ -113,6 +113,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-14-0">Updating ISPC Programs For Changes In ISPC 1.14.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-14-1">Updating ISPC Programs For Changes In ISPC 1.14.1</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-15-0">Updating ISPC Programs For Changes In ISPC 1.15.0</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-16-0">Updating ISPC Programs For Changes In ISPC 1.16.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -169,6 +170,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#declarations-and-initializers">Declarations and Initializers</a></li>
 <li><a class="reference internal" href="#expressions">Expressions</a><ul>
 <li><a class="reference internal" href="#dynamic-memory-allocation">Dynamic Memory Allocation</a></li>
+<li><a class="reference internal" href="#type-casting">Type Casting</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#control-flow">Control Flow</a><ul>
@@ -196,6 +198,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 </li>
 </ul>
 </li>
+<li><a class="reference internal" href="#llvm-intrinsic-functions">LLVM Intrinsic Functions</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#the-ispc-standard-library">The ISPC Standard Library</a><ul>
@@ -213,10 +216,12 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 </li>
 <li><a class="reference internal" href="#output-functions">Output Functions</a></li>
 <li><a class="reference internal" href="#assertions">Assertions</a></li>
+<li><a class="reference internal" href="#compiler-optimization-hints">Compiler Optimization Hints</a></li>
 <li><a class="reference internal" href="#cross-program-instance-operations">Cross-Program Instance Operations</a><ul>
 <li><a class="reference internal" href="#reductions">Reductions</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#stack-memory-allocation">Stack Memory Allocation</a></li>
 <li><a class="reference internal" href="#data-movement">Data Movement</a><ul>
 <li><a class="reference internal" href="#setting-and-copying-values-in-memory">Setting and Copying Values In Memory</a></li>
 <li><a class="reference internal" href="#packed-load-and-store-operations">Packed Load and Store Operations</a></li>
@@ -463,6 +468,19 @@ older versions.</p>
 <p>The release has several new language features, which do not affect compatibility.
 Namely, packed_[load|store]_active() stdlib functions for 64 bit types, and loop
 unroll pragmas: &quot;#pragma unroll&quot; and &quot;#pragma nounroll&quot;.</p>
+</div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-16-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.16.0</h2>
+<p>The release has several new functions in the standard library, that can possbily
+affect compatibility:</p>
+<ul class="simple">
+<li><tt class="docutils literal">alloca()</tt> - refer to <a class="reference internal" href="#stack-memory-allocation">Stack Memory Allocation</a> for more details.</li>
+<li><tt class="docutils literal">assume()</tt> - refer to <a class="reference internal" href="#compiler-optimization-hints">Compiler Optimization Hints</a> for more details.</li>
+<li><tt class="docutils literal">trunc()</tt> - refer to <a class="reference internal" href="#basic-math-functions">Basic Math Functions</a> for more details.</li>
+</ul>
+<p>The language got experimental feature for calling LLVM intrinsics. This
+should not affect compatibility with existing programs.
+See <a class="reference internal" href="#llvm-intrinsic-functions">LLVM Intrinsic Functions</a> for more details.</p>
 </div>
 </div>
 <div class="section" id="getting-started-with-ispc">
@@ -804,19 +822,19 @@ preprocessor runs:</p>
 <tbody valign="top">
 <tr><td>Symbol name</td>
 <td>Value</td>
-<td>Use</td>
+<td>Description</td>
 </tr>
 <tr><td>ISPC</td>
 <td>1</td>
-<td>Detecting that the <tt class="docutils literal">ispc</tt> compiler is processing the file</td>
+<td>Enables detecting that the <tt class="docutils literal">ispc</tt> compiler is processing the file</td>
 </tr>
 <tr><td>ISPC_TARGET_{NEON, SSE2, SSE4, AVX, AVX2, AVX512KNL, AVX512SKX}</td>
 <td>1</td>
-<td>One of these will be set, depending on the compilation target.</td>
+<td>One of these will be set, depending on the compilation target</td>
 </tr>
 <tr><td>ISPC_POINTER_SIZE</td>
 <td>32 or 64</td>
-<td>Number of bits used to represent a pointer for the target architecture.</td>
+<td>Number of bits used to represent a pointer for the target architecture</td>
 </tr>
 <tr><td>ISPC_MAJOR_VERSION</td>
 <td>1</td>
@@ -831,26 +849,24 @@ preprocessor runs:</p>
 <td>Mathematics</td>
 </tr>
 <tr><td>TARGET_WIDTH</td>
-<td>Vector width of the target, e.g., 8 for sse2-i32x8.</td>
-<td>Static varying initialization.</td>
+<td>Vector width of the target, e.g., 8 for sse2-i32x8</td>
+<td>Can be used for code versioning for static varying initialization</td>
 </tr>
 <tr><td>TARGET_ELEMENT_WIDTH</td>
-<td>Element width in bytes, e.g., 4 for i32.</td>
-<td>Static varying initialization.</td>
+<td>Element width in bytes, e.g., 4 for i32</td>
+<td>Can be used for code versioning for static varying initialization</td>
 </tr>
 <tr><td>ISPC_UINT_IS_DEFINED</td>
-<td><ol class="first last arabic simple">
-<li></li>
-</ol>
-</td>
-<td>Detecting if uint8/uint16/uint32/uint64 types are defined in the ISPC version.</td>
+<td>1</td>
+<td>The macro is defined if uint8/uint16/uint32/uint64 types are defined in the <tt class="docutils literal">ispc</tt> (it's defined in 1.13.0 and later)</td>
 </tr>
 <tr><td>ISPC_FP64_SUPPORTED</td>
-<td><ol class="first last arabic simple">
-<li></li>
-</ol>
-</td>
-<td>Detecting if double type is supported by the target.</td>
+<td>1</td>
+<td>The macro is defined if double type is supported by the target</td>
+</tr>
+<tr><td>ISPC_LLVM_INTRINSICS_ENABLED</td>
+<td>1</td>
+<td>The macro is defined if LLVM intrinsics support is enabled</td>
 </tr>
 </tbody>
 </table>
@@ -1724,8 +1740,9 @@ double foo = 1. / 3.;
 int bar = (float)bar + (float)bar;  // 32-bit float addition
 </pre>
 <p>If a <tt class="docutils literal">bool</tt> is converted to an integer numeric type (<tt class="docutils literal">int</tt>, <tt class="docutils literal">int64</tt>,
-etc.), then the result is the value one if the <tt class="docutils literal">bool</tt> has the value
-<tt class="docutils literal">true</tt> and has the value zero otherwise.</p>
+etc.), then the result is a non-zero value if the <tt class="docutils literal">bool</tt> has the value
+<tt class="docutils literal">true</tt> and has the value zero otherwise. A <tt class="docutils literal">bool</tt> with value <tt class="docutils literal">true</tt>
+is not guaranteed to be one if converted to an integer numeric type.</p>
 <p>Variables can be declared with the <tt class="docutils literal">const</tt> qualifier, which prohibits
 their modification.</p>
 <pre class="literal-block">
@@ -1747,6 +1764,8 @@ instances.)  In addition to requiring less storage than varying values,
 are applicable (see <a class="reference internal" href="#uniform-control-flow">Uniform Control Flow</a>, for example.)  Varying
 variables may be qualified with <tt class="docutils literal">varying</tt>, though doing so has no effect,
 as <tt class="docutils literal">varying</tt> is the default.</p>
+<p>There are two exceptions for this rule described in <a class="reference internal" href="#pointer-types">Pointer Types</a> and
+<a class="reference internal" href="#type-casting">Type Casting</a> sections.</p>
 <p><tt class="docutils literal">uniform</tt> variables can be modified as the program executes, but only in
 ways that preserve the property that they have a single value for the
 entire gang.  Thus, it's legal to add two uniform variables together and
@@ -2439,6 +2458,31 @@ initializer values provided in <tt class="docutils literal">new</tt> statements 
 complex data types follow the same rules as initializers for variables
 described in <a class="reference internal" href="#declarations-and-initializers">Declarations and Initializers</a>.</p>
 </div>
+<div class="section" id="type-casting">
+<h2>Type Casting</h2>
+<p>C-style type casting expression works as in C language with an exception that
+unbound type is not treated as <tt class="docutils literal">varying</tt> by default.</p>
+<p>When typecasting to some type <tt class="docutils literal">T</tt> without specifying a variability, the
+variability is derived from the type of expression being casted. I.e. the
+expression <tt class="docutils literal">(int) E</tt> has the same variability as original expression <tt class="docutils literal">E</tt>.
+This feature may lead to confusion when the resulting expression is used
+as a function argument. Consider an example:</p>
+<pre class="literal-block">
+float bar(uniform float f);
+float bar(varying float f);
+float foo(uniform int B) {
+   return bar((float)B);
+}
+</pre>
+<p>This code will yield the following warning suggesting to use fully qualified
+type in this case.</p>
+<pre class="literal-block">
+Warning: Typecasting to type &quot;/*unbound*/ float&quot; (variability not specified)
+       from &quot;uniform&quot; type &quot;uniform int32&quot; results in &quot;uniform&quot; variability.
+       In the context of function argument it may lead to unexpected behavior.
+       Casting to &quot;uniform float&quot; is recommended.
+</pre>
+</div>
 <div class="section" id="control-flow">
 <h2>Control Flow</h2>
 <p><tt class="docutils literal">ispc</tt> supports most of C's control flow constructs, including <tt class="docutils literal">if</tt>,
@@ -3041,11 +3085,11 @@ easily interoperate with software systems that have existing task systems
 for managing parallelism.  If you're using <tt class="docutils literal">ispc</tt> with a system that
 isn't otherwise multi-threaded and don't want to write custom
 implementations of them, you can use the implementations of these functions
-provided in the <tt class="docutils literal">examples/tasksys.cpp</tt> file in the <tt class="docutils literal">ispc</tt>
+provided in the <tt class="docutils literal">examples/common/tasksys.cpp</tt> file in the <tt class="docutils literal">ispc</tt>
 distributions.</p>
 <p>If you are implementing your own task system, the remainder of this section
 discusses the requirements for these calls.  You will also likely want to
-review the example task systems in <tt class="docutils literal">examples/tasksys.cpp</tt> for reference.
+review the example task systems in <tt class="docutils literal">examples/common/tasksys.cpp</tt> for reference.
 If you are not implementing your own task system, you can skip reading the
 remainder of this section.</p>
 <p>Here are the declarations of the three functions that must be provided to
@@ -3112,6 +3156,38 @@ and <tt class="docutils literal">taskIndex2</tt> between zero and <tt class="doc
 <tt class="docutils literal">taskCount1</tt> and <tt class="docutils literal">taskCount2</tt> respectively,  with <tt class="docutils literal">taskIndex = taskIndex0
 + <span class="pre">taskCount0*(taskIndex1</span> + taskCount1*taskIndex2)</tt>, to distinguish which of
 the instances of the set of launched tasks is running.</p>
+</div>
+<div class="section" id="llvm-intrinsic-functions">
+<h2>LLVM Intrinsic Functions</h2>
+<p><tt class="docutils literal">ispc</tt> has an experimental feature to call LLVM intrinsics directly from
+<tt class="docutils literal">ispc</tt> source code.  It's strongly discouraged to use this feature in production
+code, unless the consequences are well understood.  Specifically:</p>
+<ul class="simple">
+<li>Availability and naming of LLVM intrinsics depend on the specific LLVM
+version used for <tt class="docutils literal">ispc</tt> build and may change without notice.</li>
+<li>Only basic verification of availability of target-specific intrinsics
+on the target CPU is performed. The attempt of using not supported
+intrinsics may lead to compiler crash.</li>
+</ul>
+<p>Using LLVM intrinsics is encouraged for experiments and may be useful in the
+following cases:</p>
+<ul class="simple">
+<li>If <tt class="docutils literal">ispc</tt> fails to generate specific instruction, which is necessary
+for better performance.</li>
+<li>If there's no higher level primitives (in standard library or language itself)
+for some of instructions. For example, this might be the case with new
+ISA extensions.</li>
+</ul>
+<p>If you found the case where the use of LLVM intrinsics is beneficial in your code,
+please let us know by opening an issue in <tt class="docutils literal">ispc</tt> <a class="reference external" href="https://github.com/ispc/ispc/issues?state=open">bug tracker</a>.</p>
+<p>To use this feature, <tt class="docutils literal"><span class="pre">--enable-llvm-intrinsics</span></tt> switch must be passed to <tt class="docutils literal">ispc</tt>.
+The syntax is similar to a normal function call, but the name must start with <tt class="docutils literal">&#64;</tt> symbol.
+For example:</p>
+<pre class="literal-block">
+transpose = &#64;llvm.matrix.transpose.v8f32.i32.i32(matrix, row, column);
+</pre>
+<p>To detect if this feature is enabled during compile time, check if <tt class="docutils literal">ISPC_LLVM_INTRINSICS_ENABLED</tt>
+macro is defined.</p>
 </div>
 </div>
 <div class="section" id="the-ispc-standard-library">
@@ -3274,6 +3350,8 @@ float floor(float x)
 uniform float floor(uniform float x)
 float ceil(float x)
 uniform float ceil(uniform float x)
+float trunc(float x)
+uniform float trunc(uniform float x)
 </pre>
 <p><tt class="docutils literal">rcp()</tt> computes an approximation to <tt class="docutils literal">1/v</tt>.  The amount of error is
 different on different architectures.</p>
@@ -3552,6 +3630,72 @@ trigger.)</p>
 for an optimized release build), use the <tt class="docutils literal"><span class="pre">--opt=disable-assertions</span></tt>
 command-line argument.</p>
 </div>
+<div class="section" id="compiler-optimization-hints">
+<h2>Compiler Optimization Hints</h2>
+<p>The <tt class="docutils literal">ispc</tt> standard library includes a mechanism for adding <tt class="docutils literal">assume()</tt>
+statements to <tt class="docutils literal">ispc</tt> program code. The <tt class="docutils literal">assume()</tt> function takes a
+single uniform boolean expression as an argument. This expression is
+assumed to be <tt class="docutils literal">true</tt> and this information will be used for optimization
+when possible. This feature is currently only available on CPU targets.</p>
+<p>The condition used in <tt class="docutils literal">assume()</tt> statement will not be code generated and
+does not imply runtime checks. It will solely be used as optimization hint,
+if compiler is able to use this information.</p>
+<p>Below are some basic examples of this functionality.</p>
+<pre class="literal-block">
+inline uniform int bar1(uniform int a, uniform int b) {
+    if (a &lt; b)
+        return 2;
+    return 5;
+}
+uniform int foo1(uniform int a, uniform int b) {
+    assume(a &lt; b);
+    return bar1(a, b);
+}
+</pre>
+<p>The <tt class="docutils literal">assume()</tt> hint allows the compiler to resolve <tt class="docutils literal">a &lt; b</tt> during compile
+time in <tt class="docutils literal">bar1()</tt> and return <tt class="docutils literal">2</tt> thus removing the additional branch.</p>
+<pre class="literal-block">
+inline void bar2(uniform int * uniform a) {
+    if (a != NULL) {
+        a[2] = 9;
+    }
+ }
+ void foo2(uniform int a[]) {
+    assume(a != NULL);
+    bar2(a);
+ }
+</pre>
+<p>The <tt class="docutils literal">assume()</tt> hint allows the compiler to remove <tt class="docutils literal">a != NULL</tt> during compile
+time in <tt class="docutils literal">bar2()</tt> thus removing the additional check.</p>
+<pre class="literal-block">
+int foo3(uniform int a[], uniform int count) {
+    int ret = 0;
+    assume(count % programCount == 0);
+    foreach (i = 0 ... count) {
+        ret += a[i];
+    }
+    return ret;
+}
+</pre>
+<p>The <tt class="docutils literal">assume()</tt> hint informs the compiler <tt class="docutils literal">count</tt> is a multiple of
+<tt class="docutils literal">programCount</tt> during compile time. This results in removal of remainder
+loop usually required for <tt class="docutils literal">foreach</tt>.</p>
+<pre class="literal-block">
+typedef float&lt;TARGET_WIDTH&gt; AlignedFloat;
+unmasked void foo4(uniform float Result[], const uniform float Source1[], const uniform unsigned int Iterations)
+{
+     assume(((uniform uint64)((void*)Source1) &amp; (32 * TARGET_WIDTH)-1) == 0);
+     assume(((uniform uint64)((void*)Result) &amp; (32 * TARGET_WIDTH)-1) == 0);
+     uniform AlignedFloat S1;
+     S1[programIndex] = Source1[programIndex];
+     const uniform AlignedFloat R = S1;
+     Result[programIndex] = R[programIndex];
+}
+</pre>
+<p>The <tt class="docutils literal">assume()</tt> hint informs the compiler that memory locations used by
+loads and stores are aligned. This results in aligned instructions instead
+of unaligned instructions.</p>
+</div>
 <div class="section" id="cross-program-instance-operations">
 <h2>Cross-Program Instance Operations</h2>
 <p><tt class="docutils literal">ispc</tt> programs are often used to express independently-executing
@@ -3776,6 +3920,17 @@ unsigned int64 exclusive_scan_or(unsigned int64 v)
 <p>The use of exclusive scan to generate variable amounts of output from
 program instances into a compact output buffer is <a class="reference external" href="faq.html#how-can-a-gang-of-program-instances-generate-variable-amounts-of-output-efficiently">discussed in the FAQ</a>.</p>
 </div>
+<div class="section" id="stack-memory-allocation">
+<h2>Stack Memory Allocation</h2>
+<p>The <tt class="docutils literal">ispc</tt> standard library includes an <tt class="docutils literal">alloca()</tt> function that can be
+used to allocate memory on the stack.</p>
+<pre class="literal-block">
+void * uniform alloca(uniform size_t size);
+</pre>
+<p>The <tt class="docutils literal">alloca()</tt> function allocates <tt class="docutils literal">size</tt> bytes of space in the stack
+frame of the caller.  This temporary space is automatically freed
+when the function that called <tt class="docutils literal">alloca()</tt> returns to its caller.</p>
+</div>
 <div class="section" id="data-movement">
 <h2>Data Movement</h2>
 </div>
@@ -3999,11 +4154,11 @@ void soa_to_aos3(double v0, double v1, double v2, uniform double a[])
 void soa_to_aos3(int64 v0, int64 v1, int64 v2, uniform int64 a[])
 </pre>
 <p>There are also variants of these functions that convert 4-wide values
-between AoS and SoA layouts.  In other words, <tt class="docutils literal">aos_to_soa4()</tt> converts
-AoS data in memory laid out like <tt class="docutils literal">r0 g0 b0 a0 r1 g1 b1 a1 ...</tt> to four
-<tt class="docutils literal">varying</tt> variables with values <tt class="docutils literal">r0 <span class="pre">r1...</span></tt>, <tt class="docutils literal">g0 <span class="pre">g1...</span></tt>, <tt class="docutils literal">b0 <span class="pre">b1...</span></tt>,
-and <tt class="docutils literal">a0 <span class="pre">a1...</span></tt>, reading a total of four times the gang size values from
-the given array, starting at the given offset.</p>
+and 2-wide values between AoS and SoA layouts.
+In other words, <tt class="docutils literal">aos_to_soa4()</tt> converts AoS data in memory laid out like
+<tt class="docutils literal">r0 g0 b0 a0 r1 g1 b1 a1 ...</tt> to four <tt class="docutils literal">varying</tt> variables with values
+<tt class="docutils literal">r0 <span class="pre">r1...</span></tt>, <tt class="docutils literal">g0 <span class="pre">g1...</span></tt>, <tt class="docutils literal">b0 <span class="pre">b1...</span></tt>, and <tt class="docutils literal">a0 <span class="pre">a1...</span></tt>, reading a total
+of four times the gang size values from the given array, starting at the given offset.</p>
 <pre class="literal-block">
 void aos_to_soa4(uniform float a[], varying float * uniform v0,
                  varying float * uniform v1, varying float * uniform v2,
@@ -4013,6 +4168,15 @@ void aos_to_soa4(uniform int32 a[], varying int32 * uniform v0,
                  varying int32 * uniform v3)
 void soa_to_aos4(float v0, float v1, float v2, float v3, uniform float a[])
 void soa_to_aos4(int32 v0, int32 v1, int32 v2, int32 v3, uniform int32 a[])
+</pre>
+<p>The following 2-wide variant of these functions are also supported.</p>
+<pre class="literal-block">
+void aos_to_soa2(uniform float a[], varying float * uniform v0,
+                 varying float * uniform v1)
+void aos_to_soa2(uniform int32 a[], varying int32 * uniform v0,
+                 varying int32 * uniform v1)
+void soa_to_aos2(float v0, float v1, uniform float a[])
+void soa_to_aos2(int32 v0, int32 v1, uniform int32 a[])
 </pre>
 </div>
 <div class="section" id="conversions-to-and-from-half-precision-floats">
