@@ -1,0 +1,739 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.16: http://docutils.sourceforge.net/" />
+<title>Intel® ISPC for Xe</title>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-1486404-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="intel-ispc-for-xe">
+<div id="wrap">
+  <div id="wrap2">
+    <div id="header">
+      <h1 id="logo">Intel® Implicit SPMD Program Compiler</h1>
+      <div id="slogan">An open-source compiler for high-performance SIMD programming on
+      the CPU and GPU</div>
+    </div>
+    <div id="nav">
+      <div id="nbar">
+        <ul>
+          <li><a href="index.html">Overview</a></li>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="downloads.html">Downloads</a></li>
+          <li id="selected"><a href="documentation.html">Documentation</a></li>
+          <li><a href="perf.html">Performance</a></li>
+          <li><a href="contrib.html">Contributors</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="content-wrap">
+      <div id="sidebar">
+          <div class="widgetspace">
+            <h1>Resources</h1>
+            <ul class="menu">
+              <li><a href="http://github.com/ispc/ispc/">ispc page on github</a></li>
+              <li><a href="http://groups.google.com/group/ispc-users/">ispc
+              users mailing list</a></li>
+              <li><a href="http://groups.google.com/group/ispc-dev/">ispc
+              developers mailing list</a></li>
+              <li><a href="http://github.com/ispc/ispc/wiki/">Wiki</a></li>
+              <li><a href="http://github.com/ispc/ispc/issues/">Bug tracking</a></li>
+            </ul>
+        </div>
+      </div>
+<h1 class="title">Intel® ISPC for Xe</h1>
+
+<div id="content">
+<p>The Intel® Implicit SPMD Program Compiler (Intel® ISPC) is actively developed to support
+latest Intel GPUs. The compilation for a GPU is pretty straightforward from
+the user's point of view, but managing the execution of code on a GPU may add
+complexity. You can use a low-level API <a class="reference external" href="https://spec.oneapi.com/level-zero/latest/index.html">oneAPI Level Zero</a> to manage available GPU
+devices, memory transfers between CPU and GPU, code execution, and
+synchronization. Another possibility is to use <a class="reference internal" href="#ispc-run-time-ispcrt">ISPC Run Time (ISPCRT)</a>,
+which is part of the ISPC package, to manage that complexity and create
+a unified abstraction for executing tasks on CPU and GPU.</p>
+<p>Contents:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#using-the-ispc-compiler">Using The ISPC Compiler</a><ul>
+<li><a class="reference internal" href="#environment">Environment</a></li>
+<li><a class="reference internal" href="#basic-command-line-options">Basic Command-line Options</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ispc-run-time-ispcrt">ISPC Run Time (ISPCRT)</a><ul>
+<li><a class="reference internal" href="#ispcrt-objects">ISPCRT Objects</a></li>
+<li><a class="reference internal" href="#execution-model">Execution Model</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#compiling-and-running-simple-ispc-program">Compiling and Running Simple ISPC Program</a></li>
+<li><a class="reference internal" href="#language-limitations-and-known-issues">Language Limitations and Known Issues</a></li>
+<li><a class="reference internal" href="#performance">Performance</a><ul>
+<li><a class="reference internal" href="#performance-guide-for-gpu-programming">Performance Guide for GPU Programming</a></li>
+<li><a class="reference internal" href="#tools-for-performance-analysis">Tools for Performance Analysis</a></li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li><cite>Interoperability</cite></li>
+</ul>
+<ul class="simple">
+<li><a class="reference internal" href="#faq">FAQ</a><ul>
+<li><a class="reference internal" href="#how-to-get-an-assembly-file-from-spir-v">How to Get an Assembly File from SPIR-V?</a></li>
+<li><a class="reference internal" href="#how-to-debug-on-gpu">How to Debug on GPU?</a></li>
+</ul>
+</li>
+</ul>
+<div class="section" id="using-the-ispc-compiler">
+<h1>Using The ISPC Compiler</h1>
+<p>The output from <tt class="docutils literal">ispc</tt> for Xe targets is SPIR-V file by default. It is used
+when one of <tt class="docutils literal">gen9</tt> or <tt class="docutils literal">xe</tt> targets is selected:</p>
+<pre class="code console literal-block">
+<span class="generic output">ispc foo.ispc --target=gen9-x8 -o foo.spv</span>
+</pre>
+<p>The SPIR-V file is consumed by the runtime for further compilation and execution
+on GPU.</p>
+<p>You can also generate L0 binary using <tt class="docutils literal"><span class="pre">--emit-zebin</span></tt> flag. Please note that
+currently SPIR-V format is more stable but feel free to experiment with L0 binary.</p>
+<div class="section" id="environment">
+<h2>Environment</h2>
+<p><tt class="docutils literal">Intel® ISPC for Xe</tt> is supported on Linux for quite a while (recommended
+and tested Linux distribution is Ubuntu 20.04) and it's got Windows support since
+v1.16.0.</p>
+<p>You need to have a system with <tt class="docutils literal">Intel(R) Processor Graphics Gen9</tt> or later.</p>
+<p>For the execution of ISPC programs on GPU, please install <a class="reference external" href="https://github.com/intel/compute-runtime/releases">Intel(R)
+Graphics Compute Runtime</a>
+and <a class="reference external" href="https://github.com/oneapi-src/level-zero/releases">Level Zero Loader</a>.</p>
+<p>To use ISPC Run Time for CPU you need to have <tt class="docutils literal">OpenMP runtime</tt> installed on
+your system. Consult your Linux distribution documentation for the installation
+of OpenMP runtime instructions.</p>
+</div>
+<div class="section" id="basic-command-line-options">
+<h2>Basic Command-line Options</h2>
+<p>Four new targets were introduced for GPU support: <tt class="docutils literal"><span class="pre">gen9-x8</span></tt>, <tt class="docutils literal"><span class="pre">gen9-x16</span></tt>,
+<tt class="docutils literal"><span class="pre">xelp-x8</span></tt>, and <tt class="docutils literal"><span class="pre">xelp-x16</span></tt>.</p>
+<p>If the <tt class="docutils literal"><span class="pre">-o</span></tt> flag is given, <tt class="docutils literal">ispc</tt> will generate a SPIR-V output file.
+Optionally you can use <tt class="docutils literal"><span class="pre">--emit-spirv</span></tt> flag:</p>
+<pre class="code console literal-block">
+<span class="generic output">ispc --target=gen9-x8 --emit-spirv foo.ispc -o foo.spv</span>
+</pre>
+<p>To generate L0 binary, use <tt class="docutils literal"><span class="pre">--emit-zebin</span></tt> flag. When you use L0 binary you may
+want to pass some additional options to the vector backend. You can do this using
+<tt class="docutils literal"><span class="pre">--vc-options</span></tt> flag.</p>
+<p>Also two new <tt class="docutils literal">arch</tt> options were introduced: <tt class="docutils literal">xe32</tt> and <tt class="docutils literal">xe64</tt>.
+<tt class="docutils literal">xe64</tt> is default and corresponds to 64-bit host and has 64-bit pointer size,
+<tt class="docutils literal">xe32</tt> corresponds to 32-bit host and has 32-bit pointer size.</p>
+<p>To generate LLVM bitcode, use the <tt class="docutils literal"><span class="pre">--emit-llvm</span></tt> flag.
+To generate LLVM bitcode in textual form, use the <tt class="docutils literal"><span class="pre">--emit-llvm-text</span></tt> flag.</p>
+<p>Optimizations are on by default; they can be turned off with <tt class="docutils literal"><span class="pre">-O0</span></tt>.</p>
+<p>Generating a text assembly file using <tt class="docutils literal"><span class="pre">--emit-asm</span></tt> is not supported yet.
+See <a class="reference internal" href="#how-to-get-an-assembly-file-from-spir-v">How to Get an Assembly File from SPIR-V?</a> section about how to get the
+assembly from SPIR-V file.</p>
+<p>By default, 64-bit addressing is used. You can change it to 32-bit addressing by
+using <tt class="docutils literal"><span class="pre">--addressing=32</span></tt> or <tt class="docutils literal"><span class="pre">--arch=xe32</span></tt> however pointer size should be
+the same for host and device code so 32-bit addressing will only work with
+32-bit host programs.</p>
+</div>
+</div>
+<div class="section" id="ispc-run-time-ispcrt">
+<h1>ISPC Run Time (ISPCRT)</h1>
+<p><tt class="docutils literal">ISPC Run Time (ISPCRT)</tt> unifies execution models for CPU and GPU targets. It
+is a high-level abstraction on the top of <a class="reference external" href="https://spec.oneapi.com/level-zero/latest/index.html">oneAPI Level Zero</a>. You can continue
+using ISPC for CPU without this runtime and alternatively use pure <tt class="docutils literal">oneAPI
+Level Zero</tt> for GPU. However, we strongly encourage you to try <tt class="docutils literal">ISPCRT</tt>
+and give us feedback!
+The <tt class="docutils literal">ISPCRT</tt> provides C and C++ APIs which are documented in the header files
+(see <tt class="docutils literal">ispcrt.h</tt> and <tt class="docutils literal">ispcrt.hpp</tt>) and distributed as a library that you can
+link to.
+Examples in <tt class="docutils literal">ispc/examples/xpu</tt> directory demonstrate how to use
+this API to run SPMD programs on CPU or GPU. You can see how to use
+<tt class="docutils literal">oneAPI Level Zero</tt> runtime in <tt class="docutils literal">sgemm</tt> example.
+It is also possible to run ISPC kernels and DPCPP kernels written with <tt class="docutils literal">oneAPI
+DPC++ Compiler</tt> using <tt class="docutils literal">oneAPI Level Zero</tt> from the same process and share data
+between them. Try <tt class="docutils literal"><span class="pre">Simple-DPCPP</span></tt> and <tt class="docutils literal"><span class="pre">Pipeline-DPCPP</span></tt> examples to learn
+more about this possibility. Please keep in mind though that this
+feature is experimental.</p>
+<div class="section" id="ispcrt-objects">
+<h2>ISPCRT Objects</h2>
+<p>The <tt class="docutils literal">ISPC Run Time</tt> uses the following abstractions to manage code execution:</p>
+<ul class="simple">
+<li><tt class="docutils literal">Device</tt> - represents a CPU or a GPU that can execute SPMD program and has
+some operational memory available. The user may select a particular type of
+device (CPU or GPU) or allow the runtime to decide which device will be used.</li>
+<li><tt class="docutils literal">Memory view</tt> - represents data that need to be accessed by different
+<tt class="docutils literal">devices</tt>. For example, input data for code running on GPU must be firstly
+prepared by a CPU in its memory, then transferred to a GPU memory to perform
+computations on. <tt class="docutils literal">Memory view</tt> can also represent memory allocated using
+a Unified Shared Memory mechanism provided by <tt class="docutils literal">oneAPI Level Zero</tt>. Pointers
+to data allocated in the USM are valid both on the host and on the device.
+Also, there is no need to explicitly handle data movement between the CPU
+and the GPU. This is handled automatically by the <tt class="docutils literal">oneAPI Level Zero</tt> runtime.</li>
+<li><tt class="docutils literal">Task queue</tt> - Each <tt class="docutils literal">device</tt> has a task (command) queue and executes
+commands from it. The execution may be asynchronous, which means that subsequent
+commands can begin executing before the previous ones complete. There are
+synchronization primitives available to make the execution synchronous.</li>
+<li><tt class="docutils literal">Barrier</tt> - synchronization primitive that can be inserted into
+a <tt class="docutils literal">task queue</tt> to make sure that all tasks previously inserted into this
+queue have completed execution. It is not needed to include <tt class="docutils literal">barrier</tt>
+between memory copy and kernel execution. All memory scheduled to be copied before the
+kernel execution will complete before the kernel start.
+This is implemented by <tt class="docutils literal">ISPC Runtime</tt> using finer grain mechanisms than
+a barrier and is more efficient.</li>
+<li><tt class="docutils literal">Module</tt> - represents a set of <tt class="docutils literal">kernels</tt> that are compiled together and
+thus can share some common code. In this sense, SPIR-V file produced by <tt class="docutils literal">ispc</tt>
+is a <tt class="docutils literal">module</tt> for the <tt class="docutils literal">ISPCRT</tt>. User can provide additional options for
+module compilation using <tt class="docutils literal">ISPCRTModuleOptions</tt>. Currently <tt class="docutils literal">ISPCRTModuleOptions</tt>
+structure allows to set stack size for VC backend which is used to compile SPIR-V.
+The set of supported options will be extended as needed.</li>
+<li><tt class="docutils literal">Kernel</tt> - is a function that is an entry point to a <tt class="docutils literal">module</tt> and can be
+called by inserting kernel execution command into a <tt class="docutils literal">task queue</tt>. A kernel
+has one parameter - a pointer to a structure of actual kernel parameters.</li>
+<li><tt class="docutils literal">Future</tt> - can be treated as a promise that at some point <tt class="docutils literal">kernel</tt>
+execution connected to this object will be completed and the object will become
+valid.
+<tt class="docutils literal">Futures</tt> are returned when a <tt class="docutils literal">kernel</tt> invocation is inserted into
+a <tt class="docutils literal">task queue</tt>. When the <tt class="docutils literal">task queue</tt> is executed on a device, the
+<tt class="docutils literal">future</tt> object becomes valid and can be used to retrieve information about
+the <tt class="docutils literal">kernel</tt> execution.</li>
+<li><tt class="docutils literal">Array</tt> - Conveniently wraps up memory view objects and allows for easy
+allocation of memory on the device or in the Unified Shared Memory (USM).
+The ISPCRT also provides an example allocator that makes it even more simple
+to allocate data in the USM and a SharedVector class that serves the same
+purpose. See XPU examples and documentation for more details.</li>
+</ul>
+<p>All <tt class="docutils literal">ISPCRT</tt> objects support reference counting, which means that it is not
+necessary to perform detailed memory management. The objects will be released
+once they are not used.</p>
+</div>
+<div class="section" id="execution-model">
+<h2>Execution Model</h2>
+<p>The idea of <a class="reference external" href="https://ispc.github.io/ispc.html#task-parallelism-launch-and-sync-statements">ISPC tasks</a>
+has been extended to support the execution of kernels on a GPU. Each kernel
+execution command inserted into a task queue is parametrized with the number
+of tasks (threads) that should be launched on a GPU. Each task must decide
+on which part of the problem it should work, exactly the same as it happens
+in the CPU case. Within tasks, the program executes in SPMD manner (again
+the regular ISPC execution model is copied). All built-in variables used for
+that purpose (such as <tt class="docutils literal">taskIndex</tt>, <tt class="docutils literal">taskCount</tt>, <tt class="docutils literal">programIndex</tt>,
+<tt class="docutils literal">programCount</tt>) are available for use on GPU.</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration</h2>
+<p>The behavior of <tt class="docutils literal">ISPCRT</tt> can be configured using the following environment
+variables:</p>
+<ul class="simple">
+<li><tt class="docutils literal">ISPCRT_USE_ZEBIN</tt> - when defined forces to use experimental L0 native binary format.
+Unlike SPIR-V files, zebin files are not portable between different GPU types.</li>
+<li><tt class="docutils literal">ISPCRT_IGC_OPTIONS</tt> - <tt class="docutils literal">ISPCRT</tt> is using an Intel® Graphics Compiler (IGC)
+to produce binary code that can be executed on the GPU. <tt class="docutils literal">ISPCRT</tt> allows
+for passing certain options to the IGC via <tt class="docutils literal">ISPCRT_IGC_OPTIONS</tt> variable.
+The content of this variable should be prefixed with <tt class="docutils literal">+</tt> or <tt class="docutils literal">=</tt> sign.
+<tt class="docutils literal">+</tt> means that the content of the variable should be added to the default
+IGC options already passsed by the <tt class="docutils literal">ISPCRT</tt>, while <tt class="docutils literal">=</tt> tells the <tt class="docutils literal">ISPCRT</tt>
+to replace the default options with the content of the environment variable.</li>
+<li><tt class="docutils literal">ISPCRT_GPU_DEVICE</tt> - if more than one supported GPU is present in the system,
+the user can select the GPU device to be used by the <tt class="docutils literal">ISPCRT</tt> using <tt class="docutils literal">ISPCRT_GPU_DEVICE</tt>
+variable. It should be set to a number of a device as enumerated
+by the Level Zero runtime. For example, in a system with two GPUs present,
+the variable can be set to <tt class="docutils literal">0</tt> or <tt class="docutils literal">1</tt>.</li>
+<li><tt class="docutils literal">ISPCRT_MAX_KERNEL_LAUNCHES</tt> - there is a limit of the maximum number of enqueued
+kernel launches in a given task queue. If the limit is reached, sync() method
+needs to be called to submit the queue for execution. The limit is currently
+set to 100000, but can be lowered (for example for testing) using this environmental variable.
+Please note that the limit cannot be set to more than 100000. If a greater value is provided,
+the <tt class="docutils literal">ISPCRT</tt> will set the limit to the default value and display a warning message.</li>
+</ul>
+<p>Also you can use <tt class="docutils literal">ISPCRTModuleOptions</tt> structure to pass specific options to GPU module.
+Currently we support only one setting - <tt class="docutils literal">stackSize</tt> which determines the stack size
+in VC backend. The default value is 8192.</p>
+</div>
+</div>
+<div class="section" id="compiling-and-running-simple-ispc-program">
+<h1>Compiling and Running Simple ISPC Program</h1>
+<p>The directory <tt class="docutils literal">examples/xpu/simple</tt> in the <tt class="docutils literal">ispc</tt> distribution
+includes a simple example of how to use <tt class="docutils literal">ispc</tt> with a short C++ program for
+CPU and GPU targets with ISPC Run Time. See the file <tt class="docutils literal">simple.ispc</tt> in that
+directory (also reproduced here.)</p>
+<pre class="code cpp literal-block">
+<span class="keyword">struct</span> <span class="name">Parameters</span> <span class="punctuation">{</span>
+    <span class="keyword type">float</span> <span class="operator">*</span><span class="name">vin</span><span class="punctuation">;</span>
+    <span class="keyword type">float</span> <span class="operator">*</span><span class="name">vout</span><span class="punctuation">;</span>
+    <span class="keyword type">int</span>    <span class="name">count</span><span class="punctuation">;</span>
+<span class="punctuation">};</span>
+
+<span class="name">task</span> <span class="keyword type">void</span> <span class="name function">simple_ispc</span><span class="punctuation">(</span><span class="keyword type">void</span> <span class="operator">*</span><span class="name">uniform</span> <span class="name">_p</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+    <span class="name">Parameters</span> <span class="operator">*</span><span class="name">uniform</span> <span class="name">p</span> <span class="operator">=</span> <span class="punctuation">(</span><span class="name">Parameters</span> <span class="operator">*</span> <span class="name">uniform</span><span class="punctuation">)</span> <span class="name">_p</span><span class="punctuation">;</span>
+
+    <span class="name">foreach</span> <span class="punctuation">(</span><span class="name">index</span> <span class="operator">=</span> <span class="literal number integer">0</span> <span class="punctuation">...</span> <span class="name">p</span><span class="operator">-&gt;</span><span class="name">count</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+        <span class="comment single">// Load the appropriate input value for this program instance.
+</span>        <span class="keyword type">float</span> <span class="name">v</span> <span class="operator">=</span> <span class="name">p</span><span class="operator">-&gt;</span><span class="name">vin</span><span class="punctuation">[</span><span class="name">index</span><span class="punctuation">];</span>
+
+        <span class="comment single">// Do an arbitrary little computation, but at least make the
+</span>        <span class="comment single">// computation dependent on the value being processed
+</span>        <span class="keyword">if</span> <span class="punctuation">(</span><span class="name">v</span> <span class="operator">&lt;</span> <span class="literal number float">3.</span><span class="punctuation">)</span>
+            <span class="name">v</span> <span class="operator">=</span> <span class="name">v</span> <span class="operator">*</span> <span class="name">v</span><span class="punctuation">;</span>
+        <span class="keyword">else</span>
+            <span class="name">v</span> <span class="operator">=</span> <span class="name">sqrt</span><span class="punctuation">(</span><span class="name">v</span><span class="punctuation">);</span>
+
+        <span class="comment single">// And write the result to the output array.
+</span>        <span class="name">p</span><span class="operator">-&gt;</span><span class="name">vout</span><span class="punctuation">[</span><span class="name">index</span><span class="punctuation">]</span> <span class="operator">=</span> <span class="name">v</span><span class="punctuation">;</span>
+    <span class="punctuation">}</span>
+<span class="punctuation">}</span>
+
+<span class="comment preproc">#include</span> <span class="comment preprocfile">&quot;ispcrt.isph&quot;</span><span class="comment preproc">
+</span><span class="name">DEFINE_CPU_ENTRY_POINT</span><span class="punctuation">(</span><span class="name">simple_ispc</span><span class="punctuation">)</span>
+</pre>
+<p>There are several differences in comparison with CPU-only version of this
+example located in <tt class="docutils literal">examples/simple</tt>. The first thing to notice
+in this program is the usage of the <tt class="docutils literal">task</tt> keyword in the function definition
+instead of <tt class="docutils literal">export</tt>; this indicates that this function is a <tt class="docutils literal">kernel</tt> so it
+can be called from the host.</p>
+<p>The second thing to notice is <tt class="docutils literal">DEFINE_CPU_ENTRY_POINT</tt> which tells <tt class="docutils literal">ISPCRT</tt> what
+function is an entry point for CPU. If you look into the definition of
+<tt class="docutils literal">DEFINE_CPU_ENTRY_POINT</tt>, it is just simple <tt class="docutils literal">launch</tt> call:</p>
+<pre class="code cpp literal-block">
+<span class="name">launch</span><span class="punctuation">[</span><span class="name">dim0</span><span class="punctuation">,</span> <span class="name">dim1</span><span class="punctuation">,</span> <span class="name">dim2</span><span class="punctuation">]</span> <span class="name">fcn_name</span><span class="punctuation">(</span><span class="name">parameters</span><span class="punctuation">);</span>
+</pre>
+<p>It is used to set up thread space for CPU and GPU targets in a seamless way
+in host code. If you don't plan to use <tt class="docutils literal">ISPCRT</tt> on CPU, you don't need to use
+<tt class="docutils literal">DEFINE_CPU_ENTRY_POINT</tt> in ISPC program. Otherwise, you should have
+<tt class="docutils literal">DEFINE_CPU_ENTRY_POINT</tt> for each function you plan to call from <tt class="docutils literal">ISPCRT</tt>.</p>
+<p>The final thing to notice is that instead of using real parameters for the
+kernel <tt class="docutils literal">void * uniform</tt> is used and later it is cast to <tt class="docutils literal">struct Parameters</tt>.
+This approach is used to set up parameters for the kernel in a seamless way
+for CPU and GPU on the host side.</p>
+<p>Now let's look into <tt class="docutils literal">simple.cpp</tt>. It executes the ISPC kernel on CPU or GPU
+depending on an input parameter. The device type is managed by
+<tt class="docutils literal">ISPCRTDeviceType</tt> which can be set to <tt class="docutils literal">ISPCRT_DEVICE_TYPE_CPU</tt>,
+<tt class="docutils literal">ISPCRT_DEVICE_TYPE_GPU</tt> or <tt class="docutils literal">ISPCRT_DEVICE_TYPE_AUTO</tt> (tries to use GPU, but
+fallback to CPU if no GPUs found).</p>
+<p>The program starts with including <tt class="docutils literal">ISPCRT</tt> header:</p>
+<pre class="code cpp literal-block">
+<span class="comment preproc">#include</span> <span class="comment preprocfile">&quot;ispcrt.hpp&quot;</span>
+</pre>
+<p>After that <tt class="docutils literal">ISPCRT</tt> device is created:</p>
+<pre class="code cpp literal-block">
+<span class="name">ispcrt</span><span class="operator">::</span><span class="name">Device</span> <span class="name">device</span><span class="punctuation">(</span><span class="name">device_type</span><span class="punctuation">)</span>
+</pre>
+<p>Then we're setting up parameters for ISPC kernel:</p>
+<pre class="code cpp literal-block">
+<span class="comment single">// Setup input array
+</span><span class="name">ispcrt</span><span class="operator">::</span><span class="name">Array</span><span class="operator">&lt;</span><span class="keyword type">float</span><span class="operator">&gt;</span> <span class="name">vin_dev</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span> <span class="name">vin</span><span class="punctuation">);</span>
+
+<span class="comment single">// Setup output array
+</span><span class="name">ispcrt</span><span class="operator">::</span><span class="name">Array</span><span class="operator">&lt;</span><span class="keyword type">float</span><span class="operator">&gt;</span> <span class="name">vout_dev</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span> <span class="name">vout</span><span class="punctuation">);</span>
+
+<span class="comment single">// Setup parameters structure
+</span><span class="name">Parameters</span> <span class="name">p</span><span class="punctuation">;</span>
+
+<span class="name">p</span><span class="punctuation">.</span><span class="name">vin</span> <span class="operator">=</span> <span class="name">vin_dev</span><span class="punctuation">.</span><span class="name">devicePtr</span><span class="punctuation">();</span>
+<span class="name">p</span><span class="punctuation">.</span><span class="name">vout</span> <span class="operator">=</span> <span class="name">vout_dev</span><span class="punctuation">.</span><span class="name">devicePtr</span><span class="punctuation">();</span>
+<span class="name">p</span><span class="punctuation">.</span><span class="name">count</span> <span class="operator">=</span> <span class="name">SIZE</span><span class="punctuation">;</span>
+
+<span class="keyword">auto</span> <span class="name">p_dev</span> <span class="operator">=</span> <span class="name">ispcrt</span><span class="operator">::</span><span class="name">Array</span><span class="operator">&lt;</span><span class="name">Parameters</span><span class="operator">&gt;</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span> <span class="name">p</span><span class="punctuation">);</span>
+</pre>
+<p>Notice that all reference types like arrays and structures should be wrapped up
+into <tt class="docutils literal"><span class="pre">ispcrt::Array</span></tt> for correct passing to ISPC kernel.</p>
+<p>Then we set up module and kernel to execute:</p>
+<pre class="code cpp literal-block">
+<span class="name">ispcrt</span><span class="operator">::</span><span class="name">Module</span> <span class="name">module</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span> <span class="literal string">&quot;xe_simple&quot;</span><span class="punctuation">);</span>
+<span class="name">ispcrt</span><span class="operator">::</span><span class="name">Kernel</span> <span class="name">kernel</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span> <span class="name">module</span><span class="punctuation">,</span> <span class="literal string">&quot;simple_ispc&quot;</span><span class="punctuation">);</span>
+</pre>
+<p>The name of the module must correspond to the name of output from ISPC compilation
+without extension. So in this example <tt class="docutils literal">simple.ispc</tt> will be compiled to
+<tt class="docutils literal">xe_simple.spv</tt> for GPU and to <tt class="docutils literal">libxe_simple.so</tt> for CPU so we use
+<tt class="docutils literal">xe_simple</tt> as the module name.
+The name of the kernel is just the name of the required <tt class="docutils literal">task</tt> function from
+the ISPC kernel.</p>
+<p>The rest of the program creates <tt class="docutils literal"><span class="pre">ispcrt::TaskQueue</span></tt>, fills it with required
+steps and executes it:</p>
+<pre class="code cpp literal-block">
+<span class="name">ispcrt</span><span class="operator">::</span><span class="name">TaskQueue</span> <span class="name">queue</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">);</span>
+
+<span class="comment single">// ispcrt::Array objects which used as inputs for ISPC kernel should be
+// explicitly copied to device from host
+</span><span class="name">queue</span><span class="punctuation">.</span><span class="name">copyToDevice</span><span class="punctuation">(</span><span class="name">p_dev</span><span class="punctuation">);</span>
+<span class="name">queue</span><span class="punctuation">.</span><span class="name">copyToDevice</span><span class="punctuation">(</span><span class="name">vin_dev</span><span class="punctuation">);</span>
+
+<span class="comment single">// Launch the kernel on the device using 1 thread
+</span><span class="name">queue</span><span class="punctuation">.</span><span class="name">launch</span><span class="punctuation">(</span><span class="name">kernel</span><span class="punctuation">,</span> <span class="name">p_dev</span><span class="punctuation">,</span> <span class="literal number integer">1</span><span class="punctuation">);</span>
+
+<span class="comment single">// ispcrt::Array objects which used as outputs of ISPC kernel should be
+// explicitly copied to host from device
+</span><span class="name">queue</span><span class="punctuation">.</span><span class="name">copyToHost</span><span class="punctuation">(</span><span class="name">vout_dev</span><span class="punctuation">);</span>
+
+<span class="comment single">// Execute queue and sync
+</span><span class="name">queue</span><span class="punctuation">.</span><span class="name">sync</span><span class="punctuation">();</span>
+</pre>
+<p>To build and run examples go to <tt class="docutils literal">examples/xpu</tt> and create
+<tt class="docutils literal">build</tt> folder. Run <tt class="docutils literal">cmake <span class="pre">-DISPC_EXECUTABLE=&lt;path_to_ispc_binary&gt;</span>
+<span class="pre">-Dispcrt_DIR=&lt;path_to_ispcrt_cmake&gt;</span> ../</tt> from <tt class="docutils literal">build</tt> folder. Or add path
+to <tt class="docutils literal">ispc</tt> to your PATH and just run <tt class="docutils literal">cmake ../</tt>. On Windows you also need
+to pass <tt class="docutils literal"><span class="pre">-DLEVEL_ZERO_ROOT=&lt;path_lo_level_zero&gt;</span></tt> with PATH to <tt class="docutils literal">oneAPI Level Zero</tt>
+on the system. Build examples using <tt class="docutils literal">make</tt> or using <tt class="docutils literal">Visual Studio</tt> solution.
+Go to <tt class="docutils literal">simple</tt> folder and see what files were generated:</p>
+<ul class="simple">
+<li><tt class="docutils literal">xe_simple.spv</tt> contains SPIR-V representation. This file is passed
+by <tt class="docutils literal">ISPCRT</tt> to <tt class="docutils literal">Intel(R) Graphics Compute Runtime</tt> for execution on GPU.</li>
+<li><tt class="docutils literal">libxe_simple.so</tt> on Linux / <tt class="docutils literal">xe_simple.dll</tt> on Windows incorporates
+object files produced from ISPC kernel for different targets (you can find
+them in <tt class="docutils literal">local_ispc</tt> subfolder). This library is loaded from host application
+<tt class="docutils literal">host_simple</tt> and is used for execution on CPU.</li>
+<li><tt class="docutils literal"><span class="pre">simple_ispc_&lt;target&gt;.h</span></tt> files include the declaration for the C-callable
+functions. They are not really used and produced just for the reference.</li>
+<li><tt class="docutils literal">host_simple</tt> is the main executable. When it runs, it generates
+the expected output:</li>
+</ul>
+<pre class="code console literal-block">
+<span class="generic output">Executed on: Auto
+0: simple(0.000000) = 0.000000
+1: simple(1.000000) = 1.000000
+2: simple(2.000000) = 4.000000
+3: simple(3.000000) = 1.732051
+4: simple(4.000000) = 2.000000
+...</span>
+</pre>
+<p>To set up all compilation/link commands in your application we strongly
+recommend using <tt class="docutils literal">add_ispc_kernel</tt> CMake function from CMake module included
+into ISPC distribution package.</p>
+<p>So the complete <tt class="docutils literal">CMakeFile.txt</tt> to build <tt class="docutils literal">simple</tt> example extracted from ISPC
+build system is the following:</p>
+<pre class="code cmake literal-block">
+<span class="name builtin">cmake_minimum_required</span><span class="punctuation">(</span><span class="literal string">VERSION</span> <span class="literal string">3.14</span><span class="punctuation">)</span>
+<span class="name builtin">project</span><span class="punctuation">(</span><span class="literal string">simple</span><span class="punctuation">)</span>
+<span class="name builtin">find_package</span><span class="punctuation">(</span><span class="literal string">ispcrt</span> <span class="literal string">REQUIRED</span><span class="punctuation">)</span>
+<span class="name builtin">add_executable</span><span class="punctuation">(</span><span class="literal string">host_simple</span> <span class="literal string">simple.cpp</span><span class="punctuation">)</span>
+<span class="name builtin">add_ispc_kernel</span><span class="punctuation">(</span><span class="literal string">xe_simple</span> <span class="literal string">simple.ispc</span> <span class="literal string double">&quot;&quot;</span><span class="punctuation">)</span>
+<span class="name builtin">target_link_libraries</span><span class="punctuation">(</span><span class="literal string">host_simple</span> <span class="literal string">PRIVATE</span> <span class="literal string">ispcrt::ispcrt</span><span class="punctuation">)</span>
+</pre>
+<p>And you can configure and build it using:</p>
+<pre class="code console literal-block">
+<span class="generic output">cmake ../ &amp;&amp; make</span>
+</pre>
+<p>You can also run separate compilation commands to achieve the same result.
+Here are example commands for Linux:</p>
+<ul>
+<li><p class="first">Compile ISPC kernel for GPU:</p>
+</li>
+<li><pre class="code console first literal-block">
+<span class="generic output">ispc -I /home/ispc_package/include/ispcrt -DISPC_GPU --target=gen9-x8 --woff
+-o /home/ispc_package/examples/xpu/simple/xe_simple.spv
+/home/ispc_package/examples/xpu/simple/simple.ispc</span>
+</pre>
+</li>
+<li><p class="first">Compile ISPC kernel for CPU:</p>
+</li>
+<li><pre class="code console first literal-block">
+<span class="generic output">ispc -I /home/ispc_package/include/ispcrt --arch=x86-64
+--target=sse4-i32x4,avx1-i32x8,avx2-i32x8,avx512knl-i32x16,avx512skx-i32x16
+--woff --pic --opt=disable-assertions
+-h /home/ispc_package/examples/xpu/simple/simple_ispc.h
+-o /home/ispc_package/examples/xpu/simple/simple.dev.o
+/home/ispc_package/examples/xpu/simple/simple.ispc</span>
+</pre>
+</li>
+<li><p class="first">Produce a library from object files:</p>
+</li>
+<li><pre class="code console first literal-block">
+<span class="generic output">/usr/bin/c++ -fPIC -shared -Wl,-soname,libxe_simple.so -o libxe_simple.so
+simple.dev*.o</span>
+</pre>
+</li>
+<li><p class="first">Compile and link host code:</p>
+</li>
+<li><pre class="code console first literal-block">
+<span class="generic output">/usr/bin/c++ -DISPCRT -isystem /home/ispc_package/include/ispcrt -fPIE
+-o /home/ispc_package/examples/xpu/simple/host_simple
+/home/ispc_package/examples/xpu/simple/simple.cpp -lispcrt -L/home/ispc_package/lib
+-Wl,-rpath,/home/ispc_package/lib</span>
+</pre>
+</li>
+</ul>
+<p>By default, examples use SPIR-V format. You can try them with L0 binary format:</p>
+<blockquote>
+<pre class="code console literal-block">
+<span class="generic output">cd examples/xpu/build
+cmake -DISPC_XE_FORMAT=zebin ../ &amp;&amp; make
+export ISPCRT_USE_ZEBIN=y
+cd simple &amp;&amp; ./host_simple --gpu</span>
+</pre>
+</blockquote>
+</div>
+<div class="section" id="language-limitations-and-known-issues">
+<h1>Language Limitations and Known Issues</h1>
+<p>Below is the list of known limitations of <tt class="docutils literal">Intel® ISPC for Xe</tt>:</p>
+<ul class="simple">
+<li>Limited function pointers support on Xe platforms. You may experience
+incorrect program execution, so we recommend avoiding usage of function pointers.
+Also <tt class="docutils literal">print</tt> is not supported within functions called through function pointer.</li>
+<li>Limited stack calls support. We recommend inlining functions as much as you can
+by marking them <tt class="docutils literal">inline</tt>.</li>
+<li>Floating point computations are not guaranteed to be bit-reproducible between
+CPU and GPU. Specifically this true for math library functions. Please consider
+it when designing your algorithms.</li>
+<li><tt class="docutils literal">alloca</tt> with non-constant parameter is not supported yet.</li>
+<li>Global variables are &quot;kernel-local&quot;. Unlike on CPU, the value of global variable on GPU
+will not be kept between multiple launches.</li>
+<li>VC backend does not support modules with unresolved dependencies, so before passing
+SPIR-V module to ISPC Runtime, ensure that all dependencies are resolved.</li>
+</ul>
+<p>There are several features that we do not plan to implement for GPU:</p>
+<ul class="simple">
+<li><tt class="docutils literal">launch</tt> and <tt class="docutils literal">sync</tt> keywords are not supported for GPU in ISPC program
+since kernel execution is managed in the host code now.</li>
+<li><tt class="docutils literal">new</tt> and <tt class="docutils literal">delete</tt> keywords are not expected to be supported in ISPC
+program for Xe target. We expect all memory to be set up on the host side.</li>
+<li><tt class="docutils literal">export</tt> functions must return <tt class="docutils literal">void</tt> for Xe targets.</li>
+</ul>
+</div>
+<div class="section" id="performance">
+<h1>Performance</h1>
+<p>The performance of <tt class="docutils literal">Intel® ISPC for Xe</tt> was significantly improved in this release
+but still has room for improvements and we're working hard to make it better for
+the next release. Here are our results for <tt class="docutils literal">mandelbrot</tt> which were obtained on
+Intel(R) Core(TM) i9-9900K CPU &#64; 3.60GHz with Intel(R) Gen9 HD Graphics
+(max compute units 24):</p>
+<ul class="simple">
+<li>&#64;time of CPU run:                     [9.285] milliseconds</li>
+<li>&#64;time of GPU run:                     [10.886] milliseconds</li>
+<li>&#64;time of serial run:                  [569] milliseconds</li>
+</ul>
+<p>Talking about real-world workloads, ISPC provides a way to write a program
+that has good hardware utilization, but resulting performance depends a lot
+on many other factors, including proper data set partitioning and memory management.</p>
+<div class="section" id="performance-guide-for-gpu-programming">
+<h2>Performance Guide for GPU Programming</h2>
+<p>There are several rules for GPU programming which can bring you better performance.</p>
+<p><strong>Reduce register pressure</strong></p>
+<p>The first guidance is to reduce number of local variables. All variables are stored
+in GPU registers, and in the case when number of variables exceeds the number of
+registers, time-costly <tt class="docutils literal">register spill</tt> occurs.</p>
+<p>For example, Intel(R) Gen9 register file size is 128x8x32bit. Each 32-bit
+varying value takes 8x32bit in SIMD-8, and 16x32bit in SIMD-16.</p>
+<p>To reduce number of local variables you can follow these simple rules:</p>
+<ul>
+<li><p class="first">Use uniform instead of varyings wherever it is possible. This practice
+is good for both CPU and GPU but on GPU it is essential.</p>
+<pre class="code cpp literal-block">
+<span class="comment single">// Good example
+</span><span class="keyword">for</span><span class="punctuation">(</span><span class="name">uniform</span> <span class="keyword type">int</span> <span class="name">j</span><span class="operator">=</span><span class="literal number integer">0</span><span class="punctuation">;</span> <span class="name">j</span><span class="operator">&lt;</span><span class="literal number integer">3</span><span class="punctuation">;</span> <span class="name">j</span><span class="operator">++</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+    <span class="name">do_something</span><span class="punctuation">();</span>
+<span class="punctuation">}</span>
+</pre>
+<pre class="code cpp literal-block">
+<span class="comment single">// Bad example
+</span><span class="keyword">for</span><span class="punctuation">(</span><span class="keyword type">int</span> <span class="name">j</span><span class="operator">=</span><span class="literal number integer">0</span><span class="punctuation">;</span> <span class="name">j</span><span class="operator">&lt;</span><span class="literal number integer">3</span><span class="punctuation">;</span> <span class="name">j</span><span class="operator">++</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+    <span class="name">do_something</span><span class="punctuation">();</span>
+<span class="punctuation">}</span>
+</pre>
+</li>
+<li><p class="first">Avoid nested code with a lot of local variables. It is more effective
+to split kernel into stages with separate variable scopes.</p>
+</li>
+<li><p class="first">Avoid returning complex structures from functions. Instead of operation that
+may need work on structure copy, consider to use reference or pointer. We're
+working to make such optimization automatically for future release:</p>
+<pre class="code cpp literal-block">
+<span class="comment single">// Instead of this:
+</span><span class="keyword">struct</span> <span class="name">ExampleStructure</span>
+<span class="punctuation">{</span>
+  <span class="comment single">//...
+</span><span class="punctuation">}</span>
+
+<span class="name">ExampleStructure</span> <span class="name">createExampleStructure</span><span class="punctuation">()</span>
+<span class="punctuation">{</span>
+  <span class="name">ExampleStructure</span> <span class="name">retVal</span><span class="punctuation">;</span>
+  <span class="comment single">//... initialize
+</span>  <span class="keyword">return</span> <span class="name">retVal</span><span class="punctuation">;</span>
+<span class="punctuation">}</span>
+
+<span class="keyword type">int</span> <span class="name">test</span><span class="punctuation">()</span>
+<span class="punctuation">{</span>
+  <span class="name">ExampleStructure</span> <span class="name">s</span><span class="punctuation">;</span>
+  <span class="name">s</span> <span class="operator">=</span> <span class="name">createExampleStructure</span><span class="punctuation">();</span>
+<span class="punctuation">}</span>
+</pre>
+<pre class="code cpp literal-block">
+<span class="comment single">// Consider using pointer:
+</span><span class="keyword">struct</span> <span class="name">ExampleStructure</span>
+<span class="punctuation">{</span>
+  <span class="comment single">//...
+</span><span class="punctuation">}</span>
+
+<span class="keyword type">void</span> <span class="name">initExampleStructure</span><span class="punctuation">(</span><span class="name">ExampleStructure</span><span class="operator">*</span> <span class="name">init</span><span class="punctuation">)</span>
+<span class="punctuation">{</span>
+  <span class="comment single">//... initialize
+</span><span class="punctuation">}</span>
+
+<span class="keyword type">int</span> <span class="name">test</span><span class="punctuation">()</span>
+<span class="punctuation">{</span>
+  <span class="name">ExampleStructure</span> <span class="name">s</span><span class="punctuation">;</span>
+  <span class="name">initExampleStructure</span><span class="punctuation">(</span> <span class="operator">&amp;</span><span class="name">s</span> <span class="punctuation">);</span>
+<span class="punctuation">}</span>
+</pre>
+</li>
+<li><p class="first">Avoid recursion.</p>
+</li>
+<li><p class="first">Use SIMD-8 where it is impossible to fit in the available register number.
+If you see the warning message below during runtime, consider compiling your code
+for SIMD-8 target (<tt class="docutils literal"><span class="pre">--target=gen9-x8</span></tt>).</p>
+<pre class="code console literal-block">
+<span class="generic output">Spill memory used = 32 bytes for kernel kernel_name___vyi</span>
+</pre>
+</li>
+</ul>
+<p><strong>Code Branching</strong></p>
+<p>The second set of rules is related to code branching.</p>
+<ul>
+<li><p class="first">Use <tt class="docutils literal">select</tt> instead of branching:</p>
+<pre class="code cpp literal-block">
+<span class="keyword">if</span> <span class="punctuation">(</span><span class="name">x</span> <span class="operator">&gt;</span> <span class="literal number integer">0</span><span class="punctuation">)</span>
+  <span class="name">a</span> <span class="operator">=</span> <span class="name">x</span><span class="punctuation">;</span>
+<span class="keyword">else</span>
+  <span class="name">a</span> <span class="operator">=</span> <span class="literal number integer">7</span><span class="punctuation">;</span>
+</pre>
+<pre class="code cpp literal-block">
+<span class="comment single">// May be implemented without branch:
+</span><span class="name">a</span> <span class="operator">=</span> <span class="punctuation">(</span><span class="name">x</span> <span class="operator">&gt;</span> <span class="literal number integer">0</span><span class="punctuation">)</span><span class="operator">?</span> <span class="name label">x</span> <span class="punctuation">:</span> <span class="literal number integer">7</span><span class="punctuation">;</span>
+</pre>
+<p>When using <tt class="docutils literal">select</tt>, try to simplify it as much as possible:</p>
+<pre class="code cpp literal-block">
+<span class="comment single">// Not optimized version:
+</span><span class="name">varying</span> <span class="keyword type">int</span> <span class="name">K</span><span class="punctuation">;</span>
+<span class="name">uniform</span> <span class="keyword type">bool</span> <span class="name">Constant</span><span class="punctuation">;</span>
+<span class="punctuation">...</span>
+<span class="keyword">return</span> <span class="name">bConstant</span> <span class="operator">==</span> <span class="name builtin">true</span> <span class="operator">?</span> <span class="name">inParam</span><span class="punctuation">[</span><span class="literal number integer">0</span><span class="punctuation">]</span> <span class="operator">:</span> <span class="name">InParam</span><span class="punctuation">[</span><span class="name">K</span><span class="punctuation">];</span>
+</pre>
+<pre class="code cpp literal-block">
+<span class="comment single">// Optimized version
+</span><span class="keyword">return</span> <span class="name">InParam</span><span class="punctuation">[</span><span class="name">bConstant</span> <span class="operator">==</span> <span class="name builtin">true</span> <span class="operator">?</span> <span class="literal number integer">0</span> <span class="operator">:</span> <span class="name">K</span><span class="punctuation">];</span>
+</pre>
+</li>
+<li><p class="first">Keep branches as small as possible. Common operations should be moved outside the branch.
+In case when large code branches are necessary, consider changing your algorithm to group
+data processed by one task to follow the same path in the branch.</p>
+<pre class="code cpp literal-block">
+<span class="comment single">// Both branches execute memory access to 'array'. In the case of split branch between
+// different lanes, two memory access instructions would be executed.
+</span><span class="keyword">if</span> <span class="punctuation">(</span><span class="name">x</span> <span class="operator">&gt;</span> <span class="literal number integer">0</span><span class="punctuation">)</span>
+  <span class="name">a</span> <span class="operator">=</span> <span class="name">array</span><span class="punctuation">[</span><span class="name">x</span><span class="punctuation">];</span>
+<span class="keyword">else</span>
+  <span class="name">a</span> <span class="operator">=</span> <span class="name">array</span><span class="punctuation">[</span><span class="literal number integer">0</span><span class="punctuation">];</span>
+</pre>
+<pre class="code cpp literal-block">
+<span class="comment single">// Instead move common part outside of the branch:
+</span><span class="keyword type">int</span> <span class="name">i</span><span class="punctuation">;</span>
+<span class="keyword">if</span> <span class="punctuation">(</span><span class="name">x</span> <span class="operator">&gt;</span> <span class="literal number integer">0</span><span class="punctuation">)</span>
+  <span class="name">i</span> <span class="operator">=</span> <span class="name">x</span><span class="punctuation">;</span>
+<span class="keyword">else</span>
+  <span class="name">i</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">;</span>
+<span class="name">a</span> <span class="operator">=</span> <span class="name">array</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">];</span>
+</pre>
+<p>Similar situation with loops:</p>
+<pre class="code cpp literal-block">
+<span class="comment single">// Good example
+</span><span class="name">uniform</span> <span class="keyword type">int</span> <span class="name">j</span><span class="punctuation">;</span>
+<span class="name">foreach</span> <span class="punctuation">(</span><span class="name">i</span> <span class="operator">=</span> <span class="literal number integer">0</span> <span class="punctuation">...</span> <span class="name">WIDTH</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+  <span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span> <span class="operator">+</span> <span class="name">WIDTH</span> <span class="operator">*</span> <span class="name">taskIndex</span><span class="punctuation">]</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">;</span>
+  <span class="keyword type">int</span> <span class="name">temp</span> <span class="operator">=</span> <span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span> <span class="operator">+</span> <span class="name">WIDTH</span> <span class="operator">*</span> <span class="name">taskIndex</span><span class="punctuation">];</span>
+  <span class="keyword">for</span> <span class="punctuation">(</span><span class="name">j</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">;</span> <span class="name">j</span> <span class="operator">&lt;</span> <span class="name">DEPTH</span><span class="punctuation">;</span> <span class="name">j</span><span class="operator">++</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+    <span class="name">temp</span> <span class="operator">+=</span> <span class="name">N</span><span class="punctuation">;</span>
+    <span class="name">temp</span> <span class="operator">+=</span> <span class="name">M</span><span class="punctuation">;</span>
+  <span class="punctuation">}</span>
+  <span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span> <span class="operator">+</span> <span class="name">WIDTH</span> <span class="operator">*</span> <span class="name">taskIndex</span><span class="punctuation">]</span> <span class="operator">=</span> <span class="name">temp</span><span class="punctuation">;</span>
+<span class="punctuation">}</span>
+</pre>
+<pre class="code cpp literal-block">
+<span class="comment single">// Bad example
+</span><span class="name">foreach</span> <span class="punctuation">(</span><span class="name">i</span> <span class="operator">=</span> <span class="literal number integer">0</span> <span class="punctuation">...</span> <span class="name">WIDTH</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+  <span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span> <span class="operator">+</span> <span class="name">WIDTH</span> <span class="operator">*</span> <span class="name">taskIndex</span><span class="punctuation">]</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">;</span>
+  <span class="keyword">for</span> <span class="punctuation">(</span><span class="keyword type">int</span> <span class="name">j</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">;</span> <span class="name">j</span> <span class="operator">&lt;</span> <span class="name">DEPTH</span><span class="punctuation">;</span> <span class="name">j</span><span class="operator">++</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+    <span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span> <span class="operator">+</span> <span class="name">WIDTH</span> <span class="operator">*</span> <span class="name">taskIndex</span><span class="punctuation">]</span> <span class="operator">+=</span> <span class="name">N</span><span class="punctuation">;</span>
+    <span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span> <span class="operator">+</span> <span class="name">WIDTH</span> <span class="operator">*</span> <span class="name">taskIndex</span><span class="punctuation">]</span> <span class="operator">+=</span> <span class="name">M</span><span class="punctuation">;</span>
+  <span class="punctuation">}</span>
+<span class="punctuation">}</span>
+</pre>
+</li>
+</ul>
+<p><strong>Memory Operations</strong></p>
+<p>Remember that memory operations on GPU are expensive. We do not support dynamic
+memory allocations in kernel code for GPU so use fixed-size buffers preallocated
+by the host.</p>
+<p>We have several memory optimizations for GPU like gather/scatter coalescing. However
+current implementation covers only limited number of cases and we expect to improve it
+for the next release.</p>
+</div>
+<div class="section" id="tools-for-performance-analysis">
+<h2>Tools for Performance Analysis</h2>
+<p>To analyze performance of your program on Intel GPU we recommend the following tools:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://www.intel.com/content/www/us/en/developer/articles/tool/gtpin.html">GTPin</a>
+dynamic binary instrumentation command line framework for profiling a code
+running on Xe Execution Units.</li>
+<li><a class="reference external" href="https://github.com/intel/pti-gpu">Profiling Tools Interfaces for GPU</a>
+a bunch of useful tracing and instrumentation tools including <tt class="docutils literal">ze_tracer</tt> that allows
+to analyze performance of <tt class="docutils literal">Level Zero</tt> calls which is the base of <tt class="docutils literal">ISPC Runtime</tt>.</li>
+<li><a class="reference external" href="https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html#gs.jxstae">Intel(R) VTune Profiler</a>
+a performance analysis tool for different hardware targets (CPU, GPU, FPGA) and OS platforms (Linux,
+Windows etc.).</li>
+</ul>
+<p>Note, that most of these tools report SIMD width for ISPC kernels as 1. However,
+it actually means that ISPC kernel may have &quot;any&quot; SIMD width. VC backend can optimize some
+instructions to wider SIMD width than was requested by ISPC <tt class="docutils literal"><span class="pre">--target</span></tt> option.</p>
+</div>
+</div>
+<div class="section" id="interoperability">
+<h1>Interoperability</h1>
+<p>ISPC experimentally supports interoperability with <a class="reference external" href="https://www.intel.com/content/www/us/en/develop/documentation/oneapi-dpcpp-cpp-compiler-dev-guide-and-reference/top/optimization-and-programming-guide/vectorization/explicit-vector-programming/explicit-simd-sycl-extension.html">Explicit SIMD SYCL* Extension (ESIMD)</a>.</p>
+<p>You can call <tt class="docutils literal">ESIMD</tt> function from <tt class="docutils literal">ISPC</tt> kernel and vice versa. To experiment with this feature,
+please include <tt class="docutils literal">interop.cmake</tt> to your CMakeLists.txt and use <tt class="docutils literal">add_ispc_kernel</tt> and
+<tt class="docutils literal">link_ispc_esimd</tt> functions. See <tt class="docutils literal"><span class="pre">simple-esimd</span></tt> example as a reference.</p>
+</div>
+<div class="section" id="faq">
+<h1>FAQ</h1>
+<div class="section" id="how-to-get-an-assembly-file-from-spir-v">
+<h2>How to Get an Assembly File from SPIR-V?</h2>
+<p>Use <tt class="docutils literal">ocloc</tt> tool installed as part of intel-ocloc package:</p>
+<pre class="code console literal-block">
+<span class="generic output">// Create binary first
+ocloc compile -file file.spv -spirv_input -options &quot;-vc-codegen&quot; -device &lt;name&gt;</span>
+</pre>
+<pre class="code console literal-block">
+<span class="generic output">// Then disassemble it
+ocloc disasm -file file_Gen9core.bin -device &lt;name&gt; -dump &lt;FOLDER_TO_DUMP&gt;</span>
+</pre>
+<p>You will get <tt class="docutils literal">.asm</tt> files for each kernel in &lt;FOLDER_TO_DUMP&gt;.</p>
+</div>
+<div class="section" id="how-to-debug-on-gpu">
+<h2>How to Debug on GPU?</h2>
+<p>To debug your application, you can use oneAPI Debugger as described here:
+<a class="reference external" href="https://software.intel.com/get-started-with-debugging-dpcpp-linux">Get Started with GDB* for oneAPI on Linux* OS Host</a>.
+Debugger support is quite limited at this time but you can set breakpoints
+in kernel code, do step-by-step execution and print variables.</p>
+</div>
+</div>
+</div>
+    <div class="clearfix"></div>
+    <div id="footer"> &copy; <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
+      <!-- Please Do Not remove this link, thank u -->
+      </div>
+      </div>
+      </div>
+      </div>
+</div>
+</body>
+</html>

@@ -114,6 +114,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-14-1">Updating ISPC Programs For Changes In ISPC 1.14.1</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-15-0">Updating ISPC Programs For Changes In ISPC 1.15.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-16-0">Updating ISPC Programs For Changes In ISPC 1.16.0</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-17-0">Updating ISPC Programs For Changes In ISPC 1.17.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -149,7 +150,12 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 </li>
 <li><a class="reference internal" href="#the-ispc-language">The ISPC Language</a><ul>
 <li><a class="reference internal" href="#relationship-to-the-c-programming-language">Relationship To The C Programming Language</a></li>
-<li><a class="reference internal" href="#lexical-structure">Lexical Structure</a></li>
+<li><a class="reference internal" href="#lexical-structure">Lexical Structure</a><ul>
+<li><a class="reference internal" href="#integer-literals">Integer Literals</a></li>
+<li><a class="reference internal" href="#floating-point-literals">Floating Point Literals</a></li>
+<li><a class="reference internal" href="#string-literals">String Literals</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#types">Types</a><ul>
 <li><a class="reference internal" href="#basic-types-and-type-qualifiers">Basic Types and Type Qualifiers</a></li>
 <li><a class="reference internal" href="#uniform-and-varying-qualifiers">&quot;uniform&quot; and &quot;varying&quot; Qualifiers</a></li>
@@ -427,7 +433,7 @@ Note that KNL is still supported through avx512knl-i32x16.</li>
 should not affect compatibility.</p>
 <p>This release introduces experimental cross OS compilation support and ARM/AARCH64
 support. It also contains a new 128-bit AVX2 target (avx2-i32x4) and a CPU
-definition for Ice Lake client (--cpu=icl).</p>
+definition for Ice Lake client (--device=icl).</p>
 </div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-13-0">
 <h2>Updating ISPC Programs For Changes In ISPC 1.13.0</h2>
@@ -481,6 +487,20 @@ affect compatibility:</p>
 <p>The language got experimental feature for calling LLVM intrinsics. This
 should not affect compatibility with existing programs.
 See <a class="reference internal" href="#llvm-intrinsic-functions">LLVM Intrinsic Functions</a> for more details.</p>
+</div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-17-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.17.0</h2>
+<p>The release introduces new data type <tt class="docutils literal">float16</tt> and floating point literals
+with <tt class="docutils literal">f16</tt> suffix.</p>
+<p>For the sake of unification with C/C++, capital letter X may be used in
+hexadecimal prefix (<tt class="docutils literal">0X</tt>) and capital letter P as a separator for exponent in
+hexadecimal floating point. For example: <tt class="docutils literal">0X1P16</tt>.</p>
+<p>The naming of Xe targets, architectures, device names has changed.</p>
+<p>Standard library library got new <tt class="docutils literal"><span class="pre">prefetchw_{l1,l2,l3}()</span></tt> intrinsics for
+prefetching in anticipation of write.</p>
+<p>The algorithms used for implementation of <tt class="docutils literal">rsqrt(double)</tt> and <tt class="docutils literal">rcp(double)</tt>
+standard library functions have changed on AVX512 and may affect the existing
+code.</p>
 </div>
 </div>
 <div class="section" id="getting-started-with-ispc">
@@ -638,9 +658,9 @@ direct the compiler to treat any warnings as errors.</p>
 <div class="section" id="selecting-the-compilation-target">
 <h2>Selecting The Compilation Target</h2>
 <p>There are four options that affect the compilation target: <tt class="docutils literal"><span class="pre">--arch</span></tt>,
-which sets the target architecture, <tt class="docutils literal"><span class="pre">--cpu</span></tt>, which sets the target CPU or GPU,
-<tt class="docutils literal"><span class="pre">--target</span></tt>, which sets the target instruction set, and <tt class="docutils literal"><span class="pre">--target-os</span></tt>,
-which sets the target operating system.</p>
+which sets the target architecture, <tt class="docutils literal"><span class="pre">--device</span></tt> (also may be spelled as <tt class="docutils literal"><span class="pre">--cpu</span></tt>),
+which sets the target CPU or GPU, <tt class="docutils literal"><span class="pre">--target</span></tt>, which sets the target instruction
+set, and <tt class="docutils literal"><span class="pre">--target-os</span></tt>, which sets the target operating system.</p>
 <p>If none of these options is specified, <tt class="docutils literal">ispc</tt> generates code for the host
 OS and for the architecture of the system the compiler is running on (i.e.
 64-bit x86-64 (<tt class="docutils literal"><span class="pre">--arch=x86-64</span></tt>) on x86 systems and ARM NEON on ARM systems.</p>
@@ -649,18 +669,18 @@ the command line:</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.obj --arch=x86
 </pre>
-<p>To compile for Intel TGLLP platform:</p>
+<p>To compile for Intel Xe LP platform:</p>
 <pre class="literal-block">
-ispc foo.ispc -o foo.bin --target=genx-x16 --cpu=TGLLP --emit-zebin
+ispc foo.ispc -o foo.bin --target=xelp-x16 --device=tgllp --emit-zebin
 </pre>
-<p>Currently-supported architectures are <tt class="docutils literal">x86</tt>, <tt class="docutils literal"><span class="pre">x86-64</span></tt>, <tt class="docutils literal">genx32</tt>,
-<tt class="docutils literal">genx64</tt>, and <tt class="docutils literal">arm</tt>.</p>
+<p>Currently-supported architectures are <tt class="docutils literal">x86</tt>, <tt class="docutils literal"><span class="pre">x86-64</span></tt>, <tt class="docutils literal">xe32</tt>,
+<tt class="docutils literal">xe64</tt>, <tt class="docutils literal">arm</tt>, and <tt class="docutils literal">aarch64</tt>.</p>
 <p>The target CPU determines both the default instruction set used as well as
 which CPU architecture the code is tuned for.  <tt class="docutils literal">ispc <span class="pre">--help</span></tt> provides a
 list of all of the supported CPUs.  By default, the CPU type of the system
 on which you're running <tt class="docutils literal">ispc</tt> is used to determine the target CPU.</p>
 <pre class="literal-block">
-ispc foo.ispc -o foo.obj --cpu=corei7-avx
+ispc foo.ispc -o foo.obj --device=corei7-avx
 </pre>
 <p>Next, <tt class="docutils literal"><span class="pre">--target</span></tt> selects the target instruction set.  The target
 string is of the form <tt class="docutils literal"><span class="pre">[ISA]-i[mask</span> size]x[gang size]</tt>.  For example,
@@ -697,11 +717,11 @@ a mask size of 32 bits, and a gang size of 16.</p>
 <tr><td>sse4</td>
 <td>SSE4 (generally 2008-2010 Intel CPUs)</td>
 </tr>
-<tr><td>genx-x8</td>
-<td>Intel GPU 8-wide SIMD</td>
+<tr><td>gen9</td>
+<td>Intel Gen9 GPU</td>
 </tr>
-<tr><td>genx-x16</td>
-<td>Intel GPU 16-wide SIMD</td>
+<tr><td>xelp</td>
+<td>Intel XeLP GPU</td>
 </tr>
 </tbody>
 </table>
@@ -1501,10 +1521,10 @@ precision floating point constant use <tt class="docutils literal">d</tt> suffix
 <tt class="docutils literal">struct</tt>, <tt class="docutils literal">switch</tt>, <tt class="docutils literal">typedef</tt>, <tt class="docutils literal">unsigned</tt>, <tt class="docutils literal">void</tt>, and <tt class="docutils literal">while</tt>.</p>
 <p><tt class="docutils literal">ispc</tt> additionally reserves the following words:</p>
 <p><tt class="docutils literal">bool</tt>, <tt class="docutils literal">delete</tt>, <tt class="docutils literal">export</tt>, <tt class="docutils literal">cdo</tt>, <tt class="docutils literal">cfor</tt>, <tt class="docutils literal">cif</tt>, <tt class="docutils literal">cwhile</tt>,
-<tt class="docutils literal">false</tt>, <tt class="docutils literal">foreach</tt>, <tt class="docutils literal">foreach_active</tt>, <tt class="docutils literal">foreach_tiled</tt>,
+<tt class="docutils literal">false</tt>, <tt class="docutils literal">float16</tt>, <tt class="docutils literal">foreach</tt>, <tt class="docutils literal">foreach_active</tt>, <tt class="docutils literal">foreach_tiled</tt>,
 <tt class="docutils literal">foreach_unique</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">noinline</tt>, <tt class="docutils literal">__vectorcall</tt>, <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>,
-<tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">new</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>,
-<tt class="docutils literal">true</tt>, <tt class="docutils literal">uniform</tt>, and <tt class="docutils literal">varying</tt>.</p>
+<tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">new</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">uint8</tt>, <tt class="docutils literal">uint16</tt>,
+<tt class="docutils literal">uint32</tt>, <tt class="docutils literal">uint64</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">uniform</tt>, and <tt class="docutils literal">varying</tt>.</p>
 </div>
 <div class="section" id="lexical-structure">
 <h2>Lexical Structure</h2>
@@ -1518,10 +1538,13 @@ Like C/C++, comments can't be nested.</p>
 underscore or an upper-case or lower-case letter, and then followed by
 zero or more letters, numbers, or underscores.  Identifiers that start with
 two underscores are reserved for use by the compiler.</p>
+</div>
+<div class="section" id="integer-literals">
+<h2>Integer Literals</h2>
 <p>Integer numeric constants can be specified in base 10, hexadecimal, or
 binary.  (Octal integer constants aren't supported).  Base 10 constants are
 given by a sequence of one or more digits from 0 to 9.  Hexadecimal
-constants are denoted by a leading <tt class="docutils literal">0x</tt> and then one or more digits from
+constants are denoted by a leading <tt class="docutils literal">0x</tt> or <tt class="docutils literal">0X</tt> and then one or more digits from
 0-9, a-f, or A-F.  Finally, binary constants are denoted by a leading
 <tt class="docutils literal">0b</tt> and then a sequence of 1s and 0s.</p>
 <p>Here are three ways of specifying the integer value &quot;15&quot;:</p>
@@ -1540,28 +1563,77 @@ int two_kb = 2k;   // 2048
 int two_megs = 2M; // 2 * 1024 * 1024
 int one_gig = 1G;  // 1024 * 1024 * 1024
 </pre>
-<p>Floating-point constants can be specified in one of three ways.  First,
-they may be a sequence of zero or more digits from 0 to 9, followed by a
-period, followed by zero or more digits from 0 to 9. (There must be at
-least one digit before or after the period).</p>
-<p>The second option is scientific notation, where a base value is specified
-as the first form of a floating-point constant but is then followed by an
-&quot;e&quot; or &quot;E&quot;, then a plus sign or a minus sign, and then an exponent.</p>
-<p>Finally, floating-point constants may be specified as hexadecimal
-constants; this form can ensure a perfectly bit-accurate representation of
-a particular floating-point number.  These are specified with an &quot;0x&quot;
-prefix, followed by a zero or a one, a period, and then the remainder of
-the mantissa in hexadecimal form, with digits from 0-9, a-f, or A-F.  The
-start of the exponent is denoted by a &quot;p&quot;, which is then followed by an
-optional plus or minus sign and then digits from 0 to 9.  For example:</p>
+</div>
+<div class="section" id="floating-point-literals">
+<h2>Floating Point Literals</h2>
+<p>ISPC supports 3 floating point types : <tt class="docutils literal">float16</tt>, <tt class="docutils literal">float</tt> and <tt class="docutils literal">double</tt>.</p>
+<ul class="simple">
+<li><tt class="docutils literal">float16</tt> is an IEEE 754 half-precision (16 bit format) floating point type.</li>
+<li><tt class="docutils literal">float</tt> is an IEEE 754 single-precision (32 bit format) floating point type.</li>
+<li><tt class="docutils literal">double</tt> is an IEEE 754 double-precision (64 bit format) floating point type.</li>
+</ul>
+<p>Floating-point constants of all three types can be specified in one of three ways.</p>
+<ul class="simple">
+<li>Decimal floating-point with radix separator - a sequence of zero of more
+0-9 digits, followed by a period, followed by zero or more 0-9 digits.
+There must be at least one digit before or after the period. If floating-point
+suffix is used, radix separator is optional.</li>
+<li>Scientific notation - a decimal base followed by an &quot;e&quot; or &quot;E&quot;, then optional
+plus or minus sign, and then a decimal exponent.</li>
+<li>Hexadecimal floating-point constant - bit-accurate representation of a particular
+floating-point number. It starts with &quot;0x&quot; or &quot;0X&quot; prefix, followed by a zero
+or a one, a period, and then the remainder of the mantissa in hexadecimal form,
+with digits from 0-9, a-f, or A-F. The start of the exponent is denoted by a &quot;p&quot;
+or &quot;P&quot;, which is then followed by an optional plus or minus sign and then digits
+from 0 to 9, representing decimal value of the exponent. The exponent is never
+optional for hexadecimal floating-point literals.</li>
+</ul>
+<p>The default type for floating-point literals is <tt class="docutils literal">float</tt>. Floating-point
+literals can be specified by adding one of the following suffixes:</p>
+<table border="1" class="docutils">
+<caption>Operators</caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Suffix</td>
+<td>Type</td>
+</tr>
+<tr><td><tt class="docutils literal">f16</tt> or <tt class="docutils literal">F16</tt></td>
+<td><tt class="docutils literal">float16</tt></td>
+</tr>
+<tr><td><tt class="docutils literal">f</tt> or <tt class="docutils literal">F</tt></td>
+<td><tt class="docutils literal">float</tt></td>
+</tr>
+<tr><td><tt class="docutils literal">d</tt> or <tt class="docutils literal">D</tt></td>
+<td><tt class="docutils literal">double</tt></td>
+</tr>
+</tbody>
+</table>
+<p>For example:</p>
+<p><tt class="docutils literal">float</tt> type floating point literals</p>
 <pre class="literal-block">
-float two = 0x1p+1;  // 2.0
-float pi  = 0x1.921fb54442d18p+1;  // 3.1415926535...
-float neg = -0x1.ffep+11;  // -4095.
+float16 two_f16   = 2.0f16;               // 2.0
+float16 pi_f16    = 0x1.92p+1f16;         // 3.1406
+float16 neg_f16   = -65520.f16;           // -Inf
+float   two_f     = 0x1p+1;               // 2.0
+float   pi_f      = 0x1.921fb6p+1;        // 3.14159274
+float   neg_f     = -0x1.ffep+11;         // -4095.0
+double  two_d     = 2.0d;                 // 2.0
+double  pi_d      = 0x1.921fb54442d18p+1; // 3.1415926535897931
+double  neg_d     = -0.3333333333333333d; // -1/3
 </pre>
-<p>Floating-point constants can optionally have a &quot;f&quot; or &quot;F&quot; suffix (<tt class="docutils literal">ispc</tt>
-currently treats all floating-point constants as having 32-bit precision,
-making this suffix not currently have an effect.)</p>
+<p>Also, &quot;Fortran double&quot; format is accepted - a scientific notation with a literal
+&quot;d&quot; or &quot;D&quot; used instead of &quot;e&quot;. This notation yields a double precision floating
+point literal:</p>
+<pre class="literal-block">
+double d1 = 1.234d+3;  // 1234.0d
+double d2 = 1.234e+3d; // 1234.0d
+</pre>
+</div>
+<div class="section" id="string-literals">
+<h2>String Literals</h2>
 <p>String constants in <tt class="docutils literal">ispc</tt> are denoted by an opening double quote <tt class="docutils literal">&quot;</tt>
 followed by any character other than a newline, up to a closing double
 quote.  Within the string, a number of special escape sequences can be used
@@ -1618,13 +1690,14 @@ doesn't support character constants.</p>
 <p>The following identifiers are reserved as language keywords: <tt class="docutils literal">bool</tt>,
 <tt class="docutils literal">break</tt>, <tt class="docutils literal">case</tt>, <tt class="docutils literal">cdo</tt>, <tt class="docutils literal">cfor</tt>, <tt class="docutils literal">char</tt>, <tt class="docutils literal">cif</tt>, <tt class="docutils literal">cwhile</tt>,
 <tt class="docutils literal">const</tt>, <tt class="docutils literal">continue</tt>, <tt class="docutils literal">default</tt>, <tt class="docutils literal">do</tt>, <tt class="docutils literal">double</tt>, <tt class="docutils literal">else</tt>,
-<tt class="docutils literal">enum</tt>, <tt class="docutils literal">export</tt>, <tt class="docutils literal">extern</tt>, <tt class="docutils literal">false</tt>, <tt class="docutils literal">float</tt>, <tt class="docutils literal">for</tt>,
+<tt class="docutils literal">enum</tt>, <tt class="docutils literal">export</tt>, <tt class="docutils literal">extern</tt>, <tt class="docutils literal">false</tt>, <tt class="docutils literal">float</tt>, <tt class="docutils literal">float16</tt>, <tt class="docutils literal">for</tt>,
 <tt class="docutils literal">foreach</tt>, <tt class="docutils literal">foreach_active</tt>, <tt class="docutils literal">foreach_tiled</tt>, <tt class="docutils literal">foreach_unique</tt>,
-<tt class="docutils literal">goto</tt>, <tt class="docutils literal">if</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">noinline</tt>, <tt class="docutils literal">__vectorcall</tt>, <tt class="docutils literal">int</tt>, <tt class="docutils literal">int8</tt>,
+<tt class="docutils literal">goto</tt>, <tt class="docutils literal">if</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">noinline</tt>, <tt class="docutils literal">int</tt>, <tt class="docutils literal">int8</tt>,
 <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">NULL</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">return</tt>,
 <tt class="docutils literal">signed</tt>, <tt class="docutils literal">sizeof</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">static</tt>, <tt class="docutils literal">struct</tt>, <tt class="docutils literal">switch</tt>,
-<tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">typedef</tt>, <tt class="docutils literal">uniform</tt>, <tt class="docutils literal">union</tt>,
-<tt class="docutils literal">unsigned</tt>, <tt class="docutils literal">varying</tt>, <tt class="docutils literal">void</tt>, <tt class="docutils literal">volatile</tt>, <tt class="docutils literal">while</tt>.</p>
+<tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">typedef</tt>, <tt class="docutils literal">uint</tt>, <tt class="docutils literal">uint8</tt>,
+<tt class="docutils literal">uint16</tt>, <tt class="docutils literal">uint32</tt>, <tt class="docutils literal">uint64</tt>, <tt class="docutils literal">uniform</tt>, <tt class="docutils literal">union</tt>, <tt class="docutils literal">unsigned</tt>,
+<tt class="docutils literal">varying</tt>, <tt class="docutils literal">__vectorcall</tt>, <tt class="docutils literal">void</tt>, <tt class="docutils literal">volatile</tt>, <tt class="docutils literal">while</tt>.</p>
 <p><tt class="docutils literal">ispc</tt> defines the following operators and punctuation:</p>
 <table border="1" class="docutils">
 <caption>Operators</caption>
@@ -1707,6 +1780,7 @@ value of a boolean expression.</li>
 <li><tt class="docutils literal">int</tt>: 32-bit signed integer; may also be specified as <tt class="docutils literal">int32</tt>.</li>
 <li><tt class="docutils literal">unsigned int</tt>: 32-bit unsigned integer; may also be specified as
 <tt class="docutils literal">unsigned int32</tt>, <tt class="docutils literal">uint32</tt> or <tt class="docutils literal">uint</tt>.</li>
+<li><tt class="docutils literal">float16</tt>: 16-bit floating point value</li>
 <li><tt class="docutils literal">float</tt>: 32-bit floating point value</li>
 <li><tt class="docutils literal">int64</tt>: 64-bit signed integer.</li>
 <li><tt class="docutils literal">unsigned int64</tt>: 64-bit unsigned integer; may also be specified as <tt class="docutils literal">uint64</tt>.</li>
@@ -1728,7 +1802,7 @@ arithmetic expressions with mixed types, types are promoted to the &quot;more
 general&quot; of the two types, with the following precedence:</p>
 <pre class="literal-block">
 double &gt; uint64 &gt; int64 &gt; float &gt; uint32 &gt; int32 &gt;
-    uint16 &gt; int16 &gt; uint8 &gt; int8 &gt; bool
+    float16 &gt; uint16 &gt; int16 &gt; uint8 &gt; int8 &gt; bool
 </pre>
 <p>In other words, adding an <tt class="docutils literal">int64</tt> to a <tt class="docutils literal">double</tt> causes the <tt class="docutils literal">int64</tt> to
 be converted to a <tt class="docutils literal">double</tt>, the addition to be performed, and a
@@ -3308,8 +3382,10 @@ reasonably high precision. (e.g. <tt class="docutils literal">sin</tt> has a max
 approximately 1.45e-6 over the range -10pi to 10pi.)</li>
 <li><tt class="docutils literal">fast</tt>: more efficient but lower accuracy versions of the default <tt class="docutils literal">ispc</tt>
 implementations.</li>
-<li><tt class="docutils literal">svml</tt>: use Intel &quot;Short Vector Math Library&quot;.  Use
-<tt class="docutils literal">icpc</tt> to link your final executable so that the appropriate libraries
+<li><tt class="docutils literal">svml</tt>: use Intel &quot;Short Vector Math Library&quot;.  This is a proprietary
+library shipped as part of Intel® oneAPI DPC++/C++ Compiler (<tt class="docutils literal">icx</tt>/<tt class="docutils literal">icpx</tt>)
+and Intel® oneAPI C++ Compiler Classic (<tt class="docutils literal">icc</tt>/<tt class="docutils literal">icpc</tt>).  Use either of
+them to link your final executable so that the appropriate libraries
 are linked.</li>
 <li><tt class="docutils literal">system</tt>: use the system's math library.  On many systems, these
 functions are more accurate than both of <tt class="docutils literal">ispc</tt>'s implementations.
@@ -3636,7 +3712,7 @@ command-line argument.</p>
 statements to <tt class="docutils literal">ispc</tt> program code. The <tt class="docutils literal">assume()</tt> function takes a
 single uniform boolean expression as an argument. This expression is
 assumed to be <tt class="docutils literal">true</tt> and this information will be used for optimization
-when possible. This feature is currently only available on CPU targets.</p>
+when possible.</p>
 <p>The condition used in <tt class="docutils literal">assume()</tt> statement will not be code generated and
 does not imply runtime checks. It will solely be used as optimization hint,
 if compiler is able to use this information.</p>
@@ -4153,6 +4229,18 @@ void soa_to_aos3(int32 v0, int32 v1, int32 v2, uniform int32 a[])
 void soa_to_aos3(double v0, double v1, double v2, uniform double a[])
 void soa_to_aos3(int64 v0, int64 v1, int64 v2, uniform int64 a[])
 </pre>
+<p>Note that these functions do not take the current program execution mask into account; they
+unconditionally read and write three times the gang size. Hence, if the iteration count
+is not an integer multiple of the program count, <tt class="docutils literal">aos_to_soa3()</tt> will read past the end of
+the input data and <tt class="docutils literal">soa_to_aos3()</tt> will write past the end of the output data. To avoid memory
+corruption in this case, one of the following approaches can be taken:</p>
+<ul class="simple">
+<li>Ensure that the data buffers have a size that is a multiple of <tt class="docutils literal">programCount</tt>, so that
+the read/write overflow does not cause memory corruption</li>
+<li>For the main loop, mask the iteration count to be a multiple of <tt class="docutils literal">programCount</tt> and add
+a manual &quot;remainder&quot; loop (which will probably use a gather/scatter) for the remaining
+iterations</li>
+</ul>
 <p>There are also variants of these functions that convert 4-wide values
 and 2-wide values between AoS and SoA layouts.
 In other words, <tt class="docutils literal">aos_to_soa4()</tt> converts AoS data in memory laid out like
@@ -4182,9 +4270,9 @@ void soa_to_aos2(int32 v0, int32 v1, uniform int32 a[])
 <div class="section" id="conversions-to-and-from-half-precision-floats">
 <h2>Conversions To and From Half-Precision Floats</h2>
 <p>There are functions to convert to and from the IEEE 16-bit floating-point
-format.  Note that there is no <tt class="docutils literal">half</tt> data-type, and it isn't possible
-to do floating-point math directly with <tt class="docutils literal">half</tt> types in <tt class="docutils literal">ispc</tt>; these
-functions facilitate converting to and from half-format data in memory.</p>
+format.  Note that there is a <tt class="docutils literal">float16</tt> data-type in <tt class="docutils literal">ispc</tt> but with limited
+library support; these functions facilitate converting to and from half-format
+data in memory.</p>
 <p>To use them, half-format data should be loaded into an <tt class="docutils literal">int16</tt> and the
 <tt class="docutils literal">half_to_float()</tt> function used to convert it to a 32-bit floating point
 value.  To store a value to memory in half format, the <tt class="docutils literal">float_to_half()</tt>
@@ -4431,6 +4519,12 @@ pointer types.</p>
 <pre class="literal-block">
 void prefetch_{l1,l2,l3,nt}(void * uniform ptr)
 void prefetch_{l1,l2,l3,nt}(void * varying ptr)
+</pre>
+<p>The standard library also has routines to prefetch to the L1, L2, and L3
+caches in anticipation of a write:</p>
+<pre class="literal-block">
+void prefetchw_{l1,l2,l3}(void * uniform ptr)
+void prefetchw_{l1,l2,l3}(void * varying ptr)
 </pre>
 </div>
 <div class="section" id="system-information">
