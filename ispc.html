@@ -115,6 +115,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-15-0">Updating ISPC Programs For Changes In ISPC 1.15.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-16-0">Updating ISPC Programs For Changes In ISPC 1.16.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-17-0">Updating ISPC Programs For Changes In ISPC 1.17.0</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-18-0">Updating ISPC Programs For Changes In ISPC 1.18.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -502,6 +503,12 @@ prefetching in anticipation of write.</p>
 standard library functions have changed on AVX512 and may affect the existing
 code.</p>
 </div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-18-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.18.0</h2>
+<p>AVX512 targets were renamed to drop &quot;base type&quot;, old naming is accepted for
+compatibility. New names are <cite>avx512skx-x4</cite>, <cite>avx512skx-x8</cite>, <cite>avx512skx-x16</cite>,
+<cite>avx512skx-x32</cite>, <cite>avx512skx-x64</cite>, and <cite>avx512knl-x16</cite>.</p>
+</div>
 </div>
 <div class="section" id="getting-started-with-ispc">
 <h1>Getting Started with ISPC</h1>
@@ -633,6 +640,13 @@ ispc foo.ispc -o foo.asm --emit-asm
 </pre>
 <p>To generate LLVM bitcode, use the <tt class="docutils literal"><span class="pre">--emit-llvm</span></tt> flag.
 To generate LLVM bitcode in textual form, use the <tt class="docutils literal"><span class="pre">--emit-llvm-text</span></tt> flag.</p>
+<p>To generate a stub after running the preprocessor, use the <tt class="docutils literal"><span class="pre">-E</span></tt> flag.</p>
+<pre class="literal-block">
+ispc foo.ispc -E -o foo.i  OR  ispc foo.ispc -E -o foo.ispi
+</pre>
+<p>In this mode, the preprocessor will assume <tt class="docutils literal">stdout</tt> if no output file is
+specified.
+Both <tt class="docutils literal">.i</tt> or <tt class="docutils literal">.ispi</tt> are valid suffixes.</p>
 <p>Optimizations are on by default; they can be turned off with <tt class="docutils literal"><span class="pre">-O0</span></tt>:</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.obj -O0
@@ -1614,15 +1628,15 @@ literals can be specified by adding one of the following suffixes:</p>
 <p>For example:</p>
 <p><tt class="docutils literal">float</tt> type floating point literals</p>
 <pre class="literal-block">
-float16 two_f16   = 2.0f16;               // 2.0
-float16 pi_f16    = 0x1.92p+1f16;         // 3.1406
-float16 neg_f16   = -65520.f16;           // -Inf
-float   two_f     = 0x1p+1;               // 2.0
-float   pi_f      = 0x1.921fb6p+1;        // 3.14159274
-float   neg_f     = -0x1.ffep+11;         // -4095.0
-double  two_d     = 2.0d;                 // 2.0
-double  pi_d      = 0x1.921fb54442d18p+1; // 3.1415926535897931
-double  neg_d     = -0.3333333333333333d; // -1/3
+float16 two_f16   = 2.0f16;                // 2.0
+float16 pi_f16    = 0x1.92p+1f16;          // 3.1406
+float16 neg_f16   = -65520.f16;            // -Inf
+float   two_f     = 0x1p+1;                // 2.0
+float   pi_f      = 0x1.921fb6p+1;         // 3.14159274
+float   neg_f     = -0x1.ffep+11;          // -4095.0
+double  two_d     = 2.0d;                  // 2.0
+double  pi_d      = 0x1.921fb54442d18p+1d; // 3.1415926535897931
+double  neg_d     = -0.3333333333333333d;  // -1/3
 </pre>
 <p>Also, &quot;Fortran double&quot; format is accepted - a scientific notation with a literal
 &quot;d&quot; or &quot;D&quot; used instead of &quot;e&quot;. This notation yields a double precision floating
