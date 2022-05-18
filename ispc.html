@@ -46,13 +46,12 @@
           <div class="widgetspace">
             <h1>Resources</h1>
             <ul class="menu">
-              <li><a href="http://github.com/ispc/ispc/">ispc page on github</a></li>
-              <li><a href="http://groups.google.com/group/ispc-users/">ispc
-              users mailing list</a></li>
-              <li><a href="http://groups.google.com/group/ispc-dev/">ispc
-              developers mailing list</a></li>
-              <li><a href="http://github.com/ispc/ispc/wiki/">Wiki</a></li>
-              <li><a href="http://github.com/ispc/ispc/issues/">Bug tracking</a></li>
+              <li><a href="http://github.com/ispc/ispc">GitHub page</a></li>
+              <li><a href="https://github.com/ispc/ispc/discussions">Discussions on GitHub</a></li>
+              <li><a href="http://github.com/ispc/ispc/issues">Issues on Github</a></li>
+              <li><a href="https://github.com/orgs/ispc/projects/1">Release planning board</a></li>
+              <li><a href="https://github.com/ispc/ispc/blob/main/CONTRIBUTING.md">Contributing guide</a></li>
+              <li><a href="http://github.com/ispc/ispc/wiki">Wiki on Github</a></li>
             </ul>
         </div>
       </div>
@@ -91,7 +90,7 @@ copying or reformatting, etc.</li>
 in hearing your experiences using the system.  We are especially interested
 in hearing if you try using ispc but see results that are not as you
 were expecting or hoping for.</strong> We encourage you to send a note with your
-experiences or comments to the <a class="reference external" href="http://groups.google.com/group/ispc-users">ispc-users</a> mailing list or to file bug or
+experiences or comments to the <a class="reference external" href="https://github.com/ispc/ispc/discussions">GitHub Discussions</a> forum or to file bug or
 feature requests with the <tt class="docutils literal">ispc</tt> <a class="reference external" href="https://github.com/ispc/ispc/issues?state=open">bug tracker</a>. (Thanks!)</p>
 <p>Contents:</p>
 <ul class="simple">
@@ -505,9 +504,19 @@ code.</p>
 </div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-18-0">
 <h2>Updating ISPC Programs For Changes In ISPC 1.18.0</h2>
-<p>AVX512 targets were renamed to drop &quot;base type&quot;, old naming is accepted for
-compatibility. New names are <cite>avx512skx-x4</cite>, <cite>avx512skx-x8</cite>, <cite>avx512skx-x16</cite>,
-<cite>avx512skx-x32</cite>, <cite>avx512skx-x64</cite>, and <cite>avx512knl-x16</cite>.</p>
+<p>AVX512 targets were renamed to drop &quot;base type&quot; (or &quot;mask size&quot;), old naming is accepted for
+compatibility. New names are avx512skx-x4, avx512skx-x8, avx512skx-x16,
+avx512skx-x32, avx512skx-x64, and avx512knl-x16.</p>
+<p>Standard library gained full support for <tt class="docutils literal">float16</tt> type.  Note that it is
+fully supported only on the targets with native hardware support.
+On the other targets emulation is still not guaranteed, but may work in some cases.</p>
+<p>The compiler gained support for <tt class="docutils literal"><span class="pre">-E</span></tt> switch for running preprocessor only,
+which is similar to the switch of C/C++ compilers.  Also, as a result of bug fix,
+in case of preprocessor error, the compiler will crash now.  It used not to crash and
+produced some output (sometimes correct!).  As it was a convenient feature for some
+users running experiments in isolated environment (like ignoring missing includes
+when compiling of <a class="reference external" href="https://godbolt.org/">Compiler Explorer</a>), <tt class="docutils literal"><span class="pre">--ignore-preprocessor-errors</span></tt> switch
+was added to preserve this behavior.</p>
 </div>
 </div>
 <div class="section" id="getting-started-with-ispc">
@@ -636,17 +645,20 @@ ispc foo.ispc -o foo.obj
 </pre>
 <p>To generate a text assembly file, pass <tt class="docutils literal"><span class="pre">--emit-asm</span></tt>:</p>
 <pre class="literal-block">
-ispc foo.ispc -o foo.asm --emit-asm
+ispc foo.ispc -o foo.s --emit-asm
 </pre>
 <p>To generate LLVM bitcode, use the <tt class="docutils literal"><span class="pre">--emit-llvm</span></tt> flag.
 To generate LLVM bitcode in textual form, use the <tt class="docutils literal"><span class="pre">--emit-llvm-text</span></tt> flag.</p>
-<p>To generate a stub after running the preprocessor, use the <tt class="docutils literal"><span class="pre">-E</span></tt> flag.</p>
+<p>To run only the preprocessor, use the <tt class="docutils literal"><span class="pre">-E</span></tt> flag.</p>
 <pre class="literal-block">
-ispc foo.ispc -E -o foo.i  OR  ispc foo.ispc -E -o foo.ispi
+ispc foo.ispc -E -o foo.i
+ispc foo.ispc -E -o foo.ispi
 </pre>
-<p>In this mode, the preprocessor will assume <tt class="docutils literal">stdout</tt> if no output file is
-specified.
-Both <tt class="docutils literal">.i</tt> or <tt class="docutils literal">.ispi</tt> are valid suffixes.</p>
+<p>In this mode, the output will be directed to <tt class="docutils literal">stdout</tt> if no output file is
+specified.  The standard suffixes <tt class="docutils literal">.i</tt> or <tt class="docutils literal">.ispi</tt> are assumed for preprocessor output.</p>
+<p>By default the compilation will fail if preprocessor encountered an error.
+To ignore the preprocessor errors and proceed with normal compilation flow,
+<tt class="docutils literal"><span class="pre">--ignore-preprocessor-errors</span></tt> switch may be used.</p>
 <p>Optimizations are on by default; they can be turned off with <tt class="docutils literal"><span class="pre">-O0</span></tt>:</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.obj -O0
@@ -696,10 +708,21 @@ on which you're running <tt class="docutils literal">ispc</tt> is used to determ
 <pre class="literal-block">
 ispc foo.ispc -o foo.obj --device=corei7-avx
 </pre>
-<p>Next, <tt class="docutils literal"><span class="pre">--target</span></tt> selects the target instruction set.  The target
-string is of the form <tt class="docutils literal"><span class="pre">[ISA]-i[mask</span> size]x[gang size]</tt>.  For example,
-<tt class="docutils literal"><span class="pre">--target=avx2-i32x16</span></tt> specifies a target with the AVX2 instruction set,
-a mask size of 32 bits, and a gang size of 16.</p>
+<p>Next, <tt class="docutils literal"><span class="pre">--target</span></tt> selects the target instruction set.  For targets without
+hardware support for masking, the target string is of the form <tt class="docutils literal"><span class="pre">[ISA]-i[mask</span> size]x[gang size]</tt>.
+For example, <tt class="docutils literal"><span class="pre">--target=avx2-i32x16</span></tt> specifies a target with the AVX2 instruction set,
+a mask size of 32 bits, and a gang size of 16.  For targets with hardware masking support,
+which are AVX512 and GPU targets, the target string is of the form
+<tt class="docutils literal"><span class="pre">[ISA]-x[gang</span> size]</tt>.  For example, <tt class="docutils literal"><span class="pre">--target=xehpg-x16</span></tt> specifies Intel XeHPG
+as a target ISA and defines a gang size of 16.</p>
+<p>By default, the target instruction set is chosen based on the most capable
+one supported by the system on which you're running <tt class="docutils literal">ispc</tt>.  In this case a warning
+will be issued noting the target used for compilation.  It is recommended to
+always use <tt class="docutils literal"><span class="pre">--target</span></tt> switch to explicitly specify the target.</p>
+<p>To get the complete list of supported targets, please use <tt class="docutils literal"><span class="pre">--help</span></tt> switch
+and note the list in the description of <tt class="docutils literal"><span class="pre">--target</span></tt>, or use <tt class="docutils literal"><span class="pre">--support-matrix</span></tt>
+switch, which will give the complete information of supported combinations
+of target, arch and target OS.</p>
 <p>The following target ISAs are supported:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -734,6 +757,9 @@ a mask size of 32 bits, and a gang size of 16.</p>
 <tr><td>gen9</td>
 <td>Intel Gen9 GPU</td>
 </tr>
+<tr><td>xehpg</td>
+<td>Intel XeHPG GPU</td>
+</tr>
 <tr><td>xelp</td>
 <td>Intel XeLP GPU</td>
 </tr>
@@ -741,18 +767,15 @@ a mask size of 32 bits, and a gang size of 16.</p>
 </table>
 <p>Consult your CPU's manual for specifics on which vector instruction set it
 supports.</p>
-<p>The mask size may be 8, 16, or 32 bits, though not all combinations of ISAs
-and mask sizes are supported.  For best performance, the best general
+<p>The mask size may be 8, 16, 32, or 64 bits, though not all combinations of ISA
+and mask size are supported.  For best performance, the best general
 approach is to choose a mask size equal to the size of the most common
-datatype in your programs.  For example, if most of your computation is on
+datatype in your programs.  For example, if most of the computations are done using
 32-bit floating-point values, an <tt class="docutils literal">i32</tt> target is appropriate.  However,
-if you're mostly doing computation on 8-bit images, <tt class="docutils literal">i8</tt> is a better choice.</p>
+if you're mostly doing computation with 8-bit data types, <tt class="docutils literal">i8</tt> is a better choice.</p>
 <p>See <a class="reference internal" href="#basic-concepts-program-instances-and-gangs-of-program-instances">Basic Concepts: Program Instances and Gangs of Program Instances</a> for
 more discussion of the &quot;gang size&quot; and its implications for program
 execution.</p>
-<p>Running <tt class="docutils literal">ispc <span class="pre">--help</span></tt> and looking at the output for the <tt class="docutils literal"><span class="pre">--target</span></tt>
-option gives the most up-to-date documentation about which targets your
-compiler binary supports.</p>
 <p>The naming scheme for compilation targets changed in August 2013; the
 following table shows the relationship between names in the old scheme and
 in the new scheme:</p>
@@ -806,14 +829,8 @@ in the new scheme:</p>
 </tr>
 </tbody>
 </table>
-<p>By default, the target instruction set is chosen based on the most capable
-one supported by the system on which you're running <tt class="docutils literal">ispc</tt>.  You can
-override this choice with the <tt class="docutils literal"><span class="pre">--target</span></tt> flag; for example, to select
-Intel® SSE2 with a 32-bit mask and 4 program instances in a gang, use
-<tt class="docutils literal"><span class="pre">--target=sse2-i32x4</span></tt>.  (As with the other options in this section, see
-the output of <tt class="docutils literal">ispc <span class="pre">--help</span></tt> for a full list of supported targets.)</p>
 <p>Finally, <tt class="docutils literal"><span class="pre">--target-os</span></tt> selects the target operating system. Depending on
-your host <tt class="docutils literal">ispc</tt> may support Windows, Linux, macOS, Android, iOS and PS4
+your host <tt class="docutils literal">ispc</tt> may support Windows, Linux, macOS, Android, iOS and PS4/PS5
 targets. Running <tt class="docutils literal">ispc <span class="pre">--help</span></tt> and looking at the output for the <tt class="docutils literal"><span class="pre">--target-os</span></tt>
 option gives the list of supported targets. By default <tt class="docutils literal">ispc</tt> produces the
 code for your host operating system.</p>
@@ -1794,10 +1811,10 @@ value of a boolean expression.</li>
 <li><tt class="docutils literal">int</tt>: 32-bit signed integer; may also be specified as <tt class="docutils literal">int32</tt>.</li>
 <li><tt class="docutils literal">unsigned int</tt>: 32-bit unsigned integer; may also be specified as
 <tt class="docutils literal">unsigned int32</tt>, <tt class="docutils literal">uint32</tt> or <tt class="docutils literal">uint</tt>.</li>
-<li><tt class="docutils literal">float16</tt>: 16-bit floating point value</li>
-<li><tt class="docutils literal">float</tt>: 32-bit floating point value</li>
 <li><tt class="docutils literal">int64</tt>: 64-bit signed integer.</li>
 <li><tt class="docutils literal">unsigned int64</tt>: 64-bit unsigned integer; may also be specified as <tt class="docutils literal">uint64</tt>.</li>
+<li><tt class="docutils literal">float16</tt>: 16-bit floating point value</li>
+<li><tt class="docutils literal">float</tt>: 32-bit floating point value</li>
 <li><tt class="docutils literal">double</tt>: 64-bit double-precision floating point value.</li>
 </ul>
 <p>There are also a few built-in types related to pointers and memory:</p>
@@ -2224,7 +2241,7 @@ uniform Bar ub;
 </pre>
 <p>Here, <tt class="docutils literal">b</tt> is a <tt class="docutils literal">varying Bar</tt> (since <tt class="docutils literal">varying</tt> is the default
 variability).  If <tt class="docutils literal">Bar</tt> is defined as above, then <tt class="docutils literal">vb.a</tt> is still a
-<tt class="docutils literal">uniform int</tt>, since its varaibility was bound in the original
+<tt class="docutils literal">uniform int</tt>, since its variability was bound in the original
 declaration of the <tt class="docutils literal">Bar</tt> type.  Similarly, <tt class="docutils literal">vb.b</tt> is <tt class="docutils literal">varying</tt>.  The
 variability of <tt class="docutils literal">vb.c</tt> is <tt class="docutils literal">varying</tt>, since <tt class="docutils literal">vb</tt> is <tt class="docutils literal">varying</tt>.</p>
 <p>(Similarly, <tt class="docutils literal">ub.a</tt> is <tt class="docutils literal">uniform</tt>, <tt class="docutils literal">ub.b</tt> is <tt class="docutils literal">varying</tt>, and <tt class="docutils literal">ub.c</tt>
@@ -3319,8 +3336,8 @@ int8 select(bool cond, int8 t, int8 f)
 int8 select(uniform bool cond, int8 t, int8 f)
 uniform int8 select(uniform bool cond, uniform int8 t, uniform int8 f)
 </pre>
-<p>There are also variants for <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">float</tt>, and
-<tt class="docutils literal">double</tt> types.</p>
+<p>There are also variants for <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">float</tt>, <tt class="docutils literal">float16</tt>
+and <tt class="docutils literal">double</tt> types.</p>
 </div>
 <div class="section" id="bit-operations">
 <h2>Bit Operations</h2>
@@ -3354,21 +3371,30 @@ uniform int sign_extend(uniform bool value)
 <pre class="literal-block">
 uniform int packmask(bool value)
 </pre>
-<p>The <tt class="docutils literal">intbits()</tt> and <tt class="docutils literal">floatbits()</tt> functions can be used to implement
-low-level floating-point bit twiddling.  For example, <tt class="docutils literal">intbits()</tt> returns
-an <tt class="docutils literal">unsigned int</tt> that is a bit-for-bit copy of the given <tt class="docutils literal">float</tt>
-value.  (Note: it is <strong>not</strong> the same as <tt class="docutils literal">(int)a</tt>, but corresponds to
-something like <tt class="docutils literal"><span class="pre">*((int</span> <span class="pre">*)&amp;a)</span></tt> in C.</p>
+<p>The <tt class="docutils literal">intbits()</tt>, <tt class="docutils literal">float16bits()</tt>, <tt class="docutils literal">floatbits()</tt> and <tt class="docutils literal">doublebits()</tt>
+functions can be used to implement low-level floating-point bit twiddling.
+For example, <tt class="docutils literal">intbits()</tt> returns an <tt class="docutils literal">unsigned int</tt> that is a bit-for-bit
+copy of the given <tt class="docutils literal">float</tt> value.  (Note: it is <strong>not</strong> the same as <tt class="docutils literal">(int)a</tt>,
+but corresponds to something like <tt class="docutils literal"><span class="pre">*((int</span> <span class="pre">*)&amp;a)</span></tt> in C.</p>
 <pre class="literal-block">
+float16 float16bits(unsigned int16 a);
+uniform float16 float16bits(uniform unsigned int16 a);
 float floatbits(unsigned int a);
 uniform float floatbits(uniform unsigned int a);
+double doublebits(unsigned int64 a);
+uniform double doublebits(uniform unsigned int64 a);
+unsigned int16 intbits(float16 a);
+uniform unsigned int16 intbits(uniform float16 a);
 unsigned int intbits(float a);
 uniform unsigned int intbits(uniform float a);
+unsigned int64 intbits(double a);
+uniform unsigned int64 intbits(uniform double a);
 </pre>
-<p>The <tt class="docutils literal">intbits()</tt> and <tt class="docutils literal">floatbits()</tt> functions have no cost at runtime;
-they just let the compiler know how to interpret the bits of the given
-value.  They make it possible to efficiently write functions that take
-advantage of the low-level bit representation of floating-point values.</p>
+<p>The <tt class="docutils literal">intbits()</tt>, <tt class="docutils literal">float16bits()</tt>, <tt class="docutils literal">floatbits()</tt> and <tt class="docutils literal">doublebits()</tt>
+functions have no cost at runtime; they just let the compiler know how to
+interpret the bits of the given value.  They make it possible to efficiently
+write functions that take advantage of the low-level bit representation of
+floating-point values.</p>
 <p>For example, the <tt class="docutils literal">abs()</tt> function in the standard library is implemented
 as follows:</p>
 <pre class="literal-block">
@@ -3416,6 +3442,8 @@ options.)</li>
 the sign bit of the given value, returning <tt class="docutils literal">0x80000000</tt> if the sign bit
 is on (i.e. the value is negative) and zero if it is off.</p>
 <pre class="literal-block">
+float16 abs(float a)
+uniform float16 abs(uniform float a)
 float abs(float a)
 uniform float abs(uniform float a)
 double abs(double a)
@@ -3428,11 +3456,16 @@ int abs(int a)
 uniform int abs(uniform int a)
 int64 abs(int64 a)
 uniform int64 abs(uniform int64 a)
+unsigned int16 signbits(float16 x)
+uniform unsigned int16 signbits(uniform float16 x)
 unsigned int signbits(float x)
+uniform unsigned int signbits(uniform float x)
+unsigned int64 signbits(double x)
+uniform unsigned int64 signbits(uniform double x)
 </pre>
-<p>Standard rounding functions are provided.  (On machines that support Intel®
-SSE or Intel® AVX, these functions all map to variants of the <tt class="docutils literal">roundss</tt> and
-<tt class="docutils literal">roundps</tt> instructions, respectively.)</p>
+<p>Standard rounding functions are provided for <tt class="docutils literal">float16</tt>, <tt class="docutils literal">float</tt> and <tt class="docutils literal">double</tt>
+types.  (On machines that support Intel®SSE or Intel® AVX, these functions all
+map to variants of the <tt class="docutils literal">roundss</tt> and <tt class="docutils literal">roundps</tt> instructions, respectively.)</p>
 <pre class="literal-block">
 float round(float x)
 uniform float round(uniform float x)
@@ -3455,8 +3488,8 @@ use Newton-Raphson.</p>
 float rcp_fast(float v)
 uniform float rcp_fast(uniform float v)
 </pre>
-<p>A standard set of minimum and maximum functions is available.  These
-functions also map to corresponding intrinsic functions.</p>
+<p>A standard set of minimum and maximum functions is available for all ispc
+standard types.  These functions also map to corresponding intrinsic functions.</p>
 <pre class="literal-block">
 float min(float a, float b)
 uniform float min(uniform float a, uniform float b)
@@ -3485,6 +3518,8 @@ uniform unsigned int clamp(uniform unsigned int v,
 <p>The <tt class="docutils literal">isnan()</tt> functions test whether the given value is a floating-point
 &quot;not a number&quot; value:</p>
 <pre class="literal-block">
+bool isnan(float16 v)
+uniform bool isnan(uniform float16 v)
 bool isnan(float v)
 uniform bool isnan(uniform float v)
 bool isnan(double v)
@@ -3578,6 +3613,8 @@ float frexp(float x, varying int * uniform pw2)
 uniform float frexp(uniform float x,
                     uniform int * uniform pw2)
 </pre>
+<p>All transcendental functions are provided for <tt class="docutils literal">float16</tt>, <tt class="docutils literal">float</tt> and
+<tt class="docutils literal">double</tt> types.</p>
 </div>
 <div class="section" id="saturating-arithmetic">
 <h2>Saturating Arithmetic</h2>
@@ -3809,6 +3846,7 @@ int8 broadcast(int8 value, uniform int index)
 int16 broadcast(int16 value, uniform int index)
 int32 broadcast(int32 value, uniform int index)
 int64 broadcast(int64 value, uniform int index)
+float16 broadcast(float16 value, uniform int index)
 float broadcast(float value, uniform int index)
 double broadcast(double value, uniform int index)
 </pre>
@@ -3825,6 +3863,7 @@ int8 rotate(int8 value, uniform int offset)
 int16 rotate(int16 value, uniform int offset)
 int32 rotate(int32 value, uniform int offset)
 int64 rotate(int64 value, uniform int offset)
+float16 rotate(float16 value, uniform int offset)
 float rotate(float value, uniform int offset)
 double rotate(double value, uniform int offset)
 </pre>
@@ -3837,6 +3876,7 @@ int8 shift(int8 value, uniform int offset)
 int16 shift(int16 value, uniform int offset)
 int32 shift(int32 value, uniform int offset)
 int64 shift(int64 value, uniform int offset)
+float16 shift(float16 value, uniform int offset)
 float shift(float value, uniform int offset)
 double shift(double value, uniform int offset)
 </pre>
@@ -3850,6 +3890,7 @@ int8 shuffle(int8 value, int permutation)
 int16 shuffle(int16 value, int permutation)
 int32 shuffle(int32 value, int permutation)
 int64 shuffle(int64 value, int permutation)
+float16 shuffle(float16 value, int permutation)
 float shuffle(float value, int permutation)
 double shuffle(double value, int permutation)
 </pre>
@@ -3863,6 +3904,7 @@ int8 shuffle(int8 value0, int8 value1, int permutation)
 int16 shuffle(int16 value0, int16 value1, int permutation)
 int32 shuffle(int32 value0, int32 value1, int permutation)
 int64 shuffle(int64 value0, int64 value1, int permutation)
+float16 shuffle(float16 value0, float16 value1, int permutation)
 float shuffle(float value0, float value1, int permutation)
 double shuffle(double value0, double value1, int permutation)
 </pre>
@@ -3879,7 +3921,9 @@ uniform int8 extract(int8 x, uniform int i)
 uniform int16 extract(int16 x, uniform int i)
 uniform int32 extract(int32 x, uniform int i)
 uniform int64 extract(int64 x, uniform int i)
+uniform float16 extract(float16 x, uniform int i)
 uniform float extract(float x, uniform int i)
+uniform double extract(double x, uniform int i)
 </pre>
 <p>Similarly, <tt class="docutils literal">insert</tt> returns a new value
 where the <tt class="docutils literal">i</tt> th element of <tt class="docutils literal">x</tt> has been replaced with the value <tt class="docutils literal">v</tt></p>
@@ -3889,7 +3933,9 @@ int8 insert(int8 x, uniform int i, uniform int8 v)
 int16 insert(int16 x, uniform int i, uniform int16 v)
 int32 insert(int32 x, uniform int i, uniform int32 v)
 int64 insert(int64 x, uniform int i, uniform int64 v)
+float16 insert(float16 x, uniform int i, uniform float16 v)
 float insert(float x, uniform int i, uniform float v)
+double insert(double x, uniform int i, uniform double v)
 </pre>
 </div>
 <div class="section" id="reductions">
@@ -3918,6 +3964,7 @@ uniform unsigned int64 reduce_add(unsigned int32 x)
 uniform int64 reduce_add(int64 x)
 uniform unsigned int64 reduce_add(unsigned int64 x)
 
+uniform float16 reduce_add(float16 x)
 uniform float reduce_add(float x)
 uniform double reduce_add(double x)
 </pre>
@@ -3929,6 +3976,7 @@ uniform unsigned int32 reduce_min(unsigned int32 a)
 uniform int64 reduce_min(int64 a)
 uniform unsigned int64 reduce_min(unsigned int64 a)
 
+uniform float16 reduce_min(float16 a)
 uniform float reduce_min(float a)
 uniform double reduce_min(double a)
 </pre>
@@ -3940,6 +3988,7 @@ uniform unsigned int32 reduce_max(unsigned int32 a)
 uniform int64 reduce_max(int64 a)
 uniform unsigned int64 reduce_max(unsigned int64 a)
 
+uniform float16 reduce_max(float16 a)
 uniform float reduce_max(float a)
 uniform double reduce_max(double a)
 </pre>
@@ -3951,6 +4000,7 @@ uniform bool reduce_equal(unsigned int32 v)
 uniform bool reduce_equal(int64 v)
 uniform bool reduce_equal(unsigned int64 v)
 
+uniform bool reduce_equal(float16 v)
 uniform bool reduce_equal(float v)
 uniform bool reduce_equal(double)
 </pre>
@@ -3966,6 +4016,7 @@ uniform bool reduce_equal(int64 v, uniform int64 * uniform sameval)
 uniform bool reduce_equal(unsigned int64 v,
                           uniform unsigned int64 * uniform sameval)
 
+uniform bool reduce_equal(float16 v, uniform float16 * uniform sameval)
 uniform bool reduce_equal(float v, uniform float * uniform sameval)
 uniform bool reduce_equal(double, uniform double * uniform sameval)
 </pre>
@@ -3991,6 +4042,7 @@ bitwise-or are available:</p>
 <pre class="literal-block">
 int32 exclusive_scan_add(int32 v)
 unsigned int32 exclusive_scan_add(unsigned int32 v)
+float16 exclusive_scan_add(float16 v)
 float exclusive_scan_add(float v)
 int64 exclusive_scan_add(int64 v)
 unsigned int64 exclusive_scan_add(unsigned int64 v)
@@ -4134,6 +4186,7 @@ void streaming_store(uniform unsigned int a[], unsigned int vals)
 void streaming_store(uniform int a[], int vals)
 void streaming_store(uniform unsigned int64 a[], unsigned int64 vals)
 void streaming_store(uniform int64 a[], int64 vals)
+void streaming_store(uniform float16 a[], float16 vals)
 void streaming_store(uniform float a[], float vals)
 void streaming_store(uniform double a[], double vals)
 </pre>
@@ -4147,6 +4200,7 @@ void streaming_store(uniform unsigned int a[], uniform unsigned int vals)
 void streaming_store(uniform int a[], uniform int vals)
 void streaming_store(uniform unsigned int64 a[], uniform unsigned int64 vals)
 void streaming_store(uniform int64 a[], uniform int64 vals)
+void streaming_store(uniform float16 a[], uniform float16 vals)
 void streaming_store(uniform float a[], uniform float vals)
 void streaming_store(uniform double a[], uniform double vals)
 </pre>
@@ -4161,6 +4215,7 @@ varying unsigned int streaming_load(uniform unsigned int a[])
 varying int streaming_load(uniform int a[])
 varying unsigned int64 streaming_load(uniform unsigned int64 a[])
 varying int64 streaming_load(uniform int64 a[])
+varying float16 streaming_load(uniform float16 a[])
 varying float streaming_load(uniform float a[])
 varying double streaming_load(uniform double a[])
 </pre>
@@ -4174,6 +4229,7 @@ uniform unsigned int streaming_load_uniform(uniform unsigned int a[])
 uniform int streaming_load_uniform(uniform int a[])
 uniform unsigned int64 streaming_load_uniform(uniform unsigned int64 a[])
 uniform int64 streaming_load_uniform(uniform int64 a[])
+uniform float16 streaming_load_uniform(uniform float16 a[])
 uniform float streaming_load_uniform(uniform float a[])
 uniform double streaming_load_uniform(uniform double a[])
 </pre>
@@ -4284,9 +4340,12 @@ void soa_to_aos2(int32 v0, int32 v1, uniform int32 a[])
 <div class="section" id="conversions-to-and-from-half-precision-floats">
 <h2>Conversions To and From Half-Precision Floats</h2>
 <p>There are functions to convert to and from the IEEE 16-bit floating-point
-format.  Note that there is a <tt class="docutils literal">float16</tt> data-type in <tt class="docutils literal">ispc</tt> but with limited
-library support; these functions facilitate converting to and from half-format
-data in memory.</p>
+format.  Note that there is a <tt class="docutils literal">float16</tt> data-type in <tt class="docutils literal">ispc</tt>, which has
+full language and standard library support, but only on the targets with
+hardware support for this type.
+The following functions facilitate converting to and from half-format
+data in memory and are primarily targeted for the use on the targets
+without native support for <tt class="docutils literal">float16</tt> in the hardware.</p>
 <p>To use them, half-format data should be loaded into an <tt class="docutils literal">int16</tt> and the
 <tt class="docutils literal">half_to_float()</tt> function used to convert it to a 32-bit floating point
 value.  To store a value to memory in half format, the <tt class="docutils literal">float_to_half()</tt>
