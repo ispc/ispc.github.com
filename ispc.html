@@ -115,6 +115,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-16-0">Updating ISPC Programs For Changes In ISPC 1.16.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-17-0">Updating ISPC Programs For Changes In ISPC 1.17.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-18-0">Updating ISPC Programs For Changes In ISPC 1.18.0</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-19-0">Updating ISPC Programs For Changes In ISPC 1.19.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -205,6 +206,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 </ul>
 </li>
 <li><a class="reference internal" href="#llvm-intrinsic-functions">LLVM Intrinsic Functions</a></li>
+<li><a class="reference internal" href="#function-templates">Function Templates</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#the-ispc-standard-library">The ISPC Standard Library</a><ul>
@@ -518,6 +520,20 @@ users running experiments in isolated environment (like ignoring missing include
 when compiling of <a class="reference external" href="https://godbolt.org/">Compiler Explorer</a>), <tt class="docutils literal"><span class="pre">--ignore-preprocessor-errors</span></tt> switch
 was added to preserve this behavior.</p>
 </div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-19-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.19.0</h2>
+<p>New targets were added:</p>
+<ul class="simple">
+<li>avx512spr-x4, avx512spr-x8, avx512spr-x16, avx512spr-x32, avx512spr-x64 for
+4th generation Intel® Xeon® Scalable (codename Sapphire Rapids) CPUs. A macro
+ISPC_TARGET_AVX512SPR was added.</li>
+<li>xehpc-x16 and xehpc-x32 for Intel® Data Center GPU Max (codename Ponte Vecchio).</li>
+</ul>
+<p>Function templates were introduces to the langauge, please refer to <a class="reference internal" href="#function-templates">Function
+Templates</a> section for more details. Two new keywords were introduced: <tt class="docutils literal">template</tt>
+and <tt class="docutils literal">typename</tt>.</p>
+<p><tt class="docutils literal">ISPC_FP16_SUPPORTED</tt> macro was introduced for the targets supporting FP16.</p>
+</div>
 </div>
 <div class="section" id="getting-started-with-ispc">
 <h1>Getting Started with ISPC</h1>
@@ -726,8 +742,8 @@ of target, arch and target OS.</p>
 <p>The following target ISAs are supported:</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="17%" />
-<col width="83%" />
+<col width="14%" />
+<col width="86%" />
 </colgroup>
 <tbody valign="top">
 <tr><td>Target</td>
@@ -743,7 +759,10 @@ of target, arch and target OS.</p>
 <td>AVX 512 target (Xeon Phi chips codename Knights Landing)</td>
 </tr>
 <tr><td>avx512skx</td>
-<td>AVX 512 target (future Xeon CPUs)</td>
+<td>AVX 512 target (Skylake Xeon CPUs)</td>
+</tr>
+<tr><td>avx512spr</td>
+<td>AVX 512 target (Sapphire Rapids Xeon CPUs, 4th generation Xeon Scalable)</td>
 </tr>
 <tr><td>neon</td>
 <td>ARM NEON</td>
@@ -879,7 +898,7 @@ preprocessor runs:</p>
 <td>1</td>
 <td>Enables detecting that the <tt class="docutils literal">ispc</tt> compiler is processing the file</td>
 </tr>
-<tr><td>ISPC_TARGET_{NEON, SSE2, SSE4, AVX, AVX2, AVX512KNL, AVX512SKX}</td>
+<tr><td>ISPC_TARGET_{NEON, SSE2, SSE4, AVX, AVX2, AVX512KNL, AVX512SKX, AVX512SPR}</td>
 <td>1</td>
 <td>One of these will be set, depending on the compilation target</td>
 </tr>
@@ -910,6 +929,11 @@ preprocessor runs:</p>
 <tr><td>ISPC_UINT_IS_DEFINED</td>
 <td>1</td>
 <td>The macro is defined if uint8/uint16/uint32/uint64 types are defined in the <tt class="docutils literal">ispc</tt> (it's defined in 1.13.0 and later)</td>
+</tr>
+<tr><td>ISPC_FP16_SUPPORTED</td>
+<td>1</td>
+<td>The macro is defined if float16 type is supported by the <tt class="docutils literal">ispc</tt> target.
+The implementation may rely either on native hardware support or emulation.</td>
 </tr>
 <tr><td>ISPC_FP64_SUPPORTED</td>
 <td>1</td>
@@ -945,30 +969,6 @@ preprocessor runs:</p>
 </tbody>
 </table>
 <p>When using <tt class="docutils literal">#pragma ignore warning</tt> before a call to a macro, it suppresses warnings from the expanded macro code.</p>
-<p><tt class="docutils literal">#pragma unroll</tt> and <tt class="docutils literal">#pragma nounroll</tt> directives provide loop unrolling optimization hints to the compiler.
-This pragma is placed immediately before a loop statement. Currently, this functionality is limited to uniform <tt class="docutils literal">for</tt> and <tt class="docutils literal"><span class="pre">do-while</span></tt>.</p>
-<table border="1" class="docutils">
-<caption><tt class="docutils literal">#pragma unroll</tt> and <tt class="docutils literal">#pragma nounroll</tt> directives and their functions:</caption>
-<colgroup>
-<col width="50%" />
-<col width="50%" />
-</colgroup>
-<tbody valign="top">
-<tr><td><tt class="docutils literal">#pragma</tt> name</td>
-<td>Use</td>
-</tr>
-<tr><td><tt class="docutils literal">#pragma unroll COUNT</tt></td>
-<td>Directs the loop unroller to unroll the loop <tt class="docutils literal">COUNT</tt> times.
-The parameter may optionally be enclosed in parentheses:  <tt class="docutils literal">#pragma unroll (COUNT)</tt>.</td>
-</tr>
-<tr><td><tt class="docutils literal">#pragma unroll</tt></td>
-<td>Directs the loop unroller to fully unroll the loop if possible.</td>
-</tr>
-<tr><td><tt class="docutils literal">#pragma nounroll</tt></td>
-<td>Directs the loop unroller to not unroll the loop.</td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="section" id="debugging">
 <h2>Debugging</h2>
@@ -1553,9 +1553,10 @@ precision floating point constant use <tt class="docutils literal">d</tt> suffix
 <p><tt class="docutils literal">ispc</tt> additionally reserves the following words:</p>
 <p><tt class="docutils literal">bool</tt>, <tt class="docutils literal">delete</tt>, <tt class="docutils literal">export</tt>, <tt class="docutils literal">cdo</tt>, <tt class="docutils literal">cfor</tt>, <tt class="docutils literal">cif</tt>, <tt class="docutils literal">cwhile</tt>,
 <tt class="docutils literal">false</tt>, <tt class="docutils literal">float16</tt>, <tt class="docutils literal">foreach</tt>, <tt class="docutils literal">foreach_active</tt>, <tt class="docutils literal">foreach_tiled</tt>,
-<tt class="docutils literal">foreach_unique</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">noinline</tt>, <tt class="docutils literal">__vectorcall</tt>, <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>,
-<tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">new</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">uint8</tt>, <tt class="docutils literal">uint16</tt>,
-<tt class="docutils literal">uint32</tt>, <tt class="docutils literal">uint64</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">uniform</tt>, and <tt class="docutils literal">varying</tt>.</p>
+<tt class="docutils literal">foreach_unique</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">noinline</tt>, <tt class="docutils literal">__regcall</tt>,
+<tt class="docutils literal">__vectorcall</tt>, <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>,
+<tt class="docutils literal">new</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">uint8</tt>, <tt class="docutils literal">uint16</tt>, <tt class="docutils literal">uint32</tt>, <tt class="docutils literal">uint64</tt>, <tt class="docutils literal">soa</tt>,
+<tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">uniform</tt>, and <tt class="docutils literal">varying</tt>.</p>
 </div>
 <div class="section" id="lexical-structure">
 <h2>Lexical Structure</h2>
@@ -1724,11 +1725,12 @@ doesn't support character constants.</p>
 <tt class="docutils literal">enum</tt>, <tt class="docutils literal">export</tt>, <tt class="docutils literal">extern</tt>, <tt class="docutils literal">false</tt>, <tt class="docutils literal">float</tt>, <tt class="docutils literal">float16</tt>, <tt class="docutils literal">for</tt>,
 <tt class="docutils literal">foreach</tt>, <tt class="docutils literal">foreach_active</tt>, <tt class="docutils literal">foreach_tiled</tt>, <tt class="docutils literal">foreach_unique</tt>,
 <tt class="docutils literal">goto</tt>, <tt class="docutils literal">if</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">noinline</tt>, <tt class="docutils literal">int</tt>, <tt class="docutils literal">int8</tt>,
-<tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">NULL</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">return</tt>,
-<tt class="docutils literal">signed</tt>, <tt class="docutils literal">sizeof</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">static</tt>, <tt class="docutils literal">struct</tt>, <tt class="docutils literal">switch</tt>,
-<tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">typedef</tt>, <tt class="docutils literal">uint</tt>, <tt class="docutils literal">uint8</tt>,
-<tt class="docutils literal">uint16</tt>, <tt class="docutils literal">uint32</tt>, <tt class="docutils literal">uint64</tt>, <tt class="docutils literal">uniform</tt>, <tt class="docutils literal">union</tt>, <tt class="docutils literal">unsigned</tt>,
-<tt class="docutils literal">varying</tt>, <tt class="docutils literal">__vectorcall</tt>, <tt class="docutils literal">void</tt>, <tt class="docutils literal">volatile</tt>, <tt class="docutils literal">while</tt>.</p>
+<tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">invoke_sycl</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">NULL</tt>,
+<tt class="docutils literal">print</tt>, <tt class="docutils literal">return</tt>, <tt class="docutils literal">signed</tt>, <tt class="docutils literal">sizeof</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">static</tt>, <tt class="docutils literal">struct</tt>,
+<tt class="docutils literal">switch</tt>, <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">template</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">typedef</tt>,
+<tt class="docutils literal">typename</tt>, <tt class="docutils literal">uint</tt>, <tt class="docutils literal">uint8</tt>, <tt class="docutils literal">uint16</tt>, <tt class="docutils literal">uint32</tt>, <tt class="docutils literal">uint64</tt>,
+<tt class="docutils literal">uniform</tt>, <tt class="docutils literal">union</tt>, <tt class="docutils literal">unsigned</tt>, <tt class="docutils literal">varying</tt>, <tt class="docutils literal">__regcall</tt>,
+<tt class="docutils literal">__vectorcall</tt>, <tt class="docutils literal">void</tt>, <tt class="docutils literal">volatile</tt>, <tt class="docutils literal">while</tt>.</p>
 <p><tt class="docutils literal">ispc</tt> defines the following operators and punctuation:</p>
 <table border="1" class="docutils">
 <caption>Operators</caption>
@@ -1912,9 +1914,9 @@ declared to take a <tt class="docutils literal">Float3</tt> parameter.</p>
 changing values in memory with pointers, and so forth is supported as in C.
 As with other basic types, pointers can be both <tt class="docutils literal">uniform</tt> and
 <tt class="docutils literal">varying</tt>.</p>
-<p>** Like other types in <tt class="docutils literal">ispc</tt>, pointers are <tt class="docutils literal">varying</tt> by default, if an
-explicit <tt class="docutils literal">uniform</tt> qualifier isn't provided.  However, the default
-variability of the pointed-to type is uniform. ** This rule will be
+<p><strong>Like other types in ``ispc``, pointers are ``varying`` by default, if an
+explicit ``uniform`` qualifier isn't provided.  However, the default
+variability of the pointed-to type is uniform.</strong> This rule will be
 illustrated and explained in examples below.</p>
 <p>For example, the <tt class="docutils literal">ptr</tt> variable in the code below is a varying pointer to
 <tt class="docutils literal">uniform float</tt> values.  Each program instance has a separate pointer
@@ -3294,6 +3296,74 @@ transpose = &#64;llvm.matrix.transpose.v8f32.i32.i32(matrix, row, column);
 <p>To detect if this feature is enabled during compile time, check if <tt class="docutils literal">ISPC_LLVM_INTRINSICS_ENABLED</tt>
 macro is defined.</p>
 </div>
+<div class="section" id="function-templates">
+<h2>Function Templates</h2>
+<p><tt class="docutils literal">ispc</tt> supports function templates with syntax and semantics similar to C++.
+The feature is currently experimental and may change in future versions of
+<tt class="docutils literal">ispc</tt>. Please report any issues or suggestions about this feature on the
+<tt class="docutils literal">ispc</tt> <a class="reference external" href="https://github.com/ispc/ispc/issues?state=open">bug tracker</a> or <a class="reference external" href="https://github.com/ispc/ispc/discussions">GitHub Discussions</a>.</p>
+<p>What is currently supported:</p>
+<ul class="simple">
+<li>Function templates definitions with template type parameters (i.e.
+<tt class="docutils literal">template&lt;typename T&gt; T add(T a, T b) { return a + b;}</tt>).</li>
+<li>Calling template functions through explicit template arguments specification
+syntax (i.e. <tt class="docutils literal"><span class="pre">add&lt;int&gt;(1,</span> 2);</tt>).</li>
+<li>Template argument deduction and calling template functions through regular
+function call syntax (i.e. <tt class="docutils literal">add(1, 2);</tt>).</li>
+<li>Explicit template function instantiations (i.e.
+<tt class="docutils literal">template int <span class="pre">add&lt;int&gt;(int</span> a, int b);</tt>).</li>
+</ul>
+<p>What is currently not supported, but is planned to be supported:</p>
+<ul class="simple">
+<li>Non-type template parameters.</li>
+<li>Default values for template parameters.</li>
+<li>Template function specializations.</li>
+</ul>
+<p>While template argument deduction rules generally follow C++, there are some
+differences caused by existence of <tt class="docutils literal">uniform</tt>, <tt class="docutils literal">varying</tt> and <tt class="docutils literal">unbound</tt>
+types in <tt class="docutils literal">ispc</tt> type system.  The template type parameter may resolve only to
+<tt class="docutils literal">uniform</tt> and <tt class="docutils literal">varying</tt> types, but not to <tt class="docutils literal">unbound</tt> type. Consider the
+following example:</p>
+<pre class="literal-block">
+template &lt;typename T&gt; T add(T a, T b) { return a + b; }
+
+void foo() {
+    // Note that these two lines call the same function:
+    int i1 = add&lt;int&gt;(1, 2);                 // T = varying int
+    varying int i2 = add&lt;varying int&gt;(1, 2); // T = varying int
+
+    // And this call a uniform version:
+    uniform int i3 = add&lt;uniform int&gt;(1, 2); // T = uniform int
+}
+</pre>
+<p>The variability of template type parameter <tt class="docutils literal">T</tt> may be overwritten by
+<tt class="docutils literal">uniform</tt> and <tt class="docutils literal">varying</tt> keywords, so <tt class="docutils literal">uniform T</tt> and <tt class="docutils literal">varying T</tt>  are
+always valid types. But when <tt class="docutils literal">uniform T</tt> and <tt class="docutils literal">varying T</tt> are used to specify
+template function parameters it has an effect on template argument deduction
+process.  If variability keyword is specified and the type was successfully
+deduced, the default variability of type <tt class="docutils literal">T</tt> is assumed to be the opposite of
+the variability keyword.  The logic behind it is that the keyword was specified
+&quot;on purpose&quot; to changed the variability of the type <tt class="docutils literal">T</tt>. Consider the
+following example:</p>
+<pre class="literal-block">
+template &lt;typename T&gt; void foo1(T t);
+template &lt;typename T&gt; void foo2(uniform T t);
+template &lt;typename T&gt; void foo3(varying T t);
+
+void bar() {
+    uniform int ui;
+    varying int vi;
+    foo1(ui); // T is uniform int
+    foo1(vi); // T is varying int
+    foo2(ui); // T is varying int!
+    foo2(vi); // error: varying type cannot be passed to uniform parameter
+    foo3(ui); // T is uniform int!
+    foo3(vi); // T is uniform int!
+}
+</pre>
+<p>Note, to get the insight of the results of template argument deduction, it might
+be useful to specify <tt class="docutils literal"><span class="pre">--ast-dump</span></tt> flag to <tt class="docutils literal">ispc</tt> compiler.</p>
+</div>
 </div>
 <div class="section" id="the-ispc-standard-library">
 <h1>The ISPC Standard Library</h1>
@@ -3822,6 +3892,32 @@ unmasked void foo4(uniform float Result[], const uniform float Source1[], const 
 <p>The <tt class="docutils literal">assume()</tt> hint informs the compiler that memory locations used by
 loads and stores are aligned. This results in aligned instructions instead
 of unaligned instructions.</p>
+<p>The <tt class="docutils literal">ispc</tt> preprocessor <tt class="docutils literal">#pragma unroll</tt> and <tt class="docutils literal">#pragma nounroll</tt> directives provide loop unrolling optimization hints to the compiler.
+The pragma is placed immediately before a loop statement.
+Currently, this functionality is limited to <tt class="docutils literal">foreach</tt> and uniform <tt class="docutils literal">for</tt> and <tt class="docutils literal"><span class="pre">do-while</span></tt>.
+Varying <tt class="docutils literal">for</tt> is also supported, but generates sub-optimal code compared to <tt class="docutils literal">foreach</tt> and outputs a performance warning.</p>
+<table border="1" class="docutils">
+<caption><tt class="docutils literal">#pragma unroll</tt> and <tt class="docutils literal">#pragma nounroll</tt> directives and their functions:</caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><tt class="docutils literal">#pragma</tt> name</td>
+<td>Use</td>
+</tr>
+<tr><td><tt class="docutils literal">#pragma unroll COUNT</tt></td>
+<td>Directs the loop unroller to unroll the loop <tt class="docutils literal">COUNT</tt> times.
+The parameter may optionally be enclosed in parentheses:  <tt class="docutils literal">#pragma unroll (COUNT)</tt>.</td>
+</tr>
+<tr><td><tt class="docutils literal">#pragma unroll</tt></td>
+<td>Directs the loop unroller to fully unroll the loop if possible.</td>
+</tr>
+<tr><td><tt class="docutils literal">#pragma nounroll</tt></td>
+<td>Directs the loop unroller to not unroll the loop.</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="cross-program-instance-operations">
 <h2>Cross-Program Instance Operations</h2>
@@ -4599,6 +4695,17 @@ caches in anticipation of a write:</p>
 void prefetchw_{l1,l2,l3}(void * uniform ptr)
 void prefetchw_{l1,l2,l3}(void * varying ptr)
 </pre>
+<p>On GPU prefetches are supported on some targets, including Intel Xe HPC and
+Intel Xe HPG architectures.  It is required to pass the size of data being
+prefetched. The valid values are: 1 (for int8), 2 (for int16), 4 (for int32,
+float) and 8 (for int64, double).  If data size argument is not passed, the
+standard library will use 4 by default.  There is no L2 cache on GPU so
+<tt class="docutils literal">prefetch_l2()</tt> is mapped to <tt class="docutils literal">prefetch_l3()</tt> and <tt class="docutils literal">prefetch_nt()</tt>
+reads-invalidates on L1 loads and caches in L3.</p>
+<pre class="literal-block">
+void prefetch_{l1,l2,l3,nt}(void * uniform ptr, uniform int8 datasize)
+void prefetch_{l1,l2,l3,nt}(void * varying ptr, uniform int8 datasize)
+</pre>
 </div>
 <div class="section" id="system-information">
 <h2>System Information</h2>
@@ -4692,6 +4799,10 @@ extern &quot;C&quot; __vectorcall void foo(uniform float f, uniform float g);
 </pre>
 <p><tt class="docutils literal">__vectorcall</tt> can only be used for <tt class="docutils literal">extern &quot;C&quot;</tt> function declarations and
 on Windows OS.</p>
+<p>Also <tt class="docutils literal">extern &quot;C&quot;</tt> functions can be marked with <tt class="docutils literal">__regcall</tt> calling convention.
+This calling convention makes return values and function arguments passed through
+registers in most cases. Note, that <tt class="docutils literal">__regcall3__</tt> prefix will be added to the
+function name.</p>
 <p><strong>Only a single function call is made back to C++ for the entire gang of
 running program instances</strong>.  Furthermore, function calls back to C/C++ are not
 made if none of the program instances want to make the call.  For example,
@@ -4745,6 +4856,74 @@ foreach_active (instance) {
 <p>This code calls <tt class="docutils literal">erf()</tt> once for each active program instance, passing it
 the program instance's value of <tt class="docutils literal">v</tt> and storing the result in the
 instance's <tt class="docutils literal">result</tt> value.</p>
+<p><tt class="docutils literal">extern &quot;C&quot;</tt> function may also have a definition. On GPU it is intended to make
+a function (not a kernel!) callable from a different module. On CPU it is not
+advised to have <tt class="docutils literal">extern &quot;C&quot;</tt> functions with definitions and to use <tt class="docutils literal">export</tt>
+functions instead, which are designed to be entry points from C/C++.</p>
+<p>On GPU ISPC experimentally supports calls to SYCL/DPC++ device functions using
+<cite>invoke_sycl</cite> construct. <cite>invoke_sycl</cite> accepts only functions declared as <tt class="docutils literal">extern &quot;SYCL&quot;</tt>.
+<tt class="docutils literal">extern &quot;SYCL&quot;</tt> declaration is similar to <tt class="docutils literal">extern &quot;C&quot;</tt>, but in addition it means
+that function signature will be modified if needed to align with SYCL/DPC++ backend (IGC) ABI.</p>
+<p>Below is a comparison between <tt class="docutils literal">export</tt>, <tt class="docutils literal">extern</tt>, <tt class="docutils literal">extern &quot;C&quot;</tt> and <tt class="docutils literal">extern &quot;SYCL&quot;</tt> functions.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="45%" />
+<col width="12%" />
+<col width="14%" />
+<col width="17%" />
+<col width="11%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Feature</td>
+<td><tt class="docutils literal">export</tt></td>
+<td><tt class="docutils literal">extern &quot;C&quot;</tt></td>
+<td><tt class="docutils literal">extern &quot;SYCL&quot;</tt></td>
+<td><tt class="docutils literal">extern</tt></td>
+</tr>
+<tr><td>Varying parameters support</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr><td>Dispatch function for multi-target compilation</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr><td>Mangled name</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr><td>Mask parameter</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr><td>Calling convention specifier support</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr><td>Declaration in header file</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr><td>SYCL/DPC++ backend ABI compliance</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="data-layout">
 <h2>Data Layout</h2>
