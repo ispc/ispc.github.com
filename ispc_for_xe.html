@@ -119,9 +119,9 @@ v1.16.0.</p>
 Compute Runtime</a> on Linux
 or <a class="reference external" href="https://www.intel.com/content/www/us/en/download-center/home.html">Intel(R) Graphics Driver for Windows</a> on
 Windows.  Additionally you need <a class="reference external" href="https://github.com/oneapi-src/level-zero/releases">Level Zero Loader</a>.</p>
-<p>To use ISPC Run Time for CPU on Linux you need to have <tt class="docutils literal">OpenMP runtime</tt>
+<p>To use ISPC Run Time for CPU on Linux you need to have <tt class="docutils literal">Intel(R) oneAPI Threading Basic Blocks</tt>
 installed on your system. Consult your Linux distribution documentation for the
-installation of OpenMP runtime instructions.</p>
+installation of TBB runtime instructions.</p>
 </div>
 <div class="section" id="basic-command-line-options">
 <h2>Basic Command-line Options</h2>
@@ -192,11 +192,25 @@ Unified Shared Memory mechanism provided by <tt class="docutils literal">oneAPI 
 data allocated in the USM are valid both on the host and on the device.  Also,
 there is no need to explicitly handle data movement between the CPU and the
 GPU. This is handled automatically by the <tt class="docutils literal">oneAPI Level Zero</tt> runtime.</li>
-<li><tt class="docutils literal">Task queue</tt> - Each <tt class="docutils literal">device</tt> has a task (command) queue and executes
-commands from it. The execution may be asynchronous, which means that
-subsequent commands can begin executing before the previous ones complete.
-There are synchronization primitives available to make the execution
-synchronous.</li>
+<li><tt class="docutils literal">Task queue</tt> - each <tt class="docutils literal">device</tt> has a task (command) queue and executes
+commands from it. Commands may be executed simultaneously. To prevent that
+one should explicitly insert barriers in places where synchronization is
+required. <tt class="docutils literal">Task queue</tt> <tt class="docutils literal">sync</tt> method stops the host thread until GPU
+computation completed. For asynchronous computation, one should utilize
+<tt class="docutils literal">CommandQueue</tt> and <tt class="docutils literal">CommandList</tt> objects.</li>
+<li><tt class="docutils literal">CommandQueue</tt> - represents a logical input stream to the device and
+directly maps to L0 command queues.</li>
+<li><tt class="docutils literal">CommandList</tt> - represents commands to be executed on a command queue. It
+can be created by calling <tt class="docutils literal">createCommandList</tt> method of <tt class="docutils literal">CommandQueue</tt>
+object. Synchronization between all commands in list has to be done
+explicitly by putting barriers if needed. Fine-grained synchronization via
+<tt class="docutils literal">Events</tt> are not supported yet.</li>
+<li><tt class="docutils literal">Fence</tt> - is a synchronization primitive to communicate to the host that
+command list execution has completed. <tt class="docutils literal">Fence</tt> is created upon command list
+submission. It can be waited synchronously (<tt class="docutils literal">sync</tt>) and asynchronously
+(periodically checking <tt class="docutils literal">status</tt>). Fence has two states
+<tt class="docutils literal">ISPCRT_FENCE_UNSIGNALED</tt> and <tt class="docutils literal">ISPCRT_FENCE_SIGNALED</tt> returned by
+<tt class="docutils literal">status</tt> method.</li>
 <li><tt class="docutils literal">Barrier</tt> - synchronization primitive that can be inserted into a <tt class="docutils literal">task
 queue</tt> to make sure that all tasks previously inserted into this queue have
 completed execution. It is not needed to include <tt class="docutils literal">barrier</tt> between memory
