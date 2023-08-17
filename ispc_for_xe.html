@@ -3,21 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.16: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <title>Intel® ISPC for Xe</title>
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-1486404-4']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 <body>
@@ -136,19 +123,15 @@ Optionally you can use <tt class="docutils literal"><span class="pre">--emit-spi
 <p>To generate L0 binary, use <tt class="docutils literal"><span class="pre">--emit-zebin</span></tt> flag. When you use L0 binary you may
 want to pass some additional options to the vector backend. You can do this
 using <tt class="docutils literal"><span class="pre">--vc-options</span></tt> flag.</p>
-<p>Also two new <tt class="docutils literal">arch</tt> options were introduced: <tt class="docutils literal">xe32</tt> and <tt class="docutils literal">xe64</tt>.  <tt class="docutils literal">xe64</tt>
-is default and corresponds to 64-bit host and has 64-bit pointer size, <tt class="docutils literal">xe32</tt>
-corresponds to 32-bit host and has 32-bit pointer size.</p>
+<p>When targeting Xe targets, <tt class="docutils literal">xe64</tt> architecture must be used. It corresponds to
+64-bit host and has 64-bit pointer size. We don't support 32-bit pointers for Xe
+targets.</p>
 <p>To generate LLVM bitcode, use the <tt class="docutils literal"><span class="pre">--emit-llvm</span></tt> flag.  To generate LLVM
 bitcode in textual form, use the <tt class="docutils literal"><span class="pre">--emit-llvm-text</span></tt> flag.</p>
 <p>Optimizations are on by default; they can be turned off with <tt class="docutils literal"><span class="pre">-O0</span></tt>.</p>
 <p>Generating a text assembly file using <tt class="docutils literal"><span class="pre">--emit-asm</span></tt> is not supported yet.  See
 <a class="reference internal" href="#how-to-get-an-assembly-file-from-spir-v">How to Get an Assembly File from SPIR-V?</a> section about how to get the
 assembly from SPIR-V file.</p>
-<p>By default, 64-bit addressing is used. You can change it to 32-bit addressing by
-using <tt class="docutils literal"><span class="pre">--addressing=32</span></tt> or <tt class="docutils literal"><span class="pre">--arch=xe32</span></tt> however pointer size should be the
-same for host and device code so 32-bit addressing will only work with 32-bit
-host programs.</p>
 <p>There is a new <tt class="docutils literal">link</tt> mode in <tt class="docutils literal">ispc</tt> allowing to link several LLVM bitcode
 or SPIR-V files to selected output format: LLVM bitcode (default), LLVM bitcode
 text or SPIR-V.</p>

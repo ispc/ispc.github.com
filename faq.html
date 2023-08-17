@@ -3,21 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.16: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <title>Frequently Asked Questions About Intel® ISPC</title>
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-1486404-4']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 <body>
@@ -396,15 +383,15 @@ argument.</p>
 ispc foo.ispc -o foo.o --target=sse2,sse4-x2,avx-x2
 </pre>
 <p>Then four object files will be generated: <tt class="docutils literal">foo_sse2.o</tt>, <tt class="docutils literal">foo_sse4.o</tt>,
-<tt class="docutils literal">foo_avx.o</tt>, and <tt class="docutils literal">foo.o</tt> <a class="footnote-reference" href="#id2" id="id1">[1]</a>. Link all of these into your executable, and
+<tt class="docutils literal">foo_avx.o</tt>, and <tt class="docutils literal">foo.o</tt> <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[1]</a>. Link all of these into your executable, and
 when you call a function in <tt class="docutils literal">foo.ispc</tt> from your application code,
 <tt class="docutils literal">ispc</tt> will determine which instruction sets are supported by the CPU the
 code is running on and will call the most appropriate version of the
 function available.</p>
-<table class="docutils footnote" frame="void" id="id2" rules="none">
+<table class="docutils footnote" frame="void" id="footnote-1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Similarly, if you choose to generate assembly language output or
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-1">[1]</a></td><td>Similarly, if you choose to generate assembly language output or
 LLVM bitcode output, multiple versions of those files will be created.</td></tr>
 </tbody>
 </table>
