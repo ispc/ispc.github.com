@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
 <title>Intel® ISPC User's Guide</title>
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
@@ -105,6 +105,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-19-0">Updating ISPC Programs For Changes In ISPC 1.19.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-20-0">Updating ISPC Programs For Changes In ISPC 1.20.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-21-0">Updating ISPC Programs For Changes In ISPC 1.21.0</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-22-0">Updating ISPC Programs For Changes In ISPC 1.22.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -542,6 +543,14 @@ using the <cite>--[no-]wrap-signed-int</cite> compiler switch. The default behav
 behavior for signed integers, though it may limit some compiler optimizations.</p>
 <p>Template function specializations with explicit template arguments were introduced to the
 language, please refer to <a class="reference internal" href="#function-templates">Function Templates</a> section for more details.</p>
+</div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-22-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.22.0</h2>
+<p>Template operators with explicit specializations and instantiations were introduced to
+the language. The usage of different function specifiers with templates were fixed and
+aligned, please refer to <a class="reference internal" href="#function-templates">Function Templates</a> section for more details.</p>
+<p>Now, command-line switch <cite>--dwarf-version=&lt;n&gt;</cite> forces DWARF format debug info generation
+on Windows. It allows to debug ISPC code linked with MinGW generated code.</p>
 </div>
 </div>
 <div class="section" id="getting-started-with-ispc">
@@ -1008,8 +1017,10 @@ The implementation may rely either on native hardware support or emulation.</td>
 <p>The <tt class="docutils literal"><span class="pre">-g</span></tt> command-line flag can be supplied to the compiler, which causes
 it to generate debugging symbols.  The debug info is emitted in DWARF format
 on Linux* and macOS*.  The version of the DWARF can be controlled by
-command-line switch <tt class="docutils literal"><span class="pre">--dwarf-version={2,3,4}</span></tt>.  On Windows* CodeView format
-is used (not PDB), it's natively supported by Microsoft Visual Studio*.
+command-line switch <tt class="docutils literal"><span class="pre">--dwarf-version={2,3,4,5}</span></tt>.  On Windows* CodeView format
+is used by default (it's natively supported by Microsoft Visual Studio*) but
+this switch can force the generation of DWARF format that can be used, e.g.,
+together with MinGW generated code.
 Running <tt class="docutils literal">ispc</tt> programs in the debugger, setting breakpoints, printing out
 variables is just the same as debugging C/C++ programs.  Similarly, you can
 directly step up and down the call stack between <tt class="docutils literal">ispc</tt> code and C/C++
@@ -3464,6 +3475,23 @@ template &lt;&gt; int goo&lt;int&gt;(int a1, int a2) {
   return a1 * a2;
 }
 </pre>
+<p>You can use limited number of function specifiers with function templates:</p>
+<ul class="simple">
+<li>The keywords <tt class="docutils literal">export</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">typedef</tt>, <tt class="docutils literal">extern &quot;C&quot;</tt> and <tt class="docutils literal">extern &quot;SYCL&quot;</tt>
+are not allowed.</li>
+<li>Calling conventions such as <tt class="docutils literal">__vectorcall</tt> and <tt class="docutils literal">__regcall</tt> must be used in conjunction
+with <tt class="docutils literal">extern &quot;C&quot;</tt> or <tt class="docutils literal">extern &quot;SYCL&quot;</tt>, so they are not allowed as well.</li>
+<li>Performance hints like <tt class="docutils literal">inline</tt> and <tt class="docutils literal">noinline</tt> are allowed. Primary template, template
+specializations and explicit instantiations may have different <tt class="docutils literal">inline</tt> hints.</li>
+<li>Storage types <tt class="docutils literal">extern</tt> and <tt class="docutils literal">static</tt> are allowed. Template specializations and explicit
+instantiations must share the same storage type as the primary template.
+If not specified, the storage type will be inherited from the primary template.</li>
+<li><tt class="docutils literal">unmasked</tt> specifier is allowed. Template specializations and explicit instantiations
+must maintain consistency with the primary template regarding the <tt class="docutils literal">unmasked</tt> specifier.
+You cannot specify <tt class="docutils literal">unmasked</tt> for a template specialization if it was not previously
+specified for the primary template. If unspecified, it will be inherited from the
+primary template.</li>
+</ul>
 </div>
 </div>
 <div class="section" id="the-ispc-standard-library">
