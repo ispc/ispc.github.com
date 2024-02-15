@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <title>Intel® ISPC User's Guide</title>
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
@@ -106,6 +106,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-20-0">Updating ISPC Programs For Changes In ISPC 1.20.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-21-0">Updating ISPC Programs For Changes In ISPC 1.21.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-22-0">Updating ISPC Programs For Changes In ISPC 1.22.0</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-23-0">Updating ISPC Programs For Changes In ISPC 1.23.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -551,6 +552,28 @@ the language. The usage of different function specifiers with templates were fix
 aligned, please refer to <a class="reference internal" href="#function-templates">Function Templates</a> section for more details.</p>
 <p>Now, command-line switch <cite>--dwarf-version=&lt;n&gt;</cite> forces DWARF format debug info generation
 on Windows. It allows to debug ISPC code linked with MinGW generated code.</p>
+</div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-23-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.23.0</h2>
+<p>This release contains the following changes that may affect compatibility with
+older versions:</p>
+<ul class="simple">
+<li><cite>true</cite> <cite>bool</cite> values in storage were changed from <cite>-1</cite> to <cite>1</cite> to match C/C++ ABI.
+Previously, ISPC treated <cite>bool</cite> values similarly to C/C++ in terms of size, but
+incorrectly interpreted their actual values. This meant that <cite>true</cite> in ISPC
+might not have translated correctly to true in C/C++. This issue was introduced
+in version 1.13.0. Starting now, ISPC correctly stores and interprets <cite>true</cite>
+values in a way that aligns with C/C++ expectations.</li>
+</ul>
+<p>A couple of improvements have been made to variables initialization:</p>
+<ul class="simple">
+<li>Variables with const qualifiers can be initialized using the values of
+previously initialized const variables including arithmetic operations above
+them. It now works also with varying types.</li>
+<li>Enumeration type values can be used as constants.</li>
+</ul>
+<p>The result of selection operator can now be used as lvalue if it has suitable
+type.</p>
 </div>
 </div>
 <div class="section" id="getting-started-with-ispc">
@@ -2464,6 +2487,15 @@ guarded with <tt class="docutils literal">#if TARGET_WIDTH</tt>:</p>
     ...
 #endif
 </pre>
+<p>However, there is a special case when the only one value is in braces. All
+vector elements are initialized with this value:</p>
+<pre class="literal-block">
+varying int x = { 3, };
+</pre>
+<p>It is effectively equivalent to:</p>
+<pre class="literal-block">
+varying int x = 3;
+</pre>
 <p>Arrays can be initialized with individual element values in braces:</p>
 <pre class="literal-block">
 int bar[2][4] = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 } };
@@ -2487,6 +2519,16 @@ the expected syntax:</p>
 struct Foo { int x; float bar[3]; };
 Foo fa[2] = { { 1, { 2, 3, 4 } }, { 10, { 20, 30, 40 } } };
 // now, fa[1].bar[2] == 40, and so forth
+</pre>
+<p>Variables with const qualifiers can be initialized using the values of
+previously initialized const variables including arithmetic operations above
+them:</p>
+<pre class="literal-block">
+const uniform int x = 1;
+const uniform int y = 1 + 2;
+...
+const varying int x = { 1, 2, 3, 2 + 2 };
+const varying int y = x * 2;
 </pre>
 </div>
 <div class="section" id="expressions">
