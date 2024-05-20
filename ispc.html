@@ -107,6 +107,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-21-0">Updating ISPC Programs For Changes In ISPC 1.21.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-22-0">Updating ISPC Programs For Changes In ISPC 1.22.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-23-0">Updating ISPC Programs For Changes In ISPC 1.23.0</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-24-0">Updating ISPC Programs For Changes In ISPC 1.24.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -210,6 +211,8 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#math-functions">Math Functions</a><ul>
 <li><a class="reference internal" href="#basic-math-functions">Basic Math Functions</a></li>
 <li><a class="reference internal" href="#transcendental-functions">Transcendental Functions</a></li>
+<li><a class="reference internal" href="#saturating-arithmetic">Saturating Arithmetic</a></li>
+<li><a class="reference internal" href="#dot-product">Dot product</a></li>
 <li><a class="reference internal" href="#pseudo-random-numbers">Pseudo-Random Numbers</a></li>
 <li><a class="reference internal" href="#random-numbers">Random Numbers</a></li>
 </ul>
@@ -575,6 +578,34 @@ them. It now works also with varying types.</li>
 <p>The result of selection operator can now be used as lvalue if it has suitable
 type.</p>
 </div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-24-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.24.0</h2>
+<p>This release extends the standard library with new functions performing dot
+product operations. These functions utilize specific hardware instructions from
+AVX-VNNI and AVX512-VNNI. The ISPC targets that support native VNNI
+instructions are <tt class="docutils literal"><span class="pre">avx2vnni-i32x*</span></tt>, <tt class="docutils literal"><span class="pre">avx512icl-*</span></tt> and <tt class="docutils literal"><span class="pre">avx512spr-*</span></tt>. The
+first two targets (<tt class="docutils literal"><span class="pre">avx2vnni-*</span></tt> and <tt class="docutils literal"><span class="pre">avx512icl-*</span></tt>) were introduced in this
+release. Please refer to <a class="reference internal" href="#dot-product">Dot product</a> for more details.</p>
+<p>Now, uniform integers and enums can be used as non-type template parameters.
+Please refer to <a class="reference internal" href="#function-templates">Function Templates</a> for more details.</p>
+<p>The release contains the following changes that may affect compatibility with
+older versions:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">--pic</span></tt> command line flag now corresponds to the <tt class="docutils literal"><span class="pre">-fpic</span></tt> flag of Clang
+and GCC, whereas the newly introduced <tt class="docutils literal"><span class="pre">--PIC</span></tt> corresponds to <tt class="docutils literal"><span class="pre">-fPIC</span></tt>.
+The previous behavior of <tt class="docutils literal"><span class="pre">--pic</span></tt> flag corresponded to <tt class="docutils literal"><span class="pre">-fPIC</span></tt> flag. In
+some cases, to preserve previous behavior, users may need to switch to
+<tt class="docutils literal"><span class="pre">--PIC</span></tt>.</li>
+<li>Newly introduced macro definitions for numeric limits can cause conflicts
+with user-defined macros with same names. When this happens, ISPC emits
+warnings about macro redefinition. Please, refer to <a class="reference internal" href="#the-preprocessor">The Preprocessor</a> for
+the full list of macro definitions.</li>
+<li>The implementation of <tt class="docutils literal">round</tt> standard library function was aligned across
+all targets. It may potentially affect the results of the code that uses this
+function for the following targets: <tt class="docutils literal"><span class="pre">avx2-i16x16</span></tt>, <tt class="docutils literal"><span class="pre">avx2-i8x32</span></tt> and all
+<tt class="docutils literal">avx512</tt> targets. Please, refer to <a class="reference internal" href="#basic-math-functions">Basic Math Functions</a> for more details.</li>
+</ul>
+</div>
 </div>
 <div class="section" id="getting-started-with-ispc">
 <h1>Getting Started with ISPC</h1>
@@ -735,8 +766,11 @@ that compile to relatively inefficient code.  These warnings can be
 silenced with the <tt class="docutils literal"><span class="pre">--wno-perf</span></tt> flag (or by using <tt class="docutils literal"><span class="pre">--woff</span></tt>, which turns
 off all compiler warnings.)  Furthermore, <tt class="docutils literal"><span class="pre">--werror</span></tt> can be provided to
 direct the compiler to treat any warnings as errors.</p>
-<p>Position-independent code (for use in shared libraries) is generated if the
-<tt class="docutils literal"><span class="pre">--pic</span></tt> command-line argument is provided.</p>
+<p>The <tt class="docutils literal"><span class="pre">--pic</span></tt> flag can be used to generate position-independent code suitable
+for use in a shared library. The <tt class="docutils literal"><span class="pre">--PIC</span></tt> flag can be used to generate
+position-independent code suitable for dynamic linking avoiding any limit on
+the size of the global offset table. When no <tt class="docutils literal"><span class="pre">--pic</span></tt> or <tt class="docutils literal"><span class="pre">--PIC</span></tt> flag is
+provided, the compiler enforces target-specific default behavior.</p>
 </div>
 <div class="section" id="selecting-the-compilation-target">
 <h2>Selecting The Compilation Target</h2>
@@ -901,8 +935,10 @@ in the new scheme:</p>
 <tt class="docutils literal"><span class="pre">sse4.1-i32x8</span></tt>, <tt class="docutils literal"><span class="pre">sse4.2-i8x16</span></tt>, <tt class="docutils literal"><span class="pre">sse4.2-i16x8</span></tt>, <tt class="docutils literal"><span class="pre">sse4.2-i32x4</span></tt>, <tt class="docutils literal"><span class="pre">sse4.2-i32x8</span></tt>,
 <tt class="docutils literal"><span class="pre">avx1-i32x4</span></tt>, <tt class="docutils literal"><span class="pre">avx1-i32x8</span></tt>, <tt class="docutils literal"><span class="pre">avx1-i32x16</span></tt>, <tt class="docutils literal"><span class="pre">avx1-i64x4</span></tt>, <tt class="docutils literal"><span class="pre">avx2-i8x32</span></tt>,
 <tt class="docutils literal"><span class="pre">avx2-i16x16</span></tt>, <tt class="docutils literal"><span class="pre">avx2-i32x4</span></tt>, <tt class="docutils literal"><span class="pre">avx2-i32x8</span></tt>, <tt class="docutils literal"><span class="pre">avx2-i32x16</span></tt>, <tt class="docutils literal"><span class="pre">avx2-i64x4</span></tt>,
+<tt class="docutils literal"><span class="pre">avx2vnni-i32x4</span></tt>, <tt class="docutils literal"><span class="pre">avx2vnni-i32x8</span></tt>, <tt class="docutils literal"><span class="pre">avx2vnni-i32x16</span></tt>,
 <tt class="docutils literal"><span class="pre">avx512knl-x16</span></tt>, <tt class="docutils literal"><span class="pre">avx512skx-x4</span></tt>, <tt class="docutils literal"><span class="pre">avx512skx-x8</span></tt>, <tt class="docutils literal"><span class="pre">avx512skx-x16</span></tt>, <tt class="docutils literal"><span class="pre">avx512skx-x32</span></tt>,
-<tt class="docutils literal"><span class="pre">avx512skx-x64</span></tt>, <tt class="docutils literal"><span class="pre">avx512spr-x4</span></tt>, <tt class="docutils literal"><span class="pre">avx512spr-x8</span></tt>, <tt class="docutils literal"><span class="pre">avx512spr-x16</span></tt>, <tt class="docutils literal"><span class="pre">avx512spr-x32</span></tt>,
+<tt class="docutils literal"><span class="pre">avx512skx-x64</span></tt>, <tt class="docutils literal"><span class="pre">avx512icl-x4</span></tt>, <tt class="docutils literal"><span class="pre">avx512icl-x8</span></tt>, <tt class="docutils literal"><span class="pre">avx512icl-x16</span></tt>, <tt class="docutils literal"><span class="pre">avx512icl-x32</span></tt>,
+<tt class="docutils literal"><span class="pre">avx512icl-x64</span></tt>, <tt class="docutils literal"><span class="pre">avx512spr-x4</span></tt>, <tt class="docutils literal"><span class="pre">avx512spr-x8</span></tt>, <tt class="docutils literal"><span class="pre">avx512spr-x16</span></tt>, <tt class="docutils literal"><span class="pre">avx512spr-x32</span></tt>,
 <tt class="docutils literal"><span class="pre">avx512spr-x64</span></tt>.</p>
 <p>Neon targets:</p>
 <p><tt class="docutils literal"><span class="pre">neon-i8x16</span></tt>, <tt class="docutils literal"><span class="pre">neon-i16x8</span></tt>, <tt class="docutils literal"><span class="pre">neon-i32x4</span></tt>, <tt class="docutils literal"><span class="pre">neon-i32x8</span></tt>.</p>
@@ -1007,6 +1043,26 @@ The implementation may rely either on native hardware support or emulation.</td>
 <tr><td>ISPC_LLVM_INTRINSICS_ENABLED</td>
 <td>1</td>
 <td>The macro is defined if LLVM intrinsics support is enabled</td>
+</tr>
+<tr><td>INT8_MIN, INT16_MIN, INT32_MIN, INT64_MIN</td>
+<td>&nbsp;</td>
+<td>Minimum value of signed integer types of the corresponding size</td>
+</tr>
+<tr><td>INT8_MAX, INT16_MAX, INT32_MAX, INT64_MAX</td>
+<td>&nbsp;</td>
+<td>Maximum value of signed integer types of the corresponding size</td>
+</tr>
+<tr><td>UINT8_MAX, UINT16_MAX, UINT32_MAX, UINT64_MAX</td>
+<td>&nbsp;</td>
+<td>Maximum value of unsigned integer types of the corresponding size</td>
+</tr>
+<tr><td>FLT16_MIN, FLT_MIN, DBL_MIN</td>
+<td>&nbsp;</td>
+<td>Smallest positive normal number of the corresponding floating-point type</td>
+</tr>
+<tr><td>FLT16_MAX, FLT_MAX, DBL_MAX</td>
+<td>&nbsp;</td>
+<td>Largest normal number of the corresponding floating-point type</td>
 </tr>
 </tbody>
 </table>
@@ -3426,10 +3482,10 @@ function call syntax (i.e. <tt class="docutils literal">add(1, 2);</tt>).</li>
 <tt class="docutils literal">template int <span class="pre">add&lt;int&gt;(int</span> a, int b);</tt>).</li>
 <li>Explicit template function specializations (i.e.
 <tt class="docutils literal">template&lt;&gt; int <span class="pre">add&lt;int&gt;(int</span> a, int b) { return a - b;}</tt>).</li>
+<li>Non-type template parametrs (integral and enumeration types).</li>
 </ul>
 <p>What is currently not supported, but is planned to be supported:</p>
 <ul class="simple">
-<li>Non-type template parameters.</li>
 <li>Default values for template parameters.</li>
 <li>Template arguments deduction in template function specializations.</li>
 </ul>
@@ -3517,6 +3573,37 @@ template &lt;&gt; int goo&lt;int&gt;(int a1, int a2) {
   return a1 * a2;
 }
 </pre>
+<p>For non-type template parameters, the following rules apply:</p>
+<ul>
+<li><p class="first">Uniform integral types and enum types can be used as non-type template parameters. Unbound types are treated as uniform.
+For example:</p>
+<pre class="literal-block">
+template &lt;int N&gt; int foo(int a) { // N is uniform int
+  return a * N;
+}
+
+int bar() {
+  return foo&lt;2&gt;(3); // returns 6
+}
+
+enum AB { A = 1, B = 2 };
+template &lt;AB ab&gt; int baz(int a) {
+  return a * ab;
+}
+
+int qux() {
+  return baz&lt;B&gt;(3); // returns 6
+}
+</pre>
+</li>
+<li><p class="first">Varying types are not allowed.</p>
+</li>
+<li><p class="first">Integral constants, enumeration constants and template parameters (in the context of the nested templates)
+can be used as non-type template arguments. Constant expressions are not allowed.</p>
+</li>
+<li><p class="first">Partial specialization of function templates with non-type template parameters is not allowed.</p>
+</li>
+</ul>
 <p>You can use limited number of function specifiers with function templates:</p>
 <ul class="simple">
 <li>The keywords <tt class="docutils literal">export</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">typedef</tt>, <tt class="docutils literal">extern &quot;C&quot;</tt> and <tt class="docutils literal">extern &quot;SYCL&quot;</tt>
@@ -3704,9 +3791,16 @@ uniform unsigned int signbits(uniform float x)
 unsigned int64 signbits(double x)
 uniform unsigned int64 signbits(uniform double x)
 </pre>
-<p>Standard rounding functions are provided for <tt class="docutils literal">float16</tt>, <tt class="docutils literal">float</tt> and <tt class="docutils literal">double</tt>
-types.  (On machines that support Intel®SSE or Intel® AVX, these functions all
-map to variants of the <tt class="docutils literal">roundss</tt> and <tt class="docutils literal">roundps</tt> instructions, respectively.)</p>
+<p>The standard library provides four rounding functions: <tt class="docutils literal">round</tt>, <tt class="docutils literal">floor</tt>,
+<tt class="docutils literal">ceil</tt> and <tt class="docutils literal">trunc</tt> for <tt class="docutils literal">float16</tt>, <tt class="docutils literal">float</tt> and <tt class="docutils literal">double</tt> data types. On
+machines that support Intel®SSE or Intel® AVX, these functions all map to a
+single instruction, specifically a variant of the <tt class="docutils literal">roundss</tt> and <tt class="docutils literal">roundps</tt>
+instructions. This offers enhanced performance, despite a minor semantic
+difference in the <tt class="docutils literal">round</tt> function when compared to the <tt class="docutils literal">C</tt> math library
+<tt class="docutils literal">round</tt> function. It computes the nearest integer value, rounding halfway
+cases to nearest even integer, i.e., corresponds to the <tt class="docutils literal">C</tt> math library
+<tt class="docutils literal">roundeven</tt> function. These function operate regardless of the current
+rounding mode and do not signal precision exceptions.</p>
 <pre class="literal-block">
 float round(float x)
 uniform float round(uniform float x)
@@ -3885,6 +3979,35 @@ unsigned int8 saturating_div(varying unsigned int8 a,varying unsigned int8 b)
 <p>In addition to the <tt class="docutils literal">int8</tt> variants of saturating arithmetic functions listed
 above, there are versions that supports <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt> and <tt class="docutils literal">int64</tt>
 values as well.</p>
+</div>
+<div class="section" id="dot-product">
+<h2>Dot product</h2>
+<p>ISPC supports dot product operations for unsigned and signed <tt class="docutils literal">int8</tt> and <tt class="docutils literal">int16</tt> data types,
+leveraging the AVX-VNNI and AVX512-VNNI instruction sets. The ISPC targets that support
+native VNNI instruction sets are <tt class="docutils literal"><span class="pre">avx2vnni-i32x*</span></tt>, <tt class="docutils literal"><span class="pre">avx512icl-i32x*</span></tt>, and <tt class="docutils literal"><span class="pre">avx512spr-i32x*</span></tt>.
+For other targets these operations are emulated.
+These dot product operations are specifically designed to operate on <em>packed</em> input vectors,
+necessitating proper packing of input vectors by the programmer before use.</p>
+<p>For 8-bit Integer Vectors:</p>
+<p>The functions multiply groups of four unsigned 8-bit integers packed in <tt class="docutils literal">a</tt> with corresponding
+four signed 8-bit integers packed in <tt class="docutils literal">b</tt>, resulting in four intermediate signed 16-bit values.
+The sum of these values, in combination with the <tt class="docutils literal">acc</tt> accumulator, is then returned as the final result.</p>
+<pre class="literal-block">
+varying int32 dot4add_u8i8packed(varying uint32 a, varying uint32 b,
+                                 varying int32 acc)
+varying int32 dot4add_u8i8packed_sat(varying uint32 a, varying uint32 b,
+                                     varying int32 acc) // saturate the result
+</pre>
+<p>For 16-bit Integer Vectors:</p>
+<p>The functions multiply groups of two signed 16-bit integers packed in <tt class="docutils literal">a</tt> with corresponding
+two signed 16-bit integers packed in <tt class="docutils literal">b</tt>, yielding two intermediate signed 32-bit results.
+The sum of these results, combined with the <tt class="docutils literal">acc</tt> accumulator, is then returned as the final result.</p>
+<pre class="literal-block">
+varying int32 dot2add_i16packed(varying uint32 a, varying uint32 b,
+                                varying int32 acc)
+varying int32 dot2add_i16packed_sat(varying uint32 a, varying uint32 b,
+                                    varying int32 acc) // saturate the result
+</pre>
 </div>
 <div class="section" id="pseudo-random-numbers">
 <h2>Pseudo-Random Numbers</h2>
