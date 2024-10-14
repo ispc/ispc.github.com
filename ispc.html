@@ -108,6 +108,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-22-0">Updating ISPC Programs For Changes In ISPC 1.22.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-23-0">Updating ISPC Programs For Changes In ISPC 1.23.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-24-0">Updating ISPC Programs For Changes In ISPC 1.24.0</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-25-0">Updating ISPC Programs For Changes In ISPC 1.25.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -121,6 +122,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#selecting-32-or-64-bit-addressing">Selecting 32 or 64 Bit Addressing</a></li>
 <li><a class="reference internal" href="#the-preprocessor">The Preprocessor</a></li>
 <li><a class="reference internal" href="#debugging">Debugging</a></li>
+<li><a class="reference internal" href="#optimization-settings">Optimization Settings</a></li>
 <li><a class="reference internal" href="#other-ways-of-passing-arguments-to-ispc">Other ways of passing arguments to ISPC</a></li>
 </ul>
 </li>
@@ -168,6 +170,12 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 </ul>
 </li>
 <li><a class="reference internal" href="#declarations-and-initializers">Declarations and Initializers</a></li>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#noescape">noescape</a></li>
+<li><a class="reference internal" href="#address-space">address_space</a></li>
+<li><a class="reference internal" href="#unmangled">unmangled</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#expressions">Expressions</a><ul>
 <li><a class="reference internal" href="#dynamic-memory-allocation">Dynamic Memory Allocation</a></li>
 <li><a class="reference internal" href="#type-casting">Type Casting</a></li>
@@ -400,7 +408,7 @@ older versions.</p>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-10-0">
 <h2>Updating ISPC Programs For Changes In ISPC 1.10.0</h2>
 <p>The release has several new language features, which do not affect compatibility.
-Namely, new streaming stores, aos_to_soa/soa_to_aos instrinsics for 64 bit types,
+Namely, new streaming stores, aos_to_soa/soa_to_aos intrinsics for 64 bit types,
 and a &quot;#pragma ignore&quot;.</p>
 <p>One change that potentially may affect compatibility - changed size of short vector
 types. If you use short vector types for data passed between C/C++ and ISPC, you
@@ -439,7 +447,7 @@ older versions:</p>
 <ul class="simple">
 <li>Representation of <tt class="docutils literal">bool</tt> type in storage was changed from target-specific to
 one byte per boolean value.  So size of <tt class="docutils literal">varying bool</tt> is target width (in
-bytes), and size of <tt class="docutils literal">unform bool</tt> is one.  This definition is compatible
+bytes), and size of <tt class="docutils literal">uniform bool</tt> is one.  This definition is compatible
 with C/C++, hence improves interoperability.</li>
 <li>type aliases for unsigned types were added: <tt class="docutils literal">uint8</tt>, <tt class="docutils literal">uint16</tt>, <tt class="docutils literal">uint32</tt>,
 <tt class="docutils literal">uint64</tt>, and <tt class="docutils literal">uint</tt>.  To detect if these types are supported you can
@@ -474,7 +482,7 @@ unroll pragmas: &quot;#pragma unroll&quot; and &quot;#pragma nounroll&quot;.</p>
 </div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-16-0">
 <h2>Updating ISPC Programs For Changes In ISPC 1.16.0</h2>
-<p>The release has several new functions in the standard library, that can possbily
+<p>The release has several new functions in the standard library, that can possibly
 affect compatibility:</p>
 <ul class="simple">
 <li><tt class="docutils literal">alloca()</tt> - refer to <a class="reference internal" href="#stack-memory-allocation">Stack Memory Allocation</a> for more details.</li>
@@ -524,7 +532,7 @@ was added to preserve this behavior.</p>
 ISPC_TARGET_AVX512SPR was added.</li>
 <li>xehpc-x16 and xehpc-x32 for Intel® Data Center GPU Max (codename Ponte Vecchio).</li>
 </ul>
-<p>Function templates were introduces to the langauge, please refer to <a class="reference internal" href="#function-templates">Function
+<p>Function templates were introduces to the language, please refer to <a class="reference internal" href="#function-templates">Function
 Templates</a> section for more details. Two new keywords were introduced: <tt class="docutils literal">template</tt>
 and <tt class="docutils literal">typename</tt>.</p>
 <p><tt class="docutils literal">ISPC_FP16_SUPPORTED</tt> macro was introduced for the targets supporting FP16.</p>
@@ -605,6 +613,33 @@ all targets. It may potentially affect the results of the code that uses this
 function for the following targets: <tt class="docutils literal"><span class="pre">avx2-i16x16</span></tt>, <tt class="docutils literal"><span class="pre">avx2-i8x32</span></tt> and all
 <tt class="docutils literal">avx512</tt> targets. Please, refer to <a class="reference internal" href="#basic-math-functions">Basic Math Functions</a> for more details.</li>
 </ul>
+</div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-25-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.25.0</h2>
+<p>The ISPC language has been extended to support the <tt class="docutils literal"><span class="pre">__attribute__(())</span></tt> syntax
+for variable and function declarations. The following attributes are now
+supported: <tt class="docutils literal">noescape</tt>, <tt class="docutils literal">address_space(N)</tt>, <tt class="docutils literal">external_only</tt>, and
+<tt class="docutils literal">unmangled</tt>. The macro <tt class="docutils literal">ISPC_ATTRIBUTE_SUPPORTED</tt> is defined if the ISPC
+compiler supports attribute syntax. Please refer to the <a class="reference internal" href="#attributes">Attributes</a> section
+for more details and the full list of supported attributes.</p>
+<p>This release introduces support for the <tt class="docutils literal"><span class="pre">-ffunction-sections</span></tt> command-line
+flag, which generates each function in a separate section. This flag is useful
+for reducing the size of the final executable by removing unused functions.
+Please refer to the <a class="reference internal" href="#basic-command-line-options">Basic Command-line Options</a> section for more details.</p>
+<p>In some cases, such as shared libraries, the <tt class="docutils literal"><span class="pre">-ffunction-sections</span></tt> flag alone
+may not be sufficient to remove unused ISPC copies of exported functions.  To
+address this, you can use the <tt class="docutils literal">external_only</tt> function attribute.  This
+attribute can only be applied to exported functions and instructs the compiler
+to remove the ISPC version of the function.  For more information, please refer
+to the <a class="reference internal" href="#attributes">Attributes</a> and <a class="reference internal" href="#functions-and-function-calls">Functions and Function Calls</a> sections.</p>
+<p>Template support for short vectors and array declarations has been extended.
+You can now use both type and non-type parameters to specify the type and
+dimensions of these types.</p>
+<p>For ARM targets, IEEE 754-compliant instructions (<tt class="docutils literal">fminnm</tt> and <tt class="docutils literal">vminnm</tt>) are
+now generated for min/max operations, replacing the previous use of <tt class="docutils literal">fmin</tt> and
+<tt class="docutils literal">vmin</tt>.</p>
+<p>The <tt class="docutils literal"><span class="pre">avx512knl-x16</span></tt>, <tt class="docutils literal"><span class="pre">gen9-x8</span></tt>, and <tt class="docutils literal"><span class="pre">gen9-x16</span></tt> targets are deprecated and
+will be removed in future releases.</p>
 </div>
 </div>
 <div class="section" id="getting-started-with-ispc">
@@ -771,6 +806,13 @@ for use in a shared library. The <tt class="docutils literal"><span class="pre">
 position-independent code suitable for dynamic linking avoiding any limit on
 the size of the global offset table. When no <tt class="docutils literal"><span class="pre">--pic</span></tt> or <tt class="docutils literal"><span class="pre">--PIC</span></tt> flag is
 provided, the compiler enforces target-specific default behavior.</p>
+<p>The <tt class="docutils literal"><span class="pre">-ffunction-sections</span></tt> flag can be used to generate each function in a
+separate section. This flag is useful for reducing the size of the final
+executable by removing unused functions when it is combined with linker flag
+that removes unused sections: <tt class="docutils literal"><span class="pre">--gc-sections</span></tt> for <tt class="docutils literal">GNU ld</tt> and <tt class="docutils literal">/OPT:REF</tt>
+for <tt class="docutils literal">MSVC link.exe</tt>. On macOS, this flag does not have any effect (as in
+clang) because dead stripping <tt class="docutils literal"><span class="pre">-dead_strip</span></tt> for <tt class="docutils literal">ld64</tt> works differently.
+The <tt class="docutils literal"><span class="pre">-fno-function-sections</span></tt> disables this behavior.</p>
 </div>
 <div class="section" id="selecting-the-compilation-target">
 <h2>Selecting The Compilation Target</h2>
@@ -870,7 +912,7 @@ supports.</p>
 <p>The mask size may be 8, 16, 32, or 64 bits, though not all combinations of ISA
 and mask size are supported.  For best performance, the best general
 approach is to choose a mask size equal to the size of the most common
-datatype in your programs.  For example, if most of the computations are done using
+data type in your programs.  For example, if most of the computations are done using
 32-bit floating-point values, an <tt class="docutils literal">i32</tt> target is appropriate.  However,
 if you're mostly doing computation with 8-bit data types, <tt class="docutils literal">i8</tt> is a better choice.</p>
 <p>See <a class="reference internal" href="#basic-concepts-program-instances-and-gangs-of-program-instances">Basic Concepts: Program Instances and Gangs of Program Instances</a> for
@@ -1031,6 +1073,10 @@ preprocessor runs:</p>
 <td>1</td>
 <td>The macro is defined if uint8/uint16/uint32/uint64 types are defined in the <tt class="docutils literal">ispc</tt> (it's defined in 1.13.0 and later)</td>
 </tr>
+<tr><td>ISPC_ATTRIBUTE_SUPPORTED</td>
+<td>1</td>
+<td>The macro is defined if the <tt class="docutils literal">ispc</tt> compiler supports <tt class="docutils literal"><span class="pre">__attribute__(())</span></tt> syntax.</td>
+</tr>
 <tr><td>ISPC_FP16_SUPPORTED</td>
 <td>1</td>
 <td>The macro is defined if float16 type is supported by the <tt class="docutils literal">ispc</tt> target.
@@ -1120,6 +1166,54 @@ to use the <tt class="docutils literal">print</tt> statement for <tt class="docu
 <a class="reference internal" href="#output-functions">Output Functions</a> for more information.)  You can also use the ability to
 call back to application code at particular points in the program, passing
 a set of variable values to be logged or otherwise analyzed from there.</p>
+</div>
+<div class="section" id="optimization-settings">
+<h2>Optimization Settings</h2>
+<p>The <tt class="docutils literal">ispc</tt> compiler has a number of optimization settings that can be
+controlled via command-line flags. These options can be specified using the
+<cite>--opt=&lt;option&gt;</cite> flag. Below is a list of available optimization options:</p>
+<p>Available options:</p>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">disable-assertions</span></tt></p>
+<p>Remove assertion statements from the final code. This can reduce the overhead
+of runtime checks.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">disable-fma</span></tt></p>
+<p>Disable the generation of 'fused multiply-add' (FMA) instructions on targets
+that support them.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">disable-gathers</span></tt></p>
+<p>Disable the generation of gather instructions on targets that support them.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">disable-loop-unroll</span></tt></p>
+<p>Disable loop unrolling.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">disable-scatters</span></tt></p>
+<p>Disable the generation of scatter instructions on targets that support them.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">disable-zmm</span></tt></p>
+<p>Disable the use of ZMM registers for AVX512 targets in favor of YMM registers.
+This also affects the ABI. ZMM registers are 512-bit wide, while YMM registers
+are 256-bit wide.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">fast-masked-vload</span></tt></p>
+<p>Enable faster masked vector loads on SSE targets. Note that this may result in
+memory accesses beyond the end of an array, which could cause undefined
+behavior if not handled carefully.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">fast-math</span></tt></p>
+<p>Perform non-IEEE-compliant optimizations of numeric expressions. These
+optimizations may improve performance but can result in less precise results
+or different behavior compared to IEEE-compliant math.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">force-aligned-memory</span></tt></p>
+<p>Always issue &quot;aligned&quot; vector load and store instructions.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">reset-ftz-daz</span></tt></p>
+<p>Reset FTZ (Flush-to-Zero) and DAZ (Denormals-Are-Zero) flags on ISPC extern
+function entrance and restore them on return.</p>
+</li>
+</ul>
 </div>
 <div class="section" id="other-ways-of-passing-arguments-to-ispc">
 <h2>Other ways of passing arguments to ISPC</h2>
@@ -1679,7 +1773,7 @@ precision floating point constant use <tt class="docutils literal">d</tt> suffix
 <tt class="docutils literal">foreach_unique</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">noinline</tt>, <tt class="docutils literal">__regcall</tt>,
 <tt class="docutils literal">__vectorcall</tt>, <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>,
 <tt class="docutils literal">new</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">uint8</tt>, <tt class="docutils literal">uint16</tt>, <tt class="docutils literal">uint32</tt>, <tt class="docutils literal">uint64</tt>, <tt class="docutils literal">soa</tt>,
-<tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">uniform</tt>, and <tt class="docutils literal">varying</tt>.</p>
+<tt class="docutils literal">__attribute__</tt>, <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">uniform</tt>, and <tt class="docutils literal">varying</tt>.</p>
 </div>
 <div class="section" id="lexical-structure">
 <h2>Lexical Structure</h2>
@@ -1853,7 +1947,7 @@ doesn't support character constants.</p>
 <tt class="docutils literal">switch</tt>, <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">template</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">typedef</tt>,
 <tt class="docutils literal">typename</tt>, <tt class="docutils literal">uint</tt>, <tt class="docutils literal">uint8</tt>, <tt class="docutils literal">uint16</tt>, <tt class="docutils literal">uint32</tt>, <tt class="docutils literal">uint64</tt>,
 <tt class="docutils literal">uniform</tt>, <tt class="docutils literal">union</tt>, <tt class="docutils literal">unsigned</tt>, <tt class="docutils literal">varying</tt>, <tt class="docutils literal">__regcall</tt>,
-<tt class="docutils literal">__vectorcall</tt>, <tt class="docutils literal">void</tt>, <tt class="docutils literal">volatile</tt>, <tt class="docutils literal">while</tt>.</p>
+<tt class="docutils literal">__vectorcall</tt>, <tt class="docutils literal">__attribute__</tt>, <tt class="docutils literal">void</tt>, <tt class="docutils literal">volatile</tt>, <tt class="docutils literal">while</tt>.</p>
 <p><tt class="docutils literal">ispc</tt> defines the following operators and punctuation:</p>
 <table border="1" class="docutils">
 <caption>Operators</caption>
@@ -2089,9 +2183,9 @@ may be initially surprising, but it matches the form of how, for example, a
 pointer that is itself <tt class="docutils literal">const</tt> (as opposed to pointing to a <tt class="docutils literal">const</tt>
 type) is declared in C.  (Reading the declaration from right to left gives
 its meaning: a uniform pointer to a float that is varying.)</p>
-<p>A subtlety comes in in cases like the where a uniform pointer points to a
-varying datatype.  In this case, each program instance accesses a distinct
-location in memory (because the underlying varying datatype is itself laid
+<p>A subtlety comes in in cases like the where a <tt class="docutils literal">uniform</tt> pointer points to a
+<tt class="docutils literal">varying</tt> data type. In this case, each program instance accesses a distinct
+location in memory (because the underlying <tt class="docutils literal">varying</tt> data type is itself laid
 out with a separate location in memory for each program instance.)</p>
 <pre class="literal-block">
 float a;
@@ -2213,8 +2307,8 @@ Color c = (Color)CACHED;
 <p>Enumerators are implicitly converted to integer types, however, so they can
 be directly passed to routines that take integer parameters and can be used
 in expressions including integers, for example.  However, the integer
-result of such an expression must be explicitly cast back to the enumerant
-type if it to be assigned to a variable with the enumerant type.</p>
+result of such an expression must be explicitly cast back to the enumerated
+type if it to be assigned to a variable with the enumerated type.</p>
 <pre class="literal-block">
 Color c = RED;
 int nextColor = c+1;
@@ -2445,7 +2539,7 @@ void foo(struct S a, struct S b) {
 <h2>Structure of Array Types</h2>
 <p>If data can be laid out in memory so that the executing program instances
 access it via loads and stores of contiguous sections of memory, overall
-performance can be improved noticably.  One way to improve this memory
+performance can be improved noticeably.  One way to improve this memory
 access coherence is to lay out structures in &quot;structure of arrays&quot; (SOA)
 format in memory; the benefits from SOA layout are discussed in more detail
 in the <a class="reference external" href="perfguide.html#use-structure-of-arrays-layout-when-possible">Use &quot;Structure of Arrays&quot; Layout When Possible</a> section in the
@@ -2586,6 +2680,71 @@ const uniform int y = 1 + 2;
 const varying int x = { 1, 2, 3, 2 + 2 };
 const varying int y = x * 2;
 </pre>
+</div>
+<div class="section" id="attributes">
+<h2>Attributes</h2>
+<p>ISPC provides GNU style attributes syntax using <tt class="docutils literal">__attribute__</tt> keyword.
+This section contains the list of currently supported attributes.</p>
+</div>
+<div class="section" id="noescape">
+<h2>noescape</h2>
+<p><tt class="docutils literal"><span class="pre">__attribute__((noescape))</span></tt> can be placed on a function parameter of a
+uniform pointer type. It informs the compiler that the pointer cannot escape,
+i.e., no reference to the object the pointer points to, derived from the
+parameter value, will survive after the function returns. Applying this
+attribute to a varying pointer type is not supported.</p>
+<pre class="literal-block">
+uniform int *uniform global_ptr;
+
+void nonescaping(__attribute__((noescape)) uniform int * uniform ptr) {
+    // OK, because ptr doesn't escape the function
+    *ptr = 1;
+}
+
+void escaping(__attribute__((noescape)) uniform int * uniform ptr) {
+    // Not OK, because ptr escapes the function
+    uniform int *uniform global_ptr = ptr;
+}
+</pre>
+</div>
+<div class="section" id="address-space">
+<h2>address_space</h2>
+<p><tt class="docutils literal"><span class="pre">__attribute__((address_space(N)))</span></tt> is Xe specific attribute that can be
+applied to a pointer type or a reference type.  The value of this type points
+to or refers to the value allocated in the provided address space.  The address
+space is a non-negative integer value, and the default address space is 0.
+ISPC doesn't support allocation of data in address spaces other than the
+default one.  Placing this attribute to a varying pointer or reference type is
+not supported.</p>
+<pre class="literal-block">
+uniform int example(__attribute__((address_space(1))) uniform int *uniform ptr) {
+    // ptr points to value in address space 1
+    return *ptr;
+}
+
+// allocation of data in non-default address space is not supported
+__attribute__((address_space(1))) uniform int x;
+</pre>
+</div>
+<div class="section" id="unmangled">
+<h2>unmangled</h2>
+<p><tt class="docutils literal"><span class="pre">__attribute__((unmangled))</span></tt> can be applied to a function declaration to
+prevent its name from being mangled. This is useful when name mangling is not
+desired, but other qualifiers like <tt class="docutils literal">export</tt> or <tt class="docutils literal">extern</tt> are unsuitable due
+to the additional features they introduce.</p>
+<pre class="literal-block">
+__attribute__((unmangled)) void foo(int a, int b);
+</pre>
+</div>
+<div class="section" id="external-only">
+<h2>external_only</h2>
+<p><tt class="docutils literal"><span class="pre">__attribute__((external_only))</span></tt> can be applied to a function with
+<tt class="docutils literal">export</tt> qualifier. It informs the compiler that it should not generate a
+ISPC version of the function. This is useful for functions that are only called
+from C/C++ in case when the user wants to reduce the size of the generated
+code. Same effect can be achieved by using <tt class="docutils literal"><span class="pre">-ffunction-sections</span></tt> compiler
+option but not in all cases (e.g., shared libraries with ISPC code), so this
+attribute is provided as a more fine-grained control.</p>
 </div>
 <div class="section" id="expressions">
 <h2>Expressions</h2>
@@ -3108,7 +3267,12 @@ Section <a class="reference internal" href="#re-establishing-the-execution-mask"
 have the <tt class="docutils literal">export</tt> qualifier.  This causes them to have regular C linkage
 and to have their declarations included in header files, if the <tt class="docutils literal">ispc</tt>
 compiler is directed to generated a C/C++ header file for the file it
-compiled.</p>
+compiled. By default, ISPC generates both C/C++ and ISPC versions of the
+function with <tt class="docutils literal">export</tt> qualifier. In case when there is no calls from ISPC
+code to the <tt class="docutils literal">export</tt> function, the ISPC version of the function is not needed
+and can be removed either by using <tt class="docutils literal"><span class="pre">-ffunction-sections</span></tt> compiler option
+together with the linker specific option that collects garbage sections or by
+using <tt class="docutils literal"><span class="pre">__attribute__((external_only))</span></tt>.</p>
 <pre class="literal-block">
 export uniform float inc(uniform float v) {
     return v+1;
@@ -3482,7 +3646,7 @@ function call syntax (i.e. <tt class="docutils literal">add(1, 2);</tt>).</li>
 <tt class="docutils literal">template int <span class="pre">add&lt;int&gt;(int</span> a, int b);</tt>).</li>
 <li>Explicit template function specializations (i.e.
 <tt class="docutils literal">template&lt;&gt; int <span class="pre">add&lt;int&gt;(int</span> a, int b) { return a - b;}</tt>).</li>
-<li>Non-type template parametrs (integral and enumeration types).</li>
+<li>Non-type template parameters (integral and enumeration types).</li>
 </ul>
 <p>What is currently not supported, but is planned to be supported:</p>
 <ul class="simple">
@@ -3823,6 +3987,16 @@ use Newton-Raphson.</p>
 float rcp_fast(float v)
 uniform float rcp_fast(uniform float v)
 </pre>
+<p>The <tt class="docutils literal">fmod()</tt> functions compute the floating-point remainder of the division
+operation x/y. It's semantics is equivalent to C/C++ lib functions.</p>
+<pre class="literal-block">
+float16 fmod(float16 x, float16 y)
+uniform float16 fmod(uniform float16 x, uniform float16 y)
+float fmod(float x, float y)
+uniform float fmod(uniform float x, uniform float y)
+double fmod(double x, double y)
+uniform double fmod(uniform double x, uniform double y)
+</pre>
 <p>A standard set of minimum and maximum functions is available for all ispc
 standard types.  These functions also map to corresponding intrinsic functions.</p>
 <pre class="literal-block">
@@ -3953,7 +4127,7 @@ uniform float frexp(uniform float x,
 </div>
 <div class="section" id="saturating-arithmetic">
 <h2>Saturating Arithmetic</h2>
-<p>A saturation (no overflow possible) addition, substraction, multiplication and
+<p>A saturation (no overflow possible) addition, subtraction, multiplication and
 division of all integer types are provided by the <tt class="docutils literal">ispc</tt> standard library.</p>
 <pre class="literal-block">
 int8 saturating_add(uniform int8 a, uniform int8 b)
@@ -4022,7 +4196,7 @@ void seed_rng(uniform RNGState * uniform state, uniform int seed)
 <p>Note that if the same <tt class="docutils literal">varying</tt> seed value is used for all of the program
 instances (e.g. <tt class="docutils literal">RNGState state; <span class="pre">seed_rng(&amp;state,</span> 1);</tt>), then all of the
 program instances in the gang will see the same sequence of pseudo-random
-numbers.  If this behavior isn't desred, you may want to add the
+numbers.  If this behavior isn't desired, you may want to add the
 <tt class="docutils literal">programIndex</tt> value to the provided seed or otherwise ensure that the
 seed has a unique value for each program instance.</p>
 <p>After the RNG is seeded, the <tt class="docutils literal">random()</tt> function can be used to get a
@@ -4225,7 +4399,7 @@ communication between the running program instances in the gang.</p>
 current SPMD program instances are currently executing.  The i'th bit is
 set if the i'th program instance lane is currently active.</p>
 <pre class="literal-block">
-uniform int lanemask()
+uniform unsigned int64 lanemask()
 </pre>
 <p>To broadcast a value from one program instance to all of the others, a
 <tt class="docutils literal">broadcast()</tt> function is available.  It broadcasts the value of the
@@ -4370,7 +4544,7 @@ uniform float16 reduce_min(float16 a)
 uniform float reduce_min(float a)
 uniform double reduce_min(double a)
 </pre>
-<p>Equivalent functions are available to comptue the maximum of the given
+<p>Equivalent functions are available to compute the maximum of the given
 varying variable over the active program instances.</p>
 <pre class="literal-block">
 uniform int32 reduce_max(int32 a)
@@ -4470,8 +4644,8 @@ when the function that called <tt class="docutils literal">alloca()</tt> returns
 <h2>Setting and Copying Values In Memory</h2>
 <p>There are a few functions for copying blocks of memory and initializing
 values in memory.  Along the lines of the equivalently-named routines in
-the C Standard libary, <tt class="docutils literal">memcpy</tt> copies a given number of bytes starting
-from a source location in memory to a destination locaiton, where the two
+the C Standard library, <tt class="docutils literal">memcpy</tt> copies a given number of bytes starting
+from a source location in memory to a destination location, where the two
 regions of memory are guaranteed by the caller to be non-overlapping.
 Alternatively, <tt class="docutils literal">memmove</tt> can be used to copy data if the buffers may
 overlap.</p>
@@ -4845,19 +5019,14 @@ int32 atomic_xor_{local,global}(uniform int32 * uniform ptr, int32 value)
 int32 atomic_swap_{local,global}(uniform int32 * uniform ptr, int32 value)
 </pre>
 <p>Support for <tt class="docutils literal">float</tt> and <tt class="docutils literal">double</tt> types is also available.  For local
-atomics, all but the logical operations are available.  (There are
+and global atomics, all but the logical operations are available.  (There are
 corresponding <tt class="docutils literal">double</tt> variants of these, not listed here.)</p>
 <pre class="literal-block">
-float atomic_add_local(uniform float * uniform ptr, float value)
-float atomic_subtract_local(uniform float * uniform ptr, float value)
-float atomic_min_local(uniform float * uniform ptr, float value)
-float atomic_max_local(uniform float * uniform ptr, float value)
-float atomic_swap_local(uniform float * uniform ptr, float value)
-</pre>
-<p>For global atomics, only atomic swap is available for these types:</p>
-<pre class="literal-block">
-float atomic_swap_global(uniform float * uniform ptr, float value)
-double atomic_swap_global(uniform double * uniform ptr, double value)
+float atomic_add_{local,global}(uniform float * uniform ptr, float value)
+float atomic_subtract_{local,global}(uniform float * uniform ptr, float value)
+float atomic_min_{local,global}(uniform float * uniform ptr, float value)
+float atomic_max_{local,global}(uniform float * uniform ptr, float value)
+float atomic_swap_{local,global}(uniform float * uniform ptr, float value)
 </pre>
 <p>Finally, &quot;swap&quot; (but none of these other atomics) is available for pointer
 types:</p>
@@ -5069,7 +5238,7 @@ extern &quot;C&quot; {
 </pre>
 <p>Both the <tt class="docutils literal">foo</tt> and <tt class="docutils literal">bar</tt> global variables can be accessed on each
 side.  Note that the <tt class="docutils literal">extern &quot;C&quot;</tt> declaration is necessary from C++,
-since <tt class="docutils literal">ispc</tt> uses C linkage for functions and globals.</p>
+since <tt class="docutils literal">ispc</tt> uses C linkage for functions and global variables.</p>
 <p><tt class="docutils literal">ispc</tt> code can also call back to C/C++.  On the <tt class="docutils literal">ispc</tt> side, any
 application functions to be called must be declared with the <tt class="docutils literal">extern &quot;C&quot;</tt>
 qualifier.</p>
@@ -5222,7 +5391,7 @@ that function signature will be modified if needed to align with SYCL/DPC++ back
 <div class="section" id="data-layout">
 <h2>Data Layout</h2>
 <p>In general, <tt class="docutils literal">ispc</tt> tries to ensure that <tt class="docutils literal">struct</tt> types and other
-complex datatypes are laid out in the same way in memory as they are in
+complex data types are laid out in the same way in memory as they are in
 C/C++.  Matching structure layout is important for easy interoperability
 between C/C++ code and <tt class="docutils literal">ispc</tt> code.</p>
 <p>The main complexity in sharing data between <tt class="docutils literal">ispc</tt> and C/C++ often comes
@@ -5248,7 +5417,7 @@ struct Node {
 };
 </pre>
 <p>Because <tt class="docutils literal">varying</tt> types have size that depends on the size of the gang of
-program instances, <tt class="docutils literal">ispc</tt> has restrictrictions on using varying types in
+program instances, <tt class="docutils literal">ispc</tt> has restrictions on using varying types in
 parameters to functions with the <tt class="docutils literal">export</tt> qualifier.  <tt class="docutils literal">ispc</tt> prohibits
 parameters to exported functions to have varying type unless the parameter is
 of pointer type.  (That is, <tt class="docutils literal">varying float</tt> isn't allowed, but <tt class="docutils literal">varying float * uniform</tt>
@@ -5281,7 +5450,7 @@ struct Node {
 </pre>
 <p>In the case of multiple target compilation, <tt class="docutils literal">ispc</tt> will generate multiple
 header files and a &quot;general&quot; header file with definitions for multiple sizes.
-Any pointers to varyings in exported functions will be rewritten as <tt class="docutils literal">void *</tt>.
+Any pointers to varying variables in exported functions will be rewritten as <tt class="docutils literal">void *</tt>.
 At runtime, the <tt class="docutils literal">ispc</tt> dispatch mechanism will cast these pointers to the appropriate
 types.  Programmers can
 provide C/C++ code with a mechanism to determine the gang width used
