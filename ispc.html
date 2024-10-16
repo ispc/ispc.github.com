@@ -749,7 +749,7 @@ may want to examine the source code of the various examples in the
 </div>
 <div class="section" id="using-the-ispc-compiler">
 <h1>Using The ISPC Compiler</h1>
-<p>To go from a <tt class="docutils literal">ispc</tt> source file to an object file that can be linked
+<p>To go from an <tt class="docutils literal">ispc</tt> source file to an object file that can be linked
 with application code, enter the following command</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.o
@@ -1247,7 +1247,7 @@ understandable on their own, but you may want to refer to the <a class="referenc
 Language</a> section for details on language syntax.</p>
 <div class="section" id="basic-concepts-program-instances-and-gangs-of-program-instances">
 <h2>Basic Concepts: Program Instances and Gangs of Program Instances</h2>
-<p>Upon entry to a <tt class="docutils literal">ispc</tt> function called from C/C++ code, the execution
+<p>Upon entry to an <tt class="docutils literal">ispc</tt> function called from C/C++ code, the execution
 model switches from the application's serial model to <tt class="docutils literal">ispc</tt>'s execution
 model.  Conceptually, a number of <tt class="docutils literal">ispc</tt> <em>program instances</em> start
 running concurrently.  The group of running program instances is a
@@ -2342,25 +2342,20 @@ the brackets around the vector length:</p>
 <pre class="literal-block">
 typedef float&lt;3&gt; float3;
 </pre>
-<p><tt class="docutils literal">ispc</tt> doesn't support templates in general.  In particular,
-not only must the vector length be a compile-time constant, but it's
-also not possible to write functions that are parameterized by vector
-length.</p>
+<p>The vector length must be a compile-time constant.</p>
 <pre class="literal-block">
 uniform int i = foo();
-// ERROR: length must be compile-time constant
-float&lt;i&gt; vec;
-// ERROR: can't write functions parameterized by vector length
-float&lt;N&gt; func(float&lt;N&gt; val);
+float&lt;i&gt; vec; // ERROR: length must be compile-time constant
 </pre>
 <p>Arithmetic on these short vector types works as one would expect; the
-operation is applied component-wise to the values in the vector.  Here is a
-short example:</p>
+operation is applied component-wise to the values in the vector. The vector
+length can be a template parameter.  Here is a short example:</p>
 <pre class="literal-block">
-float&lt;3&gt; func(float&lt;3&gt; a, float&lt;3&gt; b) {
+template &lt;int N&gt;
+float&lt;N&gt; func(float&lt;N&gt; a, float&lt;N&gt; b) {
     a += b;    // add individual elements of a and b
     a *= 2.;   // multiply all elements of a by 2
-    bool&lt;3&gt; test = a &lt; b;  // component-wise comparison
+    bool&lt;N&gt; test = a &lt; b;  // component-wise comparison
     return test ? a : b;   // return each minimum component
 }
 </pre>
@@ -2703,7 +2698,7 @@ void nonescaping(__attribute__((noescape)) uniform int * uniform ptr) {
 
 void escaping(__attribute__((noescape)) uniform int * uniform ptr) {
     // Not OK, because ptr escapes the function
-    uniform int *uniform global_ptr = ptr;
+    global_ptr = ptr;
 }
 </pre>
 </div>
@@ -2739,7 +2734,7 @@ __attribute__((unmangled)) void foo(int a, int b);
 <div class="section" id="external-only">
 <h2>external_only</h2>
 <p><tt class="docutils literal"><span class="pre">__attribute__((external_only))</span></tt> can be applied to a function with
-<tt class="docutils literal">export</tt> qualifier. It informs the compiler that it should not generate a
+<tt class="docutils literal">export</tt> qualifier. It informs the compiler that it should not generate an
 ISPC version of the function. This is useful for functions that are only called
 from C/C++ in case when the user wants to reduce the size of the generated
 code. Same effect can be achieved by using <tt class="docutils literal"><span class="pre">-ffunction-sections</span></tt> compiler
@@ -3981,7 +3976,7 @@ different on different architectures.</p>
 float rcp(float v)
 uniform float rcp(uniform float v)
 </pre>
-<p>ispc also provides a version of <tt class="docutils literal">rcp()</tt> for float with less precision which doesn't
+<p>ISPC also provides a version of <tt class="docutils literal">rcp()</tt> for float with less precision which doesn't
 use Newton-Raphson.</p>
 <pre class="literal-block">
 float rcp_fast(float v)
@@ -4067,7 +4062,7 @@ uniform float sqrt(uniform float v)
 float rsqrt(float v)
 uniform float rsqrt(uniform float v)
 </pre>
-<p>ispc also provides a version of <tt class="docutils literal">rsqrt()</tt> for float with less precision which doesn't
+<p>ISPC also provides a version of <tt class="docutils literal">rsqrt()</tt> for float with less precision which doesn't
 use Newton-Raphson.</p>
 <pre class="literal-block">
 float rsqrt_fast(float v)
@@ -5473,7 +5468,7 @@ passing pointers from the application to <tt class="docutils literal">ispc</tt> 
 <p>The first is that it is required that it be valid to read memory at the
 first element of any array that is passed to <tt class="docutils literal">ispc</tt>.  In practice, this
 should just happen naturally, but it does mean that it is illegal to pass a
-<tt class="docutils literal">NULL</tt> pointer as a parameter to a <tt class="docutils literal">ispc</tt> function called from the
+<tt class="docutils literal">NULL</tt> pointer as a parameter to an <tt class="docutils literal">ispc</tt> function called from the
 application.</p>
 <p>The second constraint is that pointers and references in <tt class="docutils literal">ispc</tt> programs
 must not alias.  The <tt class="docutils literal">ispc</tt> compiler assumes that different pointers
