@@ -109,6 +109,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-23-0">Updating ISPC Programs For Changes In ISPC 1.23.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-24-0">Updating ISPC Programs For Changes In ISPC 1.24.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-25-0">Updating ISPC Programs For Changes In ISPC 1.25.0</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-26-0">Updating ISPC Programs For Changes In ISPC 1.26.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -121,6 +122,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#selecting-the-compilation-target">Selecting The Compilation Target</a></li>
 <li><a class="reference internal" href="#selecting-32-or-64-bit-addressing">Selecting 32 or 64 Bit Addressing</a></li>
 <li><a class="reference internal" href="#the-preprocessor">The Preprocessor</a></li>
+<li><a class="reference internal" href="#pragma-directives">Pragma Directives</a></li>
 <li><a class="reference internal" href="#debugging">Debugging</a></li>
 <li><a class="reference internal" href="#optimization-settings">Optimization Settings</a></li>
 <li><a class="reference internal" href="#other-ways-of-passing-arguments-to-ispc">Other ways of passing arguments to ISPC</a></li>
@@ -641,6 +643,45 @@ now generated for min/max operations, replacing the previous use of <tt class="d
 <p>The <tt class="docutils literal"><span class="pre">avx512knl-x16</span></tt>, <tt class="docutils literal"><span class="pre">gen9-x8</span></tt>, and <tt class="docutils literal"><span class="pre">gen9-x16</span></tt> targets are deprecated and
 will be removed in future releases.</p>
 </div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-26-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.26.0</h2>
+<p>There are breaking changes to ARM support:</p>
+<ul class="simple">
+<li>The <tt class="docutils literal"><span class="pre">--arch=arm</span></tt> flag, which previously mapped to ARMv7 (32-bit), now maps
+to ARMv8 (32-bit). There are no changes to <tt class="docutils literal"><span class="pre">--arch=aarch64</span></tt>, which continues
+to map to ARMv8 (64-bit).</li>
+<li>The CPU definitions for the ARMv7 architecture have been removed:
+<tt class="docutils literal"><span class="pre">cortex-a9</span></tt> and <tt class="docutils literal"><span class="pre">cortex-a15</span></tt>.</li>
+<li>New CPU definitions have been introduced, including <tt class="docutils literal"><span class="pre">cortex-a55</span></tt>,
+<tt class="docutils literal"><span class="pre">cortex-a78</span></tt>, <tt class="docutils literal"><span class="pre">cortex-a510</span></tt>, and <tt class="docutils literal"><span class="pre">cortex-a520</span></tt>, along with support for
+new Apple devices.</li>
+<li>New double-pumped targets have been introduced: <tt class="docutils literal"><span class="pre">neon-i16x16</span></tt> and
+<tt class="docutils literal"><span class="pre">neon-i8x32</span></tt>.</li>
+</ul>
+<p>Language Updates:</p>
+<ul class="simple">
+<li>Macro definitions for the LLVM version that ISPC is based on have been added.
+Please refer to <a class="reference internal" href="#the-preprocessor">The Preprocessor</a> for more details.</li>
+<li>The <tt class="docutils literal"><span class="pre">__attribute__((deprecated))</span></tt> attribute can now be applied to a function
+to mark it as deprecated, generating a warning when the function is called.</li>
+</ul>
+<p>Compiler flags changes:</p>
+<ul class="simple">
+<li>The <tt class="docutils literal"><span class="pre">--nocpp</span></tt> command-line flag is deprecated and will be removed in a
+future release.</li>
+<li>The target <tt class="docutils literal"><span class="pre">avx512knl-x16</span></tt> has been removed.</li>
+<li>The <tt class="docutils literal"><span class="pre">--darwin-version-min</span></tt> option has been added to specify the minimum
+deployment target version for macOS and iOS applications. This addresses a new
+linker behavior introduced in Xcode 15.0, which issues a warning when no
+version is provided.</li>
+</ul>
+<p>The behavior of user programs when no supported ISA is detected in the
+auto-dispatch code has changed. Instead of raising the <tt class="docutils literal">SIGABRT</tt> signal, the
+system will now raise <tt class="docutils literal">SIGILL</tt>.  This affects users who rely on <tt class="docutils literal">SIGABRT</tt> in
+their signal handlers for error handling or recovery.  Such users must update
+their code to handle <tt class="docutils literal">SIGILL</tt> instead. This change improves predictability and
+removes the dispatcher's reliance on the C standard library.</p>
+</div>
 </div>
 <div class="section" id="getting-started-with-ispc">
 <h1>Getting Started with ISPC</h1>
@@ -813,6 +854,11 @@ that removes unused sections: <tt class="docutils literal"><span class="pre">--g
 for <tt class="docutils literal">MSVC link.exe</tt>. On macOS, this flag does not have any effect (as in
 clang) because dead stripping <tt class="docutils literal"><span class="pre">-dead_strip</span></tt> for <tt class="docutils literal">ld64</tt> works differently.
 The <tt class="docutils literal"><span class="pre">-fno-function-sections</span></tt> disables this behavior.</p>
+<p>The <tt class="docutils literal"><span class="pre">--darwin-version-min</span></tt> option was added to specify the minimum deployment
+target version for macOS and iOS applications addressing the new linker
+introduced in Xcode 15.0 that issues a warning when no version is provided.
+The version should be specified in the format <tt class="docutils literal">[major.minor]</tt>. When an empty
+string (&quot;&quot;) is passed, no minimum version will be specified in the output binary.</p>
 </div>
 <div class="section" id="selecting-the-compilation-target">
 <h2>Selecting The Compilation Target</h2>
@@ -871,9 +917,6 @@ of target, arch and target OS.</p>
 </tr>
 <tr><td>avx2</td>
 <td>AVX 2 target (2013- Intel codename Haswell CPUs)</td>
-</tr>
-<tr><td>avx512knl</td>
-<td>AVX 512 target (Xeon Phi chips codename Knights Landing)</td>
 </tr>
 <tr><td>avx512skx</td>
 <td>AVX 512 target (Skylake Xeon CPUs)</td>
@@ -978,12 +1021,14 @@ in the new scheme:</p>
 <tt class="docutils literal"><span class="pre">avx1-i32x4</span></tt>, <tt class="docutils literal"><span class="pre">avx1-i32x8</span></tt>, <tt class="docutils literal"><span class="pre">avx1-i32x16</span></tt>, <tt class="docutils literal"><span class="pre">avx1-i64x4</span></tt>, <tt class="docutils literal"><span class="pre">avx2-i8x32</span></tt>,
 <tt class="docutils literal"><span class="pre">avx2-i16x16</span></tt>, <tt class="docutils literal"><span class="pre">avx2-i32x4</span></tt>, <tt class="docutils literal"><span class="pre">avx2-i32x8</span></tt>, <tt class="docutils literal"><span class="pre">avx2-i32x16</span></tt>, <tt class="docutils literal"><span class="pre">avx2-i64x4</span></tt>,
 <tt class="docutils literal"><span class="pre">avx2vnni-i32x4</span></tt>, <tt class="docutils literal"><span class="pre">avx2vnni-i32x8</span></tt>, <tt class="docutils literal"><span class="pre">avx2vnni-i32x16</span></tt>,
-<tt class="docutils literal"><span class="pre">avx512knl-x16</span></tt>, <tt class="docutils literal"><span class="pre">avx512skx-x4</span></tt>, <tt class="docutils literal"><span class="pre">avx512skx-x8</span></tt>, <tt class="docutils literal"><span class="pre">avx512skx-x16</span></tt>, <tt class="docutils literal"><span class="pre">avx512skx-x32</span></tt>,
+<tt class="docutils literal"><span class="pre">avx512skx-x4</span></tt>, <tt class="docutils literal"><span class="pre">avx512skx-x8</span></tt>, <tt class="docutils literal"><span class="pre">avx512skx-x16</span></tt>, <tt class="docutils literal"><span class="pre">avx512skx-x32</span></tt>,
 <tt class="docutils literal"><span class="pre">avx512skx-x64</span></tt>, <tt class="docutils literal"><span class="pre">avx512icl-x4</span></tt>, <tt class="docutils literal"><span class="pre">avx512icl-x8</span></tt>, <tt class="docutils literal"><span class="pre">avx512icl-x16</span></tt>, <tt class="docutils literal"><span class="pre">avx512icl-x32</span></tt>,
 <tt class="docutils literal"><span class="pre">avx512icl-x64</span></tt>, <tt class="docutils literal"><span class="pre">avx512spr-x4</span></tt>, <tt class="docutils literal"><span class="pre">avx512spr-x8</span></tt>, <tt class="docutils literal"><span class="pre">avx512spr-x16</span></tt>, <tt class="docutils literal"><span class="pre">avx512spr-x32</span></tt>,
 <tt class="docutils literal"><span class="pre">avx512spr-x64</span></tt>.</p>
 <p>Neon targets:</p>
-<p><tt class="docutils literal"><span class="pre">neon-i8x16</span></tt>, <tt class="docutils literal"><span class="pre">neon-i16x8</span></tt>, <tt class="docutils literal"><span class="pre">neon-i32x4</span></tt>, <tt class="docutils literal"><span class="pre">neon-i32x8</span></tt>.</p>
+<p><tt class="docutils literal"><span class="pre">neon-i8x16</span></tt>, <tt class="docutils literal"><span class="pre">neon-i16x8</span></tt>, <tt class="docutils literal"><span class="pre">neon-i32x4</span></tt>, <tt class="docutils literal"><span class="pre">neon-i32x8</span></tt>, <tt class="docutils literal"><span class="pre">neon-i8x32</span></tt> and <tt class="docutils literal"><span class="pre">neon-i16x16</span></tt>.</p>
+<p>These targets correspond to ARMv8 (64-bit) when <tt class="docutils literal"><span class="pre">--arch=aarch64</span></tt> is used (default) and
+to ARMv8 (32-bit) when <tt class="docutils literal"><span class="pre">--arch=arm</span></tt> is used.</p>
 <p>Xe targets:</p>
 <p><tt class="docutils literal"><span class="pre">gen9-x8</span></tt>, <tt class="docutils literal"><span class="pre">gen9-x16</span></tt>, <tt class="docutils literal"><span class="pre">xelp-x8</span></tt>, <tt class="docutils literal"><span class="pre">xelp-x16</span></tt>, <tt class="docutils literal"><span class="pre">xehpg-x8</span></tt>, <tt class="docutils literal"><span class="pre">xehpg-x16</span></tt>, <tt class="docutils literal"><span class="pre">xehpc-x16</span></tt>, <tt class="docutils literal"><span class="pre">xehpc-x32</span></tt>.</p>
 <p>Note that <tt class="docutils literal">sse4.1</tt> and <tt class="docutils literal">sse4.2</tt> targets may not be used together in
@@ -1021,8 +1066,7 @@ compiled with the default <tt class="docutils literal"><span class="pre">--addre
 <h2>The Preprocessor</h2>
 <p><tt class="docutils literal">ispc</tt> automatically runs the C preprocessor on your input program before
 compiling it.  Thus, you can use <tt class="docutils literal">#ifdef</tt>, <tt class="docutils literal">#define</tt>, and so forth in
-your ispc programs.  (This functionality can be disabled with the <tt class="docutils literal"><span class="pre">--nocpp</span></tt>
-command-line argument.)</p>
+your ispc programs.</p>
 <p>A number of preprocessor symbols are automatically defined before the
 preprocessor runs:</p>
 <table border="1" class="docutils">
@@ -1050,12 +1094,20 @@ preprocessor runs:</p>
 <td>Number of bits used to represent a pointer for the target architecture</td>
 </tr>
 <tr><td>ISPC_MAJOR_VERSION</td>
-<td>1</td>
+<td>&nbsp;</td>
 <td>Major version of the <tt class="docutils literal">ispc</tt> compiler/language</td>
 </tr>
 <tr><td>ISPC_MINOR_VERSION</td>
-<td>13</td>
+<td>&nbsp;</td>
 <td>Minor version of the <tt class="docutils literal">ispc</tt> compiler/language</td>
+</tr>
+<tr><td>LLVM_VERSION_MAJOR</td>
+<td>&nbsp;</td>
+<td>Major version of the LLVM compiler used by <tt class="docutils literal">ispc</tt></td>
+</tr>
+<tr><td>LLVM_VERSION_MINOR</td>
+<td>&nbsp;</td>
+<td>Minor version of the LLVM compiler used by <tt class="docutils literal">ispc</tt></td>
 </tr>
 <tr><td>PI</td>
 <td>3.1415926535</td>
@@ -1112,6 +1164,39 @@ The implementation may rely either on native hardware support or emulation.</td>
 </tr>
 </tbody>
 </table>
+<p>Others Standard Predefined Macros:</p>
+<p><tt class="docutils literal">__FILE__</tt> expands to the name of the current input file, in the form of a C
+string constant.</p>
+<p><tt class="docutils literal">__LINE__</tt> expands to the current line number in the input file, in the form
+of a decimal integer constant.</p>
+<p><tt class="docutils literal">__DATE__</tt> expands to a string constant containing the date the preprocessor
+was run, e.g., <tt class="docutils literal">&quot;Feb&nbsp; 3 2025&quot;</tt>.</p>
+<p><tt class="docutils literal">__TIME__</tt> expands to a string constant containing the time the preprocessor
+was run, e.g., <tt class="docutils literal">&quot;13:14:33&quot;</tt>.</p>
+<p>Variadic Macros:</p>
+<p>Variadic macros are supported in <tt class="docutils literal">ispc</tt>. The <tt class="docutils literal">__VA_ARGS__</tt> and
+<tt class="docutils literal">__VA_OPT__</tt> macros are defined inside a variadic macro definition.</p>
+<p><tt class="docutils literal">__VA_ARGS__</tt> is a variable argument list macro that represents the arguments
+after the last named argument.</p>
+<p><tt class="docutils literal"><span class="pre">__VA_OPT__(...)</span></tt> is a function macro that expands to its argument if the
+variable argument has any tokens, but if the variable argument does not have
+any tokens, the <tt class="docutils literal">__VA_OPT__</tt> expands to nothing.</p>
+<p>To illustrate, consider the following example:</p>
+<pre class="literal-block">
+#define PRINT(fmt, ...) print(fmt, __VA_ARGS__)
+#define EPRINT(fmt, ...) print(fmt __VA_OPT__(,) __VA_ARGS__)
+
+void test_va_args() {
+    PRINT(&quot;% % %\n&quot;, 0, 1, 2);
+    // PRINT(&quot;Hello, World!\n&quot;); is compilation error
+    // you can't call PRINT with just string because of trailing comma in
+    // macro expansion, call EPRINT with __VA_OPT__(,) instead
+    EPRINT(&quot;Hello, World!\n&quot;);
+}
+</pre>
+</div>
+<div class="section" id="pragma-directives">
+<h2>Pragma Directives</h2>
 <p><tt class="docutils literal">ispc</tt> supports the following <tt class="docutils literal">#pragma</tt> directives.</p>
 <p><tt class="docutils literal">#pragma ignore warning</tt> directives direct the compiler to ignore compiler warnings for individual lines.</p>
 <table border="1" class="docutils">
@@ -2741,6 +2826,16 @@ code. Same effect can be achieved by using <tt class="docutils literal"><span cl
 option but not in all cases (e.g., shared libraries with ISPC code), so this
 attribute is provided as a more fine-grained control.</p>
 </div>
+<div class="section" id="deprecated">
+<h2>deprecated</h2>
+<p><tt class="docutils literal"><span class="pre">__attribute__((deprecated))</span></tt> can be applied to a function to mark it as
+deprecated. The compiler will issue a warning when the function is called.
+There are two ways to use this attribute in ISPC with or without a message:</p>
+<pre class="literal-block">
+__attribute__((deprecated)) void foo();
+__attribute__((deprecated(&quot;Use bar() instead.&quot;))) void foo();
+</pre>
+</div>
 <div class="section" id="expressions">
 <h2>Expressions</h2>
 <p>All of the operators from C that you'd expect for writing expressions are
@@ -3171,6 +3266,26 @@ data elements will be processed.  In this particular case, a <tt class="docutils
 loop would be preferable, as <tt class="docutils literal">foreach</tt> naturally handles the case where
 <tt class="docutils literal">programCount</tt> doesn't evenly divide the number of elements to be
 processed, while the loop above assumes that case implicitly.</p>
+<p>Remember that <tt class="docutils literal">foreach</tt> begins each loop iteration with an &quot;all on&quot;
+execution mask, meaning all program instances are active at the start.
+In contrast, a <tt class="docutils literal">for</tt> loop using <tt class="docutils literal">programIndex</tt> and <tt class="docutils literal">programCount</tt>
+respects the current execution mask, which may disable some instances.
+To match the behavior of <tt class="docutils literal">foreach</tt> in regards of masking, you should
+use an <tt class="docutils literal">unmasked</tt> region. For example:</p>
+<pre class="literal-block">
+foreach (index = 0 ... 16) {
+    values[index] = select(upd, newVal, values[index]);
+}
+</pre>
+<p>will be equivalent to the following code:</p>
+<pre class="literal-block">
+unmasked {
+    for (uniform int i = 0; i &lt; 16; i+=programCount) {
+        int index = i + programIndex;
+        values[index] = select(upd, newVal, values[index]);
+    }
+}
+</pre>
 </div>
 <div class="section" id="unstructured-control-flow-goto">
 <h2>Unstructured Control Flow: &quot;goto&quot;</h2>
@@ -3641,7 +3756,7 @@ function call syntax (i.e. <tt class="docutils literal">add(1, 2);</tt>).</li>
 <tt class="docutils literal">template int <span class="pre">add&lt;int&gt;(int</span> a, int b);</tt>).</li>
 <li>Explicit template function specializations (i.e.
 <tt class="docutils literal">template&lt;&gt; int <span class="pre">add&lt;int&gt;(int</span> a, int b) { return a - b;}</tt>).</li>
-<li>Non-type template parameters (integral and enumeration types).</li>
+<li>Non-type template parameters (integral, bool and enumeration types).</li>
 </ul>
 <p>What is currently not supported, but is planned to be supported:</p>
 <ul class="simple">
@@ -3734,7 +3849,7 @@ template &lt;&gt; int goo&lt;int&gt;(int a1, int a2) {
 </pre>
 <p>For non-type template parameters, the following rules apply:</p>
 <ul>
-<li><p class="first">Uniform integral types and enum types can be used as non-type template parameters. Unbound types are treated as uniform.
+<li><p class="first">Uniform integral (including bool) types and enum types can be used as non-type template parameters. Unbound types are treated as uniform.
 For example:</p>
 <pre class="literal-block">
 template &lt;int N&gt; int foo(int a) { // N is uniform int
@@ -4151,20 +4266,50 @@ values as well.</p>
 </div>
 <div class="section" id="dot-product">
 <h2>Dot product</h2>
-<p>ISPC supports dot product operations for unsigned and signed <tt class="docutils literal">int8</tt> and <tt class="docutils literal">int16</tt> data types,
-leveraging the AVX-VNNI and AVX512-VNNI instruction sets. The ISPC targets that support
-native VNNI instruction sets are <tt class="docutils literal"><span class="pre">avx2vnni-i32x*</span></tt>, <tt class="docutils literal"><span class="pre">avx512icl-i32x*</span></tt>, and <tt class="docutils literal"><span class="pre">avx512spr-i32x*</span></tt>.
-For other targets these operations are emulated.
-These dot product operations are specifically designed to operate on <em>packed</em> input vectors,
-necessitating proper packing of input vectors by the programmer before use.</p>
+<p>ISPC supports dot product operations for both unsigned and signed int8 and int16 data types,
+utilizing the AVX-VNNI, AVX512-VNNI, and AARCH64 instruction sets. The ISPC targets that
+include native dot product instruction support are <tt class="docutils literal"><span class="pre">avx2vnni-i32x*</span></tt>, <tt class="docutils literal"><span class="pre">avx512icl-i32x*</span></tt>,
+and <tt class="docutils literal"><span class="pre">avx512spr-i32x*</span></tt> on x86, as well as <tt class="docutils literal"><span class="pre">neon-i32x*</span></tt> on ARM hardware with native dot
+product capabilities.</p>
+<p>Please note that not all combinations of signed and unsigned data types are supported on these
+targets. For instance, some versions of ARMv8 natively supports only signed/signed and
+unsigned/unsigned int8 dot product operations, while AVX2VNNI and AVX512 provide support solely for
+mixed-sign int8 operations.</p>
+<p>If the selected target or platform lacks native dot product support, these operations are emulated.</p>
+<p>These dot product operations are specifically designed to operate on <em>packed</em> input vectors,
+necessitating proper packing or casting of input vectors by the programmer before use. For example:</p>
+<pre class="literal-block">
+uniform uint8 a[4] = {1, 2, 3, 4};
+uniform int8 b[4] = {4, 3, 2, 1};
+int accumulator = 1;
+int result = dot4add_u8i8packed(*((uniform uint*)&amp;a[0]), *((uniform uint*)&amp;b[0]), accumulator);
+</pre>
 <p>For 8-bit Integer Vectors:</p>
-<p>The functions multiply groups of four unsigned 8-bit integers packed in <tt class="docutils literal">a</tt> with corresponding
+<p>The functions below multiply groups of four unsigned 8-bit integers packed in <tt class="docutils literal">a</tt> with corresponding
 four signed 8-bit integers packed in <tt class="docutils literal">b</tt>, resulting in four intermediate signed 16-bit values.
 The sum of these values, in combination with the <tt class="docutils literal">acc</tt> accumulator, is then returned as the final result.</p>
 <pre class="literal-block">
 varying int32 dot4add_u8i8packed(varying uint32 a, varying uint32 b,
                                  varying int32 acc)
 varying int32 dot4add_u8i8packed_sat(varying uint32 a, varying uint32 b,
+                                     varying int32 acc) // saturate the result
+</pre>
+<p>The functions below multiply groups of four unsigned 8-bit integers packed in <tt class="docutils literal">a</tt> with corresponding
+four unsigned 8-bit integers packed in <tt class="docutils literal">b</tt>, resulting in four intermediate signed 16-bit values.
+The sum of these values, in combination with the <tt class="docutils literal">acc</tt> accumulator, is then returned as the final result.</p>
+<pre class="literal-block">
+varying uint32 dot4add_u8u8packed(varying uint32 a, varying uint32 b,
+                                 varying uint32 acc)
+varying uint32 dot4add_u8u8packed_sat(varying uint32 a, varying uint32 b,
+                                     varying uint32 acc) // saturate the result
+</pre>
+<p>The functions below multiply groups of four signed 8-bit integers packed in <tt class="docutils literal">a</tt> with corresponding
+four signed 8-bit integers packed in <tt class="docutils literal">b</tt>, resulting in four intermediate signed 16-bit values.
+The sum of these values, in combination with the <tt class="docutils literal">acc</tt> accumulator, is then returned as the final result.</p>
+<pre class="literal-block">
+varying int32 dot4add_i8i8packed(varying uint32 a, varying uint32 b,
+                                 varying int32 acc)
+varying int32 dot4add_i8i8packed_sat(varying uint32 a, varying uint32 b,
                                      varying int32 acc) // saturate the result
 </pre>
 <p>For 16-bit Integer Vectors:</p>
