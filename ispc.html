@@ -110,6 +110,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-24-0">Updating ISPC Programs For Changes In ISPC 1.24.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-25-0">Updating ISPC Programs For Changes In ISPC 1.25.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-26-0">Updating ISPC Programs For Changes In ISPC 1.26.0</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-27-0">Updating ISPC Programs For Changes In ISPC 1.27.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -682,6 +683,65 @@ their signal handlers for error handling or recovery.  Such users must update
 their code to handle <tt class="docutils literal">SIGILL</tt> instead. This change improves predictability and
 removes the dispatcher's reliance on the C standard library.</p>
 </div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-27-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.27.0</h2>
+<p>New targets:</p>
+<p>New targets have been added for platforms supporting Intel® Advanced Vector
+Extensions 10.2: <tt class="docutils literal"><span class="pre">avx10.2-x4</span></tt>, <tt class="docutils literal"><span class="pre">avx10.2-x8</span></tt>, <tt class="docutils literal"><span class="pre">avx10.2-x16</span></tt>,
+<tt class="docutils literal"><span class="pre">avx10.2-x32</span></tt>, and <tt class="docutils literal"><span class="pre">avx10.2-x64</span></tt>.  Additionally, a new macro
+<tt class="docutils literal">ISPC_TARGET_AVX10_2</tt> has been introduced.</p>
+<p>Standard library:</p>
+<ul class="simple">
+<li>Cross-lane operations - <tt class="docutils literal">broadcast</tt>, <tt class="docutils literal">rotate</tt>, <tt class="docutils literal">shift</tt>, and
+<tt class="docutils literal">shuffle</tt> - are now supported for unsigned types.</li>
+<li>ISPC's data handling capabilities have been extended to include signed and
+unsigned <tt class="docutils literal">int8</tt> and <tt class="docutils literal">int16</tt> types in the reduction functions.</li>
+<li>Support for <tt class="docutils literal">packed_load</tt> and <tt class="docutils literal">packed_store</tt> operations has also been
+expanded to include: <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt> (signed/unsigned), <tt class="docutils literal">float16</tt>,
+<tt class="docutils literal">float</tt>, and <tt class="docutils literal">double</tt>.</li>
+<li>The cube root function <tt class="docutils literal">cbrt</tt> has been added to the standard library for
+<tt class="docutils literal">float</tt> and <tt class="docutils literal">double</tt> types.</li>
+<li>Dot product functionality has been enhanced with mixed signedness support for
+16-bit integers. The following input combinations are now supported: u16 x u16
+(unsigned x unsigned), i16 x i16 (signed x signed), u16 x i16 (mixed
+signedness). For consistency with other naming conventions, the function
+<tt class="docutils literal">dot2add_i16_packed</tt> has been renamed to <tt class="docutils literal">dot2add_i16i16_packed</tt>.</li>
+</ul>
+<p>New standard library functions for short vectors:</p>
+<p>The <tt class="docutils literal">max</tt>, <tt class="docutils literal">min</tt> and <tt class="docutils literal">abs</tt> functions for short vectors of basic types
+have been added to the standard library. They support both uniform and varying
+short vector types for all basic types supported by the corresponding standard
+functions, i.e., signed and unsigned integer types and floating-point types.</p>
+<p>It makes it possible, for example, to find the maximum value between two short
+vectors:</p>
+<pre class="literal-block">
+uniform int&lt;3&gt; a = {1, 2, 3};
+uniform int&lt;3&gt; b = {3, -2, 1};
+uniform int&lt;3&gt; c = max(a, b); // c = {3, 2, 3}
+
+varying float&lt;4&gt; x, y;
+varying float&lt;4&gt; z = max(x, y);
+</pre>
+<p>The support for short vector types has been added also for the following
+floating-point element wise functions: <tt class="docutils literal">round</tt>, <tt class="docutils literal">floor</tt>, <tt class="docutils literal">ceil</tt>,
+<tt class="docutils literal">trunc</tt>, <tt class="docutils literal">rcp</tt>, <tt class="docutils literal">rcp_fast</tt>, <tt class="docutils literal">sqrt</tt>, <tt class="docutils literal">rsqrt</tt>, <tt class="docutils literal">sin</tt>, <tt class="docutils literal">asin</tt>,
+<tt class="docutils literal">cos</tt>, <tt class="docutils literal">acos</tt>, <tt class="docutils literal">tan</tt>, <tt class="docutils literal">atan</tt>, <tt class="docutils literal">exp</tt>, <tt class="docutils literal">log</tt>, <tt class="docutils literal">atan2</tt>, <tt class="docutils literal">pow</tt> and
+<tt class="docutils literal">cbrt</tt>.</p>
+<p>Language changes:</p>
+<ul class="simple">
+<li>The <tt class="docutils literal">aligned(N)</tt> attribute is now available to specify the alignment of
+variables and struct types.</li>
+<li>A bug was fixed where unsigned array indices or pointer arithmetic with
+unsigned offsets could result in overflow due to sign extension when promoting
+to pointer size. This issue is now resolved, and the compiler correctly
+handles unsigned integer indexing and pointer arithmetic.</li>
+</ul>
+<p>Compiler flags changes:</p>
+<ul class="simple">
+<li>The <tt class="docutils literal"><span class="pre">-dD</span></tt> and <tt class="docutils literal"><span class="pre">-dM</span></tt> flag have been supported. They are useful to debug the
+preprocessor and to check the macros defined by the compiler.</li>
+</ul>
+</div>
 </div>
 <div class="section" id="getting-started-with-ispc">
 <h1>Getting Started with ISPC</h1>
@@ -823,6 +883,11 @@ specified.  The standard suffixes <tt class="docutils literal">.i</tt> or <tt cl
 <p>By default the compilation will fail if preprocessor encountered an error.
 To ignore the preprocessor errors and proceed with normal compilation flow,
 <tt class="docutils literal"><span class="pre">--ignore-preprocessor-errors</span></tt> switch may be used.</p>
+<p>To debug preprocessor, use <tt class="docutils literal"><span class="pre">-dD</span></tt> or <tt class="docutils literal"><span class="pre">-dM</span></tt> flags. The <tt class="docutils literal"><span class="pre">-dM</span></tt> flag lists
+<tt class="docutils literal">#define</tt> directives for all the macros during the execution of the
+preprocessor, including predefined macros, instead of the normal output. The
+<tt class="docutils literal"><span class="pre">-dD</span></tt> flag lists both the <tt class="docutils literal">#define</tt> directives and the result of
+preprocessing.</p>
 <p>Optimizations are on by default; they can be turned off with <tt class="docutils literal"><span class="pre">-O0</span></tt>:</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.obj -O0
@@ -1085,7 +1150,7 @@ preprocessor runs:</p>
 <td>1</td>
 <td>Enables detecting that the <tt class="docutils literal">ispc</tt> compiler is processing the file</td>
 </tr>
-<tr><td>ISPC_TARGET_{NEON, SSE2, SSE4, AVX, AVX2, AVX512KNL, AVX512SKX, AVX512SPR}</td>
+<tr><td>ISPC_TARGET_{NEON, SSE2, SSE4, AVX, AVX2, AVX512SKX, AVX512ICL, AVX512SPR, AVX10_2}</td>
 <td>1</td>
 <td>One of these will be set, depending on the compilation target</td>
 </tr>
@@ -2836,6 +2901,33 @@ __attribute__((deprecated)) void foo();
 __attribute__((deprecated(&quot;Use bar() instead.&quot;))) void foo();
 </pre>
 </div>
+<div class="section" id="aligned">
+<h2>aligned</h2>
+<p><tt class="docutils literal"><span class="pre">__attribute__((aligned(N)))</span></tt> can be applied to variables to specify their
+alignment:</p>
+<pre class="literal-block">
+__attribute__((aligned(16))) uniform int x;
+</pre>
+<p>To specify the alignment of a type (such as a struct), place the attribute
+after the struct definition. This means that any variable of this type will be
+aligned unless overridden.</p>
+<pre class="literal-block">
+struct S { int x; } __attribute__((aligned(16)));
+// v is aligned to 16 bytes
+struct S v;
+</pre>
+<p>Consider the following example that combines both the type alignment and the
+variable alignment.</p>
+<pre class="literal-block">
+// v16 is aligned to 16 bytes
+__attribute__((aligned(16))) struct S { int x; } __attribute__((aligned(32))) v16;
+// v32 is aligned to 32 bytes
+struct S v32;
+</pre>
+<p>Note, that ISPC doesn't support <tt class="docutils literal"><span class="pre">__attribute__((aligned))</span></tt> without an
+argument. It also doesn't support placing the aligned attribute for specific
+members of struct types.</p>
+</div>
 <div class="section" id="expressions">
 <h2>Expressions</h2>
 <p>All of the operators from C that you'd expect for writing expressions are
@@ -3901,7 +3993,10 @@ primary template.</li>
 <h1>The ISPC Standard Library</h1>
 <p><tt class="docutils literal">ispc</tt> has a standard library that is automatically available when
 compiling <tt class="docutils literal">ispc</tt> programs.  (To disable the standard library, pass the
-<tt class="docutils literal"><span class="pre">--nostdlib</span></tt> command-line flag to the compiler.)</p>
+<tt class="docutils literal"><span class="pre">--nostdlib</span></tt> command-line flag to the compiler.).
+For a complete list of functions available in the standard library, consult the
+<a class="reference external" href="https://github.com/ispc/ispc/tree/main/stdlib/include/stdlib.isph">stdlib.isph</a> header file. This file serves as the definitive reference for all
+the function declarations provided by the standard library.</p>
 <div class="section" id="basic-operations-on-data">
 <h2>Basic Operations On Data</h2>
 </div>
@@ -4065,6 +4160,11 @@ uniform unsigned int signbits(uniform float x)
 unsigned int64 signbits(double x)
 uniform unsigned int64 signbits(uniform double x)
 </pre>
+<p>The <tt class="docutils literal">abs</tt> functions also supports short vector types with the basic types
+listed above.</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt; T&lt;N&gt; abs(T&lt;N&gt; a)
+</pre>
 <p>The standard library provides four rounding functions: <tt class="docutils literal">round</tt>, <tt class="docutils literal">floor</tt>,
 <tt class="docutils literal">ceil</tt> and <tt class="docutils literal">trunc</tt> for <tt class="docutils literal">float16</tt>, <tt class="docutils literal">float</tt> and <tt class="docutils literal">double</tt> data types. On
 machines that support Intel®SSE or Intel® AVX, these functions all map to a
@@ -4085,6 +4185,14 @@ uniform float ceil(uniform float x)
 float trunc(float x)
 uniform float trunc(uniform float x)
 </pre>
+<p>These functions also support short vector types with the basic types listed
+above.</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt; T&lt;N&gt; round(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; floor(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; ceil(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; trunc(T&lt;N&gt; a)
+</pre>
 <p><tt class="docutils literal">rcp()</tt> computes an approximation to <tt class="docutils literal">1/v</tt>.  The amount of error is
 different on different architectures.</p>
 <pre class="literal-block">
@@ -4096,6 +4204,12 @@ use Newton-Raphson.</p>
 <pre class="literal-block">
 float rcp_fast(float v)
 uniform float rcp_fast(uniform float v)
+</pre>
+<p><tt class="docutils literal">rcp</tt> and <tt class="docutils literal">rcp_fast</tt> functions also support short vector types with the
+basic types listed above.</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt; T&lt;N&gt; rcp(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; rcp_fast(T&lt;N&gt; a)
 </pre>
 <p>The <tt class="docutils literal">fmod()</tt> functions compute the floating-point remainder of the division
 operation x/y. It's semantics is equivalent to C/C++ lib functions.</p>
@@ -4110,16 +4224,60 @@ uniform double fmod(uniform double x, uniform double y)
 <p>A standard set of minimum and maximum functions is available for all ispc
 standard types.  These functions also map to corresponding intrinsic functions.</p>
 <pre class="literal-block">
+float16 min(float16 a, float16 b);
 float min(float a, float b)
+double min(double a, double b);
+unsigned int8 min(unsigned int8 a, unsigned int8 b);
+int8 min(int8 a, int8 b);
+unsigned int16 min(unsigned int16 a, unsigned int16 b);
+int16 min(int16 a, int16 b);
+unsigned int min(unsigned int a, unsigned int b);
+int min(int a, int b);
+unsigned int64 min(unsigned int64 a, unsigned int64 b);
+int64 min(int64 a, int64 b);
+
+uniform float16 min(uniform float16 a, uniform float16 b);
 uniform float min(uniform float a, uniform float b)
+uniform double min(uniform double a, uniform double b);
+uniform unsigned int8 min(uniform unsigned int8 a, uniform unsigned int8 b);
+uniform int8 min(uniform int8 a, uniform int8 b);
+uniform unsigned int16 min(uniform unsigned int16 a, uniform unsigned int16 b);
+uniform int16 min(uniform int16 a, uniform int16 b);
+uniform unsigned int min(uniform unsigned int a, uniform unsigned int b);
+uniform int min(uniform int a, uniform int b);
+uniform unsigned int64 min(uniform unsigned int64 a, uniform unsigned int64 b);
+uniform int64 min(uniform int64 a, uniform int64 b);
+</pre>
+<pre class="literal-block">
+float16 max(float16 a, float16 b);
 float max(float a, float b)
+double max(double a, double b);
+unsigned int8 max(unsigned int8 a, unsigned int8 b);
+int8 max(int8 a, int8 b);
+unsigned int16 max(unsigned int16 a, unsigned int16 b);
+int16 max(int16 a, int16 b);
+unsigned int max(unsigned int a, unsigned int b);
+int max(int a, int b);
+unsigned int64 max(unsigned int64 a, unsigned int64 b);
+int64 max(int64 a, int64 b);
+
+uniform float16 max(uniform float16 a, uniform float16 b);
 uniform float max(uniform float a, uniform float b)
-unsigned int min(unsigned int a, unsigned int b)
-uniform unsigned int min(uniform unsigned int a,
-                         uniform unsigned int b)
-unsigned int max(unsigned int a, unsigned int b)
-uniform unsigned int max(uniform unsigned int a,
-                         uniform unsigned int b)
+uniform double max(uniform double a, uniform double b);
+uniform unsigned int8 max(uniform unsigned int8 a, uniform unsigned int8 b);
+uniform int8 max(uniform int8 a, uniform int8 b);
+uniform unsigned int16 max(uniform unsigned int16 a, uniform unsigned int16 b);
+uniform int16 max(uniform int16 a, uniform int16 b);
+uniform unsigned int max(uniform unsigned int a, uniform unsigned int b);
+uniform int max(uniform int a, uniform int b);
+uniform unsigned int64 max(uniform unsigned int64 a, uniform unsigned int64 b);
+uniform int64 max(uniform int64 a, uniform int64 b);
+</pre>
+<p>The maximum and minimum functions also support short vector types with the
+basic types listed above.</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt; T&lt;N&gt; min(T&lt;N&gt; a, T&lt;N&gt; b)
+template &lt;typename T, uint N&gt; T&lt;N&gt; max(T&lt;N&gt; a, T&lt;N&gt; b)
 </pre>
 <p>The <tt class="docutils literal">clamp()</tt> functions clamp the provided value to the given range.
 (Their implementations are based on <tt class="docutils literal">min()</tt> and <tt class="docutils literal">max()</tt> and are thus
@@ -4177,6 +4335,12 @@ uniform float sqrt(uniform float v)
 float rsqrt(float v)
 uniform float rsqrt(uniform float v)
 </pre>
+<p><tt class="docutils literal">rsqrt</tt> and <tt class="docutils literal">sqrt</tt> also supports short vector types with the basic types
+listed above:</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt; T&lt;N&gt; rsqrt(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; sqrt(T&lt;N&gt; a)
+</pre>
 <p>ISPC also provides a version of <tt class="docutils literal">rsqrt()</tt> for float with less precision which doesn't
 use Newton-Raphson.</p>
 <pre class="literal-block">
@@ -4192,6 +4356,13 @@ uniform float cos(uniform float x)
 float tan(float x)
 uniform float tan(uniform float x)
 </pre>
+<p>These functions also supports short vector types with the basic types listed
+above:</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt; T&lt;N&gt; sin(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; cos(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; tan(T&lt;N&gt; a)
+</pre>
 <p>The corresponding inverse functions are also available:</p>
 <pre class="literal-block">
 float asin(float x)
@@ -4202,6 +4373,14 @@ float atan(float x)
 uniform float atan(uniform float x)
 float atan2(float y, float x)
 uniform float atan2(uniform float y, uniform float x)
+</pre>
+<p>The inverse functions also support short vector types with the basic types
+listed above:</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt; T&lt;N&gt; asin(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; acos(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; atan(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; atan2(T&lt;N&gt; a, T&lt;N&gt; b)
 </pre>
 <p>If both sine and cosine are needed, then the <tt class="docutils literal">sincos()</tt> call computes
 both more efficiently than two calls to the respective individual
@@ -4219,6 +4398,22 @@ float log(float x)
 uniform float log(uniform float x)
 float pow(float a, float b)
 uniform float pow(uniform float a, uniform float b)
+</pre>
+<p>These functions also support short vector types with the basic types listed
+above:</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt; T&lt;N&gt; exp(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; log(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; pow(T&lt;N&gt; a, T&lt;N&gt; b)
+</pre>
+<p>The cube root function <tt class="docutils literal">cbrt</tt> is provided for <tt class="docutils literal">float</tt>, <tt class="docutils literal">double</tt> types and
+for short vector of these types:</p>
+<pre class="literal-block">
+float cbrt(float x)
+uniform float cbrt(uniform float x)
+double cbrt(double x)
+uniform double cbrt(uniform double x)
+template &lt;typename T, uint N&gt; T&lt;N&gt; cbrt(T&lt;N&gt; a)
 </pre>
 <p>A few functions that end up doing low-level manipulation of the
 floating-point representation in memory are available.  As in the standard
@@ -4269,8 +4464,8 @@ values as well.</p>
 <p>ISPC supports dot product operations for both unsigned and signed int8 and int16 data types,
 utilizing the AVX-VNNI, AVX512-VNNI, and AARCH64 instruction sets. The ISPC targets that
 include native dot product instruction support are <tt class="docutils literal"><span class="pre">avx2vnni-i32x*</span></tt>, <tt class="docutils literal"><span class="pre">avx512icl-i32x*</span></tt>,
-and <tt class="docutils literal"><span class="pre">avx512spr-i32x*</span></tt> on x86, as well as <tt class="docutils literal"><span class="pre">neon-i32x*</span></tt> on ARM hardware with native dot
-product capabilities.</p>
+<tt class="docutils literal"><span class="pre">avx512spr-i32x*</span></tt> and newer targets on x86, as well as <tt class="docutils literal"><span class="pre">neon-i32x*</span></tt> on ARM hardware with
+native dot product capabilities.</p>
 <p>Please note that not all combinations of signed and unsigned data types are supported on these
 targets. For instance, some versions of ARMv8 natively supports only signed/signed and
 unsigned/unsigned int8 dot product operations, while AVX2VNNI and AVX512 provide support solely for
@@ -4286,7 +4481,7 @@ int result = dot4add_u8i8packed(*((uniform uint*)&amp;a[0]), *((uniform uint*)&a
 </pre>
 <p>For 8-bit Integer Vectors:</p>
 <p>The functions below multiply groups of four unsigned 8-bit integers packed in <tt class="docutils literal">a</tt> with corresponding
-four signed 8-bit integers packed in <tt class="docutils literal">b</tt>, resulting in four intermediate signed 16-bit values.
+four signed 8-bit integers packed in <tt class="docutils literal">b</tt>, resulting in four intermediate unsigned 16-bit values.
 The sum of these values, in combination with the <tt class="docutils literal">acc</tt> accumulator, is then returned as the final result.</p>
 <pre class="literal-block">
 varying int32 dot4add_u8i8packed(varying uint32 a, varying uint32 b,
@@ -4295,7 +4490,7 @@ varying int32 dot4add_u8i8packed_sat(varying uint32 a, varying uint32 b,
                                      varying int32 acc) // saturate the result
 </pre>
 <p>The functions below multiply groups of four unsigned 8-bit integers packed in <tt class="docutils literal">a</tt> with corresponding
-four unsigned 8-bit integers packed in <tt class="docutils literal">b</tt>, resulting in four intermediate signed 16-bit values.
+four unsigned 8-bit integers packed in <tt class="docutils literal">b</tt>, resulting in four intermediate unsigned 16-bit values.
 The sum of these values, in combination with the <tt class="docutils literal">acc</tt> accumulator, is then returned as the final result.</p>
 <pre class="literal-block">
 varying uint32 dot4add_u8u8packed(varying uint32 a, varying uint32 b,
@@ -4313,13 +4508,31 @@ varying int32 dot4add_i8i8packed_sat(varying uint32 a, varying uint32 b,
                                      varying int32 acc) // saturate the result
 </pre>
 <p>For 16-bit Integer Vectors:</p>
-<p>The functions multiply groups of two signed 16-bit integers packed in <tt class="docutils literal">a</tt> with corresponding
+<p>The functions below multiply groups of two unsigned 16-bit integers packed in <tt class="docutils literal">a</tt> with corresponding
+two signed 16-bit integers packed in <tt class="docutils literal">b</tt>, resulting in two intermediate signed 32-bit values.
+The sum of these values, in combination with the <tt class="docutils literal">acc</tt> accumulator, is then returned as the final result.</p>
+<pre class="literal-block">
+varying int32 dot2add_u16i16packed(varying uint32 a, varying uint32 b,
+                                  varying int32 acc)
+varying int32 dot2add_u16i16packed_sat(varying uint32 a, varying uint32 b,
+                                      varying int32 acc) // saturate the result
+</pre>
+<p>The functions below multiply groups of two unsigned 16-bit integers packed in <tt class="docutils literal">a</tt> with corresponding
+two unsigned 16-bit integers packed in <tt class="docutils literal">b</tt>, resulting in two intermediate unsigned 32-bit values.
+The sum of these values, in combination with the <tt class="docutils literal">acc</tt> accumulator, is then returned as the final result.</p>
+<pre class="literal-block">
+varying uint32 dot2add_u16u16packed(varying uint32 a, varying uint32 b,
+                                   varying uint32 acc)
+varying uint32 dot2add_u16u16packed_sat(varying uint32 a, varying uint32 b,
+                                       varying uint32 acc) // saturate the result
+</pre>
+<p>The functions below multiply groups of two signed 16-bit integers packed in <tt class="docutils literal">a</tt> with corresponding
 two signed 16-bit integers packed in <tt class="docutils literal">b</tt>, yielding two intermediate signed 32-bit results.
 The sum of these results, combined with the <tt class="docutils literal">acc</tt> accumulator, is then returned as the final result.</p>
 <pre class="literal-block">
-varying int32 dot2add_i16packed(varying uint32 a, varying uint32 b,
+varying int32 dot2add_i16i16packed(varying uint32 a, varying uint32 b,
                                 varying int32 acc)
-varying int32 dot2add_i16packed_sat(varying uint32 a, varying uint32 b,
+varying int32 dot2add_i16i16packed_sat(varying uint32 a, varying uint32 b,
                                     varying int32 acc) // saturate the result
 </pre>
 </div>
@@ -4547,9 +4760,13 @@ uniform unsigned int64 lanemask()
 the running program instances.</p>
 <pre class="literal-block">
 int8 broadcast(int8 value, uniform int index)
+unsigned int8 broadcast(unsigned int8 value, uniform int index)
 int16 broadcast(int16 value, uniform int index)
+unsigned int16 broadcast(unsigned int16 value, uniform int index)
 int32 broadcast(int32 value, uniform int index)
+unsigned int32 broadcast(unsigned int32 value, uniform int index)
 int64 broadcast(int64 value, uniform int index)
+unsigned int64 broadcast(unsigned int64 value, uniform int index)
 float16 broadcast(float16 value, uniform int index)
 float broadcast(float value, uniform int index)
 double broadcast(double value, uniform int index)
@@ -4563,9 +4780,13 @@ program instance to get the value 1, the third 2, and so forth.  The
 provided offset value can be positive or negative, and may be greater than
 the size of the gang (it is masked to ensure valid offsets).</p>
 <pre class="literal-block">
+unsigned int8 rotate(unsigned int8 value, uniform int offset)
 int8 rotate(int8 value, uniform int offset)
+unsigned int16 rotate(unsigned int16 value, uniform int offset)
 int16 rotate(int16 value, uniform int offset)
+unsigned int32 rotate(unsigned int32 value, uniform int offset)
 int32 rotate(int32 value, uniform int offset)
+unsigned int64 rotate(unsigned int64 value, uniform int offset)
 int64 rotate(int64 value, uniform int offset)
 float16 rotate(float16 value, uniform int offset)
 float rotate(float value, uniform int offset)
@@ -4577,9 +4798,13 @@ to <tt class="docutils literal">rotate()</tt> with the exception that values are
 Instead, zeroes are shifted in where appropriate.</p>
 <pre class="literal-block">
 int8 shift(int8 value, uniform int offset)
+unsigned int8 shift(unsigned int8 value, uniform int offset)
 int16 shift(int16 value, uniform int offset)
+unsigned int16 shift(unsigned int16 value, uniform int offset)
 int32 shift(int32 value, uniform int offset)
+unsigned int32 shift(unsigned int32 value, uniform int offset)
 int64 shift(int64 value, uniform int offset)
+unsigned int64 shift(unsigned int64 value, uniform int offset)
 float16 shift(float16 value, uniform int offset)
 float shift(float value, uniform int offset)
 double shift(double value, uniform int offset)
@@ -4591,9 +4816,13 @@ from which to get the value of <tt class="docutils literal">value</tt>.  The pro
 <tt class="docutils literal">permutation</tt> must all be between 0 and the gang size.</p>
 <pre class="literal-block">
 int8 shuffle(int8 value, int permutation)
+unsigned int8 shuffle(unsigned int8 value, int permutation)
 int16 shuffle(int16 value, int permutation)
+unsigned int16 shuffle(unsigned int16 value, int permutation)
 int32 shuffle(int32 value, int permutation)
+unsigned int32 shuffle(unsigned int32 value, int permutation)
 int64 shuffle(int64 value, int permutation)
+unsigned int64 shuffle(unsigned int64 value, int permutation)
 float16 shuffle(float16 value, int permutation)
 float shuffle(float value, int permutation)
 double shuffle(double value, int permutation)
@@ -4605,9 +4834,13 @@ of 0 in an element of <tt class="docutils literal">permutation</tt> corresponds 
 the last element of <tt class="docutils literal">value1</tt>, etc.)</p>
 <pre class="literal-block">
 int8 shuffle(int8 value0, int8 value1, int permutation)
+unsigned int8 shuffle(unsigned int8 value0, unsigned int8 value1, int permutation)
 int16 shuffle(int16 value0, int16 value1, int permutation)
+unsigned int16 shuffle(unsigned int16 value0, unsigned int16 value1, int permutation)
 int32 shuffle(int32 value0, int32 value1, int permutation)
+unsigned int32 shuffle(unsigned int32 value0, unsigned int32 value1, int permutation)
 int64 shuffle(int64 value0, int64 value1, int permutation)
+unsigned int64 shuffle(unsigned int64 value0, unsigned int64 value1, int permutation)
 float16 shuffle(float16 value0, float16 value1, int permutation)
 float shuffle(float value0, float value1, int permutation)
 double shuffle(double value0, double value1, int permutation)
@@ -4622,9 +4855,13 @@ element of it as a single <tt class="docutils literal">uniform</tt> value.  .</p
 <pre class="literal-block">
 uniform bool extract(bool x, uniform int i)
 uniform int8 extract(int8 x, uniform int i)
+uniform unsigned int8 extract(unsigned int8 x, uniform int i)
 uniform int16 extract(int16 x, uniform int i)
+uniform unsigned int16 extract(unsigned int16 x, uniform int i)
 uniform int32 extract(int32 x, uniform int i)
+uniform unsigned int32 extract(unsigned int32 x, uniform int i)
 uniform int64 extract(int64 x, uniform int i)
+uniform unsigned int64 extract(unsigned int64 x, uniform int i)
 uniform float16 extract(float16 x, uniform int i)
 uniform float extract(float x, uniform int i)
 uniform double extract(double x, uniform int i)
@@ -4634,9 +4871,13 @@ where the <tt class="docutils literal">i</tt> th element of <tt class="docutils 
 <pre class="literal-block">
 bool insert(bool x, uniform int i, uniform bool v)
 int8 insert(int8 x, uniform int i, uniform int8 v)
+unsigned int8 insert(unsigned int8 x, uniform int i, uniform unsigned int8 v)
 int16 insert(int16 x, uniform int i, uniform int16 v)
+unsigned int16 insert(unsigned int16 x, uniform int i, uniform unsigned int16 v)
 int32 insert(int32 x, uniform int i, uniform int32 v)
+unsigned int32 insert(unsigned int32 x, uniform int i, uniform unsigned int32 v)
 int64 insert(int64 x, uniform int i, uniform int64 v)
+unsigned int64 insert(unsigned int64 x, uniform int i, uniform unsigned int64 v)
 float16 insert(float16 x, uniform int i, uniform float16 v)
 float insert(float x, uniform int i, uniform float v)
 double insert(double x, uniform int i, uniform double v)
@@ -4675,6 +4916,10 @@ uniform double reduce_add(double x)
 <p>You can also use functions to compute the minimum value of the given value
 across all of the currently-executing program instances.</p>
 <pre class="literal-block">
+uniform int8 reduce_min(int8 a)
+uniform unsigned int8 reduce_min(unsigned int8 a)
+uniform int16 reduce_min(int16 a)
+uniform unsigned int16 reduce_min(unsigned int16 a)
 uniform int32 reduce_min(int32 a)
 uniform unsigned int32 reduce_min(unsigned int32 a)
 uniform int64 reduce_min(int64 a)
@@ -4687,6 +4932,10 @@ uniform double reduce_min(double a)
 <p>Equivalent functions are available to compute the maximum of the given
 varying variable over the active program instances.</p>
 <pre class="literal-block">
+uniform int8 reduce_max(int8 a)
+uniform unsigned int8 reduce_max(unsigned int8 a)
+uniform int16 reduce_max(int16 a)
+uniform unsigned int16 reduce_max(unsigned int16 a)
 uniform int32 reduce_max(int32 a)
 uniform unsigned int32 reduce_max(unsigned int32 a)
 uniform int64 reduce_max(int64 a)
@@ -4699,6 +4948,10 @@ uniform double reduce_max(double a)
 <p>Finally, you can check to see if a particular value has the same value in
 all of the currently-running program instances:</p>
 <pre class="literal-block">
+uniform bool reduce_equal(int8 v)
+uniform bool reduce_equal(unsigned int8 v)
+uniform bool reduce_equal(int16 v)
+uniform bool reduce_equal(unsigned int16 v)
 uniform bool reduce_equal(int32 v)
 uniform bool reduce_equal(unsigned int32 v)
 uniform bool reduce_equal(int64 v)
@@ -4713,6 +4966,12 @@ uniform bool reduce_equal(double)
 discussion of an application of this variant to improve memory access
 performance in the <a class="reference external" href="perfguide.html#understanding-gather-and-scatter">Performance Guide</a>.</p>
 <pre class="literal-block">
+uniform bool reduce_equal(int8 v, uniform int8 * uniform sameval)
+uniform bool reduce_equal(unsigned int8 v,
+                          uniform unsigned int8 * uniform sameval)
+uniform bool reduce_equal(int16 v, uniform int16 * uniform sameval)
+uniform bool reduce_equal(unsigned int16 v,
+                          uniform unsigned int16 * uniform sameval)
 uniform bool reduce_equal(int32 v, uniform int32 * uniform sameval)
 uniform bool reduce_equal(unsigned int32 v,
                           uniform unsigned int32 * uniform sameval)
@@ -4744,6 +5003,10 @@ void scan_add(int *in_array, int *result_array, int count) {
 <p><tt class="docutils literal">ispc</tt> provides the following scan functions--addition, bitwise-and, and
 bitwise-or are available:</p>
 <pre class="literal-block">
+int8 exclusive_scan_add(int8 v)
+unsigned int8 exclusive_scan_add(unsigned int8 v)
+int16 exclusive_scan_add(int16 v)
+unsigned int16 exclusive_scan_add(unsigned int16 v)
 int32 exclusive_scan_add(int32 v)
 unsigned int32 exclusive_scan_add(unsigned int32 v)
 float16 exclusive_scan_add(float16 v)
@@ -4751,10 +5014,18 @@ float exclusive_scan_add(float v)
 int64 exclusive_scan_add(int64 v)
 unsigned int64 exclusive_scan_add(unsigned int64 v)
 double exclusive_scan_add(double v)
+int8 exclusive_scan_and(int8 v)
+unsigned int8 exclusive_scan_and(unsigned int8 v)
+int16 exclusive_scan_and(int16 v)
+unsigned int16 exclusive_scan_and(unsigned int16 v)
 int32 exclusive_scan_and(int32 v)
 unsigned int32 exclusive_scan_and(unsigned int32 v)
 int64 exclusive_scan_and(int64 v)
 unsigned int64 exclusive_scan_and(unsigned int64 v)
+int8 exclusive_scan_or(int8 v)
+unsigned int8 exclusive_scan_or(unsigned int8 v)
+int16 exclusive_scan_or(int16 v)
+unsigned int16 exclusive_scan_or(unsigned int16 v)
 int32 exclusive_scan_or(int32 v)
 unsigned int32 exclusive_scan_or(unsigned int32 v)
 int64 exclusive_scan_or(int64 v)
@@ -4827,20 +5098,56 @@ given location, loading one consecutive value for each currently-executing
 program instance and storing it into that program instance's <tt class="docutils literal">val</tt>
 variable.  They return the total number of values loaded.</p>
 <pre class="literal-block">
+uniform int packed_load_active(uniform int8 * uniform base,
+                               varying int8 * uniform val)
+uniform int packed_load_active(uniform unsigned int8 * uniform base,
+                               varying unsigned int8 * uniform val)
+uniform int packed_load_active(uniform int16 * uniform base,
+                               varying int16 * uniform val)
+uniform int packed_load_active(uniform unsigned int16 * uniform base,
+                               varying unsigned int16 * uniform val)
 uniform int packed_load_active(uniform int * uniform base,
                                varying int * uniform val)
 uniform int packed_load_active(uniform unsigned int * uniform base,
                                varying unsigned int * uniform val)
+uniform int packed_load_active(uniform int64 * uniform base,
+                               varying int64 * uniform val)
+uniform int packed_load_active(uniform unsigned int64 * uniform base,
+                               varying unsigned int64 * uniform val)
+uniform int packed_load_active(uniform float16 * uniform base,
+                               varying float16 * uniform val)
+uniform int packed_load_active(uniform float * uniform base,
+                               varying float * uniform val)
+uniform int packed_load_active(uniform double * uniform base,
+                               varying double * uniform val)
 </pre>
 <p>Similarly, the <tt class="docutils literal">packed_store_active()</tt> functions store the <tt class="docutils literal">val</tt> values
 for each program instances that executed the <tt class="docutils literal">packed_store_active()</tt>
 call, storing the results consecutively starting at the given location.
 They return the total number of values stored.</p>
 <pre class="literal-block">
+uniform int packed_store_active(uniform int8 * uniform base,
+                                int8 val)
+uniform int packed_store_active(uniform unsigned int8* uniform base,
+                                unsigned int8 val)
+uniform int packed_store_active(uniform int16 * uniform base,
+                                int16 val)
+uniform int packed_store_active(uniform unsigned int16 * uniform base,
+                                unsigned int16 val)
 uniform int packed_store_active(uniform int * uniform base,
                                 int val)
 uniform int packed_store_active(uniform unsigned int * uniform base,
                                 unsigned int val)
+uniform int packed_store_active(uniform int64 * uniform base,
+                                int64 val)
+uniform int packed_store_active(uniform unsigned int64 * uniform base,
+                                unsigned int64 val)
+uniform int packed_store_active(uniform float16 * uniform base,
+                                float16 val)
+uniform int packed_store_active(uniform float * uniform base,
+                                float val)
+uniform int packed_store_active(uniform double * uniform base,
+                                double val)
 </pre>
 <p>There are also <tt class="docutils literal">packed_store_active2()</tt> functions with exactly the same
 signatures and the same semantic except that they may write one extra
