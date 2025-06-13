@@ -1,129 +1,94 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="icon" type="image/png" href="favicon.png" />
-<link rel="stylesheet" href="css/style.css" type="text/css" media="all"  />
-<!-- WIN IE Style Sheets -->
-<!--[if IE]>
-  <![if gte IE 5.5]>
-   <![if gte IE 7]><link rel="stylesheet" 
-	type="text/css" media="screen,projection" 
-	href="css/ie.css" />
-	<![endif]>
-   <![if lt IE 7]><link rel="stylesheet" 
-	type="text/css" media="screen,projection" 
-	href="css/ie.css" />
-	<![endif]>
-  <![endif]>
-  <![if lt IE 5.5]>
-   <link rel="stylesheet"
-	type="text/css" media="screen,projection" 
-	href="css/ie.css" />
-    <![endif]>
-<![endif]-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Intel® ISPC - An open-source compiler for high-performance SIMD programming on CPU and GPU">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="css/style.css">
 <title>Intel® Implicit SPMD Program Compiler</title>
 </head>
 <body>
-<div id="wrap">
-  <div id="wrap2">
-    <div id="header">
-      <h1 id="logo">Intel® Implicit SPMD Program Compiler</h1>
-      <div id="slogan">An open-source compiler for high-performance SIMD programming on
-      the CPU and GPU</div>
-    </div>
-    <div id="nav">
-      <div id="nbar">
-        <ul>
-          <li id="selected"><a href="index.html">Overview</a></li>
-          <li><a href="features.html">Features</a></li>
-          <li><a href="downloads.html">Downloads</a></li>
-          <li><a href="documentation.html">Documentation</a></li>
-          <li><a href="perf.html">Performance</a></li>
-          <li><a href="contrib.html">Contributors</a></li>
-        </ul>
+<div class="container">
+  <header class="site-header">
+    <nav class="main-nav">
+      <div class="nav-brand">
+        <h1>Intel® ISPC</h1>
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item active"><a href="index.html">Overview</a></li>
+        <li class="nav-item"><a href="features.html">Features</a></li>
+        <li class="nav-item"><a href="downloads.html">Downloads</a></li>
+        <li class="nav-item"><a href="documentation.html">Documentation</a></li>
+        <li class="nav-item"><a href="perf.html">Performance</a></li>
+        <li class="nav-item"><a href="contrib.html">Contributors</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Intel® Implicit SPMD Program Compiler</h1>
+      <p class="hero-subtitle">An open-source compiler for high-performance SIMD programming on CPU and GPU</p>
+      <div class="hero-actions">
+        <a href="downloads.html" class="btn btn-primary">Get Started</a>
+        <a href="documentation.html" class="btn btn-secondary">Documentation</a>
       </div>
     </div>
-    <div id="content-wrap">
-      <div id="sidebar">
-          <div class="widgetspace">
-            <h1>Resources</h1>
-            <ul class="menu">
-              <li><a href="http://github.com/ispc/ispc">GitHub page</a></li>
-              <li><a href="https://github.com/ispc/ispc/discussions">Discussions on GitHub</a></li>
-              <li><a href="http://github.com/ispc/ispc/issues">Issues on Github</a></li>
-              <li><a href="https://github.com/orgs/ispc/projects/1">Release planning board</a></li>
-              <li><a href="https://github.com/ispc/ispc/blob/main/CONTRIBUTING.md">Contributing guide</a></li>
-              <li><a href="http://github.com/ispc/ispc/wiki">Wiki on Github</a></li>
-            </ul>
-        </div>
-      </div>
-      <div id="content">
-        <h1>Overview</h1>
-        <p><tt>ispc</tt> is a compiler for a variant of the C
-          programming language, with extensions for "single program, multiple
-          data" <a href="http://en.wikipedia.org/wiki/SPMD">(SPMD)</a>
-          programming.  Under the SPMD model, the programmer writes a
-          program that generally appears to be a regular serial program,
-          though the execution model is actually that a number
-          of <i>program instances</i> execute in parallel on the hardware.
-          (See the <a href="documentation.html">ispc documentation</a> for
-          more details and examples that illustrate this concept.)</p>
+  </section>
+  <main class="main-content">
+    <div class="content-grid">
+      <article class="content-main">
+        <section class="overview-section">
+          <h2>What is ISPC?</h2>
+          <p><tt class="docutils literal">ispc</tt> is a compiler for a variant of the C programming language, with extensions for "single program, multiple data" <a href="http://en.wikipedia.org/wiki/SPMD">(SPMD)</a> programming. Under the SPMD model, the programmer writes a program that generally appears to be a regular serial program, though the execution model is actually that a number of <em>program instances</em> execute in parallel on the hardware. (See the <a href="documentation.html">ispc documentation</a> for more details and examples that illustrate this concept.)</p>
+        </section>
 
-        <p><tt>ispc</tt> compiles a C-based SPMD programming language to
-          run on the SIMD units of CPUs and GPUs; it frequently provides 
-          a 3x or more speedup on architectures with 4-wide vector SSE units
-          and 5x-6x on architectures with 8-wide AVX vector units, without 
-          any of the difficulty of writing intrinsics code.  Parallelization
-          across multiple cores is also supported by <tt>ispc</tt>, making it
-          possible to write programs that achieve performance improvement 
-          that scales by both number of cores and vector unit size.
-        </p>
+        <section class="performance-section">
+          <h2>Performance</h2>
+          <p><tt class="docutils literal">ispc</tt> compiles a C-based SPMD programming language to run on the SIMD units of CPUs and GPUs; it frequently provides a 3x or more speedup on architectures with 4-wide vector SSE units and 5x-6x on architectures with 8-wide AVX vector units, without any of the difficulty of writing intrinsics code. Parallelization across multiple cores is also supported by <tt class="docutils literal">ispc</tt>, making it possible to write programs that achieve performance improvement that scales by both number of cores and vector unit size.</p>
+        </section>
 
-        <p>There are a few key principles in the design of <tt>ispc</tt>:
-        <ul>
-          <li>To build a small set of extensions to the C language that
-            would deliver excellent performance to performance-oriented
-            programmers who want to run SPMD programs on the CPU and GPU.</li>
-          <li>To provide a thin abstraction layer between the programmer
-            and the hardware&mdash;in particular, to have an execution and
-            data model where the programmer can cleanly reason about the
-            mapping of their source program to compiled assembly language
-            and the underlying hardware.</li>
-          <li>To make it possible to harness the computational power of SIMD
-            vector units without the extremely low-programmer-productivity
-            activity of directly writing intrinsics.</li>
-          <li>To explore opportunities from close coupling between C/C++
-            application code and SPMD <tt>ispc</tt> code running on the
-            same processor&mdash;to have lightweight function calls between
-            the two languages and to share data directly via pointers without
-            copying or reformatting.</li>
+        <section class="principles-section">
+          <h2>Design Principles</h2>
+          <p>There are a few key principles in the design of <tt class="docutils literal">ispc</tt>:</p>
+          <ul class="principles-list">
+            <li>To build a small set of extensions to the C language that would deliver excellent performance to performance-oriented programmers who want to run SPMD programs on the CPU and GPU.</li>
+            <li>To provide a thin abstraction layer between the programmer and the hardware—in particular, to have an execution and data model where the programmer can cleanly reason about the mapping of their source program to compiled assembly language and the underlying hardware.</li>
+            <li>To make it possible to harness the computational power of SIMD vector units without the extremely low-programmer-productivity activity of directly writing intrinsics.</li>
+            <li>To explore opportunities from close coupling between C/C++ application code and SPMD <tt class="docutils literal">ispc</tt> code running on the same processor—to have lightweight function calls between the two languages and to share data directly via pointers without copying or reformatting.</li>
           </ul>
-        <p><tt>ispc</tt> is an open source compiler with a
-          <a href="https://github.com/ispc/ispc/blob/main/LICENSE.txt">BSD
-          license</a>.  It uses the remarkable
-          <a href="http://llvm.org">LLVM Compiler Infrastructure</a> for
-          back-end code generation and optimization and
-          is <a href="http://github.com/ispc/ispc/">hosted on
-          github</a>. It supports Windows, macOS, and
-          Linux as a host operating system and also capable to target Android, iOS,
-          and PS4/PS5.  It currently supports multiple flavours of x86 (SSE2,
-          SSE4, AVX, AVX2, and AVX512), ARM (NEON), and Intel® GPU architectures
-          (Gen9 and Xe family).
-        </p>
-        <p><tt>ispc</tt> support is provided provided through <a href="https://github.com/ispc/ispc/issues">GitHub Issues</a>
-          and <a href="https://github.com/ispc/ispc/discussions">GitHub Discussions</a> user forum.
-        </p>
-        </p>
-      </div>
+        </section>
+
+        <section class="availability-section">
+          <h2>Open Source & Availability</h2>
+          <p><tt class="docutils literal">ispc</tt> is an open source compiler with a <a href="https://github.com/ispc/ispc/blob/main/LICENSE.txt">BSD license</a>. It uses the remarkable <a href="http://llvm.org">LLVM Compiler Infrastructure</a> for back-end code generation and optimization and is <a href="http://github.com/ispc/ispc/">hosted on github</a>. It supports Windows, macOS, and Linux as a host operating system and also capable to target Android, iOS, and PS4/PS5. It currently supports multiple flavours of x86 (SSE2, SSE4, AVX, AVX2, and AVX512), ARM (NEON), and Intel® GPU architectures (Gen9 and Xe family).</p>
+          
+          <p><tt class="docutils literal">ispc</tt> support is provided through <a href="https://github.com/ispc/ispc/issues">GitHub Issues</a> and <a href="https://github.com/ispc/ispc/discussions">GitHub Discussions</a> user forum.</p>
+        </section>
+      </article>
+
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <h3>Resources</h3>
+          <ul class="resource-links">
+            <li><a href="http://github.com/ispc/ispc">GitHub Repository</a></li>
+            <li><a href="https://github.com/ispc/ispc/discussions">Community Discussions</a></li>
+            <li><a href="http://github.com/ispc/ispc/issues">Report Issues</a></li>
+            <li><a href="https://github.com/orgs/ispc/projects/1">Release Planning</a></li>
+            <li><a href="https://github.com/ispc/ispc/blob/main/CONTRIBUTING.md">Contributing Guide</a></li>
+            <li><a href="http://github.com/ispc/ispc/wiki">Documentation Wiki</a></li>
+          </ul>
+        </div>
+      </aside>
     </div>
-    <div class="clearfix"></div>
-    <div id="footer"> &copy; <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
-      <!-- Please Do Not remove this link, thank u -->
-      </div>
-  </div>
-  <!-- End Wrap2 -->
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>&copy; <strong>Intel Corporation</strong> | <a href="http://validator.w3.org/check?uri=referer">Valid HTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">Valid CSS</a></p>
+    </div>
+  </footer>
 </div>
-<!-- End Wrap -->
 </body>
 </html>

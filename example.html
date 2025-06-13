@@ -1,180 +1,151 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="icon" type="image/png" href="favicon.png" />
-<link rel="stylesheet" href="css/style.css" type="text/css" media="all"  />
-<!-- WIN IE Style Sheets -->
-<!--[if IE]>
-  <![if gte IE 5.5]>
-   <![if gte IE 7]><link rel="stylesheet" 
-	type="text/css" media="screen,projection" 
-	href="css/ie.css" />
-	<![endif]>
-   <![if lt IE 7]><link rel="stylesheet" 
-	type="text/css" media="screen,projection" 
-	href="css/ie.css" />
-	<![endif]>
-  <![endif]>
-  <![if lt IE 5.5]>
-   <link rel="stylesheet"
-	type="text/css" media="screen,projection" 
-	href="css/ie.css" />
-    <![endif]>
-<![endif]-->
-<title>Intel® Implicit SPMD Program Compiler</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A Simple ISPC Example - Walkthrough of using Intel® ISPC to compute Mandelbrot set">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="css/style.css">
+<title>A Simple ISPC Example - Intel® ISPC</title>
 </head>
 <body>
-<div id="wrap">
-  <div id="wrap2">
-    <div id="header">
-      <h1 id="logo">Intel® Implicit SPMD Program Compiler</h1>
-      <div id="slogan">An open-source compiler for high-performance SIMD programming on
-      the CPU and GPU</div>
-    </div>
-    <div id="nav">
-      <div id="nbar">
-        <ul>
-          <li><a href="index.html">Overview</a></li>
-          <li><a href="features.html">Features</a></li>
-          <li><a href="downloads.html">Downloads</a></li>
-          <li id="selected"><a href="documentation.html">Documentation</a></li>
-          <li><a href="perf.html">Performance</a></li>
-        </ul>
+<div class="container">
+  <header class="site-header">
+    <nav class="main-nav">
+      <div class="nav-brand">
+        <h1>Intel® ISPC</h1>
       </div>
-    </div>
-    <div id="content-wrap">
-      <div id="sidebar">
-          <div class="widgetspace">
-            <h1>Resources</h1>
-            <ul class="menu">
-              <li><a href="http://github.com/ispc/ispc">GitHub page</a></li>
-              <li><a href="https://github.com/ispc/ispc/discussions">Discussions on GitHub</a></li>
-              <li><a href="http://github.com/ispc/ispc/issues">Issues on Github</a></li>
-              <li><a href="https://github.com/orgs/ispc/projects/1">Release planning board</a></li>
-              <li><a href="https://github.com/ispc/ispc/blob/main/CONTRIBUTING.md">Contributing guide</a></li>
-              <li><a href="http://github.com/ispc/ispc/wiki">Wiki on Github</a></li>
-            </ul>
-        </div>
-      </div>
-      <div id="content">
-        <h1>A Simple ispc Example</h1>
-<p>Here is a walkthrough of a simple example of using <tt>ispc</tt> to
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="index.html">Overview</a></li>
+        <li class="nav-item"><a href="features.html">Features</a></li>
+        <li class="nav-item"><a href="downloads.html">Downloads</a></li>
+        <li class="nav-item active"><a href="documentation.html">Documentation</a></li>
+        <li class="nav-item"><a href="perf.html">Performance</a></li>
+        <li class="nav-item"><a href="contrib.html">Contributors</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="content-grid">
+      <article class="content-main">
+        <h1 class="title">A Simple ispc Example</h1>
+<p>Here is a walkthrough of a simple example of using <tt class="docutils literal">ispc</tt> to
   compute an image of the Mandelbrot set.  The full source code for this
-  example is in the <tt>examples/mandelbrot</tt> directory of
-  the <tt>ispc</tt> distribution; below is a lightly modified version of
+  example is in the <tt class="docutils literal">examples/mandelbrot</tt> directory of
+  the <tt class="docutils literal">ispc</tt> distribution; below is a lightly modified version of
   that example.  (For example, we have elided some of the details related
   to benchmarking and writing the final output image that are in the
-  actual <tt>mandelbrot.cpp</tt> file there.)
+  actual <tt class="docutils literal">mandelbrot.cpp</tt> file there.)
 </p>
 <p>First we have some code in the main program
-  file, <tt>mandelbrot.cpp</tt>, which is implemented in C++.  We mostly
+  file, <tt class="docutils literal">mandelbrot.cpp</tt>, which is implemented in C++.  We mostly
   have a regular C++ source file that sets a number of variables that drive
   the overall computation and allocates memory to store the result of the
-  Mandelbrot set computation.  The call to <tt>mandelbrot_ispc</tt> is a
+  Mandelbrot set computation.  The call to <tt class="docutils literal">mandelbrot_ispc</tt> is a
   regular subroutine call, though in this case it's calling out to code
-  that was written in <tt>ispc</tt> rather than in C/C++.  Because
-  the <tt>ispc</tt> compiler generates regular object files using standard
+  that was written in <tt class="docutils literal">ispc</tt> rather than in C/C++.  Because
+  the <tt class="docutils literal">ispc</tt> compiler generates regular object files using standard
   C/C++ calling conventions, this kind of close interoperation between the
   two languages is straightforward.
 </p>
-<p><code>
-int main() {<br />
-&nbsp;&nbsp;&nbsp;&nbsp;unsigned int width = 768, height = 512;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;float x0 = -2., x1 = 1.;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;float y0 = -1., y1 = 1.;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;int maxIterations = 256;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;int *buf = new int[width*height];<br />
-<br />
-&nbsp;&nbsp;&nbsp;&nbsp;mandelbrot_ispc(x0, y0, x1, y1, width, height, maxIterations, buf);<br />
-<br />
-&nbsp;&nbsp;&nbsp;&nbsp;// write output...<br />
-}<br />
-</code></p>
+<pre class="literal-block">
+int main() {
+    unsigned int width = 768, height = 512;
+    float x0 = -2., x1 = 1.;
+    float y0 = -1., y1 = 1.;
+    int maxIterations = 256;
+    int *buf = new int[width*height];
+
+    mandelbrot_ispc(x0, y0, x1, y1, width, height, maxIterations, buf);
+
+    // write output...
+}
+</pre>
 
 <p>
-Here is the start of the definition of the <tt>mandelbrot_ispc()</tt>
-function that the <tt>ispc</tt> compiler compiles.  (This function is
-defined in the <tt>mandelbrot.ispc</tt> file.)  There are a four main
+Here is the start of the definition of the <tt class="docutils literal">mandelbrot_ispc()</tt>
+function that the <tt class="docutils literal">ispc</tt> compiler compiles.  (This function is
+defined in the <tt class="docutils literal">mandelbrot.ispc</tt> file.)  There are a four main
 things to notice here.
 </p>
 <ol>
-<li>The <tt>export</tt> qualifier indicates that this function should be
+<li>The <tt class="docutils literal">export</tt> qualifier indicates that this function should be
   made available to be called by C/C++ code, not just from
-  other <tt>ispc</tt> functions.</li>
+  other <tt class="docutils literal">ispc</tt> functions.</li>
 <li>This function directly takes parameters passed by the C/C++ code as
   regular function parameters.  No API calls or a runtime library are
   necessary to set parameter values to pass to this function.</li>
-<li>The parameters are all tagged with the <tt>uniform</tt>
+<li>The parameters are all tagged with the <tt class="docutils literal">uniform</tt>
   qualifier. This qualifier indicates that a variable has the same
   value for all of the concurrently-executing program instances; it is
   discussed in more detail in the <a href="ispc.html">ispc User's
-  Manual</a>.  Any values passed from the application to the <tt>ispc</tt>
-  program must be <tt>uniform</tt>.</li>
+  Manual</a>.  Any values passed from the application to the <tt class="docutils literal">ispc</tt>
+  program must be <tt class="docutils literal">uniform</tt>.</li>
 <li>The pointer to the output buffer is passed as an unsized array.  Just
   like in C, arrays in function calls are converted to pointers to the
   first element of the array.  (This parameter could also be declared to
   just be a pointer.)  Like the other function parameters, this buffer is
-  passed from the application to the <tt>ispc</tt> code without any copying
+  passed from the application to the <tt class="docutils literal">ispc</tt> code without any copying
   or reformatting, as would be required with a driver model based
   implementation.</li>
 </ol>
 
-<p><code>
-export void mandelbrot_ispc(uniform float x0, uniform float y0, <br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniform float x1, uniform float y1,<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniform int width, uniform int height, <br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniform int maxIterations,<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniform int output[]) {<br />
-</code></p>
+<pre class="literal-block">
+export void mandelbrot_ispc(uniform float x0, uniform float y0, 
+                            uniform float x1, uniform float y1,
+                            uniform int width, uniform int height, 
+                            uniform int maxIterations,
+                            uniform int output[]) {
+</pre>
 
 The function implementation starts by computing the step between pixels in
 the x and y directions.
 
-<p><code>
-&nbsp;&nbsp;&nbsp;&nbsp;float dx = (x1 - x0) / width;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;float dy = (y1 - y0) / height;<br />
-</code></p>
+<pre class="literal-block">
+    float dx = (x1 - x0) / width;
+    float dy = (y1 - y0) / height;
+</pre>
 
 <p>
 Next, the function loops over the pixels of the image with a doubly-nested
 loop.  The outer loop is a regular loop over scanlines, while the inner
 loop introduces a new looping construct provided
-by <tt>ispc</tt>, <tt>foreach</tt>.  In general, <tt>foreach</tt> specifies
+by <tt class="docutils literal">ispc</tt>, <tt class="docutils literal">foreach</tt>.  In general, <tt class="docutils literal">foreach</tt> specifies
 parallel iteration over an n-dimensional range of integer values.  In this
 case, it specifies parallel iteration over a 1-D range of pixels in a
-scanline.  Each time through the loop, the iteration variable <tt>i</tt>
+scanline.  Each time through the loop, the iteration variable <tt class="docutils literal">i</tt>
 takes on values corresponding to a small range of the domain.
 </p>
 
-<p>For example, if <tt>ispc</tt> was generating code to run in 8-wide
-parallel fashion for an 8-wide AVX SIMD unit, <tt>i</tt> would have the
+<p>For example, if <tt class="docutils literal">ispc</tt> was generating code to run in 8-wide
+parallel fashion for an 8-wide AVX SIMD unit, <tt class="docutils literal">i</tt> would have the
 values (0,1,2,3,4,5,6,7) across the group of executing program instances
 the first time the loop executed, (8,9,10,11,12,13,14,15) the second
 time the loop executed, and so forth.  See the other examples in
-the <tt>ispc</tt> distribution for other examples of using <tt>foreach</tt>
+the <tt class="docutils literal">ispc</tt> distribution for other examples of using <tt class="docutils literal">foreach</tt>
 to perform this mapping for other computations.
 </p>
 
-<p><code>
-&nbsp;&nbsp;&nbsp;&nbsp;for (uniform int j = 0; j &lt; height; j++) {<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach (i = 0 ... width) {<br />
-</code></p>
+<pre class="literal-block">
+    for (uniform int j = 0; j < height; j++) {
+        foreach (i = 0 ... width) {
+</pre>
 
 <p>
-Inside these loops, we first find the floating-point <tt>x</tt>
-and <tt>y</tt> values that correspond to the pixels at which to compute the
+Inside these loops, we first find the floating-point <tt class="docutils literal">x</tt>
+and <tt class="docutils literal">y</tt> values that correspond to the pixels at which to compute the
 Mandelbrot iteration counts; note that these are also straightforward
-calculations.  (Recall how the <tt>i</tt> variable is initialized by
-the <tt>foreach</tt> loop to see how values derived from <tt>i</tt> have
+calculations.  (Recall how the <tt class="docutils literal">i</tt> variable is initialized by
+the <tt class="docutils literal">foreach</tt> loop to see how values derived from <tt class="docutils literal">i</tt> have
 different values across program instances, in this case corresponding to a
-number of <tt>x</tt> positions at which to perform the Mandelbrot set test.
+number of <tt class="docutils literal">x</tt> positions at which to perform the Mandelbrot set test.
 </p>  
 
-<p><code>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float x = x0 + i * dx;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float y = y0 + j * dy;<br />
-</code></p>
+<pre class="literal-block">
+            float x = x0 + i * dx;
+            float y = y0 + j * dy;
+</pre>
 
 <p>
 Once it has figured out the coordinates at which to compute the number of
@@ -182,79 +153,79 @@ iterations, the program finds the appropriate index into the output array
 for them and calls a subroutine to do the actual computation.
 </p>
 
-<p><code>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int index = j * width + i;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output[index] = mandel(x, y, maxIterations);<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-}<br />
-</code></p>
+<pre class="literal-block">
+            int index = j * width + i;
+            output[index] = mandel(x, y, maxIterations);
+        }
+    }
+}
+</pre>
 
 <p>
-Here is the implementation of the <tt>mandel()</tt> routine.  It takes real
+Here is the implementation of the <tt class="docutils literal">mandel()</tt> routine.  It takes real
 and imaginary coordinates and a maximum iteration count and applies the
 iterative computation that defines the Mandelbrot set.  Although this
 appears to be a serial function, only computing one result for one pair of
-input coordinates, recall that <tt>ispc</tt>'s execution model is SPMD; the
+input coordinates, recall that <tt class="docutils literal">ispc</tt>'s execution model is SPMD; the
 program compiles down to run in parallel across the elements of the SIMD
 unit, for example computing four results from four input coordinates in
 parallel on a 4-wide SSE unit.
 </p>
-<p><code>
-static inline int mandel(float c_re, float c_im, int count) {<br />
-&nbsp;&nbsp;&nbsp;&nbsp;float z_re = c_re, z_im = c_im;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;int i;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;for (i = 0; i &lt; count; ++i) {<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (z_re * z_re + z_im * z_im > 4.)<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float new_re = z_re*z_re - z_im*z_im;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float new_im = 2.f * z_re * z_im;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z_re = c_re + new_re;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z_im = c_im + new_im;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-&nbsp;&nbsp;&nbsp;&nbsp;return i;<br />
-}<br />
-</code></p>
+<pre class="literal-block">
+static inline int mandel(float c_re, float c_im, int count) {
+    float z_re = c_re, z_im = c_im;
+    int i;
+    for (i = 0; i < count; ++i) {
+        if (z_re * z_re + z_im * z_im > 4.)
+            break;
+        float new_re = z_re*z_re - z_im*z_im;
+        float new_im = 2.f * z_re * z_im;
+        z_re = c_re + new_re;
+        z_im = c_im + new_im;
+    }
+    return i;
+}
+</pre>
 
 
-<p>To compile this example, install the <tt>ispc</tt> compiler in a
-  directory that is in your <tt>PATH</tt>, and run <tt>make</tt> on Mac OS
-  X or Linux, or build using the <tt>mandelbrot.vcxproj</tt> build file
-  with MSVC 2010.  Note that the <tt>ispc</tt> compiler generates regular
+<p>To compile this example, install the <tt class="docutils literal">ispc</tt> compiler in a
+  directory that is in your <tt class="docutils literal">PATH</tt>, and run <tt class="docutils literal">make</tt> on Mac OS
+  X or Linux, or build using the <tt class="docutils literal">mandelbrot.vcxproj</tt> build file
+  with MSVC 2010.  Note that the <tt class="docutils literal">ispc</tt> compiler generates regular
   object files that you can just link with object files compiled with C/C++
   compilers.  (Here is the <a href="mandelbrot.txt">assembly language
-  output</a> from compiling the <tt>mandelbrot.ispc</tt> source file for
-  the AVX target with the <tt>--emit-asm</tt> command-line option.)</p>
-<p><code>
-% make<br />
+  output</a> from compiling the <tt class="docutils literal">mandelbrot.ispc</tt> source file for
+  the AVX target with the <tt class="docutils literal">--emit-asm</tt> command-line option.)</p>
+<pre class="literal-block">
+% make
 ispc -O2 --target=avx mandelbrot.ispc -o objs/mandelbrot_ispc.o -h
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objs/mandelbrot_ispc.h<br />
-g++ mandelbrot.cpp -Iobjs/ -O3 -Wall -c -o objs/mandelbrot.o<br />
+        objs/mandelbrot_ispc.h
+g++ mandelbrot.cpp -Iobjs/ -O3 -Wall -c -o objs/mandelbrot.o
 g++ mandelbrot_serial.cpp -Iobjs/ -O3 -Wall -c -o
-objs/mandelbrot_serial.o<br />
+objs/mandelbrot_serial.o
 g++ -Iobjs/ -O3 -Wall -o mandelbrot objs/mandelbrot.o objs/mandelbrot_ispc.o
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objs/mandelbrot_serial.o -lm<br />
-%<br />
-</code></p>
+        objs/mandelbrot_serial.o -lm
+%
+</pre>
 
 <p>
 After the executable is built, running it benchmarks a serial
-implementation of computing the Mandelbrot set and the <tt>ispc</tt>
-version.  (You may want to compare the files <tt>mandelbrot.ispc</tt>
-and <tt>mandelbrot_serial.cpp</tt> to see the few syntactic differences
-between a C++ implementation of this computation and the <tt>ispc</tt>
+implementation of computing the Mandelbrot set and the <tt class="docutils literal">ispc</tt>
+version.  (You may want to compare the files <tt class="docutils literal">mandelbrot.ispc</tt>
+and <tt class="docutils literal">mandelbrot_serial.cpp</tt> to see the few syntactic differences
+between a C++ implementation of this computation and the <tt class="docutils literal">ispc</tt>
 implementation.)  On an Second Generation Intel&#174; Core i7 CPU, doing
 this computation in parallel across the SIMD lanes of a single core gives a
 substantial speedup:
 </p>
 
-<p><code>
-% ./mandelbrot<br />
-[mandelbrot ispc]:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[58.570] million cycles<br />
-[mandelbrot serial]:&nbsp;&nbsp;&nbsp;&nbsp;[335.005] millon cycles<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(5.72x speedup from ISPC)<br />
-%<br />
-</code></p>
+<pre class="literal-block">
+% ./mandelbrot
+[mandelbrot ispc]:      [58.570] million cycles
+[mandelbrot serial]:    [335.005] millon cycles
+                        (5.72x speedup from ISPC)
+%
+</pre>
 
 <p>
 Here is a downscaled version of the image that the program generates:
@@ -271,7 +242,7 @@ Here is a downscaled version of the image that the program generates:
  more processing cores, each of which has a SIMD vector unit.
 </p>
 
-<p> Thanks to the fact that <tt>ispc</tt> cleanly inter-operates with
+<p> Thanks to the fact that <tt class="docutils literal">ispc</tt> cleanly inter-operates with
  application C/C++ code through a regular function call, one option would
  be to rewrite the application code to be multi-threaded (for example,
  using the task scheduler provided by
@@ -279,27 +250,40 @@ Here is a downscaled version of the image that the program generates:
  Building Blocks</a> or
  the <a href="http://msdn.microsoft.com/en-us/library/dd504870.aspx">Microsoft
  Concurrency Runtime</a>) and to then have parallel tasks that were in turn
- partially or fully implemented in <tt>ispc</tt>.
+ partially or fully implemented in <tt class="docutils literal">ispc</tt>.
 </p>
 
 <p>The second option for parallelizing across cores is to use the built-in
-  functionality for launching concurrent tasks that <tt>ispc</tt> offers.
-  The <tt>ispc</tt> language provides constructs for launching asynchronous
+  functionality for launching concurrent tasks that <tt class="docutils literal">ispc</tt> offers.
+  The <tt class="docutils literal">ispc</tt> language provides constructs for launching asynchronous
   tasks that can execute concurrently with the rest of the program; see the
-  directory <tt>examples/mandelbrot_tasks</tt> in the <tt>ispc</tt>
+  directory <tt class="docutils literal">examples/mandelbrot_tasks</tt> in the <tt class="docutils literal">ispc</tt>
   distribution to see how to parallelize across both cores and the SIMD
   units.
 </p>
-        <br />
-      </div>
+      </article>
+      
+      <aside class="content-sidebar">
+        <div class="sidebar-section">
+          <h3>Resources</h3>
+          <ul class="resource-links">
+            <li><a href="http://github.com/ispc/ispc">GitHub Repository</a></li>
+            <li><a href="https://github.com/ispc/ispc/discussions">Community Discussions</a></li>
+            <li><a href="http://github.com/ispc/ispc/issues">Report Issues</a></li>
+            <li><a href="https://github.com/orgs/ispc/projects/1">Release Planning</a></li>
+            <li><a href="https://github.com/ispc/ispc/blob/main/CONTRIBUTING.md">Contributing Guide</a></li>
+            <li><a href="http://github.com/ispc/ispc/wiki">Documentation Wiki</a></li>
+          </ul>
+        </div>
+      </aside>
     </div>
-    <div class="clearfix"></div>
-    <div id="footer"> &copy; <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
-      <!-- Please Do Not remove this link, thank u -->
-      </div>
-  </div>
-  <!-- End Wrap2 -->
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>&copy; <strong>Intel Corporation</strong> | <a href="http://validator.w3.org/check?uri=referer">Valid HTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">Valid CSS</a></p>
+    </div>
+  </footer>
 </div>
-<!-- End Wrap -->
 </body>
 </html>

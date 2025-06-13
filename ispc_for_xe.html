@@ -1,50 +1,38 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Intel® ISPC User's Guide - Complete documentation for the high-performance SIMD compiler">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="css/style.css">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <title>Intel® ISPC for Xe</title>
-<link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 <body>
-<div class="document" id="intel-ispc-for-xe">
-<div id="wrap">
-  <div id="wrap2">
-    <div id="header">
-      <h1 id="logo">Intel® Implicit SPMD Program Compiler</h1>
-      <div id="slogan">An open-source compiler for high-performance SIMD programming on
-      the CPU and GPU</div>
-    </div>
-    <div id="nav">
-      <div id="nbar">
-        <ul>
-          <li><a href="index.html">Overview</a></li>
-          <li><a href="features.html">Features</a></li>
-          <li><a href="downloads.html">Downloads</a></li>
-          <li id="selected"><a href="documentation.html">Documentation</a></li>
-          <li><a href="perf.html">Performance</a></li>
-          <li><a href="contrib.html">Contributors</a></li>
-        </ul>
+<div class="container">
+  <header class="site-header">
+    <nav class="main-nav">
+      <div class="nav-brand">
+        <h1>Intel® ISPC</h1>
       </div>
-    </div>
-    <div id="content-wrap">
-      <div id="sidebar">
-          <div class="widgetspace">
-            <h1>Resources</h1>
-            <ul class="menu">
-              <li><a href="http://github.com/ispc/ispc">GitHub page</a></li>
-              <li><a href="https://github.com/ispc/ispc/discussions">Discussions on GitHub</a></li>
-              <li><a href="http://github.com/ispc/ispc/issues">Issues on Github</a></li>
-              <li><a href="https://github.com/orgs/ispc/projects/1">Release planning board</a></li>
-              <li><a href="https://github.com/ispc/ispc/blob/main/CONTRIBUTING.md">Contributing guide</a></li>
-              <li><a href="http://github.com/ispc/ispc/wiki">Wiki on Github</a></li>
-            </ul>
-        </div>
-      </div>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="index.html">Overview</a></li>
+        <li class="nav-item"><a href="features.html">Features</a></li>
+        <li class="nav-item"><a href="downloads.html">Downloads</a></li>
+        <li class="nav-item active"><a href="documentation.html">Documentation</a></li>
+        <li class="nav-item"><a href="perf.html">Performance</a></li>
+        <li class="nav-item"><a href="contrib.html">Contributors</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="content-grid">
+      <article class="content-main">
 <h1 class="title">Intel® ISPC for Xe</h1>
 
-<div id="content">
 <p>The Intel® Implicit SPMD Program Compiler (Intel® ISPC) is actively developed
 to support latest Intel GPUs. The compilation for a GPU is pretty
 straightforward from the user's point of view, but managing the execution of
@@ -294,32 +282,32 @@ simple example of how to use <tt class="docutils literal">ispc</tt> with a short
 targets with ISPC Run Time. See the file <tt class="docutils literal">simple.ispc</tt> in that directory (also
 reproduced here.)</p>
 <pre class="code cpp literal-block">
-<span class="keyword">struct</span> <span class="name">Parameters</span> <span class="punctuation">{</span>
-  <span class="keyword type">float</span> <span class="operator">*</span><span class="name">vin</span><span class="punctuation">;</span>
-  <span class="keyword type">float</span> <span class="operator">*</span><span class="name">vout</span><span class="punctuation">;</span>
-  <span class="keyword type">int</span>    <span class="name">count</span><span class="punctuation">;</span>
-<span class="punctuation">};</span>
+<span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">Parameters</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword type">float</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">vin</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword type">float</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">vout</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword type">int</span><span class="whitespace">    </span><span class="name">count</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">};</span><span class="whitespace">
 
-<span class="name">task</span> <span class="keyword type">void</span> <span class="name function">simple_ispc</span><span class="punctuation">(</span><span class="keyword type">void</span> <span class="operator">*</span><span class="name">uniform</span> <span class="name">_p</span><span class="punctuation">)</span> <span class="punctuation">{</span>
- <span class="name">Parameters</span> <span class="operator">*</span><span class="name">uniform</span> <span class="name">p</span> <span class="operator">=</span> <span class="punctuation">(</span><span class="name">Parameters</span> <span class="operator">*</span> <span class="name">uniform</span><span class="punctuation">)</span> <span class="name">_p</span><span class="punctuation">;</span>
+</span><span class="name">task</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name">simple_ispc</span><span class="punctuation">(</span><span class="keyword type">void</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">uniform</span><span class="whitespace"> </span><span class="name">_p</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+ </span><span class="name">Parameters</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">uniform</span><span class="whitespace"> </span><span class="name">p</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">Parameters</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name">uniform</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">_p</span><span class="punctuation">;</span><span class="whitespace">
 
-    <span class="name">foreach</span> <span class="punctuation">(</span><span class="name">index</span> <span class="operator">=</span> <span class="literal number integer">0</span> <span class="punctuation">...</span> <span class="name">p</span><span class="operator">-&gt;</span><span class="name">count</span><span class="punctuation">)</span> <span class="punctuation">{</span>
-      <span class="comment single">// Load the appropriate input value for this program instance.
-</span>      <span class="keyword type">float</span> <span class="name">v</span> <span class="operator">=</span> <span class="name">p</span><span class="operator">-&gt;</span><span class="name">vin</span><span class="punctuation">[</span><span class="name">index</span><span class="punctuation">];</span>
+    </span><span class="name">foreach</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">index</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="whitespace"> </span><span class="punctuation">...</span><span class="whitespace"> </span><span class="name">p</span><span class="operator">-&gt;</span><span class="name">count</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="comment single">// Load the appropriate input value for this program instance.
+</span><span class="whitespace">      </span><span class="keyword type">float</span><span class="whitespace"> </span><span class="name">v</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">p</span><span class="operator">-&gt;</span><span class="name">vin</span><span class="punctuation">[</span><span class="name">index</span><span class="punctuation">];</span><span class="whitespace">
 
-        <span class="comment single">// Do an arbitrary little computation, but at least make the
-</span>        <span class="comment single">// computation dependent on the value being processed
-</span>        <span class="keyword">if</span> <span class="punctuation">(</span><span class="name">v</span> <span class="operator">&lt;</span> <span class="literal number float">3.</span><span class="punctuation">)</span>
-          <span class="name">v</span> <span class="operator">=</span> <span class="name">v</span> <span class="operator">*</span> <span class="name">v</span><span class="punctuation">;</span>
-        <span class="keyword">else</span>
-          <span class="name">v</span> <span class="operator">=</span> <span class="name">sqrt</span><span class="punctuation">(</span><span class="name">v</span><span class="punctuation">);</span>
+        </span><span class="comment single">// Do an arbitrary little computation, but at least make the
+</span><span class="whitespace">        </span><span class="comment single">// computation dependent on the value being processed
+</span><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">v</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number float">3.</span><span class="punctuation">)</span><span class="whitespace">
+          </span><span class="name">v</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">v</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name">v</span><span class="punctuation">;</span><span class="whitespace">
+        </span><span class="keyword">else</span><span class="whitespace">
+          </span><span class="name">v</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">sqrt</span><span class="punctuation">(</span><span class="name">v</span><span class="punctuation">);</span><span class="whitespace">
 
-        <span class="comment single">// And write the result to the output array.
-</span>        <span class="name">p</span><span class="operator">-&gt;</span><span class="name">vout</span><span class="punctuation">[</span><span class="name">index</span><span class="punctuation">]</span> <span class="operator">=</span> <span class="name">v</span><span class="punctuation">;</span>
-    <span class="punctuation">}</span>
- <span class="punctuation">}</span>
+        </span><span class="comment single">// And write the result to the output array.
+</span><span class="whitespace">        </span><span class="name">p</span><span class="operator">-&gt;</span><span class="name">vout</span><span class="punctuation">[</span><span class="name">index</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">v</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="punctuation">}</span><span class="whitespace">
+ </span><span class="punctuation">}</span><span class="whitespace">
 
-<span class="comment preproc">#include</span> <span class="comment preprocfile">&quot;ispcrt.isph&quot;</span><span class="comment preproc">
+</span><span class="comment preproc">#include</span><span class="whitespace"> </span><span class="comment preprocfile">&quot;ispcrt.isph&quot;</span><span class="comment preproc">
 </span><span class="name">DEFINE_CPU_ENTRY_POINT</span><span class="punctuation">(</span><span class="name">simple_ispc</span><span class="punctuation">)</span>
 </pre>
 <p>There are several differences in comparison with CPU-only version of this
@@ -331,7 +319,7 @@ called from the host.</p>
 what function is an entry point for CPU. If you look into the definition of
 <tt class="docutils literal">DEFINE_CPU_ENTRY_POINT</tt>, it is just simple <tt class="docutils literal">launch</tt> call:</p>
 <pre class="code cpp literal-block">
-<span class="name">launch</span><span class="punctuation">[</span><span class="name">dim0</span><span class="punctuation">,</span> <span class="name">dim1</span><span class="punctuation">,</span> <span class="name">dim2</span><span class="punctuation">]</span> <span class="name">fcn_name</span><span class="punctuation">(</span><span class="name">parameters</span><span class="punctuation">);</span>
+<span class="name">launch</span><span class="punctuation">[</span><span class="name">dim0</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">dim1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">dim2</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="name">fcn_name</span><span class="punctuation">(</span><span class="name">parameters</span><span class="punctuation">);</span>
 </pre>
 <p>It is used to set up thread space for CPU and GPU targets in a seamless way in
 host code. If you don't plan to use <tt class="docutils literal">ISPCRT</tt> on CPU, you don't need to use
@@ -348,35 +336,35 @@ depending on an input parameter. The device type is managed by
 fallback to CPU if no GPUs found).</p>
 <p>The program starts with including <tt class="docutils literal">ISPCRT</tt> header:</p>
 <pre class="code cpp literal-block">
-<span class="comment preproc">#include</span> <span class="comment preprocfile">&quot;ispcrt.hpp&quot;</span>
+<span class="comment preproc">#include</span><span class="whitespace"> </span><span class="comment preprocfile">&quot;ispcrt.hpp&quot;</span>
 </pre>
 <p>After that <tt class="docutils literal">ISPCRT</tt> device is created:</p>
 <pre class="code cpp literal-block">
-<span class="name">ispcrt</span><span class="operator">::</span><span class="name">Device</span> <span class="name">device</span><span class="punctuation">(</span><span class="name">device_type</span><span class="punctuation">)</span>
+<span class="name">ispcrt</span><span class="operator">::</span><span class="name">Device</span><span class="whitespace"> </span><span class="name">device</span><span class="punctuation">(</span><span class="name">device_type</span><span class="punctuation">)</span>
 </pre>
 <p>Then we're setting up parameters for ISPC kernel:</p>
 <pre class="code cpp literal-block">
 <span class="comment single">// Setup input array
-</span><span class="name">ispcrt</span><span class="operator">::</span><span class="name">Array</span><span class="operator">&lt;</span><span class="keyword type">float</span><span class="operator">&gt;</span> <span class="name">vin_dev</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span> <span class="name">vin</span><span class="punctuation">);</span>
+</span><span class="name">ispcrt</span><span class="operator">::</span><span class="name">Array</span><span class="operator">&lt;</span><span class="keyword type">float</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">vin_dev</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">vin</span><span class="punctuation">);</span><span class="whitespace">
 
-<span class="comment single">// Setup output array
-</span><span class="name">ispcrt</span><span class="operator">::</span><span class="name">Array</span><span class="operator">&lt;</span><span class="keyword type">float</span><span class="operator">&gt;</span> <span class="name">vout_dev</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span> <span class="name">vout</span><span class="punctuation">);</span>
+</span><span class="comment single">// Setup output array
+</span><span class="name">ispcrt</span><span class="operator">::</span><span class="name">Array</span><span class="operator">&lt;</span><span class="keyword type">float</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">vout_dev</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">vout</span><span class="punctuation">);</span><span class="whitespace">
 
-<span class="comment single">// Setup parameters structure
-</span><span class="name">Parameters</span> <span class="name">p</span><span class="punctuation">;</span>
+</span><span class="comment single">// Setup parameters structure
+</span><span class="name">Parameters</span><span class="whitespace"> </span><span class="name">p</span><span class="punctuation">;</span><span class="whitespace">
 
-<span class="name">p</span><span class="punctuation">.</span><span class="name">vin</span> <span class="operator">=</span> <span class="name">vin_dev</span><span class="punctuation">.</span><span class="name">devicePtr</span><span class="punctuation">();</span>
-<span class="name">p</span><span class="punctuation">.</span><span class="name">vout</span> <span class="operator">=</span> <span class="name">vout_dev</span><span class="punctuation">.</span><span class="name">devicePtr</span><span class="punctuation">();</span>
-<span class="name">p</span><span class="punctuation">.</span><span class="name">count</span> <span class="operator">=</span> <span class="name">SIZE</span><span class="punctuation">;</span>
+</span><span class="name">p</span><span class="punctuation">.</span><span class="name">vin</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">vin_dev</span><span class="punctuation">.</span><span class="name">devicePtr</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="name">p</span><span class="punctuation">.</span><span class="name">vout</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">vout_dev</span><span class="punctuation">.</span><span class="name">devicePtr</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="name">p</span><span class="punctuation">.</span><span class="name">count</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">SIZE</span><span class="punctuation">;</span><span class="whitespace">
 
-<span class="keyword">auto</span> <span class="name">p_dev</span> <span class="operator">=</span> <span class="name">ispcrt</span><span class="operator">::</span><span class="name">Array</span><span class="operator">&lt;</span><span class="name">Parameters</span><span class="operator">&gt;</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span> <span class="name">p</span><span class="punctuation">);</span>
+</span><span class="keyword">auto</span><span class="whitespace"> </span><span class="name">p_dev</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">ispcrt</span><span class="operator">::</span><span class="name">Array</span><span class="operator">&lt;</span><span class="name">Parameters</span><span class="operator">&gt;</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">p</span><span class="punctuation">);</span>
 </pre>
 <p>Notice that all reference types like arrays and structures should be wrapped up
 into <tt class="docutils literal"><span class="pre">ispcrt::Array</span></tt> for correct passing to ISPC kernel.</p>
 <p>Then we set up module and kernel to execute:</p>
 <pre class="code cpp literal-block">
-<span class="name">ispcrt</span><span class="operator">::</span><span class="name">Module</span> <span class="name">module</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span> <span class="literal string">&quot;xe_simple&quot;</span><span class="punctuation">);</span>
-<span class="name">ispcrt</span><span class="operator">::</span><span class="name">Kernel</span> <span class="name">kernel</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span> <span class="name">module</span><span class="punctuation">,</span> <span class="literal string">&quot;simple_ispc&quot;</span><span class="punctuation">);</span>
+<span class="name">ispcrt</span><span class="operator">::</span><span class="name">Module</span><span class="whitespace"> </span><span class="keyword">module</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;xe_simple&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="name">ispcrt</span><span class="operator">::</span><span class="name">Kernel</span><span class="whitespace"> </span><span class="name">kernel</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">module</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;simple_ispc&quot;</span><span class="punctuation">);</span>
 </pre>
 <p>The name of the module must correspond to the name of output from ISPC
 compilation without extension. So in this example <tt class="docutils literal">simple.ispc</tt> will be
@@ -386,21 +374,21 @@ of the required <tt class="docutils literal">task</tt> function from the ISPC ke
 <p>The rest of the program creates <tt class="docutils literal"><span class="pre">ispcrt::TaskQueue</span></tt>, fills it with required
 steps and executes it:</p>
 <pre class="code cpp literal-block">
-<span class="name">ispcrt</span><span class="operator">::</span><span class="name">TaskQueue</span> <span class="name">queue</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">);</span>
+<span class="name">ispcrt</span><span class="operator">::</span><span class="name">TaskQueue</span><span class="whitespace"> </span><span class="name function">queue</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">);</span><span class="whitespace">
 
-<span class="comment single">// ispcrt::Array objects which used as inputs for ISPC kernel should be
+</span><span class="comment single">// ispcrt::Array objects which used as inputs for ISPC kernel should be
 // explicitly copied to device from host
-</span><span class="name">queue</span><span class="punctuation">.</span><span class="name">copyToDevice</span><span class="punctuation">(</span><span class="name">p_dev</span><span class="punctuation">);</span>
-<span class="name">queue</span><span class="punctuation">.</span><span class="name">copyToDevice</span><span class="punctuation">(</span><span class="name">vin_dev</span><span class="punctuation">);</span>
+</span><span class="name">queue</span><span class="punctuation">.</span><span class="name">copyToDevice</span><span class="punctuation">(</span><span class="name">p_dev</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="name">queue</span><span class="punctuation">.</span><span class="name">copyToDevice</span><span class="punctuation">(</span><span class="name">vin_dev</span><span class="punctuation">);</span><span class="whitespace">
 
-<span class="comment single">// Launch the kernel on the device using 1 thread
-</span><span class="name">queue</span><span class="punctuation">.</span><span class="name">launch</span><span class="punctuation">(</span><span class="name">kernel</span><span class="punctuation">,</span> <span class="name">p_dev</span><span class="punctuation">,</span> <span class="literal number integer">1</span><span class="punctuation">);</span>
+</span><span class="comment single">// Launch the kernel on the device using 1 thread
+</span><span class="name">queue</span><span class="punctuation">.</span><span class="name">launch</span><span class="punctuation">(</span><span class="name">kernel</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">p_dev</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">);</span><span class="whitespace">
 
-<span class="comment single">// ispcrt::Array objects which used as outputs of ISPC kernel should be
+</span><span class="comment single">// ispcrt::Array objects which used as outputs of ISPC kernel should be
 // explicitly copied to host from device
-</span><span class="name">queue</span><span class="punctuation">.</span><span class="name">copyToHost</span><span class="punctuation">(</span><span class="name">vout_dev</span><span class="punctuation">);</span>
+</span><span class="name">queue</span><span class="punctuation">.</span><span class="name">copyToHost</span><span class="punctuation">(</span><span class="name">vout_dev</span><span class="punctuation">);</span><span class="whitespace">
 
-<span class="comment single">// Execute queue and sync
+</span><span class="comment single">// Execute queue and sync
 </span><span class="name">queue</span><span class="punctuation">.</span><span class="name">sync</span><span class="punctuation">();</span>
 </pre>
 <p>To build and run examples go to <tt class="docutils literal">examples/xpu</tt> and create <tt class="docutils literal">build</tt> folder.
@@ -437,13 +425,13 @@ into ISPC distribution package.</p>
 <p>So the complete <tt class="docutils literal">CMakeFile.txt</tt> to build <tt class="docutils literal">simple</tt> example extracted from
 ISPC build system is the following:</p>
 <pre class="code cmake literal-block">
-<span class="name builtin">cmake_minimum_required</span><span class="punctuation">(</span><span class="literal string">VERSION</span> <span class="literal string">3.14</span><span class="punctuation">)</span>
+<span class="name builtin">cmake_minimum_required</span><span class="punctuation">(</span><span class="literal string">VERSION</span><span class="whitespace"> </span><span class="literal string">3.14</span><span class="punctuation">)</span><span class="whitespace">
 
-<span class="name builtin">project</span><span class="punctuation">(</span><span class="literal string">simple</span><span class="punctuation">)</span>
-<span class="name builtin">find_package</span><span class="punctuation">(</span><span class="literal string">ispcrt</span> <span class="literal string">REQUIRED</span><span class="punctuation">)</span>
-<span class="name builtin">add_executable</span><span class="punctuation">(</span><span class="literal string">host_simple</span> <span class="literal string">simple.cpp</span><span class="punctuation">)</span>
-<span class="name builtin">add_ispc_kernel</span><span class="punctuation">(</span><span class="literal string">xe_simple</span> <span class="literal string">simple.ispc</span> <span class="literal string double">&quot;&quot;</span><span class="punctuation">)</span>
-<span class="name builtin">target_link_libraries</span><span class="punctuation">(</span><span class="literal string">host_simple</span> <span class="literal string">PRIVATE</span> <span class="literal string">ispcrt::ispcrt</span><span class="punctuation">)</span>
+</span><span class="name builtin">project</span><span class="punctuation">(</span><span class="literal string">simple</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name builtin">find_package</span><span class="punctuation">(</span><span class="literal string">ispcrt</span><span class="whitespace"> </span><span class="literal string">REQUIRED</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name builtin">add_executable</span><span class="punctuation">(</span><span class="literal string">host_simple</span><span class="whitespace"> </span><span class="literal string">simple.cpp</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name builtin">add_ispc_kernel</span><span class="punctuation">(</span><span class="literal string">xe_simple</span><span class="whitespace"> </span><span class="literal string">simple.ispc</span><span class="whitespace"> </span><span class="literal string double">&quot;&quot;</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name builtin">target_link_libraries</span><span class="punctuation">(</span><span class="literal string">host_simple</span><span class="whitespace"> </span><span class="literal string">PRIVATE</span><span class="whitespace"> </span><span class="literal string">ispcrt::ispcrt</span><span class="punctuation">)</span>
 </pre>
 <p>And you can configure and build it using:</p>
 <pre class="code console literal-block">
@@ -545,15 +533,15 @@ varying value takes 8x32bit in SIMD-8, and 16x32bit in SIMD-16.</p>
 for both CPU and GPU but on GPU it is essential.</p>
 <pre class="code cpp literal-block">
 <span class="comment single">// Good example
-</span><span class="keyword">for</span> <span class="punctuation">(</span><span class="name">uniform</span> <span class="keyword type">int</span> <span class="name">j</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">;</span> <span class="name">j</span> <span class="operator">&lt;</span> <span class="literal number integer">3</span><span class="punctuation">;</span> <span class="name">j</span><span class="operator">++</span><span class="punctuation">)</span> <span class="punctuation">{</span>
-    <span class="name">do_something</span><span class="punctuation">();</span>
-<span class="punctuation">}</span>
+</span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">uniform</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">j</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">j</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">3</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">j</span><span class="operator">++</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">do_something</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="punctuation">}</span>
 </pre>
 <pre class="code cpp literal-block">
 <span class="comment single">// Bad example
-</span><span class="keyword">for</span> <span class="punctuation">(</span><span class="keyword type">int</span> <span class="name">j</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">;</span> <span class="name">j</span> <span class="operator">&lt;</span> <span class="literal number integer">3</span><span class="punctuation">;</span> <span class="name">j</span><span class="operator">++</span><span class="punctuation">)</span> <span class="punctuation">{</span>
-    <span class="name">do_something</span><span class="punctuation">();</span>
-<span class="punctuation">}</span>
+</span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">j</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">j</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">3</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">j</span><span class="operator">++</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">do_something</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="punctuation">}</span>
 </pre>
 </li>
 <li><p class="first">Avoid nested code with a lot of local variables. It is more effective to split
@@ -564,35 +552,35 @@ may need work on structure copy, consider to use reference or pointer. We're
 working to make such optimization automatically for future release:</p>
 <pre class="code cpp literal-block">
 <span class="comment single">// Instead of this:
-</span><span class="keyword">struct</span> <span class="name">ExampleStructure</span> <span class="punctuation">{</span>
-  <span class="comment single">//...
+</span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">ExampleStructure</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="comment single">//...
+</span><span class="punctuation">}</span><span class="whitespace">
+
+</span><span class="name">ExampleStructure</span><span class="whitespace"> </span><span class="name">createExampleStructure</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="name">ExampleStructure</span><span class="whitespace"> </span><span class="name">retVal</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="comment single">//... initialize
+</span><span class="whitespace">  </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">retVal</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span><span class="whitespace">
+
+</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">test</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="name">ExampleStructure</span><span class="whitespace"> </span><span class="name">s</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="name">s</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">createExampleStructure</span><span class="punctuation">();</span><span class="whitespace">
 </span><span class="punctuation">}</span>
-
-<span class="name">ExampleStructure</span> <span class="name">createExampleStructure</span><span class="punctuation">()</span> <span class="punctuation">{</span>
-  <span class="name">ExampleStructure</span> <span class="name">retVal</span><span class="punctuation">;</span>
-  <span class="comment single">//... initialize
-</span>  <span class="keyword">return</span> <span class="name">retVal</span><span class="punctuation">;</span>
-<span class="punctuation">}</span>
-
-<span class="keyword type">int</span> <span class="name">test</span><span class="punctuation">()</span> <span class="punctuation">{</span>
-  <span class="name">ExampleStructure</span> <span class="name">s</span><span class="punctuation">;</span>
-  <span class="name">s</span> <span class="operator">=</span> <span class="name">createExampleStructure</span><span class="punctuation">();</span>
-<span class="punctuation">}</span>
 </pre>
 <pre class="code cpp literal-block">
 <span class="comment single">// Consider using pointer:
-</span><span class="keyword">struct</span> <span class="name">ExampleStructure</span> <span class="punctuation">{</span>
-  <span class="comment single">//...
-</span><span class="punctuation">}</span>
+</span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">ExampleStructure</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="comment single">//...
+</span><span class="punctuation">}</span><span class="whitespace">
 
-<span class="keyword type">void</span> <span class="name">initExampleStructure</span><span class="punctuation">(</span><span class="name">ExampleStructure</span><span class="operator">*</span> <span class="name">init</span><span class="punctuation">)</span> <span class="punctuation">{</span>
-  <span class="comment single">//... initialize
-</span><span class="punctuation">}</span>
+</span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name">initExampleStructure</span><span class="punctuation">(</span><span class="name">ExampleStructure</span><span class="operator">*</span><span class="whitespace"> </span><span class="name">init</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="comment single">//... initialize
+</span><span class="punctuation">}</span><span class="whitespace">
 
-<span class="keyword type">int</span> <span class="name">test</span><span class="punctuation">()</span> <span class="punctuation">{</span>
-  <span class="name">ExampleStructure</span> <span class="name">s</span><span class="punctuation">;</span>
-  <span class="name">initExampleStructure</span><span class="punctuation">(</span> <span class="operator">&amp;</span><span class="name">s</span> <span class="punctuation">);</span>
-<span class="punctuation">}</span>
+</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">test</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="name">ExampleStructure</span><span class="whitespace"> </span><span class="name">s</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="name">initExampleStructure</span><span class="punctuation">(</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">s</span><span class="whitespace"> </span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="punctuation">}</span>
 </pre>
 </li>
 <li><p class="first">Avoid recursion.</p>
@@ -610,26 +598,26 @@ for SIMD-8 target (<tt class="docutils literal"><span class="pre">--target=gen9-
 <ul>
 <li><p class="first">Use <tt class="docutils literal">select</tt> instead of branching:</p>
 <pre class="code cpp literal-block">
-<span class="keyword">if</span> <span class="punctuation">(</span><span class="name">x</span> <span class="operator">&gt;</span> <span class="literal number integer">0</span><span class="punctuation">)</span>
-  <span class="name">a</span> <span class="operator">=</span> <span class="name">x</span><span class="punctuation">;</span>
-<span class="keyword">else</span>
-  <span class="name">a</span> <span class="operator">=</span> <span class="literal number integer">7</span><span class="punctuation">;</span>
+<span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+  </span><span class="name">a</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword">else</span><span class="whitespace">
+  </span><span class="name">a</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">7</span><span class="punctuation">;</span>
 </pre>
 <pre class="code cpp literal-block">
 <span class="comment single">// May be implemented without branch:
-</span><span class="name">a</span> <span class="operator">=</span> <span class="punctuation">(</span><span class="name">x</span> <span class="operator">&gt;</span> <span class="literal number integer">0</span><span class="punctuation">)</span><span class="operator">?</span> <span class="name label">x</span> <span class="punctuation">:</span> <span class="literal number integer">7</span><span class="punctuation">;</span>
+</span><span class="name">a</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="operator">?</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="operator">:</span><span class="whitespace"> </span><span class="literal number integer">7</span><span class="punctuation">;</span>
 </pre>
 <p>When using <tt class="docutils literal">select</tt>, try to simplify it as much as possible:</p>
 <pre class="code cpp literal-block">
 <span class="comment single">// Not optimized version:
-</span><span class="name">varying</span> <span class="keyword type">int</span> <span class="name">K</span><span class="punctuation">;</span>
-<span class="name">uniform</span> <span class="keyword type">bool</span> <span class="name">Constant</span><span class="punctuation">;</span>
-<span class="punctuation">...</span>
-<span class="keyword">return</span> <span class="name">bConstant</span> <span class="operator">==</span> <span class="name builtin">true</span> <span class="operator">?</span> <span class="name">inParam</span><span class="punctuation">[</span><span class="literal number integer">0</span><span class="punctuation">]</span> <span class="operator">:</span> <span class="name">InParam</span><span class="punctuation">[</span><span class="name">K</span><span class="punctuation">];</span>
+</span><span class="name">varying</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">K</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="name">uniform</span><span class="whitespace"> </span><span class="keyword type">bool</span><span class="whitespace"> </span><span class="name">Constant</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">...</span><span class="whitespace">
+</span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">bConstant</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name builtin">true</span><span class="whitespace"> </span><span class="operator">?</span><span class="whitespace"> </span><span class="name">inParam</span><span class="punctuation">[</span><span class="literal number integer">0</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">:</span><span class="whitespace"> </span><span class="name">InParam</span><span class="punctuation">[</span><span class="name">K</span><span class="punctuation">];</span>
 </pre>
 <pre class="code cpp literal-block">
 <span class="comment single">// Optimized version
-</span><span class="keyword">return</span> <span class="name">InParam</span><span class="punctuation">[</span><span class="name">bConstant</span> <span class="operator">==</span> <span class="name builtin">true</span> <span class="operator">?</span> <span class="literal number integer">0</span> <span class="operator">:</span> <span class="name">K</span><span class="punctuation">];</span>
+</span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">InParam</span><span class="punctuation">[</span><span class="name">bConstant</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name builtin">true</span><span class="whitespace"> </span><span class="operator">?</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="whitespace"> </span><span class="operator">:</span><span class="whitespace"> </span><span class="name">K</span><span class="punctuation">];</span>
 </pre>
 </li>
 <li><p class="first">Keep branches as small as possible. Common operations should be moved outside
@@ -639,43 +627,43 @@ the branch.</p>
 <pre class="code cpp literal-block">
 <span class="comment single">// Both branches execute memory access to 'array'. In the case of split branch between
 // different lanes, two memory access instructions would be executed.
-</span><span class="keyword">if</span> <span class="punctuation">(</span><span class="name">x</span> <span class="operator">&gt;</span> <span class="literal number integer">0</span><span class="punctuation">)</span>
-  <span class="name">a</span> <span class="operator">=</span> <span class="name">array</span><span class="punctuation">[</span><span class="name">x</span><span class="punctuation">];</span>
-<span class="keyword">else</span>
-  <span class="name">a</span> <span class="operator">=</span> <span class="name">array</span><span class="punctuation">[</span><span class="literal number integer">0</span><span class="punctuation">];</span>
+</span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+  </span><span class="name">a</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">array</span><span class="punctuation">[</span><span class="name">x</span><span class="punctuation">];</span><span class="whitespace">
+</span><span class="keyword">else</span><span class="whitespace">
+  </span><span class="name">a</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">array</span><span class="punctuation">[</span><span class="literal number integer">0</span><span class="punctuation">];</span>
 </pre>
 <pre class="code cpp literal-block">
 <span class="comment single">// Instead move common part outside of the branch:
-</span><span class="keyword type">int</span> <span class="name">i</span><span class="punctuation">;</span>
-<span class="keyword">if</span> <span class="punctuation">(</span><span class="name">x</span> <span class="operator">&gt;</span> <span class="literal number integer">0</span><span class="punctuation">)</span>
-  <span class="name">i</span> <span class="operator">=</span> <span class="name">x</span><span class="punctuation">;</span>
-<span class="keyword">else</span>
-  <span class="name">i</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">;</span>
-<span class="name">a</span> <span class="operator">=</span> <span class="name">array</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">];</span>
+</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">i</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+  </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword">else</span><span class="whitespace">
+  </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="name">a</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">array</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">];</span>
 </pre>
 <p>Similar situation with loops:</p>
 <pre class="code cpp literal-block">
 <span class="comment single">// Good example
-</span><span class="name">uniform</span> <span class="keyword type">int</span> <span class="name">j</span><span class="punctuation">;</span>
-<span class="name">foreach</span> <span class="punctuation">(</span><span class="name">i</span> <span class="operator">=</span> <span class="literal number integer">0</span> <span class="punctuation">...</span> <span class="name">WIDTH</span><span class="punctuation">)</span> <span class="punctuation">{</span>
-  <span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span> <span class="operator">+</span> <span class="name">WIDTH</span> <span class="operator">*</span> <span class="name">taskIndex</span><span class="punctuation">]</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">;</span>
-  <span class="keyword type">int</span> <span class="name">temp</span> <span class="operator">=</span> <span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span> <span class="operator">+</span> <span class="name">WIDTH</span> <span class="operator">*</span> <span class="name">taskIndex</span><span class="punctuation">];</span>
-  <span class="keyword">for</span> <span class="punctuation">(</span><span class="name">j</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">;</span> <span class="name">j</span> <span class="operator">&lt;</span> <span class="name">DEPTH</span><span class="punctuation">;</span> <span class="name">j</span><span class="operator">++</span><span class="punctuation">)</span> <span class="punctuation">{</span>
-    <span class="name">temp</span> <span class="operator">+=</span> <span class="name">N</span><span class="punctuation">;</span>
-    <span class="name">temp</span> <span class="operator">+=</span> <span class="name">M</span><span class="punctuation">;</span>
-  <span class="punctuation">}</span>
-  <span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span> <span class="operator">+</span> <span class="name">WIDTH</span> <span class="operator">*</span> <span class="name">taskIndex</span><span class="punctuation">]</span> <span class="operator">=</span> <span class="name">temp</span><span class="punctuation">;</span>
-<span class="punctuation">}</span>
+</span><span class="name">uniform</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">j</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="name">foreach</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">i</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="whitespace"> </span><span class="punctuation">...</span><span class="whitespace"> </span><span class="name">WIDTH</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">WIDTH</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name">taskIndex</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">temp</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">WIDTH</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name">taskIndex</span><span class="punctuation">];</span><span class="whitespace">
+  </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">j</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">j</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="name">DEPTH</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">j</span><span class="operator">++</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">temp</span><span class="whitespace"> </span><span class="operator">+=</span><span class="whitespace"> </span><span class="name">N</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="name">temp</span><span class="whitespace"> </span><span class="operator">+=</span><span class="whitespace"> </span><span class="name">M</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+  </span><span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">WIDTH</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name">taskIndex</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">temp</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span>
 </pre>
 <pre class="code cpp literal-block">
 <span class="comment single">// Bad example
-</span><span class="name">foreach</span> <span class="punctuation">(</span><span class="name">i</span> <span class="operator">=</span> <span class="literal number integer">0</span> <span class="punctuation">...</span> <span class="name">WIDTH</span><span class="punctuation">)</span> <span class="punctuation">{</span>
-  <span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span> <span class="operator">+</span> <span class="name">WIDTH</span> <span class="operator">*</span> <span class="name">taskIndex</span><span class="punctuation">]</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">;</span>
-  <span class="keyword">for</span> <span class="punctuation">(</span><span class="keyword type">int</span> <span class="name">j</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">;</span> <span class="name">j</span> <span class="operator">&lt;</span> <span class="name">DEPTH</span><span class="punctuation">;</span> <span class="name">j</span><span class="operator">++</span><span class="punctuation">)</span> <span class="punctuation">{</span>
-    <span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span> <span class="operator">+</span> <span class="name">WIDTH</span> <span class="operator">*</span> <span class="name">taskIndex</span><span class="punctuation">]</span> <span class="operator">+=</span> <span class="name">N</span><span class="punctuation">;</span>
-    <span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span> <span class="operator">+</span> <span class="name">WIDTH</span> <span class="operator">*</span> <span class="name">taskIndex</span><span class="punctuation">]</span> <span class="operator">+=</span> <span class="name">M</span><span class="punctuation">;</span>
-  <span class="punctuation">}</span>
-<span class="punctuation">}</span>
+</span><span class="name">foreach</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">i</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="whitespace"> </span><span class="punctuation">...</span><span class="whitespace"> </span><span class="name">WIDTH</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">WIDTH</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name">taskIndex</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">j</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">j</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="name">DEPTH</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">j</span><span class="operator">++</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">WIDTH</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name">taskIndex</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">+=</span><span class="whitespace"> </span><span class="name">N</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="name">p</span><span class="operator">-&gt;</span><span class="name">output</span><span class="punctuation">[</span><span class="name">i</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">WIDTH</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name">taskIndex</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">+=</span><span class="whitespace"> </span><span class="name">M</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span>
 </pre>
 </li>
 </ul>
@@ -725,12 +713,12 @@ construct.</p>
 and specify <cite>__regcall</cite> calling convention. And then call it using
 <cite>invoke_sycl</cite>:</p>
 <pre class="code cpp literal-block">
-<span class="keyword">extern</span> <span class="literal string">&quot;SYCL&quot;</span> <span class="name">__regcall</span> <span class="keyword type">int</span> <span class="name">sycl_func</span><span class="punctuation">(</span><span class="name">uniform</span> <span class="keyword type">float</span> <span class="name">arr</span><span class="punctuation">[],</span> <span class="name">uniform</span> <span class="keyword type">int</span> <span class="name">factor</span><span class="punctuation">);</span>
+<span class="keyword">extern</span><span class="whitespace"> </span><span class="literal string">&quot;SYCL&quot;</span><span class="whitespace"> </span><span class="name">__regcall</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">sycl_func</span><span class="punctuation">(</span><span class="name">uniform</span><span class="whitespace"> </span><span class="keyword type">float</span><span class="whitespace"> </span><span class="name">arr</span><span class="punctuation">[],</span><span class="whitespace"> </span><span class="name">uniform</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">factor</span><span class="punctuation">);</span><span class="whitespace">
 
-<span class="name">task</span> <span class="keyword type">void</span> <span class="name function">ispc_task</span><span class="punctuation">(</span><span class="name">uniform</span> <span class="keyword type">float</span> <span class="name">arr</span><span class="punctuation">[],</span> <span class="name">uniform</span> <span class="keyword type">int</span> <span class="name">factor</span><span class="punctuation">)</span> <span class="punctuation">{</span>
-  <span class="keyword type">int</span> <span class="name">result</span> <span class="operator">=</span> <span class="name">invoke_sycl</span><span class="punctuation">(</span><span class="name">sycl_func</span><span class="punctuation">,</span> <span class="name">arr</span><span class="punctuation">,</span> <span class="name">factor</span><span class="punctuation">);</span>
-  <span class="punctuation">...</span>
-<span class="punctuation">}</span>
+</span><span class="name">task</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name">ispc_task</span><span class="punctuation">(</span><span class="name">uniform</span><span class="whitespace"> </span><span class="keyword type">float</span><span class="whitespace"> </span><span class="name">arr</span><span class="punctuation">[],</span><span class="whitespace"> </span><span class="name">uniform</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">factor</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">result</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">invoke_sycl</span><span class="punctuation">(</span><span class="name">sycl_func</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">arr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">factor</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="punctuation">...</span><span class="whitespace">
+</span><span class="punctuation">}</span>
 </pre>
 </div>
 <div class="section" id="faq">
@@ -762,14 +750,29 @@ support is quite limited at this time but you can set breakpoints in kernel
 code, do step-by-step execution and print variables.</p>
 </div>
 </div>
-</div>
-    <div class="clearfix"></div>
-    <div id="footer"> &copy; <strong>Intel Corporation</strong> | Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | ClearBlue  by: <a href="http://www.themebin.com/">ThemeBin</a>
-      <!-- Please Do Not remove this link, thank u -->
-      </div>
-      </div>
-      </div>
-      </div>
+      </article>
+
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <h3>Resources</h3>
+          <ul class="resource-links">
+            <li><a href="http://github.com/ispc/ispc">GitHub Repository</a></li>
+            <li><a href="https://github.com/ispc/ispc/discussions">Community Discussions</a></li>
+            <li><a href="http://github.com/ispc/ispc/issues">Report Issues</a></li>
+            <li><a href="https://github.com/orgs/ispc/projects/1">Release Planning</a></li>
+            <li><a href="https://github.com/ispc/ispc/blob/main/CONTRIBUTING.md">Contributing Guide</a></li>
+            <li><a href="http://github.com/ispc/ispc/wiki">Documentation Wiki</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>&copy; <strong>Intel Corporation</strong> | <a href="http://validator.w3.org/check?uri=referer">Valid HTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">Valid CSS</a></p>
+    </div>
+  </footer>
 </div>
 </body>
 </html>
