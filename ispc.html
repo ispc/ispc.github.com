@@ -1906,12 +1906,13 @@ precision floating point constant use <tt class="docutils literal">d</tt> suffix
 <tt class="docutils literal">if</tt>, <tt class="docutils literal">int</tt>, <tt class="docutils literal">NULL</tt>, <tt class="docutils literal">return</tt>, <tt class="docutils literal">signed</tt>, <tt class="docutils literal">sizeof</tt>, <tt class="docutils literal">static</tt>,
 <tt class="docutils literal">struct</tt>, <tt class="docutils literal">switch</tt>, <tt class="docutils literal">typedef</tt>, <tt class="docutils literal">unsigned</tt>, <tt class="docutils literal">void</tt>, and <tt class="docutils literal">while</tt>.</p>
 <p><tt class="docutils literal">ispc</tt> additionally reserves the following words:</p>
-<p><tt class="docutils literal">bool</tt>, <tt class="docutils literal">delete</tt>, <tt class="docutils literal">export</tt>, <tt class="docutils literal">cdo</tt>, <tt class="docutils literal">cfor</tt>, <tt class="docutils literal">cif</tt>, <tt class="docutils literal">cwhile</tt>,
+<p><tt class="docutils literal">bool</tt>, <tt class="docutils literal">cdo</tt>, <tt class="docutils literal">cfor</tt>, <tt class="docutils literal">cif</tt>, <tt class="docutils literal">cwhile</tt>, <tt class="docutils literal">delete</tt>, <tt class="docutils literal">export</tt>,
 <tt class="docutils literal">false</tt>, <tt class="docutils literal">float16</tt>, <tt class="docutils literal">foreach</tt>, <tt class="docutils literal">foreach_active</tt>, <tt class="docutils literal">foreach_tiled</tt>,
-<tt class="docutils literal">foreach_unique</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">noinline</tt>, <tt class="docutils literal">__regcall</tt>,
-<tt class="docutils literal">__vectorcall</tt>, <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">launch</tt>,
-<tt class="docutils literal">new</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">uint8</tt>, <tt class="docutils literal">uint16</tt>, <tt class="docutils literal">uint32</tt>, <tt class="docutils literal">uint64</tt>, <tt class="docutils literal">soa</tt>,
-<tt class="docutils literal">__attribute__</tt>, <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">uniform</tt>, and <tt class="docutils literal">varying</tt>.</p>
+<tt class="docutils literal">foreach_unique</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>,
+<tt class="docutils literal">int64</tt>, <tt class="docutils literal">invoke_sycl</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">new</tt>, <tt class="docutils literal">noinline</tt>, <tt class="docutils literal">print</tt>,
+<tt class="docutils literal">soa</tt>, <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">template</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">typename</tt>, <tt class="docutils literal">uint8</tt>,
+<tt class="docutils literal">uint16</tt>, <tt class="docutils literal">uint32</tt>, <tt class="docutils literal">uint64</tt>, <tt class="docutils literal">uint</tt>, <tt class="docutils literal">uniform</tt>, <tt class="docutils literal">unmasked</tt>,
+<tt class="docutils literal">varying</tt>, <tt class="docutils literal">__attribute__</tt>, <tt class="docutils literal">__regcall</tt>, <tt class="docutils literal">__vectorcall</tt>.</p>
 </div>
 <div class="section" id="lexical-structure">
 <h2>Lexical Structure</h2>
@@ -2075,17 +2076,17 @@ to specify special characters.  These sequences all start with an initial
 as the first argument to the <tt class="docutils literal">print()</tt> statement, however.  <tt class="docutils literal">ispc</tt> also
 doesn't support character constants.</p>
 <p>The following identifiers are reserved as language keywords: <tt class="docutils literal">bool</tt>,
-<tt class="docutils literal">break</tt>, <tt class="docutils literal">case</tt>, <tt class="docutils literal">cdo</tt>, <tt class="docutils literal">cfor</tt>, <tt class="docutils literal">char</tt>, <tt class="docutils literal">cif</tt>, <tt class="docutils literal">cwhile</tt>,
-<tt class="docutils literal">const</tt>, <tt class="docutils literal">continue</tt>, <tt class="docutils literal">default</tt>, <tt class="docutils literal">do</tt>, <tt class="docutils literal">double</tt>, <tt class="docutils literal">else</tt>,
-<tt class="docutils literal">enum</tt>, <tt class="docutils literal">export</tt>, <tt class="docutils literal">extern</tt>, <tt class="docutils literal">false</tt>, <tt class="docutils literal">float</tt>, <tt class="docutils literal">float16</tt>, <tt class="docutils literal">for</tt>,
+<tt class="docutils literal">break</tt>, <tt class="docutils literal">case</tt>, <tt class="docutils literal">cdo</tt>, <tt class="docutils literal">cfor</tt>, <tt class="docutils literal">cif</tt>, <tt class="docutils literal">const</tt>, <tt class="docutils literal">continue</tt>,
+<tt class="docutils literal">cwhile</tt>, <tt class="docutils literal">default</tt>, <tt class="docutils literal">delete</tt>, <tt class="docutils literal">do</tt>, <tt class="docutils literal">double</tt>, <tt class="docutils literal">else</tt>, <tt class="docutils literal">enum</tt>,
+<tt class="docutils literal">export</tt>, <tt class="docutils literal">extern</tt>, <tt class="docutils literal">false</tt>, <tt class="docutils literal">float16</tt>, <tt class="docutils literal">float</tt>, <tt class="docutils literal">for</tt>,
 <tt class="docutils literal">foreach</tt>, <tt class="docutils literal">foreach_active</tt>, <tt class="docutils literal">foreach_tiled</tt>, <tt class="docutils literal">foreach_unique</tt>,
-<tt class="docutils literal">goto</tt>, <tt class="docutils literal">if</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">noinline</tt>, <tt class="docutils literal">int</tt>, <tt class="docutils literal">int8</tt>,
-<tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">invoke_sycl</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">NULL</tt>,
-<tt class="docutils literal">print</tt>, <tt class="docutils literal">return</tt>, <tt class="docutils literal">signed</tt>, <tt class="docutils literal">sizeof</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">static</tt>, <tt class="docutils literal">struct</tt>,
-<tt class="docutils literal">switch</tt>, <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">template</tt>, <tt class="docutils literal">true</tt>, <tt class="docutils literal">typedef</tt>,
-<tt class="docutils literal">typename</tt>, <tt class="docutils literal">uint</tt>, <tt class="docutils literal">uint8</tt>, <tt class="docutils literal">uint16</tt>, <tt class="docutils literal">uint32</tt>, <tt class="docutils literal">uint64</tt>,
-<tt class="docutils literal">uniform</tt>, <tt class="docutils literal">union</tt>, <tt class="docutils literal">unsigned</tt>, <tt class="docutils literal">varying</tt>, <tt class="docutils literal">__regcall</tt>,
-<tt class="docutils literal">__vectorcall</tt>, <tt class="docutils literal">__attribute__</tt>, <tt class="docutils literal">void</tt>, <tt class="docutils literal">volatile</tt>, <tt class="docutils literal">while</tt>.</p>
+<tt class="docutils literal">goto</tt>, <tt class="docutils literal">if</tt>, <tt class="docutils literal">in</tt>, <tt class="docutils literal">inline</tt>, <tt class="docutils literal">int8</tt>, <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>,
+<tt class="docutils literal">int64</tt>, <tt class="docutils literal">int</tt>, <tt class="docutils literal">invoke_sycl</tt>, <tt class="docutils literal">launch</tt>, <tt class="docutils literal">new</tt>, <tt class="docutils literal">noinline</tt>,
+<tt class="docutils literal">NULL</tt>, <tt class="docutils literal">print</tt>, <tt class="docutils literal">return</tt>, <tt class="docutils literal">signed</tt>, <tt class="docutils literal">sizeof</tt>, <tt class="docutils literal">soa</tt>, <tt class="docutils literal">static</tt>,
+<tt class="docutils literal">struct</tt>, <tt class="docutils literal">switch</tt>, <tt class="docutils literal">sync</tt>, <tt class="docutils literal">task</tt>, <tt class="docutils literal">template</tt>, <tt class="docutils literal">true</tt>,
+<tt class="docutils literal">typedef</tt>, <tt class="docutils literal">typename</tt>, <tt class="docutils literal">uint8</tt>, <tt class="docutils literal">uint16</tt>, <tt class="docutils literal">uint32</tt>, <tt class="docutils literal">uint64</tt>,
+<tt class="docutils literal">uint</tt>, <tt class="docutils literal">uniform</tt>, <tt class="docutils literal">unmasked</tt>, <tt class="docutils literal">unsigned</tt>, <tt class="docutils literal">varying</tt>, <tt class="docutils literal">void</tt>,
+<tt class="docutils literal">while</tt>, <tt class="docutils literal">__attribute__</tt>, <tt class="docutils literal">__regcall</tt>, <tt class="docutils literal">__vectorcall</tt>.</p>
 <p><tt class="docutils literal">ispc</tt> defines the following operators and punctuation:</p>
 <table border="1" class="docutils">
 <caption>Operators</caption>
@@ -2295,9 +2296,9 @@ declared to take a <tt class="docutils literal">Float3</tt> parameter.</p>
 changing values in memory with pointers, and so forth is supported as in C.
 As with other basic types, pointers can be both <tt class="docutils literal">uniform</tt> and
 <tt class="docutils literal">varying</tt>.</p>
-<p><strong>Like other types in ``ispc``, pointers are ``varying`` by default, if an
-explicit ``uniform`` qualifier isn't provided.  However, the default
-variability of the pointed-to type is uniform.</strong> This rule will be
+<p><strong>Like other types in ispc, pointers are</strong> <tt class="docutils literal">varying</tt> <strong>by default, if an
+explicit</strong> <tt class="docutils literal">uniform</tt> <strong>qualifier isn't provided. However, the default
+variability of the pointed-to type is</strong> <tt class="docutils literal">uniform</tt>. This rule will be
 illustrated and explained in examples below.</p>
 <p>For example, the <tt class="docutils literal">ptr</tt> variable in the code below is a varying pointer to
 <tt class="docutils literal">uniform float</tt> values.  Each program instance has a separate pointer
