@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="stylesheet" href="css/style.css">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
 <title>Intel® ISPC User's Guide</title>
 </head>
 <body>
@@ -53,12 +53,12 @@ hardware--in particular, to follow the lesson from C for serial programs
 of having an execution and data model where the programmer can cleanly
 reason about the mapping of their source program to compiled assembly
 language and the underlying hardware.</li>
-<li>Harness the computational power of the Single Program, Multiple Data (SIMD) vector
-units without the extremely low-programmer-productivity activity of directly
-writing intrinsics.</li>
-<li>Explore opportunities from close-coupling between C/C++ application code
-and SPMD <tt class="docutils literal">ispc</tt> code running on the same processor--lightweight function
-calls between the two languages, sharing data directly via pointers without
+<li>Harness the computational power of Single Program, Multiple Data (SIMD) vector
+units without the extremely low-productivity task of directly writing
+intrinsics.</li>
+<li>Explore opportunities enabled by tight coupling between C/C++ application code
+and SPMD <tt class="docutils literal">ispc</tt> code running on the same processor—lightweight function
+calls between the two languages, direct data sharing via pointers without
 copying or reformatting, etc.</li>
 </ul>
 <p><strong>We are very interested in your feedback and comments about ispc and
@@ -99,6 +99,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-25-0">Updating ISPC Programs For Changes In ISPC 1.25.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-26-0">Updating ISPC Programs For Changes In ISPC 1.26.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-27-0">Updating ISPC Programs For Changes In ISPC 1.27.0</a></li>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-28-0">Updating ISPC Programs For Changes In ISPC 1.28.0</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#getting-started-with-ispc">Getting Started with ISPC</a><ul>
@@ -115,6 +116,20 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#debugging">Debugging</a></li>
 <li><a class="reference internal" href="#optimization-settings">Optimization Settings</a></li>
 <li><a class="reference internal" href="#other-ways-of-passing-arguments-to-ispc">Other ways of passing arguments to ISPC</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-ispc-as-a-library">Using ISPC as a Library</a><ul>
+<li><a class="reference internal" href="#library-initialization">Library Initialization</a></li>
+<li><a class="reference internal" href="#simple-compilation-interface">Simple Compilation Interface</a></li>
+<li><a class="reference internal" href="#advanced-interface-with-ispcengine">Advanced Interface with ISPCEngine</a></li>
+<li><a class="reference internal" href="#just-in-time-jit-compilation-interface">Just-In-Time (JIT) Compilation Interface</a></li>
+<li><a class="reference internal" href="#compatibility">Compatibility</a></li>
+<li><a class="reference internal" href="#cmake-integration">CMake Integration</a><ul>
+<li><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
+<li><a class="reference internal" href="#cmake-variables">CMake Variables</a></li>
+<li><a class="reference internal" href="#cmake-example">CMake Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#the-ispc-parallel-execution-model">The ISPC Parallel Execution Model</a><ul>
@@ -165,6 +180,9 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#noescape">noescape</a></li>
 <li><a class="reference internal" href="#address-space">address_space</a></li>
 <li><a class="reference internal" href="#unmangled">unmangled</a></li>
+<li><a class="reference internal" href="#external-only">external_only</a></li>
+<li><a class="reference internal" href="#deprecated">deprecated</a></li>
+<li><a class="reference internal" href="#aligned">aligned</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#expressions">Expressions</a><ul>
@@ -233,7 +251,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#data-conversions">Data Conversions</a><ul>
 <li><a class="reference internal" href="#converting-between-array-of-structures-and-structure-of-arrays-layout">Converting Between Array-of-Structures and Structure-of-Arrays Layout</a></li>
 <li><a class="reference internal" href="#conversions-to-and-from-half-precision-floats">Conversions To and From Half-Precision Floats</a></li>
-<li><a class="reference internal" href="#converting-to-srgb8">Converting to sRGB8</a></li>
+<li><a class="reference internal" href="#converting-from-to-srgb8">Converting from/to sRGB8</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#systems-programming-support">Systems Programming Support</a><ul>
@@ -374,7 +392,7 @@ need to include this file to be able to use this function.</li>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-8-2">
 <h2>Updating ISPC Programs For Changes In ISPC 1.8.2</h2>
 <p>The release doesn't contain language changes, which may affect compatibility with
-older versions. Though you may want be aware of the following:</p>
+older versions. Though you may want to be aware of the following:</p>
 <ul class="simple">
 <li>Mangling of uniform types was changed to not include varying width, so now you
 may use uniform structures and pointers to uniform types as return types in
@@ -383,13 +401,13 @@ export functions in multi-target compilation.</li>
 </div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-9-0">
 <h2>Updating ISPC Programs For Changes In ISPC 1.9.0</h2>
-<p>The release doesn't contains language changes, which may affect compatibility with
-older versions. It introduces new AVX512 target: avx512knl-i32x16.</p>
+<p>The release doesn't contain language changes, which may affect compatibility with
+older versions. It introduces new AVX-512 target: avx512knl-i32x16.</p>
 </div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-9-1">
 <h2>Updating ISPC Programs For Changes In ISPC 1.9.1</h2>
-<p>The release doesn't contains language changes, which may affect compatibility with
-older versions. It introduces new AVX512 target: avx512skx-i32x16.</p>
+<p>The release doesn't contain language changes, which may affect compatibility with
+older versions. It introduces new AVX-512 target: avx512skx-i32x16.</p>
 </div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-9-2">
 <h2>Updating ISPC Programs For Changes In ISPC 1.9.2</h2>
@@ -401,18 +419,18 @@ older versions.</p>
 <p>The release has several new language features, which do not affect compatibility.
 Namely, new streaming stores, aos_to_soa/soa_to_aos intrinsics for 64 bit types,
 and a &quot;#pragma ignore&quot;.</p>
-<p>One change that potentially may affect compatibility - changed size of short vector
+<p>One change that may potentially affect compatibility is the changed size of short vector
 types. If you use short vector types for data passed between C/C++ and ISPC, you
 may want to pay attention to it.</p>
 </div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-11-0">
 <h2>Updating ISPC Programs For Changes In ISPC 1.11.0</h2>
-<p>This release redefined -O1 compiler option to optimize for size, so it may require
+<p>This release redefined the -O1 compiler option to optimize for size, so it may require
 adjusting your build system accordingly.</p>
-<p>Starting 1.11.0 version auto-generated headers use <tt class="docutils literal">#pragma once</tt>. In the unlikely
-case when your C/C++ compiler is not supporting that, please use <tt class="docutils literal"><span class="pre">--no-pragma-once</span></tt>
+<p>Starting with version 1.11.0, auto-generated headers use <tt class="docutils literal">#pragma once</tt>. In the unlikely
+case that your C/C++ compiler does not support that, please use the <tt class="docutils literal"><span class="pre">--no-pragma-once</span></tt>
 <tt class="docutils literal">ispc</tt> switch.</p>
-<p>This release also introduces new AVX512 target avx512skx-i32x8. It produces code,
+<p>This release also introduces a new AVX-512 target avx512skx-i32x8. It produces code,
 which doesn't use ZMM registers.</p>
 </div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-12-0">
@@ -473,7 +491,7 @@ unroll pragmas: &quot;#pragma unroll&quot; and &quot;#pragma nounroll&quot;.</p>
 </div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-16-0">
 <h2>Updating ISPC Programs For Changes In ISPC 1.16.0</h2>
-<p>The release has several new functions in the standard library, that can possibly
+<p>The release has several new functions in the standard library that may
 affect compatibility:</p>
 <ul class="simple">
 <li><tt class="docutils literal">alloca()</tt> - refer to <a class="reference internal" href="#stack-memory-allocation">Stack Memory Allocation</a> for more details.</li>
@@ -492,15 +510,15 @@ with <tt class="docutils literal">f16</tt> suffix.</p>
 hexadecimal prefix (<tt class="docutils literal">0X</tt>) and capital letter P as a separator for exponent in
 hexadecimal floating point. For example: <tt class="docutils literal">0X1P16</tt>.</p>
 <p>The naming of Xe targets, architectures, device names has changed.</p>
-<p>Standard library library got new <tt class="docutils literal"><span class="pre">prefetchw_{l1,l2,l3}()</span></tt> intrinsics for
-prefetching in anticipation of write.</p>
+<p>The standard library got new <tt class="docutils literal"><span class="pre">prefetchw_{l1,l2,l3}()</span></tt> intrinsics for
+prefetching in anticipation of a write.</p>
 <p>The algorithms used for implementation of <tt class="docutils literal">rsqrt(double)</tt> and <tt class="docutils literal">rcp(double)</tt>
-standard library functions have changed on AVX512 and may affect the existing
+standard library functions have changed on AVX-512 and may affect the existing
 code.</p>
 </div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-18-0">
 <h2>Updating ISPC Programs For Changes In ISPC 1.18.0</h2>
-<p>AVX512 targets were renamed to drop &quot;base type&quot; (or &quot;mask size&quot;), old naming is accepted for
+<p>AVX-512 targets were renamed to drop &quot;base type&quot; (or &quot;mask size&quot;), old naming is accepted for
 compatibility. New names are avx512skx-x4, avx512skx-x8, avx512skx-x16,
 avx512skx-x32, avx512skx-x64, and avx512knl-x16.</p>
 <p>Standard library gained full support for <tt class="docutils literal">float16</tt> type.  Note that it is
@@ -511,7 +529,7 @@ which is similar to the switch of C/C++ compilers.  Also, as a result of bug fix
 in case of preprocessor error, the compiler will crash now.  It used not to crash and
 produced some output (sometimes correct!).  As it was a convenient feature for some
 users running experiments in isolated environment (like ignoring missing includes
-when compiling of <a class="reference external" href="https://godbolt.org/">Compiler Explorer</a>), <tt class="docutils literal"><span class="pre">--ignore-preprocessor-errors</span></tt> switch
+when compiling on <a class="reference external" href="https://godbolt.org/">Compiler Explorer</a>), the <tt class="docutils literal"><span class="pre">--ignore-preprocessor-errors</span></tt> switch
 was added to preserve this behavior.</p>
 </div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-19-0">
@@ -520,10 +538,10 @@ was added to preserve this behavior.</p>
 <ul class="simple">
 <li>avx512spr-x4, avx512spr-x8, avx512spr-x16, avx512spr-x32, avx512spr-x64 for
 4th generation Intel® Xeon® Scalable (codename Sapphire Rapids) CPUs. A macro
-ISPC_TARGET_AVX512SPR was added.</li>
+<tt class="docutils literal">ISPC_TARGET_AVX512SPR</tt> was added.</li>
 <li>xehpc-x16 and xehpc-x32 for Intel® Data Center GPU Max (codename Ponte Vecchio).</li>
 </ul>
-<p>Function templates were introduces to the language, please refer to <a class="reference internal" href="#function-templates">Function
+<p>Function templates were introduced to the language, please refer to the <a class="reference internal" href="#function-templates">Function
 Templates</a> section for more details. Two new keywords were introduced: <tt class="docutils literal">template</tt>
 and <tt class="docutils literal">typename</tt>.</p>
 <p><tt class="docutils literal">ISPC_FP16_SUPPORTED</tt> macro was introduced for the targets supporting FP16.</p>
@@ -602,7 +620,7 @@ the full list of macro definitions.</li>
 <li>The implementation of <tt class="docutils literal">round</tt> standard library function was aligned across
 all targets. It may potentially affect the results of the code that uses this
 function for the following targets: <tt class="docutils literal"><span class="pre">avx2-i16x16</span></tt>, <tt class="docutils literal"><span class="pre">avx2-i8x32</span></tt> and all
-<tt class="docutils literal">avx512</tt> targets. Please, refer to <a class="reference internal" href="#basic-math-functions">Basic Math Functions</a> for more details.</li>
+AVX-512 targets. Please, refer to <a class="reference internal" href="#basic-math-functions">Basic Math Functions</a> for more details.</li>
 </ul>
 </div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-25-0">
@@ -710,8 +728,8 @@ uniform int&lt;3&gt; c = max(a, b); // c = {3, 2, 3}
 varying float&lt;4&gt; x, y;
 varying float&lt;4&gt; z = max(x, y);
 </pre>
-<p>The support for short vector types has been added also for the following
-floating-point element wise functions: <tt class="docutils literal">round</tt>, <tt class="docutils literal">floor</tt>, <tt class="docutils literal">ceil</tt>,
+<p>Support for short vector types has also been added for the following
+floating-point element-wise functions: <tt class="docutils literal">round</tt>, <tt class="docutils literal">floor</tt>, <tt class="docutils literal">ceil</tt>,
 <tt class="docutils literal">trunc</tt>, <tt class="docutils literal">rcp</tt>, <tt class="docutils literal">rcp_fast</tt>, <tt class="docutils literal">sqrt</tt>, <tt class="docutils literal">rsqrt</tt>, <tt class="docutils literal">sin</tt>, <tt class="docutils literal">asin</tt>,
 <tt class="docutils literal">cos</tt>, <tt class="docutils literal">acos</tt>, <tt class="docutils literal">tan</tt>, <tt class="docutils literal">atan</tt>, <tt class="docutils literal">exp</tt>, <tt class="docutils literal">log</tt>, <tt class="docutils literal">atan2</tt>, <tt class="docutils literal">pow</tt> and
 <tt class="docutils literal">cbrt</tt>.</p>
@@ -726,8 +744,69 @@ handles unsigned integer indexing and pointer arithmetic.</li>
 </ul>
 <p>Compiler flags changes:</p>
 <ul class="simple">
-<li>The <tt class="docutils literal"><span class="pre">-dD</span></tt> and <tt class="docutils literal"><span class="pre">-dM</span></tt> flag have been supported. They are useful to debug the
-preprocessor and to check the macros defined by the compiler.</li>
+<li>The <tt class="docutils literal"><span class="pre">-dD</span></tt> and <tt class="docutils literal"><span class="pre">-dM</span></tt> flags are now supported. They are useful for debugging the
+preprocessor and checking the macros defined by the compiler.</li>
+</ul>
+</div>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-28-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.28.0</h2>
+<p>New Features:</p>
+<ul class="simple">
+<li>Added a new command-line option <tt class="docutils literal"><span class="pre">--include-float16-conversions</span></tt>. This
+option makes the compiler include float16 conversion functions in the
+compiled module. This is useful for targets that do not have native
+instructions for float16 conversions, such as x86 targets prior to AVX2.
+This option is disabled by default.</li>
+<li>ISPC can now generate nanobind wrappers for ISPC modules, allowing easy
+and lightweight integration of ISPC code with Python. The generated wrappers
+can be built into native Python modules and imported into Python code. The
+<tt class="docutils literal"><span class="pre">--nanobind-wrapper=&lt;filename&gt;</span></tt> command-line option enables this feature.</li>
+<li>Struct operator overloading has been extended. Extended support for
+overloading unary (<tt class="docutils literal">++</tt>, <tt class="docutils literal"><span class="pre">--</span></tt>, <tt class="docutils literal">-</tt>, <tt class="docutils literal">!</tt>, <tt class="docutils literal">~</tt>), binary (<tt class="docutils literal">*</tt>,
+<tt class="docutils literal">/</tt>, <tt class="docutils literal">%</tt>, <tt class="docutils literal">+</tt>, <tt class="docutils literal">-</tt>, <tt class="docutils literal">&gt;&gt;</tt>, <tt class="docutils literal">&lt;&lt;</tt>, <tt class="docutils literal">==</tt>, <tt class="docutils literal">!=</tt>, <tt class="docutils literal">&lt;</tt>, <tt class="docutils literal">&gt;</tt>,
+<tt class="docutils literal">&lt;=</tt>, <tt class="docutils literal">&gt;=</tt>, <tt class="docutils literal">&amp;</tt>, <tt class="docutils literal">|</tt>, <tt class="docutils literal">^</tt>, <tt class="docutils literal">&amp;&amp;</tt>, <tt class="docutils literal">||</tt>), and assignment
+(<tt class="docutils literal">=</tt>, <tt class="docutils literal">+=</tt>, <tt class="docutils literal"><span class="pre">-=</span></tt> , <tt class="docutils literal">*=</tt>, <tt class="docutils literal">/=</tt>, <tt class="docutils literal">%=</tt>, <tt class="docutils literal">&lt;&lt;=</tt>, <tt class="docutils literal">&gt;&gt;=</tt>, <tt class="docutils literal">&amp;=</tt>,
+<tt class="docutils literal">|=</tt>, <tt class="docutils literal">^=</tt>) operators for struct types.</li>
+<li>ISPC can now be used as a C++ library (<tt class="docutils literal">libispc</tt>) for embedding ISPC
+compilation directly into applications. It now also provides CMake
+configuration files for easy integration into other CMake projects. The
+library includes experimental Just-In-Time (JIT) compilation capabilities
+for runtime code generation and execution. See the section
+<a class="reference internal" href="#using-ispc-as-a-library">Using ISPC as a Library</a> for more details.</li>
+<li>Added a new <tt class="docutils literal">include/intrinsics</tt> directory containing header files that
+implement selected SSE intrinsics in ISPC. If you're porting existing code
+from intrinsics to ISPC, you can use these headers as a reference.</li>
+</ul>
+<p>Language and Syntax Changes:</p>
+<ul class="simple">
+<li>Integer literals are now stricter:<ul>
+<li>Limits the number of occurrences of <tt class="docutils literal">[uUlL]</tt> symbols (e.g., <tt class="docutils literal">ulll</tt>,
+<tt class="docutils literal">uul</tt>, and <tt class="docutils literal">lulu</tt> are not valid anymore).</li>
+<li>The value modification suffix (i.e., <tt class="docutils literal">[kMG]</tt>) must precede the type
+modification suffix (i.e., <tt class="docutils literal">[uUlL]</tt> symbols).</li>
+<li>Like C/C++, <tt class="docutils literal">lL</tt> and <tt class="docutils literal">Ll</tt> suffixes are no longer allowed (i.e., mixing
+lower- and upper-case <tt class="docutils literal">L</tt> to form a <tt class="docutils literal">LL</tt> suffix).</li>
+</ul>
+</li>
+</ul>
+<p>Standard Library Changes:</p>
+<ul>
+<li><p class="first"><tt class="docutils literal">select</tt> functions now support unsigned integer types <tt class="docutils literal">uint8</tt>,
+<tt class="docutils literal">uint16</tt>, <tt class="docutils literal">uint32</tt>, and <tt class="docutils literal">uint64</tt> as well as uniform short vectors.</p>
+</li>
+<li><p class="first">Added new functions: <tt class="docutils literal">isinf</tt>, <tt class="docutils literal">isfinite</tt>, and <tt class="docutils literal">srgb8_to_float</tt>.</p>
+</li>
+<li><p class="first">Standard library functions for short vectors have been moved to a separate
+header file <tt class="docutils literal">short_vec.isph</tt>. They are no longer defined implicitly for
+every file compiled with ISPC. Code using such functions should now include
+this file with:</p>
+<pre class="literal-block">
+#include &quot;short_vec.isph&quot;
+</pre>
+</li>
+<li><p class="first">Support for short vector types has been added to the following element-wise
+functions: <tt class="docutils literal">fmod</tt>, <tt class="docutils literal">isnan</tt>, <tt class="docutils literal">rsqrt_fast</tt>, and <tt class="docutils literal">clamp</tt>.</p>
+</li>
 </ul>
 </div>
 </div>
@@ -778,7 +857,7 @@ GPU's SIMD hardware.  Here, the variable <tt class="docutils literal">index</tt>
 program can then proceed, doing computation and control flow based on the
 values loaded.  The result from the running program instances is written to
 the <tt class="docutils literal">vout</tt> array before the next iteration of the <tt class="docutils literal">foreach</tt> loop runs.</p>
-<p>To build and run examples go to <tt class="docutils literal">examples</tt> and create <tt class="docutils literal">build</tt> folder.
+<p>To build and run examples, go to the <tt class="docutils literal">examples</tt> directory and create a <tt class="docutils literal">build</tt> folder.
 Run <tt class="docutils literal">cmake <span class="pre">-DISPC_EXECUTABLE=&lt;path_to_ispc_binary&gt;</span> ../</tt>. On Linux* and
 macOS*, the makefile will be generated in that directory. On Windows*,
 Microsoft Visual Studio solution <tt class="docutils literal">ispc_examples.sln</tt> will be created. In
@@ -868,7 +947,7 @@ ispc foo.ispc -E -o foo.ispi
 </pre>
 <p>In this mode, the output will be directed to <tt class="docutils literal">stdout</tt> if no output file is
 specified.  The standard suffixes <tt class="docutils literal">.i</tt> or <tt class="docutils literal">.ispi</tt> are assumed for preprocessor output.</p>
-<p>By default the compilation will fail if preprocessor encountered an error.
+<p>By default, the compilation will fail if the preprocessor encounters an error.
 To ignore the preprocessor errors and proceed with normal compilation flow,
 <tt class="docutils literal"><span class="pre">--ignore-preprocessor-errors</span></tt> switch may be used.</p>
 <p>To debug preprocessor, use <tt class="docutils literal"><span class="pre">-dD</span></tt> or <tt class="docutils literal"><span class="pre">-dM</span></tt> flags. The <tt class="docutils literal"><span class="pre">-dM</span></tt> flag lists
@@ -912,6 +991,18 @@ target version for macOS and iOS applications addressing the new linker
 introduced in Xcode 15.0 that issues a warning when no version is provided.
 The version should be specified in the format <tt class="docutils literal">[major.minor]</tt>. When an empty
 string (&quot;&quot;) is passed, no minimum version will be specified in the output binary.</p>
+<p>The <tt class="docutils literal"><span class="pre">--nanobind-wrapper=&lt;filename&gt;</span></tt> option can be used to generate a
+<tt class="docutils literal">nanobind</tt> wrapper for the ISPC module. This allows easy and lightweight
+integration of ISPC code into Python. The generated wrapper can be built into a
+native Python module and imported into Python code. During wrapper generation,
+we assume the following:</p>
+<ul class="simple">
+<li>All pointer types are treated as numpy arrays: both <tt class="docutils literal">TYPE*</tt> and <tt class="docutils literal">TYPE[]</tt>
+map to <tt class="docutils literal"><span class="pre">nb::ndarray</span></tt></li>
+<li>.data() method returns compatible pointer</li>
+<li><tt class="docutils literal">nanobind</tt> headers and library are required to build the wrapper.</li>
+</ul>
+<p>See <a class="reference external" href="https://nanobind.readthedocs.io/en/latest/">nanobind</a> and <a class="reference external" href="https://numpy.org/doc/stable/">numpy</a> documentation for more details.</p>
 </div>
 <div class="section" id="selecting-the-compilation-target">
 <h2>Selecting The Compilation Target</h2>
@@ -921,7 +1012,7 @@ which sets the target CPU or GPU, <tt class="docutils literal"><span class="pre"
 set, and <tt class="docutils literal"><span class="pre">--target-os</span></tt>, which sets the target operating system.</p>
 <p>If none of these options is specified, <tt class="docutils literal">ispc</tt> generates code for the host
 OS and for the architecture of the system the compiler is running on (i.e.
-64-bit x86-64 (<tt class="docutils literal"><span class="pre">--arch=x86-64</span></tt>) on x86 systems and ARM NEON on ARM systems.</p>
+64-bit x86-64 (<tt class="docutils literal"><span class="pre">--arch=x86-64</span></tt>) on x86 systems and ARM NEON on ARM systems).</p>
 <p>To compile to a 32-bit x86 target, for example, supply <tt class="docutils literal"><span class="pre">--arch=x86</span></tt> on
 the command line:</p>
 <pre class="literal-block">
@@ -944,7 +1035,7 @@ ispc foo.ispc -o foo.obj --device=corei7-avx
 hardware support for masking, the target string is of the form <tt class="docutils literal"><span class="pre">[ISA]-i[mask</span> size]x[gang size]</tt>.
 For example, <tt class="docutils literal"><span class="pre">--target=avx2-i32x16</span></tt> specifies a target with the AVX2 instruction set,
 a mask size of 32 bits, and a gang size of 16.  For targets with hardware masking support,
-which are AVX512 and GPU targets, the target string is of the form
+which are AVX-512 and GPU targets, the target string is of the form
 <tt class="docutils literal"><span class="pre">[ISA]-x[gang</span> size]</tt>.  For example, <tt class="docutils literal"><span class="pre">--target=xehpg-x16</span></tt> specifies Intel XeHPG
 as a target ISA and defines a gang size of 16.</p>
 <p>By default, the target instruction set is chosen based on the most capable
@@ -955,51 +1046,135 @@ always use <tt class="docutils literal"><span class="pre">--target</span></tt> s
 and note the list in the description of <tt class="docutils literal"><span class="pre">--target</span></tt>, or use <tt class="docutils literal"><span class="pre">--support-matrix</span></tt>
 switch, which will give the complete information of supported combinations
 of target, arch and target OS.</p>
-<p>The following target ISAs are supported:</p>
+<p>The following CPU targets are supported:</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="14%" />
-<col width="86%" />
+<col width="13%" />
+<col width="26%" />
+<col width="61%" />
 </colgroup>
+<thead valign="bottom">
+<tr><th class="head">CPU target</th>
+<th class="head">SIMD instruction set</th>
+<th class="head">First-CPU codename to support the target</th>
+</tr>
+</thead>
 <tbody valign="top">
-<tr><td>Target</td>
-<td>Description</td>
-</tr>
-<tr><td>avx, avx1</td>
-<td>AVX (2010-2011 era Intel CPUs)</td>
-</tr>
-<tr><td>avx2</td>
-<td>AVX 2 target (2013- Intel codename Haswell CPUs)</td>
-</tr>
-<tr><td>avx512skx</td>
-<td>AVX 512 target (Skylake Xeon CPUs)</td>
-</tr>
-<tr><td>avx512spr</td>
-<td>AVX 512 target (Sapphire Rapids Xeon CPUs, 4th generation Xeon Scalable)</td>
-</tr>
-<tr><td>neon</td>
-<td>ARM NEON</td>
-</tr>
 <tr><td>sse2</td>
-<td>SSE2 (early 2000s era x86 CPUs)</td>
+<td>SSE2</td>
+<td>Intel Pentium 4 (2001), AMD Athlon 64 (2003)</td>
 </tr>
 <tr><td>sse4.1</td>
-<td>SSE4.1 (2007 Intel codename Penryn CPUs)</td>
+<td>SSE4.1</td>
+<td>Intel Penryn (2007), AMD Bulldozer/Jaguar (2011/2013)</td>
 </tr>
 <tr><td>sse4.2</td>
-<td>SSE4.2 (2008-2010 Intel codename Nehalem CPUs)</td>
+<td>SSE4.2</td>
+<td>Intel Nehalem (2008), AMD Bulldozer/Jaguar (2011/2013)</td>
 </tr>
+<tr><td>avx, avx1</td>
+<td>AVX</td>
+<td>Intel Sandy Bridge (2011), AMD Bulldozer/Jaguar (2011/2013)</td>
+</tr>
+<tr><td>avx2</td>
+<td>AVX2</td>
+<td>Intel Haswell (2013) <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[1]</a>, AMD Excavator (2015)</td>
+</tr>
+<tr><td>avx2vnni</td>
+<td>AVX2</td>
+<td>Intel Alder Lake (2021), AMD Zen5 (2024)</td>
+</tr>
+<tr><td>avx512skx</td>
+<td>AVX-512</td>
+<td>Intel Skylake Xeon (2017), AMD Zen4 (2022)</td>
+</tr>
+<tr><td>avx512icl</td>
+<td>AVX-512</td>
+<td>Intel Icelake (2019), AMD Zen4 (2022)</td>
+</tr>
+<tr><td>avx512spr</td>
+<td>AVX-512</td>
+<td>Intel Sapphire Rapids (2023)</td>
+</tr>
+<tr><td>avx10.2</td>
+<td>AVX10.2</td>
+<td>Intel Diamond Rapids (2026+)</td>
+</tr>
+<tr><td>neon</td>
+<td>ARMv8 NEON</td>
+<td>ARM Cortex-A35/A53/A57 (2012-2015)</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-1">[1]</a></td><td>This exclude models branded as Celeron and Pentium (starting with
+Tiger Lake 2020 CPUs and newer).</td></tr>
+</tbody>
+</table>
+<p>For more information about the AVX-512 targets, please read this <a class="reference external" href="https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#AVX-512_CPU_compatibility_table">AVX-512 CPU compatibility table</a></p>
+<p>The following GPU targets are supported:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="26%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">GPU target</th>
+<th class="head">GPU microarchitecture</th>
+<th class="head">First-GPU codename to support the target</th>
+</tr>
+</thead>
+<tbody valign="top">
 <tr><td>gen9</td>
-<td>Intel Gen9 GPU</td>
+<td>Intel Gen9</td>
+<td>Intel Skylake iGPU (2015)</td>
 </tr>
 <tr><td>xelp</td>
-<td>Intel XeLP GPU</td>
+<td>Intel XeLP</td>
+<td>Intel Tiger Lake LP iGPU (2020)</td>
 </tr>
 <tr><td>xehpg</td>
-<td>Intel Arc GPU</td>
+<td>Intel XeHPG</td>
+<td>Intel Arc Alchemist GPU (2022)</td>
 </tr>
 <tr><td>xehpc</td>
-<td>Intel Ponte Vecchio GPU</td>
+<td>Intel XeHPC</td>
+<td>Intel Ponte Vecchio GPU (2022)</td>
+</tr>
+<tr><td>xelpg</td>
+<td>Intel XeLPG</td>
+<td>Intel Meteor Lake iGPU (2023)</td>
+</tr>
+<tr><td>xe2hpg</td>
+<td>Intel Xe2HPG</td>
+<td>Intel Battlemage GPU (2024)</td>
+</tr>
+<tr><td>xe2lpg</td>
+<td>Intel Xe2LPG</td>
+<td>Intel Lunar Lake iGPU (2024)</td>
+</tr>
+</tbody>
+</table>
+<p>The other following targets are supported:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="26%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Target</th>
+<th class="head">Description</th>
+<th class="head">Hardware to support the target</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>generic</td>
+<td>Platform-agnostic</td>
+<td>Any compatible CPU/GPU</td>
 </tr>
 </tbody>
 </table>
@@ -1097,7 +1272,7 @@ code for your host operating system.</p>
 <pre class="literal-block">
 ispc foo.ispc -o foo.obj --target-os=android
 </pre>
-<p>Note that cross OS compilation is in experimental stage. We encourage you to
+<p>Note that cross-OS compilation is in the experimental stage. We encourage you to
 try it and send us a note with your experiences or to file a bug or feature
 requests with the <tt class="docutils literal">ispc</tt> <a class="reference external" href="https://github.com/ispc/ispc/issues?state=open">bug tracker</a>.</p>
 </div>
@@ -1330,7 +1505,7 @@ that support them.</p>
 <p>Disable the generation of scatter instructions on targets that support them.</p>
 </li>
 <li><p class="first"><tt class="docutils literal"><span class="pre">disable-zmm</span></tt></p>
-<p>Disable the use of ZMM registers for AVX512 targets in favor of YMM registers.
+<p>Disable the use of ZMM registers for AVX-512 targets in favor of YMM registers.
 This also affects the ABI. ZMM registers are 512-bit wide, while YMM registers
 are 256-bit wide.</p>
 </li>
@@ -1368,6 +1543,265 @@ and newlines. There is no means of escaping or quoting a character to allow an
 argument to contain a whitespace character.</p>
 </div>
 </div>
+<div class="section" id="using-ispc-as-a-library">
+<h1>Using ISPC as a Library</h1>
+<p>Starting with ISPC 1.28.0, ISPC can be used as a C++ library (<tt class="docutils literal">libispc</tt>)
+to embed ISPC compilation directly into applications. This allows you to
+compile ISPC code programmatically.</p>
+<div class="section" id="library-initialization">
+<h2>Library Initialization</h2>
+<p>Before using any ISPC library functions, you must initialize the library:</p>
+<pre class="literal-block">
+#include &quot;ispc/ispc.h&quot;
+
+int main() {
+    // Initialize ISPC library - call once at startup
+    if (!ispc::Initialize()) {
+        std::cerr &lt;&lt; &quot;Failed to initialize ISPC library\n&quot;;
+        return 1;
+    }
+
+    // Use ISPC library functions...
+
+    // Shutdown ISPC library - call once at exit
+    ispc::Shutdown();
+    return 0;
+}
+</pre>
+<p>The <tt class="docutils literal">Initialize()</tt> function initializes the LLVM targets and creates global state.
+The <tt class="docutils literal">Shutdown()</tt> function releases all global resources.</p>
+</div>
+<div class="section" id="simple-compilation-interface">
+<h2>Simple Compilation Interface</h2>
+<p>The simplest way to compile ISPC code is using <tt class="docutils literal">CompileFromArgs()</tt>:</p>
+<pre class="literal-block">
+#include &quot;ispc/ispc.h&quot;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+
+std::vector&lt;std::string&gt; args = {
+    &quot;my_program.ispc&quot;,         // Input file
+    &quot;--target=host&quot;,           // Target specification
+    &quot;-O2&quot;,                     // Optimization level
+    &quot;-o&quot;, &quot;my_program.o&quot;,      // Output object file
+    &quot;-h&quot;, &quot;my_program.h&quot;       // Output header file
+};
+
+int result = ispc::CompileFromArgs(args);
+if (result == 0) {
+    std::cout &lt;&lt; &quot;Compilation successful\n&quot;;
+} else {
+    std::cerr &lt;&lt; &quot;Compilation failed\n&quot;;
+}
+</pre>
+<p>All standard ISPC command-line options are supported.</p>
+</div>
+<div class="section" id="advanced-interface-with-ispcengine">
+<h2>Advanced Interface with ISPCEngine</h2>
+<p>For more control over the compilation process, use the <tt class="docutils literal">ISPCEngine</tt> class:</p>
+<pre class="literal-block">
+#include &quot;ispc/ispc.h&quot;
+
+std::vector&lt;std::string&gt; args = {
+    &quot;my_program.ispc&quot;, &quot;--target=host&quot;, &quot;-O2&quot;
+};
+
+auto engine = ispc::ISPCEngine::CreateFromArgs(args);
+if (!engine) {
+    std::cerr &lt;&lt; &quot;Failed to create ISPC engine\n&quot;;
+    return 1;
+}
+int result = engine-&gt;Execute();
+if (result == 0) {
+    std::cout &lt;&lt; &quot;Compilation successful\n&quot;;
+}
+</pre>
+<p>The <tt class="docutils literal">ISPCEngine</tt> allows you to separate argument parsing from execution,
+which can be useful for more complex compilation workflows.</p>
+</div>
+<div class="section" id="just-in-time-jit-compilation-interface">
+<h2>Just-In-Time (JIT) Compilation Interface</h2>
+<p>ISPC provides Just-In-Time (JIT) compilation capabilities that allow you to
+compile ISPC code at runtime and execute it directly in memory without
+generating intermediate files. This is useful for applications that need
+dynamic code generation or runtime optimization.</p>
+<div class="section" id="basic-jit-usage">
+<h3>Basic JIT Usage</h3>
+<p>Here's a simple example of JIT compilation:</p>
+<pre class="literal-block">
+#include &quot;ispc/ispc.h&quot;
+
+// Function pointer type for your ISPC function
+typedef void (*simple_func_t)(float input[], float output[], int count);
+
+// Initialize ISPC
+if (!ispc::Initialize()) {
+    std::cerr &lt;&lt; &quot;Failed to initialize ISPC\n&quot;;
+    return 1;
+}
+
+// Create an engine for JIT compilation
+std::vector&lt;std::string&gt; args = {&quot;--target=host&quot;, &quot;-O2&quot;};
+auto engine = ispc::ISPCEngine::CreateFromArgs(args);
+
+if (!engine) {
+    std::cerr &lt;&lt; &quot;Failed to create ISPC engine\n&quot;;
+    return 1;
+}
+
+// Compile ISPC file to JIT
+int result = engine-&gt;CompileFromFileToJit(&quot;my_program.ispc&quot;);
+if (result != 0) {
+    std::cerr &lt;&lt; &quot;JIT compilation failed\n&quot;;
+    return 1;
+}
+
+// Get function pointer from JIT-compiled code
+auto func_ptr = engine-&gt;GetJitFunction(&quot;my_function&quot;);
+if (!func_ptr) {
+    std::cerr &lt;&lt; &quot;Function not found in JIT code\n&quot;;
+    return 1;
+}
+
+// Cast and call the function
+simple_func_t my_function = reinterpret_cast&lt;simple_func_t&gt;(func_ptr);
+
+// Use the function
+float input[4] = {1.0f, 2.0f, 3.0f, 4.0f};
+float output[4];
+my_function(input, output, 4);
+
+// Clean up
+ispc::Shutdown();
+</pre>
+</div>
+<div class="section" id="runtime-function-registration">
+<h3>Runtime Function Registration</h3>
+<p>JIT-compiled ISPC code may need access to runtime functions (like <tt class="docutils literal">ISPCLaunch</tt>,
+<tt class="docutils literal">ISPCSync</tt>, <tt class="docutils literal">ISPCAlloc</tt>) for task-based parallel execution. You must register
+these functions before compilation:</p>
+<pre class="literal-block">
+// Define runtime function implementations
+void ISPCLaunch(void **handlePtr, void *f, void *d, int count0, int count1, int count2) {
+    // Your implementation
+}
+
+void ISPCSync(void *handle) {
+    // Your implementation
+}
+
+void *ISPCAlloc(void **handlePtr, int64_t size, int32_t alignment) {
+    // Your implementation
+    return aligned_alloc(alignment, size);
+}
+
+// Register runtime functions with the JIT engine
+if (!engine-&gt;SetJitRuntimeFunction(&quot;ISPCLaunch&quot;, (void*)ISPCLaunch) ||
+    !engine-&gt;SetJitRuntimeFunction(&quot;ISPCSync&quot;, (void*)ISPCSync) ||
+    !engine-&gt;SetJitRuntimeFunction(&quot;ISPCAlloc&quot;, (void*)ISPCAlloc)) {
+    std::cerr &lt;&lt; &quot;Failed to set runtime functions\n&quot;;
+    return 1;
+}
+
+// Now compile - the JIT code can call these runtime functions
+engine-&gt;CompileFromFileToJit(&quot;parallel_program.ispc&quot;);
+</pre>
+</div>
+<div class="section" id="jit-management-functions">
+<h3>JIT Management Functions</h3>
+<p>The <tt class="docutils literal">ISPCEngine</tt> provides several functions for managing JIT-compiled code:</p>
+<ul class="simple">
+<li><tt class="docutils literal">CompileFromFileToJit(filename)</tt> - Compile an ISPC file to JIT</li>
+<li><tt class="docutils literal">GetJitFunction(name)</tt> - Retrieve a function pointer by name</li>
+<li><tt class="docutils literal">SetJitRuntimeFunction(name, ptr)</tt> - Register a runtime function</li>
+<li><tt class="docutils literal">ClearJitRuntimeFunction(name)</tt> - Remove a specific runtime function</li>
+<li><tt class="docutils literal">ClearJitRuntimeFunctions()</tt> - Remove all runtime functions</li>
+<li><tt class="docutils literal">ClearJitCode()</tt> - Clear all JIT-compiled code</li>
+</ul>
+</div>
+<div class="section" id="jit-limitations-and-considerations">
+<h3>JIT Limitations and Considerations</h3>
+<ul class="simple">
+<li><strong>Single Target Only</strong>: JIT compilation only supports single target compilation.
+Multi-target compilation will result in an error.</li>
+<li><strong>Thread Safety</strong>: JIT compilation is not thread-safe. Use JIT functionality
+from a single thread only.</li>
+<li><strong>Function Lifetime</strong>: JIT-compiled function pointers remain valid only as long
+as the <tt class="docutils literal">ISPCEngine</tt> instance exists. Do not use function pointers after the
+engine is destroyed.</li>
+<li><strong>Error Handling</strong>: Always check return values and function pointers for null.
+JIT compilation can fail for various reasons (syntax errors, missing files, etc.).
+Errors and warnings from JIT compilation will be sent to stderr.</li>
+<li><strong>Memory Management</strong>: JIT-compiled code uses internal memory management.
+Calling <tt class="docutils literal">ClearJitCode()</tt> will invalidate all previously obtained function pointers.</li>
+<li><strong>Platform Support</strong>: JIT compilation requires LLVM JIT support and may not be
+available on all platforms or build configurations.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="compatibility">
+<h2>Compatibility</h2>
+<p>For compatibility with C-style interfaces, the library also provides
+<tt class="docutils literal">argc</tt>/<tt class="docutils literal">argv</tt> variants:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">ispc::CompileFromCArgs(int</span> argc, char* <span class="pre">argv[])</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">ispc::ISPCEngine::CreateFromCArgs(int</span> argc, char* <span class="pre">argv[])</span></tt></li>
+</ul>
+<p>These functions have the same behavior as their vector counterparts.</p>
+</div>
+<div class="section" id="cmake-integration">
+<h2>CMake Integration</h2>
+<p>ISPC provides CMake configuration files (<tt class="docutils literal">ispcConfig.cmake</tt>) for easy
+integration into CMake projects.</p>
+<div class="section" id="basic-usage">
+<h3>Basic Usage</h3>
+<p>After installing ISPC, you can use <tt class="docutils literal">find_package()</tt>:</p>
+<pre class="literal-block">
+find_package(ispc REQUIRED)
+
+# Link against the ISPC shared library
+target_link_libraries(my_target ispc::lib)
+</pre>
+<p>The <tt class="docutils literal">find_package()</tt> command locates the ISPC installation and imports
+the shared library target. The configuration files are installed to
+<tt class="docutils literal"><span class="pre">&lt;install_prefix&gt;/lib/cmake/ispc/</span></tt>.</p>
+</div>
+<div class="section" id="cmake-variables">
+<h3>CMake Variables</h3>
+<p>The CMake configuration provides these variables:</p>
+<ul class="simple">
+<li><tt class="docutils literal">ISPC_FOUND</tt> - True if ISPC was found</li>
+<li><tt class="docutils literal">ISPC_INCLUDE_DIRS</tt> - Path to ISPC headers (<tt class="docutils literal">include/</tt>)</li>
+<li><tt class="docutils literal">ISPC_LIBRARY</tt> - Path to ISPC shared library</li>
+<li><tt class="docutils literal">ISPC_EXECUTABLE</tt> - Path to ISPC compiler executable</li>
+</ul>
+</div>
+<div class="section" id="cmake-example">
+<h3>CMake Example</h3>
+<p>Here's a complete <tt class="docutils literal">CMakeLists.txt</tt> for a project using ISPC as a library:</p>
+<pre class="literal-block">
+cmake_minimum_required(VERSION 3.15)
+project(MyISPCApp)
+
+set(CMAKE_CXX_STANDARD 17)
+
+# Find ISPC library
+find_package(ispc REQUIRED)
+
+# Create executable
+add_executable(my_app main.cpp)
+
+# Link ISPC library
+target_link_libraries(my_app ispc::lib)
+
+# Optional: Print found information
+message(STATUS &quot;ISPC found: ${ISPC_FOUND}&quot;)
+message(STATUS &quot;ISPC executable: ${ISPC_EXECUTABLE}&quot;)
+message(STATUS &quot;ISPC include dirs: ${ISPC_INCLUDE_DIRS}&quot;)
+</pre>
+</div>
+</div>
+</div>
 <div class="section" id="the-ispc-parallel-execution-model">
 <h1>The ISPC Parallel Execution Model</h1>
 <p>Though <tt class="docutils literal">ispc</tt> is a C-based language, it is inherently a language for
@@ -1388,17 +1822,17 @@ Language</a> section for details on language syntax.</p>
 <p>Upon entry to an <tt class="docutils literal">ispc</tt> function called from C/C++ code, the execution
 model switches from the application's serial model to <tt class="docutils literal">ispc</tt>'s execution
 model.  Conceptually, a number of <tt class="docutils literal">ispc</tt> <em>program instances</em> start
-running concurrently.  The group of running program instances is a
-called a <em>gang</em> (harkening to &quot;gang scheduling&quot;, since <tt class="docutils literal">ispc</tt> provides
-certain guarantees about the control flow coherence of program instances
-running in a gang, detailed in <a class="reference internal" href="#gang-convergence-guarantees">Gang Convergence Guarantees</a>.)  An
+running concurrently.  The group of running program instances is
+called a <em>gang</em> (a term borrowed from &quot;gang scheduling&quot;, since <tt class="docutils literal">ispc</tt> provides
+certain guarantees about control flow coherence among program instances
+running in a gang, as detailed in <a class="reference internal" href="#gang-convergence-guarantees">Gang Convergence Guarantees</a>.)  An
 <tt class="docutils literal">ispc</tt> program instance is thus similar to a CUDA* &quot;thread&quot; or an OpenCL*
 &quot;work-item&quot;, and an <tt class="docutils literal">ispc</tt> gang is similar to a CUDA* &quot;warp&quot;.</p>
 <p>An <tt class="docutils literal">ispc</tt> program expresses the computation performed by a gang of
 program instances, using an &quot;implicit parallel&quot; model, where the <tt class="docutils literal">ispc</tt>
 program generally describes the behavior of a single program instance, even
 though a gang of them is actually executing together.  This implicit model
-is the same that is used for shaders in programmable graphics pipelines,
+is the same as that used for shaders in programmable graphics pipelines,
 OpenCL* kernels, and CUDA*.  For example, consider the following <tt class="docutils literal">ispc</tt>
 function:</p>
 <pre class="literal-block">
@@ -1419,11 +1853,11 @@ Rather, the set of program instances is mapped to the SIMD lanes of the
 current processor, leading to excellent utilization of hardware SIMD units
 and high performance.</p>
 <p>The number of program instances in a gang is relatively small; in practice,
-it's no more than 2-4x the native SIMD width of the hardware it is
-executing on.  Thus, four or eight program instances in a gang on a CPU
+it's no more than 2-4 times the native SIMD width of the target hardware.
+Typically, this means four or eight program instances in a gang on a CPU
 using the 4-wide SSE instruction set, eight or sixteen on a CPU
-using 8-wide AVX/AVX2, eight, sixteen, thirty two, or sixty four on AVX512 CPU,
-and eight or sixteen on a Intel GPU.</p>
+using 8-wide AVX/AVX2, eight, sixteen, thirty-two, or sixty-four on an AVX-512 CPU,
+and eight or sixteen on an Intel GPU.</p>
 </div>
 <div class="section" id="control-flow-within-a-gang">
 <h2>Control Flow Within A Gang</h2>
@@ -1440,16 +1874,16 @@ else {
    // false statements
 }
 </pre>
-<p>In general, the test <tt class="docutils literal">x &lt; y</tt> may have different result for different
+<p>In general, the test <tt class="docutils literal">x &lt; y</tt> may have different results for different
 program instances in the gang: some of the currently running program
 instances want to execute the statements for the &quot;true&quot; case and some want
 to execute the statements for the &quot;false&quot; case.</p>
 <p>Complex control flow in <tt class="docutils literal">ispc</tt> programs generally works as expected,
 computing the same results for each program instance in a gang as would
 have been computed if the equivalent code ran serially in C to compute each
-program instance's result individually.  However, here we will more
-precisely define the execution model for control flow in order to be able
-to precisely define the language's behavior in specific situations.</p>
+program instance's result individually.  However, we will now provide a more
+precise definition of the execution model for control flow to clearly
+specify the language's behavior in specific situations.</p>
 <p>We will specify the notion of a <em>program counter</em> and how it is updated to
 step through the program, and an <em>execution mask</em> that indicates which
 program instances want to execute the instruction at the current program
@@ -1457,7 +1891,7 @@ counter.  The program counter is shared by all of the
 program instances in the gang; it points to a single instruction to be
 executed next.  The execution mask is a per-program-instance boolean value
 that indicates whether or not side effects from the current instruction
-should effect each program instance.  Thus, for example, if a statement
+should affect each program instance.  Thus, for example, if a statement
 were to be executed with an &quot;all off&quot; mask, there should be no observable
 side-effects.</p>
 <p>Upon entry to an <tt class="docutils literal">ispc</tt> function called by the application, the execution
@@ -1547,11 +1981,11 @@ program instances is <em>maximally converged</em>.  Maximal convergence means th
 if two program instances follow the same control path, they are guaranteed
 to execute each program statement concurrently. If two program instances
 follow diverging control paths, it is guaranteed that they will reconverge
-as soon as possible in the function (if they do later reconverge). <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[1]</a></p>
-<table class="docutils footnote" frame="void" id="footnote-1" rules="none">
+as soon as possible in the function (if they do later reconverge). <a class="footnote-reference" href="#footnote-2" id="footnote-reference-2">[2]</a></p>
+<table class="docutils footnote" frame="void" id="footnote-2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#footnote-reference-1">[1]</a></td><td>This is another significant difference between the <tt class="docutils literal">ispc</tt>
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-2">[2]</a></td><td>This is another significant difference between the <tt class="docutils literal">ispc</tt>
 execution model and the one implemented by OpenCL* and CUDA*, which
 doesn't provide this guarantee.</td></tr>
 </tbody>
@@ -1624,7 +2058,7 @@ control flow decision is based on a <tt class="docutils literal">uniform</tt> qu
 be immediately aware that all of the running program instances will follow
 the same path at that point, saving the overhead of needing to deal with
 control flow divergence and mask management.  (To distinguish the two forms
-of control flow, will say that control flow based on <tt class="docutils literal">varying</tt>
+of control flow, we will say that control flow based on <tt class="docutils literal">varying</tt>
 expressions is &quot;varying&quot; control flow.)</p>
 <p>Consider for example an image filtering operation where the program loops
 over pixels adjacent to the given (x,y) coordinates:</p>
@@ -1643,11 +2077,11 @@ the program instances will actually want to execute the same number of
 iterations of the <tt class="docutils literal">for</tt> loops, with all of them having the same values
 for <tt class="docutils literal">dx</tt> and <tt class="docutils literal">dy</tt> each time through.  If these loops are instead
 implemented with <tt class="docutils literal">dx</tt> and <tt class="docutils literal">dy</tt> declared as <tt class="docutils literal">uniform</tt> variables, then
-the <tt class="docutils literal">ispc</tt> compiler can generate more efficient code for the loops. <a class="footnote-reference" href="#footnote-2" id="footnote-reference-2">[2]</a></p>
-<table class="docutils footnote" frame="void" id="footnote-2" rules="none">
+the <tt class="docutils literal">ispc</tt> compiler can generate more efficient code for the loops. <a class="footnote-reference" href="#footnote-3" id="footnote-reference-3">[3]</a></p>
+<table class="docutils footnote" frame="void" id="footnote-3" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#footnote-reference-2">[2]</a></td><td>In this case, a sufficiently smart compiler could determine that
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-3">[3]</a></td><td>In this case, a sufficiently smart compiler could determine that
 <tt class="docutils literal">dx</tt> and <tt class="docutils literal">dy</tt> have the same value for all program instances and thus
 generate more optimized code from the start, though this optimization
 isn't yet implemented in <tt class="docutils literal">ispc</tt>.</td></tr>
@@ -1710,11 +2144,11 @@ side-effects from one program instance become visible to other program
 instances running in the same gang.</p>
 <p>In the model implemented by <tt class="docutils literal">ispc</tt>, any side effect from one program
 instance is visible to other program instances in the gang after the next
-sequence point in the program. <a class="footnote-reference" href="#footnote-3" id="footnote-reference-3">[3]</a></p>
-<table class="docutils footnote" frame="void" id="footnote-3" rules="none">
+sequence point in the program. <a class="footnote-reference" href="#footnote-4" id="footnote-reference-4">[4]</a></p>
+<table class="docutils footnote" frame="void" id="footnote-4" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#footnote-reference-3">[3]</a></td><td>This is a significant difference between <tt class="docutils literal">ispc</tt> and SPMD languages
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-4">[4]</a></td><td>This is a significant difference between <tt class="docutils literal">ispc</tt> and SPMD languages
 like OpenCL* and CUDA*, which require barrier synchronization among the
 running program instances with functions like <tt class="docutils literal">barrier()</tt> or
 <tt class="docutils literal">__syncthreads()</tt>, respectively, to ensure this condition.</td></tr>
@@ -1770,7 +2204,7 @@ array[i] = array[j];
 <p>then the program's behavior is undefined, since there is no sequence point
 between the reads and writes to the same location.</p>
 <p>While this rule that says that program instances can safely depend on
-side-effects from by other program instances in their gang eliminates a
+side-effects from other program instances in their gang eliminates a
 class of synchronization requirements imposed by some other SPMD languages,
 it conversely means that it is possible to write <tt class="docutils literal">ispc</tt> programs that
 compute different results when run with different gang sizes.</p>
@@ -1805,7 +2239,7 @@ completed.</p>
 <h1>The ISPC Language</h1>
 <p><tt class="docutils literal">ispc</tt> is an extended version of the C programming language, providing a
 number of new features that make it easy to write high-performance SPMD
-programs for the CPU and GPU.  Note that between not only the few small syntactic
+programs for the CPU and GPU.  Note that due to not only the few small syntactic
 differences between <tt class="docutils literal">ispc</tt> and C code but more importantly <tt class="docutils literal">ispc</tt>'s
 fundamentally parallel execution model, C code can't just be recompiled to
 correctly run in parallel with <tt class="docutils literal">ispc</tt>.  However, starting with working C
@@ -1819,17 +2253,16 @@ previous section, <a class="reference internal" href="#the-ispc-parallel-executi
 <h2>Relationship To The C Programming Language</h2>
 <p>This subsection summarizes the differences between <tt class="docutils literal">ispc</tt> and C; if you
 are already familiar with C, you may find it most effective to focus on
-this subsection and just focus on the topics in the remainder of section
+this subsection and then on the topics in the remainder of this section
 that introduce new language features.  You may also find it helpful to
 compare the <tt class="docutils literal">ispc</tt> and C++ implementations of various algorithms in the
 <tt class="docutils literal">ispc</tt> <tt class="docutils literal">examples/</tt> directory to get a sense of the close relationship
 between <tt class="docutils literal">ispc</tt> and C.</p>
 <p>Specifically, C89 is used as the baseline for comparison in this subsection
 (this is also the version of C described in the Second Edition of Kernighan
-and Ritchie's book).  (<tt class="docutils literal">ispc</tt> adopts some features from C99 and from C++,
-which will be highlighted in the below.)</p>
-<p><tt class="docutils literal">ispc</tt> has the same syntax and features for the following as is present
-in C:</p>
+and Ritchie's book).  (<tt class="docutils literal">ispc</tt> adopts some features from C99 and C++,
+which will be highlighted below.)</p>
+<p><tt class="docutils literal">ispc</tt> has the same syntax and features as C for the following:</p>
 <ul class="simple">
 <li>Expression syntax and basic types</li>
 <li>Syntax for variable declarations</li>
@@ -1870,7 +2303,7 @@ and <a class="reference internal" href="#iteration-over-unique-elements-foreach-
 <li>&quot;Coherent&quot; control flow statements that indicate that control flow is
 expected to be coherent across the running program instances (see
 <a class="reference internal" href="#coherent-control-flow-statements-cif-and-friends">&quot;Coherent&quot; Control Flow Statements: &quot;cif&quot; and Friends</a>)</li>
-<li>A rich standard library, though one that is different than C's (see <a class="reference internal" href="#the-ispc-standard-library">The
+<li>A rich standard library, though one that differs from C's (see <a class="reference internal" href="#the-ispc-standard-library">The
 ISPC Standard Library</a>.)</li>
 <li>Short vector types (see <a class="reference internal" href="#short-vector-types">Short Vector Types</a>)</li>
 <li>Syntax to specify integer constants as bit vectors (e.g. <tt class="docutils literal">0b1100</tt> is 12)</li>
@@ -1887,9 +2320,9 @@ double</tt>).  However, there are built-in <tt class="docutils literal">int8</tt
 <li><tt class="docutils literal">union</tt> types</li>
 <li>Bitfield members of <tt class="docutils literal">struct</tt> types</li>
 <li>Variable numbers of arguments to functions</li>
-<li>Literal floating-point constants (even without a <tt class="docutils literal">f</tt> suffix) are
-currently treated as being <tt class="docutils literal">float</tt> type, not <tt class="docutils literal">double</tt>. To have a double
-precision floating point constant use <tt class="docutils literal">d</tt> suffix.</li>
+<li>Literal floating-point constants (even without an <tt class="docutils literal">f</tt> suffix) are
+currently treated as <tt class="docutils literal">float</tt> type, not <tt class="docutils literal">double</tt>. To specify a double-precision
+floating-point constant, use the <tt class="docutils literal">d</tt> suffix.</li>
 <li>The <tt class="docutils literal">volatile</tt> qualifier</li>
 <li>The <tt class="docutils literal">register</tt> storage class for variables.  (Will be ignored).</li>
 </ul>
@@ -1943,13 +2376,20 @@ int fifteen_binary  = 0b1111;
 </pre>
 <p>A number of suffixes can be provided with integer numeric constants.
 First, &quot;u&quot; denotes that the constant is unsigned, and &quot;ll&quot; denotes a 64-bit
-integer constant (while &quot;l&quot; denotes a 32-bit integer constant).  It is also
-possible to denote units of 1024, 1024*1024, or 1024*1024*1024 with the
-SI-inspired suffixes &quot;k&quot;, &quot;M&quot;, and &quot;G&quot; respectively:</p>
+integer constant (while &quot;l&quot; denotes a 32-bit integer constant). The
+aforementioned suffixes can also be written in uppercase. However, like in C,
+you cannot mix uppercase and lowercase in a given suffix (e.g. uLl or ulL).
+It is also possible to denote units of 1024, 1024*1024, or 1024*1024*1024 with
+the SI-inspired suffixes &quot;k&quot;, &quot;M&quot;, and &quot;G&quot; respectively. Note that the latter
+suffixes must precede the type-related suffixes. Here is an example:</p>
 <pre class="literal-block">
-int two_kb = 2k;   // 2048
-int two_megs = 2M; // 2 * 1024 * 1024
-int one_gig = 1G;  // 1024 * 1024 * 1024
+uint three = 3ul;
+int two_kb = 2k;         // 2048
+int two_megs = 2M;       // 2 * 1024 * 1024
+int one_gig = 1G;        // 1024 * 1024 * 1024
+uint three_gig = 3Gu;    // 3 * 1024 * 1024 * 1024
+uint64 six_gig = 6GuLL;  // 6 * 1024 * 1024 * 1024
+int64 ten_gig = 10Gll;   // 10 * 1024 * 1024 * 1024
 </pre>
 </div>
 <div class="section" id="floating-point-literals">
@@ -1962,7 +2402,7 @@ int one_gig = 1G;  // 1024 * 1024 * 1024
 </ul>
 <p>Floating-point constants of all three types can be specified in one of three ways.</p>
 <ul class="simple">
-<li>Decimal floating-point with radix separator - a sequence of zero of more
+<li>Decimal floating-point with radix separator - a sequence of zero or more
 0-9 digits, followed by a period, followed by zero or more 0-9 digits.
 There must be at least one digit before or after the period. If floating-point
 suffix is used, radix separator is optional.</li>
@@ -2200,7 +2640,7 @@ desired, then explicit type-casts can be used, where the destination type
 is provided in parenthesis around the expression:</p>
 <pre class="literal-block">
 double foo = 1. / 3.;
-int bar = (float)bar + (float)bar;  // 32-bit float addition
+int bar = (float)foo + (float)foo;  // 32-bit float addition
 </pre>
 <p>If a <tt class="docutils literal">bool</tt> is converted to an integer numeric type (<tt class="docutils literal">int</tt>, <tt class="docutils literal">int64</tt>,
 etc.), then the result is a non-zero value if the <tt class="docutils literal">bool</tt> has the value
@@ -2224,7 +2664,7 @@ respect to overflow. Unsigned integer types have defined behavior in case of
 overflow and underflow, they are guaranteed to wraparound. I.e. maximum
 unsigned integer value plus one is guaranteed to be zero. Signed integer types
 have <strong>undefined</strong> behavior in case of overflow and underflow, they are <strong>not</strong>
-guaranteed to wraparound. This is done on purpose to enable compiler to be more
+guaranteed to wraparound. This is done on purpose to enable the compiler to be more
 aggressive with optimizations of signed types.</p>
 <p>There is a subtle difference with C and C++ for 8 and 16 bit integer types. In
 C and C++ binary operations require <em>integer promotions</em> for both operands,
@@ -2646,12 +3086,18 @@ indexing operation in the last line results in an error.</p>
 </div>
 <div class="section" id="operators-overloading">
 <h2>Operators Overloading</h2>
-<p>ISPC has limited support for overloaded operators for <tt class="docutils literal">struct</tt> types. Only
-binary operators are supported currently, namely they are: <tt class="docutils literal">*, /, %, +, <span class="pre">-,</span> &gt;&gt;
-and &lt;&lt;</tt>. Operators overloading support is similar to the one in C++ language.
-To overload an operator for <tt class="docutils literal">struct S</tt>, you need to declare and implement a
-function using keyword <tt class="docutils literal">operator</tt>, which accepts two parameters of type
-<tt class="docutils literal">struct S</tt> or <tt class="docutils literal">struct S&amp;</tt> and returns either of these types. For example:</p>
+<p>ISPC has support for overloaded operators for <tt class="docutils literal">struct</tt> types. This allows you
+to define custom behavior when operators are used with your <tt class="docutils literal">struct</tt> types.</p>
+</div>
+<div class="section" id="binary-operators">
+<h2>Binary Operators</h2>
+<p>Binary operators that can be overloaded include: <tt class="docutils literal">*, /, %, +, <span class="pre">-,</span> &gt;&gt;, &lt;&lt;, ==,
+!=, &lt;, &gt;, &lt;=, &gt;=, &amp;, |, ^, &amp;&amp;, and ||</tt>. Operator overloading support is
+similar to the one in the C++ language.</p>
+<p>To overload a binary operator for <tt class="docutils literal">struct S</tt>, you need to declare and
+implement a function using keyword <tt class="docutils literal">operator</tt>, which accepts two parameters of
+type <tt class="docutils literal">struct S</tt> or <tt class="docutils literal">struct S&amp;</tt> and returns either of these types or another
+appropriate type. For example:</p>
 <pre class="literal-block">
 struct S { float re, im;};
 struct S operator*(struct S a, struct S b) {
@@ -2666,6 +3112,96 @@ void foo(struct S a, struct S b) {
     print(&quot;a.re:   %\na.im:   %\n&quot;, a.re, a.im);
     print(&quot;b.re:   %\nb.im:   %\n&quot;, b.re, b.im);
     print(&quot;mul.re: %\nmul.im: %\n&quot;, mul.re, mul.im);
+}
+</pre>
+</div>
+<div class="section" id="unary-operators">
+<h2>Unary Operators</h2>
+<p>ISPC also supports overloading unary operators: <tt class="docutils literal">++, <span class="pre">--,</span> <span class="pre">-,</span> !, and ~</tt>. For
+unary operators, the implementation depends on the operator type:</p>
+<ol class="arabic simple">
+<li><strong>Prefix Increment/Decrement (</strong> <tt class="docutils literal">++x</tt> <strong>,</strong> <tt class="docutils literal"><span class="pre">--x</span></tt> <strong>)</strong>: Define a function that
+takes a reference to your struct and returns the modified struct.</li>
+</ol>
+<pre class="literal-block">
+struct S operator++(struct S &amp;s) {
+    // Increment logic here
+    s.value++;
+    return s;
+}
+</pre>
+<ol class="arabic simple" start="2">
+<li><strong>Postfix Increment/Decrement (</strong> <tt class="docutils literal">x++</tt> <strong>,</strong> <tt class="docutils literal"><span class="pre">x--</span></tt> <strong>)</strong>: Define a function that
+takes a reference to your struct and an additional dummy int parameter,
+returning the original value before modification.</li>
+</ol>
+<pre class="literal-block">
+struct S operator++(struct S &amp;s, int) {
+    struct S temp = s;  // Save original value
+    s.value++;          // Modify the original
+    return temp;        // Return saved original
+}
+</pre>
+<ol class="arabic simple" start="3">
+<li><strong>Unary Minus, Logical NOT, Bitwise NOT (</strong> <tt class="docutils literal"><span class="pre">-x</span></tt> <strong>,</strong> <tt class="docutils literal">!x</tt> <strong>,</strong> <tt class="docutils literal">~x</tt> <strong>)</strong>: Define a
+function that takes your struct by value and returns an appropriate result.</li>
+</ol>
+<pre class="literal-block">
+struct S operator-(struct S s) {
+    struct S result;
+    result.value = -s.value;
+    return result;
+}
+
+bool operator!(struct S s) {
+    return s.value == 0;  // Return true if &quot;empty&quot; or &quot;zero&quot;
+}
+</pre>
+</div>
+<div class="section" id="assignment-operators">
+<h2>Assignment Operators</h2>
+<p>ISPC also supports overloading assignment operators for <tt class="docutils literal">struct</tt> types. The assignment
+operators include: <tt class="docutils literal">=, +=, <span class="pre">-=,</span> *=, /=, %=, <span class="pre">&lt;&lt;=,</span> <span class="pre">&gt;&gt;=,</span> &amp;=, |=, and ^=</tt>. This allows for
+more intuitive operations with custom data types.</p>
+<ol class="arabic simple">
+<li><strong>Basic Assignment (</strong> <tt class="docutils literal">=</tt> <strong>)</strong>: Define a function that takes a reference to your struct
+as the left-hand side and a value (or reference) of another type as the right-hand side,
+returning a reference to the modified struct.</li>
+</ol>
+<pre class="literal-block">
+struct Matrix {
+    float elements[16];
+};
+
+struct Matrix&amp; operator=(struct Matrix &amp;A, const struct FloatMatrix &amp;B) {
+    // Copy elements with possible type conversion
+    for (uniform int i = 0; i &lt; 16; i++) {
+        A.elements[i] = B.elements[i];  // Implicit float to double conversion
+    }
+    return A;
+}
+</pre>
+<ol class="arabic simple" start="2">
+<li><strong>Compound Assignment (</strong> <tt class="docutils literal">+=</tt> <strong>,</strong> <tt class="docutils literal"><span class="pre">-=</span></tt> <strong>, etc.)</strong>: Define a function that takes a reference
+to your struct as the left-hand side and a value (or reference) as the right-hand side,
+returning a reference to the modified struct.</li>
+</ol>
+<pre class="literal-block">
+struct Vector2 {
+    float x, y;
+};
+
+struct Vector2&amp; operator+=(struct Vector2 &amp;v, const struct Vector2 &amp;other) {
+    v.x += other.x;
+    v.y += other.y;
+    return v;
+}
+
+void foo() {
+    struct Vector2 v = {1.0f, 2.0f};
+    struct Vector2 u = {3.0f, 4.0f};
+
+    v += u;  // v now contains {4.0f, 6.0f}
 }
 </pre>
 </div>
@@ -2719,7 +3255,7 @@ element of the array isn't contiguous in memory--<tt class="docutils literal"><s
 <p>There are a few limitations to the current implementation of SOA types in
 <tt class="docutils literal">ispc</tt>; these may be relaxed in future releases:</p>
 <ul class="simple">
-<li>It's illegal to typecast to <tt class="docutils literal">soa</tt> data to <tt class="docutils literal">void</tt> pointers.</li>
+<li>It's illegal to typecast <tt class="docutils literal">soa</tt> data to <tt class="docutils literal">void</tt> pointers.</li>
 <li>Reference types are illegal in SOA structures</li>
 <li>All members of SOA structures must have no rate qualifiers--specifically,
 it's illegal to have an explicitly-qualified <tt class="docutils literal">uniform</tt> or <tt class="docutils literal">varying</tt>
@@ -2744,9 +3280,9 @@ is undefined until a value is assigned to it.  Reading an undefined
 variable is undefined behavior.</p>
 <p>Any variable that is declared at file scope (i.e. outside a function) is a
 global variable.  If a global variable is qualified with the <tt class="docutils literal">static</tt>
-keyword, then its only visible within the compilation unit in which it was
+keyword, then it is only visible within the compilation unit in which it was
 defined.  As in C/C++, a variable with a <tt class="docutils literal">static</tt> qualifier inside a
-functions maintains its value across function invocations.</p>
+function maintains its value across function invocations.</p>
 <p>As in C++, variables don't need to be declared at the start of a basic
 block:</p>
 <pre class="literal-block">
@@ -2771,7 +3307,7 @@ guarded with <tt class="docutils literal">#if TARGET_WIDTH</tt>:</p>
     ...
 #endif
 </pre>
-<p>However, there is a special case when the only one value is in braces. All
+<p>However, there is a special case when only one value is in braces. All
 vector elements are initialized with this value:</p>
 <pre class="literal-block">
 varying int x = { 3, };
@@ -2817,7 +3353,7 @@ const varying int y = x * 2;
 </div>
 <div class="section" id="attributes">
 <h2>Attributes</h2>
-<p>ISPC provides GNU style attributes syntax using <tt class="docutils literal">__attribute__</tt> keyword.
+<p>ISPC provides GNU-style attribute syntax using the <tt class="docutils literal">__attribute__</tt> keyword.
 This section contains the list of currently supported attributes.</p>
 </div>
 <div class="section" id="noescape">
@@ -2843,7 +3379,7 @@ void escaping(__attribute__((noescape)) uniform int * uniform ptr) {
 </div>
 <div class="section" id="address-space">
 <h2>address_space</h2>
-<p><tt class="docutils literal"><span class="pre">__attribute__((address_space(N)))</span></tt> is Xe specific attribute that can be
+<p><tt class="docutils literal"><span class="pre">__attribute__((address_space(N)))</span></tt> is an Xe-specific attribute that can be
 applied to a pointer type or a reference type.  The value of this type points
 to or refers to the value allocated in the provided address space.  The address
 space is a non-negative integer value, and the default address space is 0.
@@ -2876,9 +3412,9 @@ __attribute__((unmangled)) void foo(int a, int b);
 <tt class="docutils literal">export</tt> qualifier. It informs the compiler that it should not generate an
 ISPC version of the function. This is useful for functions that are only called
 from C/C++ in case when the user wants to reduce the size of the generated
-code. Same effect can be achieved by using <tt class="docutils literal"><span class="pre">-ffunction-sections</span></tt> compiler
+code. The same effect can be achieved by using the <tt class="docutils literal"><span class="pre">-ffunction-sections</span></tt> compiler
 option but not in all cases (e.g., shared libraries with ISPC code), so this
-attribute is provided as a more fine-grained control.</p>
+attribute is provided as more fine-grained control.</p>
 </div>
 <div class="section" id="deprecated">
 <h2>deprecated</h2>
@@ -2913,7 +3449,7 @@ __attribute__((aligned(16))) struct S { int x; } __attribute__((aligned(32))) v1
 // v32 is aligned to 32 bytes
 struct S v32;
 </pre>
-<p>Note, that ISPC doesn't support <tt class="docutils literal"><span class="pre">__attribute__((aligned))</span></tt> without an
+<p>Note that ISPC doesn't support <tt class="docutils literal"><span class="pre">__attribute__((aligned))</span></tt> without an
 argument. It also doesn't support placing the aligned attribute for specific
 members of struct types.</p>
 </div>
@@ -2976,7 +3512,7 @@ delete[] ptr;
 array of <tt class="docutils literal">uniform int</tt> values, uses that memory, and then deallocates
 that memory.  Uses of <tt class="docutils literal">new</tt> and <tt class="docutils literal">delete</tt> in <tt class="docutils literal">ispc</tt> programs are
 implemented as calls to C library's aligned memory allocation routines,
-which are platform dependent (<tt class="docutils literal">posix_memalign()</tt> and <tt class="docutils literal">free()</tt> on Linux*
+which are platform-dependent (<tt class="docutils literal">posix_memalign()</tt> and <tt class="docutils literal">free()</tt> on Linux*
 and macOS* and <tt class="docutils literal">_aligned_malloc()</tt> and <tt class="docutils literal">_aligned_free()</tt> on Windows*). So it's
 advised to pair ISPC's <tt class="docutils literal">new</tt> and <tt class="docutils literal">delete</tt> with each other, but not with
 C/C++ memory management functions.</p>
@@ -3065,7 +3601,7 @@ described in <a class="reference internal" href="#declarations-and-initializers"
 </div>
 <div class="section" id="type-casting">
 <h2>Type Casting</h2>
-<p>C-style type casting expression works as in C language with an exception that
+<p>C-style type casting expressions work as in the C language with an exception that
 unbound type is not treated as <tt class="docutils literal">varying</tt> by default.</p>
 <p>When typecasting to some type <tt class="docutils literal">T</tt> without specifying a variability, the
 variability is derived from the type of expression being casted. I.e. the
@@ -3192,7 +3728,7 @@ value of the program instance executing at each loop iteration.</p>
 when the loop body executes, the update to <tt class="docutils literal">array</tt> is well-defined.
 Note that for this particular example, the &quot;local atomic&quot; operations in
 the standard library could be used instead to safely update <tt class="docutils literal">array</tt>.
-However, local atomics functions aren't always available or appropriate for
+(However, local atomic functions aren't always available or appropriate for
 more complex cases.)</p>
 <p><tt class="docutils literal">continue</tt> statements may be used inside <tt class="docutils literal">foreach_active</tt> loops, though
 <tt class="docutils literal">break</tt> and <tt class="docutils literal">return</tt> are prohibited.  The order in which the active
@@ -3203,7 +3739,7 @@ Performance Guide for more details about <tt class="docutils literal">foreach_ac
 <div class="section" id="iteration-over-unique-elements-foreach-unique">
 <h2>Iteration over unique elements: &quot;foreach_unique&quot;</h2>
 <p>It can be useful to iterate over the elements of a varying variable,
-processing the subsets of them that have the same value together.  For
+processing the subsets that have the same value together.  For
 example, consider a varying variable <tt class="docutils literal">x</tt> that has the values <tt class="docutils literal">{1, 2, 2,
 1, 1, 0, 0, 0}</tt>, where the program is running on a target with a gang size
 of 8 program instances.  Here, <tt class="docutils literal">x</tt> has three unique values across the
@@ -3252,7 +3788,7 @@ within a <tt class="docutils literal">foreach</tt> loop; a compile-time error wi
 case.  (It is legal to have a <tt class="docutils literal">break</tt> in a regular <tt class="docutils literal">for</tt> loop that's
 nested inside a <tt class="docutils literal">foreach</tt> loop.)  <tt class="docutils literal">continue</tt> statements are legal in
 <tt class="docutils literal">foreach</tt> loops; they have the same effect as in regular <tt class="docutils literal">for</tt> loops:
-a program instances that executes a <tt class="docutils literal">continue</tt> statement effectively
+a program instance that executes a <tt class="docutils literal">continue</tt> statement effectively
 skips over the rest of the loop body for the current iteration.</p>
 <p>It is also currently illegal to have nested <tt class="docutils literal">foreach</tt> statements; this
 limitation will be removed in a future release of <tt class="docutils literal">ispc</tt>.</p>
@@ -3276,7 +3812,7 @@ foreach (i = 0 ... 16) {
 }
 </pre>
 <p>One possible valid execution path of this loop would be for the program
-counter the step through the statements of this loop just <tt class="docutils literal"><span class="pre">16/8==2</span></tt>
+counter to step through the statements of this loop just <tt class="docutils literal"><span class="pre">16/8==2</span></tt>
 times; the first time through, with the <tt class="docutils literal">varying int32</tt> variable <tt class="docutils literal">i</tt>
 having the values (0,1,2,3,4,5,6,7) over the program instances, and the
 second time through, having the values (8,9,10,11,12,13,14,15), thus
@@ -3322,11 +3858,11 @@ each program instance.  (In other words, it's a varying integer value that
 has value zero for the first program instance, and so forth.)  The
 <tt class="docutils literal">programCount</tt> builtin gives the total number of instances in the gang.
 Together, these can be used to uniquely map executing program instances to
-input data. <a class="footnote-reference" href="#footnote-4" id="footnote-reference-4">[4]</a></p>
-<table class="docutils footnote" frame="void" id="footnote-4" rules="none">
+input data. <a class="footnote-reference" href="#footnote-5" id="footnote-reference-5">[5]</a></p>
+<table class="docutils footnote" frame="void" id="footnote-5" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#footnote-reference-4">[4]</a></td><td><tt class="docutils literal">programIndex</tt> is analogous to <tt class="docutils literal">get_global_id()</tt> in OpenCL* and
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-5">[5]</a></td><td><tt class="docutils literal">programIndex</tt> is analogous to <tt class="docutils literal">get_global_id()</tt> in OpenCL* and
 <tt class="docutils literal">threadIdx</tt> in CUDA*.</td></tr>
 </tbody>
 </table>
@@ -3351,7 +3887,7 @@ processed, while the loop above assumes that case implicitly.</p>
 execution mask, meaning all program instances are active at the start.
 In contrast, a <tt class="docutils literal">for</tt> loop using <tt class="docutils literal">programIndex</tt> and <tt class="docutils literal">programCount</tt>
 respects the current execution mask, which may disable some instances.
-To match the behavior of <tt class="docutils literal">foreach</tt> in regards of masking, you should
+To match the behavior of <tt class="docutils literal">foreach</tt> with regard to masking, you should
 use an <tt class="docutils literal">unmasked</tt> region. For example:</p>
 <pre class="literal-block">
 foreach (index = 0 ... 16) {
@@ -3457,12 +3993,12 @@ Section <a class="reference internal" href="#re-establishing-the-execution-mask"
 <p>Functions that are intended to be called from C/C++ application code must
 have the <tt class="docutils literal">export</tt> qualifier.  This causes them to have regular C linkage
 and to have their declarations included in header files, if the <tt class="docutils literal">ispc</tt>
-compiler is directed to generated a C/C++ header file for the file it
+compiler is directed to generate a C/C++ header file for the file it
 compiled. By default, ISPC generates both C/C++ and ISPC versions of the
-function with <tt class="docutils literal">export</tt> qualifier. In case when there is no calls from ISPC
+function with the <tt class="docutils literal">export</tt> qualifier. In cases when there are no calls from ISPC
 code to the <tt class="docutils literal">export</tt> function, the ISPC version of the function is not needed
-and can be removed either by using <tt class="docutils literal"><span class="pre">-ffunction-sections</span></tt> compiler option
-together with the linker specific option that collects garbage sections or by
+and can be removed either by using the <tt class="docutils literal"><span class="pre">-ffunction-sections</span></tt> compiler option
+together with the linker-specific option that collects garbage sections or by
 using <tt class="docutils literal"><span class="pre">__attribute__((external_only))</span></tt>.</p>
 <pre class="literal-block">
 export uniform float inc(uniform float v) {
@@ -3479,19 +4015,19 @@ cannot be used on the same function.</p>
 </div>
 <div class="section" id="function-overloading">
 <h2>Function Overloading</h2>
-<p>Functions can be overloaded by parameter type.  Given multiple definitions
+<p>Functions can be overloaded by parameter type. Given multiple definitions
 of a function, <tt class="docutils literal">ispc</tt> uses the following model to choose the best function:
-each conversion of two types has its cost. <tt class="docutils literal">ispc</tt> tries to find conversion
-with the smallest cost. When <tt class="docutils literal">ispc</tt> can't find any conversion it means that
-this function is not suitable. Then <tt class="docutils literal">ispc</tt> sums costs for all arguments and
-chooses the function with the smallest final cost. If the chosen function
-has some arguments which costs are bigger than their costs in other function
-this treats as ambiguous.
-Costs of type conversions placed from small to big:</p>
+each type conversion has an associated cost. <tt class="docutils literal">ispc</tt> tries to find the conversion
+with the smallest cost. When <tt class="docutils literal">ispc</tt> cannot find any suitable conversion, the
+function is rejected. <tt class="docutils literal">ispc</tt> then sums the costs for all arguments and
+chooses the function with the smallest total cost. If the chosen function
+has some arguments whose costs are greater than their costs in another function,
+this is treated as ambiguous.
+Type conversion costs are ordered from lowest to highest:</p>
 <ol class="arabic simple">
 <li>Parameter types match exactly.</li>
-<li>Function parameter type is reference and parameters match when any reference-type parameter are considered equivalent to their underlying type.</li>
-<li>Function parameter type is const-reference and parameters match when any reference-type parameter are considered equivalent to their underlying type ignoring const attributes.</li>
+<li>Function parameter type is a reference and parameters match when reference-type parameters are considered equivalent to their underlying type.</li>
+<li>Function parameter type is a const-reference and parameters match when reference-type parameters are considered equivalent to their underlying type, ignoring const attributes.</li>
 <li>Parameters match exactly, except constant attributes. [NO CONSTANT ATTRIBUTES LATER]</li>
 <li>Parameters match exactly, except reference attributes. [NO REFERENCES ATTRIBUTES LATER]</li>
 <li>Parameters match with only type conversions that don't risk losing any information (for example, converting an int16 value to an int32 parameter value.)</li>
@@ -3501,8 +4037,8 @@ Costs of type conversions placed from small to big:</p>
 <li>Parameters match using arbitrary type conversion, including also changing variability from uniform to varying.</li>
 </ol>
 <ul class="simple">
-<li>If function parameter type is reference and neither &quot;2&quot; nor &quot;3&quot; aren't suitable, function is not suitable</li>
-<li>If &quot;10&quot; isn't suitable, function is not suitable</li>
+<li>If the function parameter type is a reference and neither &quot;2&quot; nor &quot;3&quot; is suitable, the function is not suitable</li>
+<li>If &quot;10&quot; is not suitable, the function is not suitable</li>
 </ul>
 </div>
 <div class="section" id="re-establishing-the-execution-mask">
@@ -3635,7 +4171,7 @@ the start of the task as were active and inactive when their <tt class="docutils
 statement executed.  To make all program instances in the launched gang be
 active, the <tt class="docutils literal">unmasked</tt> construct can be used (see <a class="reference internal" href="#re-establishing-the-execution-mask">Re-establishing The
 Execution Mask</a>.)</p>
-<p>There are two ways to write code that launches a group multiple tasks.
+<p>There are two ways to write code that launches multiple tasks.
 First, one task can be launched at a time, with parameters passed to the
 task to help it determine what part of the overall computation it's
 responsible for:</p>
@@ -3644,7 +4180,7 @@ for (uniform int i = 0; i &lt; 100; ++i)
     launch func(a, i);
 </pre>
 <p>This code launches 100 tasks, each of which presumably does some
-computation that is keyed off of given the value <tt class="docutils literal">i</tt>.  In general, one
+computation that is keyed off of the given value <tt class="docutils literal">i</tt>.  In general, one
 should launch many more tasks than there are processors in the system to
 ensure good load-balancing, but not so many that the overhead of scheduling
 and running tasks dominates the computation.</p>
@@ -3679,7 +4215,7 @@ data that is private to the current thread and thus doesn't require
 synchronization to access under parallel execution.</p>
 <p>The tasking system also supports multi-dimensional partitioning (currently up
 to three dimensions). To launch a 3D grid of tasks, for example with <tt class="docutils literal">N0</tt>,
-<tt class="docutils literal">N1</tt>  and <tt class="docutils literal">N2</tt> tasks in x-, y- and z-dimension respectively</p>
+<tt class="docutils literal">N1</tt>, and <tt class="docutils literal">N2</tt> tasks in the x-, y-, and z-dimensions respectively</p>
 <pre class="literal-block">
 float data[N2][N1][N0]
 task void foo_task()
@@ -3697,9 +4233,9 @@ launch [N0,N1,N2] foo_task()
 </pre>
 <p>Value of <tt class="docutils literal">taskIndex</tt> is equal to <tt class="docutils literal">taskIndex0 + <span class="pre">taskCount0*(taskIndex1</span> +
 taskCount1*taskIndex2)</tt> and it ranges from <tt class="docutils literal">0</tt> to  <tt class="docutils literal"><span class="pre">taskCount-1</span></tt>, where
-<tt class="docutils literal">taskCount = taskCount0*taskCount1*taskCount2</tt>. If <tt class="docutils literal">N1</tt> or/and <tt class="docutils literal">N2</tt> are
+<tt class="docutils literal">taskCount = taskCount0*taskCount1*taskCount2</tt>. If <tt class="docutils literal">N1</tt> and/or <tt class="docutils literal">N2</tt> are
 not specified in the <tt class="docutils literal">launch</tt> expression, a value of <tt class="docutils literal">1</tt> is assumed.
-Finally, for an one-dimensional grid of tasks,  <tt class="docutils literal">taskIndex</tt> is equivalent to
+Finally, for a one-dimensional grid of tasks, <tt class="docutils literal">taskIndex</tt> is equivalent to
 <tt class="docutils literal">taskIndex0</tt> and <tt class="docutils literal">taskCount</tt> is equivalent to <tt class="docutils literal">taskCount0</tt>.</p>
 </div>
 <div class="section" id="task-parallelism-runtime-requirements">
@@ -3981,8 +4517,8 @@ primary template.</li>
 <div class="section" id="the-ispc-standard-library">
 <h1>The ISPC Standard Library</h1>
 <p><tt class="docutils literal">ispc</tt> has a standard library that is automatically available when
-compiling <tt class="docutils literal">ispc</tt> programs.  (To disable the standard library, pass the
-<tt class="docutils literal"><span class="pre">--nostdlib</span></tt> command-line flag to the compiler.).
+compiling <tt class="docutils literal">ispc</tt> programs. (To disable the standard library, pass the
+<tt class="docutils literal"><span class="pre">--nostdlib</span></tt> command-line flag to the compiler.)
 For a complete list of functions available in the standard library, consult the
 <a class="reference external" href="https://github.com/ispc/ispc/tree/main/stdlib/include/stdlib.isph">stdlib.isph</a> header file. This file serves as the definitive reference for all
 the function declarations provided by the standard library.</p>
@@ -4022,8 +4558,16 @@ int8 select(bool cond, int8 t, int8 f)
 int8 select(uniform bool cond, int8 t, int8 f)
 uniform int8 select(uniform bool cond, uniform int8 t, uniform int8 f)
 </pre>
-<p>There are also variants for <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">float</tt>, <tt class="docutils literal">float16</tt>
-and <tt class="docutils literal">double</tt> types.</p>
+<p>There are also variants for <tt class="docutils literal">int16</tt>, <tt class="docutils literal">int32</tt>, <tt class="docutils literal">int64</tt>, <tt class="docutils literal">uint8</tt>,
+<tt class="docutils literal">uint16</tt>, <tt class="docutils literal">uint32</tt>, <tt class="docutils literal">uint64</tt>, <tt class="docutils literal">float</tt>, <tt class="docutils literal">float16</tt> and <tt class="docutils literal">double</tt> types.
+Uniform short vector types are also supported with the basic types listed above:</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt;
+uniform T&lt;N&gt; select(uniform bool cond, uniform T&lt;N&gt; t, uniform T&lt;N&gt; f)
+
+template &lt;typename T, uint N&gt;
+uniform T&lt;N&gt; select(uniform bool&lt;N&gt; cond, uniform T&lt;N&gt; t, uniform T&lt;N&gt; f)
+</pre>
 </div>
 <div class="section" id="bit-operations">
 <h2>Bit Operations</h2>
@@ -4052,8 +4596,8 @@ value <tt class="docutils literal">true</tt> (rather than just having the value 
 int sign_extend(bool value)
 uniform int sign_extend(uniform bool value)
 </pre>
-<p>Also it is possible to convert a <tt class="docutils literal">bool</tt> varying value to an integer using
-<tt class="docutils literal">packmask</tt> function.</p>
+<p>It is also possible to convert a <tt class="docutils literal">bool</tt> varying value to an integer using
+the <tt class="docutils literal">packmask</tt> function.</p>
 <pre class="literal-block">
 uniform int packmask(bool value)
 </pre>
@@ -4128,28 +4672,32 @@ options.)</li>
 the sign bit of the given value, returning <tt class="docutils literal">0x80000000</tt> if the sign bit
 is on (i.e. the value is negative) and zero if it is off.</p>
 <pre class="literal-block">
-float16 abs(float a)
-uniform float16 abs(uniform float a)
+float16 abs(float16 a)
 float abs(float a)
-uniform float abs(uniform float a)
 double abs(double a)
-uniform double abs(uniform double a)
 int8 abs(int8 a)
-uniform int8 abs(uniform int8 a)
 int16 abs(int16 a)
-uniform int16 abs(uniform int16 a)
 int abs(int a)
-uniform int abs(uniform int a)
 int64 abs(int64 a)
+
+uniform float16 abs(uniform float16 a)
+uniform float abs(uniform float a)
+uniform double abs(uniform double a)
+uniform int8 abs(uniform int8 a)
+uniform int16 abs(uniform int16 a)
+uniform int abs(uniform int a)
 uniform int64 abs(uniform int64 a)
+</pre>
+<pre class="literal-block">
 unsigned int16 signbits(float16 x)
-uniform unsigned int16 signbits(uniform float16 x)
 unsigned int signbits(float x)
-uniform unsigned int signbits(uniform float x)
 unsigned int64 signbits(double x)
+
+uniform unsigned int16 signbits(uniform float16 x)
+uniform unsigned int signbits(uniform float x)
 uniform unsigned int64 signbits(uniform double x)
 </pre>
-<p>The <tt class="docutils literal">abs</tt> functions also supports short vector types with the basic types
+<p>The <tt class="docutils literal">abs</tt> functions also support short vector types with the basic types
 listed above.</p>
 <pre class="literal-block">
 template &lt;typename T, uint N&gt; T&lt;N&gt; abs(T&lt;N&gt; a)
@@ -4165,14 +4713,31 @@ cases to nearest even integer, i.e., corresponds to the <tt class="docutils lite
 <tt class="docutils literal">roundeven</tt> function. These function operate regardless of the current
 rounding mode and do not signal precision exceptions.</p>
 <pre class="literal-block">
+float16 round(float16 x)
 float round(float x)
-uniform float round(uniform float x)
+double round(double x)
+float16 floor(float16 x)
 float floor(float x)
-uniform float floor(uniform float x)
+double floor(double x)
+float16 ceil(float16 x)
 float ceil(float x)
-uniform float ceil(uniform float x)
+double ceil(double x)
+float16 trunc(float16 x)
 float trunc(float x)
+double trunc(double x)
+
+uniform float16 round(uniform float16 x)
+uniform float round(uniform float x)
+uniform double round(uniform double x)
+uniform float16 floor(uniform float16 x)
+uniform float floor(uniform float x)
+uniform double floor(uniform double x)
+uniform float16 ceil(uniform float16 x)
+uniform float ceil(uniform float x)
+uniform double ceil(uniform double x)
+uniform float16 trunc(uniform float16 x)
 uniform float trunc(uniform float x)
+uniform double trunc(uniform double x)
 </pre>
 <p>These functions also support short vector types with the basic types listed
 above.</p>
@@ -4185,16 +4750,22 @@ template &lt;typename T, uint N&gt; T&lt;N&gt; trunc(T&lt;N&gt; a)
 <p><tt class="docutils literal">rcp()</tt> computes an approximation to <tt class="docutils literal">1/v</tt>.  The amount of error is
 different on different architectures.</p>
 <pre class="literal-block">
+float16 rcp(float16 v)
+uniform float16 rcp(uniform float16 v)
 float rcp(float v)
 uniform float rcp(uniform float v)
+double rcp(double v)
+uniform double rcp(uniform double v)
 </pre>
-<p>ISPC also provides a version of <tt class="docutils literal">rcp()</tt> for float with less precision which doesn't
+<p>ISPC also provides a version of <tt class="docutils literal">rcp()</tt> with less precision which doesn't
 use Newton-Raphson.</p>
 <pre class="literal-block">
 float rcp_fast(float v)
 uniform float rcp_fast(uniform float v)
+double rcp_fast(double v)
+uniform double rcp_fast(uniform double v)
 </pre>
-<p><tt class="docutils literal">rcp</tt> and <tt class="docutils literal">rcp_fast</tt> functions also support short vector types with the
+<p><tt class="docutils literal">rcp()</tt> and <tt class="docutils literal">rcp_fast()</tt> functions also support short vector types with the
 basic types listed above.</p>
 <pre class="literal-block">
 template &lt;typename T, uint N&gt; T&lt;N&gt; rcp(T&lt;N&gt; a)
@@ -4209,6 +4780,10 @@ float fmod(float x, float y)
 uniform float fmod(uniform float x, uniform float y)
 double fmod(double x, double y)
 uniform double fmod(uniform double x, uniform double y)
+</pre>
+<p><tt class="docutils literal">fmod()</tt> also support short vector types with the basic types listed above.</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt; T&lt;N&gt; fmod(T&lt;N&gt; x, T&lt;N&gt; y)
 </pre>
 <p>A standard set of minimum and maximum functions is available for all ispc
 standard types.  These functions also map to corresponding intrinsic functions.</p>
@@ -4272,14 +4847,37 @@ template &lt;typename T, uint N&gt; T&lt;N&gt; max(T&lt;N&gt; a, T&lt;N&gt; b)
 (Their implementations are based on <tt class="docutils literal">min()</tt> and <tt class="docutils literal">max()</tt> and are thus
 quite efficient.)</p>
 <pre class="literal-block">
+float16 clamp(float16 v, float16 low, float16 high)
 float clamp(float v, float low, float high)
-uniform float clamp(uniform float v, uniform float low,
-                    uniform float high)
-unsigned int clamp(unsigned int v, unsigned int low,
-                   unsigned int high)
-uniform unsigned int clamp(uniform unsigned int v,
-                           uniform unsigned int low,
+double clamp(double v, double low, double high)
+unsigned int8 clamp(unsigned int8 v, unsigned int8 low, unsigned int8 high)
+int8 clamp(int8 v, int8 low, int8 high)
+unsigned int16 clamp(unsigned int16 v, unsigned int16 low, unsigned int16 high)
+int16 clamp(int16 v, int16 low, int16 high)
+unsigned int clamp(unsigned int v, unsigned int low, unsigned int high)
+int clamp(int v, int low, int high)
+unsigned int64 clamp(unsigned int64 v, unsigned int64 low, unsigned int64 high)
+int64 clamp(int64 v, int64 low, int64 high)
+
+uniform float16 clamp(uniform float16 v, uniform float16 low, uniform float16 high)
+uniform float clamp(uniform float v, uniform float low, uniform float high)
+uniform double clamp(uniform double v, uniform double low, uniform double high)
+uniform unsigned int8 clamp(uniform unsigned int8 v, uniform unsigned int8 low,
+                            uniform unsigned int8 high)
+uniform int8 clamp(uniform int8 v, uniform int8 low, uniform int8 high)
+uniform unsigned int16 clamp(uniform unsigned int16 v, uniform unsigned int16 low,
+                             uniform unsigned int16 high)
+uniform int16 clamp(uniform int16 v, uniform int16 low, uniform int16 high)
+uniform unsigned int clamp(uniform unsigned int v, uniform unsigned int low,
                            uniform unsigned int high)
+uniform int clamp(uniform int v, uniform int low, uniform int high)
+uniform unsigned int64 clamp(uniform unsigned int64 v, uniform unsigned int64 low,
+                             uniform unsigned int64 high)
+uniform int64 clamp(uniform int64 v, uniform int64 low, uniform int64 high)
+</pre>
+<p><tt class="docutils literal">clamp()</tt> also supports short vector types with the basic types listed above.</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt; T&lt;N&gt; clamp(T&lt;N&gt; v, T&lt;N&gt; low, T&lt;N&gt; high)
 </pre>
 <p>The <tt class="docutils literal">isnan()</tt> functions test whether the given value is a floating-point
 &quot;not a number&quot; value:</p>
@@ -4290,6 +4888,38 @@ bool isnan(float v)
 uniform bool isnan(uniform float v)
 bool isnan(double v)
 uniform bool isnan(uniform double v)
+</pre>
+<p><tt class="docutils literal">isnan()</tt> also supports short vector types with the basic types listed above.</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt; uniform bool&lt;N&gt; isnan(uniform T&lt;N&gt; v)
+template &lt;typename T, uint N&gt; varying bool&lt;N&gt; isnan(varying T&lt;N&gt; v)
+</pre>
+<p>The <tt class="docutils literal">isinf()</tt> and <tt class="docutils literal">isfinite()</tt> functions test whether the given value is
+a floating-point infinity (please note that a &quot;not a number&quot; value is neither
+considered finite nor infinite):</p>
+<pre class="literal-block">
+bool isinf(float16 v)
+uniform bool isinf(uniform float16 v)
+bool isinf(float v)
+uniform bool isinf(uniform float v)
+bool isinf(double v)
+uniform bool isinf(uniform double v)
+</pre>
+<pre class="literal-block">
+bool isfinite(float16 v)
+uniform bool isfinite(uniform float16 v)
+bool isfinite(float v)
+uniform bool isfinite(uniform float v)
+bool isfinite(double v)
+uniform bool isfinite(uniform double v)
+</pre>
+<p>The <tt class="docutils literal">isinf()</tt> and <tt class="docutils literal">isfinite()</tt> functions also support short vector types
+with the basic types listed above.</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt; uniform bool&lt;N&gt; isinf(uniform T&lt;N&gt; v)
+template &lt;typename T, uint N&gt; varying bool&lt;N&gt; isinf(varying T&lt;N&gt; v)
+template &lt;typename T, uint N&gt; uniform bool&lt;N&gt; isfinite(uniform T&lt;N&gt; v)
+template &lt;typename T, uint N&gt; varying bool&lt;N&gt; isfinite(varying T&lt;N&gt; v)
 </pre>
 <p>A number of functions are also available for performing operations on 8- and
 16-bit quantities; these map to specialized instructions that perform these
@@ -4319,31 +4949,64 @@ reciprocal square root, <tt class="docutils literal">1/sqrt(v)</tt> is computed 
 <tt class="docutils literal">rcp()</tt>, the error from this call is different on different
 architectures.</p>
 <pre class="literal-block">
+float16 sqrt(float16 v)
+uniform float16 sqrt(uniform float16 v)
 float sqrt(float v)
 uniform float sqrt(uniform float v)
+double sqrt(double v)
+uniform double sqrt(uniform double v)
+</pre>
+<pre class="literal-block">
+float16 rsqrt(float16 v)
+uniform float16 rsqrt(uniform float16 v)
 float rsqrt(float v)
 uniform float rsqrt(uniform float v)
+double rsqrt(double v)
+uniform double rsqrt(uniform double v)
 </pre>
-<p><tt class="docutils literal">rsqrt</tt> and <tt class="docutils literal">sqrt</tt> also supports short vector types with the basic types
-listed above:</p>
+<p><tt class="docutils literal">sqrt()</tt> and <tt class="docutils literal">rsqrt()</tt> also supports short vector types with the basic
+types listed above:</p>
 <pre class="literal-block">
-template &lt;typename T, uint N&gt; T&lt;N&gt; rsqrt(T&lt;N&gt; a)
 template &lt;typename T, uint N&gt; T&lt;N&gt; sqrt(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; rsqrt(T&lt;N&gt; a)
 </pre>
-<p>ISPC also provides a version of <tt class="docutils literal">rsqrt()</tt> for float with less precision which doesn't
+<p>ISPC also provides a version of <tt class="docutils literal">rsqrt()</tt> with less precision which doesn't
 use Newton-Raphson.</p>
 <pre class="literal-block">
 float rsqrt_fast(float v)
 uniform float rsqrt_fast(uniform float v)
+double rsqrt_fast(double v)
+uniform double rsqrt_fast(uniform double v)
+</pre>
+<p><tt class="docutils literal">rsqrt_fast()</tt> also supports short vector types with the basic types listed
+above:</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt; T&lt;N&gt; rsqrt_fast(T&lt;N&gt; v)
 </pre>
 <p><tt class="docutils literal">ispc</tt> provides a standard variety of calls for trigonometric functions:</p>
 <pre class="literal-block">
+float16 sin(float16 x)
+uniform float16 sin(uniform float16 x)
 float sin(float x)
 uniform float sin(uniform float x)
+double sin(double x)
+uniform double sin(uniform double x)
+</pre>
+<pre class="literal-block">
+float16 cos(float16 x)
+uniform float16 cos(uniform float16 x)
 float cos(float x)
 uniform float cos(uniform float x)
+double cos(double x)
+uniform double cos(uniform double x)
+</pre>
+<pre class="literal-block">
+float16 tan(float16 x)
+uniform float16 tan(uniform float16 x)
 float tan(float x)
 uniform float tan(uniform float x)
+double tan(double x)
+uniform double tan(uniform double x)
 </pre>
 <p>These functions also supports short vector types with the basic types listed
 above:</p>
@@ -4354,14 +5017,36 @@ template &lt;typename T, uint N&gt; T&lt;N&gt; tan(T&lt;N&gt; a)
 </pre>
 <p>The corresponding inverse functions are also available:</p>
 <pre class="literal-block">
+float16 asin(float16 x)
+uniform float16 asin(uniform float16 x)
 float asin(float x)
 uniform float asin(uniform float x)
+double asin(const double x)
+uniform double asin(uniform double x)
+</pre>
+<pre class="literal-block">
+float16 acos(float16 x)
+uniform float16 acos(uniform float16 x)
 float acos(float x)
 uniform float acos(uniform float x)
+double acos(const double x)
+uniform double acos(const uniform double x)
+</pre>
+<pre class="literal-block">
+float16 atan(float16 x)
+uniform float16 atan(uniform float16 x)
 float atan(float x)
 uniform float atan(uniform float x)
+double atan(double x)
+uniform double atan(uniform double x)
+</pre>
+<pre class="literal-block">
+float16 atan2(float16 y, float16 x)
+uniform float16 atan2(uniform float16 y, uniform float16 x)
 float atan2(float y, float x)
 uniform float atan2(uniform float y, uniform float x)
+double atan2(double y, double x)
+uniform double atan2(uniform double y, uniform double x)
 </pre>
 <p>The inverse functions also support short vector types with the basic types
 listed above:</p>
@@ -4375,18 +5060,40 @@ template &lt;typename T, uint N&gt; T&lt;N&gt; atan2(T&lt;N&gt; a, T&lt;N&gt; b)
 both more efficiently than two calls to the respective individual
 functions:</p>
 <pre class="literal-block">
+void sincos(float16 x, varying float16 * uniform s, varying float16 * uniform c)
+void sincos(uniform float16 x, uniform float16 * uniform s,
+            uniform float16 * uniform c)
 void sincos(float x, varying float * uniform s, varying float * uniform c)
 void sincos(uniform float x, uniform float * uniform s,
             uniform float * uniform c)
+void sincos(double x, varying double * uniform s, varying double * uniform c)
+void sincos(uniform double x, uniform double * uniform s,
+            uniform double * uniform c)
 </pre>
 <p>The usual exponential and logarithmic functions are provided.</p>
 <pre class="literal-block">
+float16 exp(float16 x)
+uniform float16 exp(uniform float16 x)
 float exp(float x)
 uniform float exp(uniform float x)
+double exp(double x)
+uniform double exp(uniform double x)
+</pre>
+<pre class="literal-block">
+float16 log(float16 x)
+uniform float16 log(uniform float16 x)
 float log(float x)
 uniform float log(uniform float x)
+double log(double x)
+uniform double log(uniform double x)
+</pre>
+<pre class="literal-block">
+float16 pow(float16 a, float16 b)
+uniform float16 pow(uniform float16 a, uniform float16 b)
 float pow(float a, float b)
 uniform float pow(uniform float a, uniform float b)
+double pow(double a, double b)
+uniform double pow(uniform double a, uniform double b)
 </pre>
 <p>These functions also support short vector types with the basic types listed
 above:</p>
@@ -4410,14 +5117,21 @@ math library, <tt class="docutils literal">ldexp()</tt> multiplies the value <tt
 <tt class="docutils literal">frexp()</tt> directly returns the normalized mantissa and returns the
 normalized exponent as a power of two in the <tt class="docutils literal">pw2</tt> parameter.</p>
 <pre class="literal-block">
+float16 ldexp(float16 x, int n)
+uniform float16 ldexp(uniform float16 x, uniform int n)
 float ldexp(float x, int n)
 uniform float ldexp(uniform float x, uniform int n)
-float frexp(float x, varying int * uniform pw2)
-uniform float frexp(uniform float x,
-                    uniform int * uniform pw2)
+double ldexp(double x, int n)
+uniform double ldexp(uniform double x, uniform int n)
 </pre>
-<p>All transcendental functions are provided for <tt class="docutils literal">float16</tt>, <tt class="docutils literal">float</tt> and
-<tt class="docutils literal">double</tt> types.</p>
+<pre class="literal-block">
+float16 frexp(float16 x, varying int *uniform pw2)
+uniform float16 frexp(uniform float16 x, uniform int *uniform pw2)
+float frexp(float x, varying int *uniform pw2)
+uniform float frexp(uniform float x, uniform int *uniform pw2)
+double frexp(double x, varying int *uniform pw2)
+uniform double frexp(uniform double x, uniform int *uniform pw2)
+</pre>
 </div>
 <div class="section" id="saturating-arithmetic">
 <h2>Saturating Arithmetic</h2>
@@ -4457,8 +5171,8 @@ include native dot product instruction support are <tt class="docutils literal">
 native dot product capabilities.</p>
 <p>Please note that not all combinations of signed and unsigned data types are supported on these
 targets. For instance, some versions of ARMv8 natively supports only signed/signed and
-unsigned/unsigned int8 dot product operations, while AVX2VNNI and AVX512 provide support solely for
-mixed-sign int8 operations.</p>
+unsigned/unsigned int8 dot product operations, while AVX2-VNNI and AVX512-VNNI provide support
+solely for mixed-sign int8 operations.</p>
 <p>If the selected target or platform lacks native dot product support, these operations are emulated.</p>
 <p>These dot product operations are specifically designed to operate on <em>packed</em> input vectors,
 necessitating proper packing or casting of input vectors by the programmer before use. For example:</p>
@@ -4644,9 +5358,9 @@ statements to <tt class="docutils literal">ispc</tt> program code. The <tt class
 single uniform boolean expression as an argument. This expression is
 assumed to be <tt class="docutils literal">true</tt> and this information will be used for optimization
 when possible.</p>
-<p>The condition used in <tt class="docutils literal">assume()</tt> statement will not be code generated and
-does not imply runtime checks. It will solely be used as optimization hint,
-if compiler is able to use this information.</p>
+<p>The condition used in an <tt class="docutils literal">assume()</tt> statement will not generate code and
+does not imply runtime checks. It will be used solely as an optimization hint
+if the compiler is able to use this information.</p>
 <p>Below are some basic examples of this functionality.</p>
 <pre class="literal-block">
 inline uniform int bar1(uniform int a, uniform int b) {
@@ -4684,8 +5398,8 @@ int foo3(uniform int a[], uniform int count) {
     return ret;
 }
 </pre>
-<p>The <tt class="docutils literal">assume()</tt> hint informs the compiler <tt class="docutils literal">count</tt> is a multiple of
-<tt class="docutils literal">programCount</tt> during compile time. This results in removal of remainder
+<p>The <tt class="docutils literal">assume()</tt> hint informs the compiler that <tt class="docutils literal">count</tt> is a multiple of
+<tt class="docutils literal">programCount</tt> at compile time. This results in removal of the remainder
 loop usually required for <tt class="docutils literal">foreach</tt>.</p>
 <pre class="literal-block">
 typedef float&lt;TARGET_WIDTH&gt; AlignedFloat;
@@ -4732,9 +5446,9 @@ The parameter may optionally be enclosed in parentheses:  <tt class="docutils li
 <div class="section" id="cross-program-instance-operations">
 <h2>Cross-Program Instance Operations</h2>
 <p><tt class="docutils literal">ispc</tt> programs are often used to express independently-executing
-programs performing computation on separate data elements.  (i.e. pure
-data-parallelism).  However, it's often the case where it's useful for the
-program instances to be able to cooperate in computing results.  The
+programs performing computation on separate data elements (i.e., pure
+data-parallelism). However, it's often useful for the
+program instances to cooperate in computing results.  The
 cross-lane operations described in this section provide primitives for
 communication between the running program instances in the gang.</p>
 <p>The <tt class="docutils literal">lanemask()</tt> function returns an integer that encodes which of the
@@ -4840,7 +5554,7 @@ operations described above in this section from these routines, though in
 general, not as efficiently.  These routines are useful for implementing
 other reductions and cross-lane communication that isn't included in the
 above, though.  Given a <tt class="docutils literal">varying</tt> value, <tt class="docutils literal">extract()</tt> returns the i'th
-element of it as a single <tt class="docutils literal">uniform</tt> value.  .</p>
+element of it as a single <tt class="docutils literal">uniform</tt> value.</p>
 <pre class="literal-block">
 uniform bool extract(bool x, uniform int i)
 uniform int8 extract(int8 x, uniform int i)
@@ -4856,7 +5570,7 @@ uniform float extract(float x, uniform int i)
 uniform double extract(double x, uniform int i)
 </pre>
 <p>Similarly, <tt class="docutils literal">insert</tt> returns a new value
-where the <tt class="docutils literal">i</tt> th element of <tt class="docutils literal">x</tt> has been replaced with the value <tt class="docutils literal">v</tt></p>
+where the <tt class="docutils literal"><span class="pre">i``th</span> element of ``x</tt> has been replaced with the value <tt class="docutils literal">v</tt>.</p>
 <pre class="literal-block">
 bool insert(bool x, uniform int i, uniform bool v)
 int8 insert(int8 x, uniform int i, uniform int8 v)
@@ -4877,7 +5591,7 @@ double insert(double x, uniform int i, uniform double v)
 <p>A number of routines are available to evaluate conditions across the
 running program instances.  For example, <tt class="docutils literal">any()</tt> returns <tt class="docutils literal">true</tt> if
 the given value <tt class="docutils literal">v</tt> is <tt class="docutils literal">true</tt> for any of the SPMD program
-instances currently running, <tt class="docutils literal">all()</tt> returns <tt class="docutils literal">true</tt> if it true
+instances currently running, <tt class="docutils literal">all()</tt> returns <tt class="docutils literal">true</tt> if it is true
 for all of them, and <tt class="docutils literal">none()</tt> returns <tt class="docutils literal">true</tt> if <tt class="docutils literal">v</tt> is always
 <tt class="docutils literal">false</tt>.</p>
 <pre class="literal-block">
@@ -5173,8 +5887,8 @@ indices where <tt class="docutils literal">a[i]</tt> was less than zero.</p>
 <h2>Streaming Load and Store Operations</h2>
 <p>The standard library offers routines for streaming load and streaming store
 operations. The implementation serves as both a streaming as well as a non-temporal
-operation. There are separate routines to be used depending on whether loading from and storing to a
-uniform variable or a varying variable.</p>
+operation. There are separate routines to be used depending on whether you are
+loading from and storing to a uniform variable or a varying variable.</p>
 <p>The different available variants of streaming store are given below.</p>
 <p>For storing to array from varying variable:</p>
 <pre class="literal-block">
@@ -5368,15 +6082,20 @@ int16 float_to_half_fast(float f)
 uniform int16 float_to_half_fast(uniform float f)
 </pre>
 </div>
-<div class="section" id="converting-to-srgb8">
-<h2>Converting to sRGB8</h2>
+<div class="section" id="converting-from-to-srgb8">
+<h2>Converting from/to sRGB8</h2>
 <p>The sRGB color space is used in many applications in graphics and imaging;
 see the <a class="reference external" href="http://en.wikipedia.org/wiki/SRGB">Wikipedia page on sRGB</a> for more information.  The <tt class="docutils literal">ispc</tt>
-standard library provides two functions for converting floating-point color
-values to 8-bit values in the sRGB space.</p>
+standard library provides four conversions functions: two for converting
+floating-point color values to 8-bit values in the sRGB space, and 2 for the
+reverse operation.</p>
 <pre class="literal-block">
 int float_to_srgb8(float v)
 uniform int float_to_srgb8(uniform float v)
+</pre>
+<pre class="literal-block">
+float srgb8_to_float(int v)
+uniform float srgb8_to_float(uniform int v)
 </pre>
 </div>
 <div class="section" id="systems-programming-support">
@@ -5548,7 +6267,7 @@ uniform int32 atomic_compare_exchange_{local,global}(uniform int32 * uniform ptr
                                 uniform int32 compare, uniform int32 newval)
 </pre>
 <p><tt class="docutils literal">ispc</tt> also has a standard library routine that inserts a memory barrier
-into the code; it ensures that all memory reads and writes prior to be
+into the code; it ensures that all memory reads and writes prior to the
 barrier complete before any reads or writes after the barrier are issued.
 See the <a class="reference external" href="http://www.kernel.org/doc/Documentation/memory-barriers.txt">Linux kernel documentation on memory barriers</a> for an excellent
 writeup on the need for and the use of memory barriers in multi-threaded
@@ -5681,9 +6400,9 @@ qualifier.</p>
 <pre class="literal-block">
 extern &quot;C&quot; void foo(uniform float f, uniform float g);
 </pre>
-<p>Unlike in C++, <tt class="docutils literal">extern &quot;C&quot;</tt> doesn't take braces to delineate
-multiple functions to be declared; thus, multiple C functions to be called
-from <tt class="docutils literal">ispc</tt> must be declared as follows:</p>
+<p>Unlike in C++, <tt class="docutils literal">extern &quot;C&quot;</tt> does not use braces to delineate
+multiple function declarations; therefore, multiple C functions to be called
+from <tt class="docutils literal">ispc</tt> must be declared individually as follows:</p>
 <pre class="literal-block">
 extern &quot;C&quot; void foo(uniform float f, uniform float g);
 extern &quot;C&quot; uniform int bar(uniform int a);
@@ -5698,13 +6417,13 @@ extern &quot;C&quot; __vectorcall void foo(uniform float f, uniform float g);
 </pre>
 <p><tt class="docutils literal">__vectorcall</tt> can only be used for <tt class="docutils literal">extern &quot;C&quot;</tt> function declarations and
 on Windows OS.</p>
-<p>Also <tt class="docutils literal">extern &quot;C&quot;</tt> functions can be marked with <tt class="docutils literal">__regcall</tt> calling convention.
-This calling convention makes return values and function arguments passed through
-registers in most cases. Note, that <tt class="docutils literal">__regcall3__</tt> prefix will be added to the
+<p><tt class="docutils literal">extern &quot;C&quot;</tt> functions can also be marked with the <tt class="docutils literal">__regcall</tt> calling convention.
+This calling convention causes return values and function arguments to be passed through
+registers in most cases. Note that a <tt class="docutils literal">__regcall3__</tt> prefix will be added to the
 function name.</p>
 <p><strong>Only a single function call is made back to C++ for the entire gang of
-running program instances</strong>.  Furthermore, function calls back to C/C++ are not
-made if none of the program instances want to make the call.  For example,
+running program instances</strong>. Furthermore, function calls back to C/C++ are not
+made if none of the program instances need to make the call.  For example,
 given code like:</p>
 <pre class="literal-block">
 uniform float foo = ...;
@@ -5896,7 +6615,7 @@ is provided in the file <tt class="docutils literal">examples/util/util.isph</tt
 distribution.</p>
 <p>There is one subtlety related to data layout to be aware of: <tt class="docutils literal">ispc</tt>
 stores <tt class="docutils literal">uniform</tt> short-vector types in memory with their first element at
-the machine's natural vector alignment (i.e. 16 bytes for a target that is
+the machine's natural vector alignment (i.e., 16 bytes for a target that is
 using Intel® SSE, and so forth.)  This implies that these types will have
 different layout on different compilation targets.  As such, applications
 should in general avoid accessing <tt class="docutils literal">uniform</tt> short vector types from C/C++
