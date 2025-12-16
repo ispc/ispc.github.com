@@ -48,7 +48,7 @@ distribution.</p>
 <li>Language Details<ul>
 <li><a class="reference internal" href="#what-is-the-difference-between-int-foo-and-int-foo">What is the difference between &quot;int *foo&quot; and &quot;int foo[]&quot;?</a></li>
 <li><a class="reference internal" href="#why-are-pointed-to-types-uniform-by-default">Why are pointed-to types &quot;uniform&quot; by default?</a></li>
-<li><a class="reference internal" href="#what-am-i-getting-an-error-about-assigning-a-varying-lvalue-to-a-reference-type">What am I getting an error about assigning a varying lvalue to a reference type?</a></li>
+<li><a class="reference internal" href="#why-am-i-getting-an-error-about-assigning-a-varying-lvalue-to-a-reference-type">Why am I getting an error about assigning a varying lvalue to a reference type?</a></li>
 </ul>
 </li>
 <li>Interoperability<ul>
@@ -291,8 +291,8 @@ more generally (but not exclusively) used for local data in <tt class="docutils 
 functions.  Thus, making the pointed-to type uniform by default leads to
 more concise code for the most common cases.</p>
 </div>
-<div class="section" id="what-am-i-getting-an-error-about-assigning-a-varying-lvalue-to-a-reference-type">
-<h2>What am I getting an error about assigning a varying lvalue to a reference type?</h2>
+<div class="section" id="why-am-i-getting-an-error-about-assigning-a-varying-lvalue-to-a-reference-type">
+<h2>Why am I getting an error about assigning a varying lvalue to a reference type?</h2>
 <p>Given code like the following:</p>
 <pre class="literal-block">
 uniform float a[...];
@@ -468,8 +468,8 @@ llvm-link foo_ispc.bc foo_cpp.bc -o - | opt -O3 -o foo_opt.bc
 <pre class="literal-block">
 llc -filetype=obj foo_opt.bc -o foo.o
 </pre>
-<p>This file can in turn be linked in with the rest of your object files when
-linking your applicaiton.</p>
+<p>This file can then be linked with the rest of your object files when
+linking your application.</p>
 <p>(Note that if you're using the AVX instruction set, you must provide the
 <tt class="docutils literal"><span class="pre">-mattr=+avx</span></tt> flag to <tt class="docutils literal">llc</tt>.)</p>
 </div>
@@ -701,7 +701,7 @@ if (itemNeedsMoreProcessing(itemNum)) {
 }
 </pre>
 <p>For performance reasons, it may be desirable to apply an entire gang's
-worth of comptuation to each item that needs additional processing;
+worth of computation to each item that needs additional processing;
 there may be available parallelism in this computation such that we'd like
 to process each of the items with SPMD computation.</p>
 <p>In this case, the <tt class="docutils literal">foreach_active</tt> and <tt class="docutils literal">unmasked</tt> constructs can be

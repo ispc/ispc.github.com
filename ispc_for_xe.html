@@ -75,9 +75,9 @@ abstraction for executing tasks on CPU and GPU.</p>
 <div class="section" id="using-the-ispc-compiler">
 <h1>Using The ISPC Compiler</h1>
 <p>The output from <tt class="docutils literal">ispc</tt> for Xe targets is SPIR-V file by default. It is used
-when either <tt class="docutils literal">gen9</tt> or <tt class="docutils literal">xe</tt> target is selected:</p>
+when <tt class="docutils literal">xe</tt> target is selected:</p>
 <pre class="code console literal-block">
-<span class="generic output">ispc foo.ispc --target=gen9-x8 -o foo.spv</span>
+<span class="generic output">ispc foo.ispc --target=xehpg-x8 -o foo.spv</span>
 </pre>
 <p>The SPIR-V file is consumed by the runtime for further compilation and execution
 on GPU.</p>
@@ -100,13 +100,12 @@ installation of TBB runtime instructions.</p>
 </div>
 <div class="section" id="basic-command-line-options">
 <h2>Basic Command-line Options</h2>
-<p>A bunch of new targets were introduced for GPU support: <tt class="docutils literal"><span class="pre">gen9-x8</span></tt>,
-<tt class="docutils literal"><span class="pre">gen9-x16</span></tt>, <tt class="docutils literal"><span class="pre">xelp-x8</span></tt>, <tt class="docutils literal"><span class="pre">xelp-x16</span></tt>, <tt class="docutils literal"><span class="pre">xehpg-x8</span></tt>, <tt class="docutils literal"><span class="pre">xehpg-x16</span></tt>,
-<tt class="docutils literal"><span class="pre">xehpc-x16</span></tt> and <tt class="docutils literal"><span class="pre">xehpc-x32</span></tt>.</p>
+<p>A bunch of new targets were introduced for GPU support: <tt class="docutils literal"><span class="pre">xelp-x8</span></tt>, <tt class="docutils literal"><span class="pre">xelp-x16</span></tt>,
+<tt class="docutils literal"><span class="pre">xehpg-x8</span></tt>, <tt class="docutils literal"><span class="pre">xehpg-x16</span></tt>, <tt class="docutils literal"><span class="pre">xehpc-x16</span></tt> and <tt class="docutils literal"><span class="pre">xehpc-x32</span></tt>.</p>
 <p>If the <tt class="docutils literal"><span class="pre">-o</span></tt> flag is given, <tt class="docutils literal">ispc</tt> will generate a SPIR-V output file.
 Optionally you can use <tt class="docutils literal"><span class="pre">--emit-spirv</span></tt> flag:</p>
 <pre class="code console literal-block">
-<span class="generic output">ispc --target=gen9-x8 --emit-spirv foo.ispc -o foo.spv</span>
+<span class="generic output">ispc --target=xehpg-x8 --emit-spirv foo.ispc -o foo.spv</span>
 </pre>
 <p>To generate L0 binary, use <tt class="docutils literal"><span class="pre">--emit-zebin</span></tt> flag. When you use L0 binary you may
 want to pass some additional options to the vector backend. You can do this
@@ -363,8 +362,8 @@ fallback to CPU if no GPUs found).</p>
 into <tt class="docutils literal"><span class="pre">ispcrt::Array</span></tt> for correct passing to ISPC kernel.</p>
 <p>Then we set up module and kernel to execute:</p>
 <pre class="code cpp literal-block">
-<span class="name">ispcrt</span><span class="operator">::</span><span class="name">Module</span><span class="whitespace"> </span><span class="keyword">module</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;xe_simple&quot;</span><span class="punctuation">);</span><span class="whitespace">
-</span><span class="name">ispcrt</span><span class="operator">::</span><span class="name">Kernel</span><span class="whitespace"> </span><span class="name">kernel</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">module</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;simple_ispc&quot;</span><span class="punctuation">);</span>
+<span class="name">ispcrt</span><span class="operator">::</span><span class="name">Module</span><span class="whitespace"> </span><span class="name function">module</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;xe_simple&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="name">ispcrt</span><span class="operator">::</span><span class="name">Kernel</span><span class="whitespace"> </span><span class="name function">kernel</span><span class="punctuation">(</span><span class="name">device</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">module</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;simple_ispc&quot;</span><span class="punctuation">);</span>
 </pre>
 <p>The name of the module must correspond to the name of output from ISPC
 compilation without extension. So in this example <tt class="docutils literal">simple.ispc</tt> will be
@@ -425,13 +424,13 @@ into ISPC distribution package.</p>
 <p>So the complete <tt class="docutils literal">CMakeFile.txt</tt> to build <tt class="docutils literal">simple</tt> example extracted from
 ISPC build system is the following:</p>
 <pre class="code cmake literal-block">
-<span class="name builtin">cmake_minimum_required</span><span class="punctuation">(</span><span class="literal string">VERSION</span><span class="whitespace"> </span><span class="literal string">3.14</span><span class="punctuation">)</span><span class="whitespace">
+<span class="name builtin">cmake_minimum_required</span><span class="punctuation">(</span><span class="literal string">VERSION</span><span class="whitespace"> </span><span class="literal string">3.14</span><span class="punctuation">)</span>
 
-</span><span class="name builtin">project</span><span class="punctuation">(</span><span class="literal string">simple</span><span class="punctuation">)</span><span class="whitespace">
-</span><span class="name builtin">find_package</span><span class="punctuation">(</span><span class="literal string">ispcrt</span><span class="whitespace"> </span><span class="literal string">REQUIRED</span><span class="punctuation">)</span><span class="whitespace">
-</span><span class="name builtin">add_executable</span><span class="punctuation">(</span><span class="literal string">host_simple</span><span class="whitespace"> </span><span class="literal string">simple.cpp</span><span class="punctuation">)</span><span class="whitespace">
-</span><span class="name builtin">add_ispc_kernel</span><span class="punctuation">(</span><span class="literal string">xe_simple</span><span class="whitespace"> </span><span class="literal string">simple.ispc</span><span class="whitespace"> </span><span class="literal string double">&quot;&quot;</span><span class="punctuation">)</span><span class="whitespace">
-</span><span class="name builtin">target_link_libraries</span><span class="punctuation">(</span><span class="literal string">host_simple</span><span class="whitespace"> </span><span class="literal string">PRIVATE</span><span class="whitespace"> </span><span class="literal string">ispcrt::ispcrt</span><span class="punctuation">)</span>
+<span class="name builtin">project</span><span class="punctuation">(</span><span class="literal string">simple</span><span class="punctuation">)</span>
+<span class="name builtin">find_package</span><span class="punctuation">(</span><span class="literal string">ispcrt</span><span class="whitespace"> </span><span class="literal string">REQUIRED</span><span class="punctuation">)</span>
+<span class="name builtin">add_executable</span><span class="punctuation">(</span><span class="literal string">host_simple</span><span class="whitespace"> </span><span class="literal string">simple.cpp</span><span class="punctuation">)</span>
+<span class="name builtin">add_ispc_kernel</span><span class="punctuation">(</span><span class="literal string">xe_simple</span><span class="whitespace"> </span><span class="literal string">simple.ispc</span><span class="whitespace"> </span><span class="literal string double">&quot;&quot;</span><span class="punctuation">)</span>
+<span class="name builtin">target_link_libraries</span><span class="punctuation">(</span><span class="literal string">host_simple</span><span class="whitespace"> </span><span class="literal string">PRIVATE</span><span class="whitespace"> </span><span class="literal string">ispcrt::ispcrt</span><span class="punctuation">)</span>
 </pre>
 <p>And you can configure and build it using:</p>
 <pre class="code console literal-block">
@@ -442,7 +441,7 @@ are example commands for Linux:</p>
 <ul>
 <li><p class="first">Compile ISPC kernel for GPU:</p>
 <pre class="code console literal-block">
-<span class="generic output">ispc -I /home/ispc_package/include/ispcrt -DISPC_GPU --target=gen9-x8 --woff
+<span class="generic output">ispc -I /home/ispc_package/include/ispcrt -DISPC_GPU --target=xehpg-x8 --woff
 -o /home/ispc_package/examples/xpu/simple/xe_simple.spv
 /home/ispc_package/examples/xpu/simple/simple.ispc</span>
 </pre>
@@ -587,7 +586,7 @@ working to make such optimization automatically for future release:</p>
 </li>
 <li><p class="first">Use SIMD-8 where it is impossible to fit in the available register number.  If
 you see the warning message below during runtime, consider compiling your code
-for SIMD-8 target (<tt class="docutils literal"><span class="pre">--target=gen9-x8</span></tt>).</p>
+for SIMD-8 target (<tt class="docutils literal"><span class="pre">--target=xehpg-x8</span></tt>).</p>
 <pre class="code console literal-block">
 <span class="generic output">Spill memory used = 32 bytes for kernel kernel_name___vyi</span>
 </pre>
