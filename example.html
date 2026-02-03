@@ -32,7 +32,7 @@
         <h1 class="title">A Simple ispc Example</h1>
 <p>Here is a walkthrough of a simple example of using <tt class="docutils literal">ispc</tt> to
   compute an image of the Mandelbrot set.  The full source code for this
-  example is in the <tt class="docutils literal">examples/mandelbrot</tt> directory of
+  example is in the <tt class="docutils literal">examples/cpu/mandelbrot</tt> directory of
   the <tt class="docutils literal">ispc</tt> distribution; below is a lightly modified version of
   that example.  (For example, we have elided some of the details related
   to benchmarking and writing the final output image that are in the
@@ -66,7 +66,7 @@ int main() {
 <p>
 Here is the start of the definition of the <tt class="docutils literal">mandelbrot_ispc()</tt>
 function that the <tt class="docutils literal">ispc</tt> compiler compiles.  (This function is
-defined in the <tt class="docutils literal">mandelbrot.ispc</tt> file.)  There are a four main
+defined in the <tt class="docutils literal">mandelbrot.ispc</tt> file.)  There are four main
 things to notice here.
 </p>
 <ol>
@@ -189,9 +189,8 @@ static inline int mandel(float c_re, float c_im, int count) {
 
 
 <p>To compile this example, install the <tt class="docutils literal">ispc</tt> compiler in a
-  directory that is in your <tt class="docutils literal">PATH</tt>, and run <tt class="docutils literal">make</tt> on Mac OS
-  X or Linux, or build using the <tt class="docutils literal">mandelbrot.vcxproj</tt> build file
-  with MSVC 2010.  Note that the <tt class="docutils literal">ispc</tt> compiler generates regular
+  directory that is in your <tt class="docutils literal">PATH</tt>, and run <tt class="docutils literal">make</tt> on macOS
+  or Linux, or build using CMake on Windows.  Note that the <tt class="docutils literal">ispc</tt> compiler generates regular
   object files that you can just link with object files compiled with C/C++
   compilers.  (Here is the <a href="mandelbrot.txt">assembly language
   output</a> from compiling the <tt class="docutils literal">mandelbrot.ispc</tt> source file for
@@ -222,7 +221,7 @@ substantial speedup:
 <pre class="literal-block">
 % ./mandelbrot
 [mandelbrot ispc]:      [58.570] million cycles
-[mandelbrot serial]:    [335.005] millon cycles
+[mandelbrot serial]:    [335.005] million cycles
                         (5.72x speedup from ISPC)
 %
 </pre>
@@ -238,8 +237,8 @@ Here is a downscaled version of the image that the program generates:
 <p>Note that all of the exposition up until now has been related to
  harvesting the available parallelism from the SIMD unit in a single CPU
  core.  To fully use the system's computational resources also requires
- parallelism across the CPU cores&mdash;modern CPUs may from two to ten or
- more processing cores, each of which has a SIMD vector unit.
+ parallelism across the CPU cores&mdash;modern CPUs may have from eight to
+ dozens of processing cores, each of which has a SIMD vector unit.
 </p>
 
 <p> Thanks to the fact that <tt class="docutils literal">ispc</tt> cleanly inter-operates with
@@ -257,7 +256,7 @@ Here is a downscaled version of the image that the program generates:
   functionality for launching concurrent tasks that <tt class="docutils literal">ispc</tt> offers.
   The <tt class="docutils literal">ispc</tt> language provides constructs for launching asynchronous
   tasks that can execute concurrently with the rest of the program; see the
-  directory <tt class="docutils literal">examples/mandelbrot_tasks</tt> in the <tt class="docutils literal">ispc</tt>
+  directory <tt class="docutils literal">examples/cpu/mandelbrot_tasks</tt> in the <tt class="docutils literal">ispc</tt>
   distribution to see how to parallelize across both cores and the SIMD
   units.
 </p>

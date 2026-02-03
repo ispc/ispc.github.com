@@ -92,91 +92,58 @@ _foo:
 </div>
 <div class="section" id="how-can-i-have-the-assembly-output-be-printed-using-intel-assembly-syntax">
 <h2>How can I have the assembly output be printed using Intel assembly syntax?</h2>
-<p>The <tt class="docutils literal">ispc</tt> compiler is currently only able to emit assembly with AT+T
-syntax, where the destination operand is the last operand after an
-instruction.  If you'd prefer Intel assembly output, one option is to use
-Agner Fog's <tt class="docutils literal">objconv</tt> tool: have <tt class="docutils literal">ispc</tt> emit a native object file and
-then use <tt class="docutils literal">objconv</tt> to disassemble it, specifying the assembler syntax
-that you prefer.  <tt class="docutils literal">objconv</tt> <a class="reference external" href="http://www.agner.org/optimize/#objconv">is available for download here</a>.</p>
+<p>The <tt class="docutils literal">ispc</tt> compiler supports both AT&amp;T and Intel assembly syntax. By
+default, AT&amp;T syntax is used, where the destination operand is the last
+operand after an instruction. To use Intel syntax instead, use the
+<tt class="docutils literal"><span class="pre">--x86-asm-syntax=intel</span></tt> command-line option:</p>
+<pre class="literal-block">
+ispc foo.ispc -o foo.s --emit-asm --x86-asm-syntax=intel
+</pre>
+<p>The available options are <tt class="docutils literal"><span class="pre">--x86-asm-syntax=att</span></tt> (default) and
+<tt class="docutils literal"><span class="pre">--x86-asm-syntax=intel</span></tt>.</p>
 </div>
 <div class="section" id="why-are-there-multiple-versions-of-exported-ispc-functions-in-the-assembly-output">
 <h2>Why are there multiple versions of exported ispc functions in the assembly output?</h2>
-<p>Two generations of all functions qualified with <tt class="docutils literal">export</tt> are generated:
-one of them is for being be called by other <tt class="docutils literal">ispc</tt> functions, and the
-other is to be called by the application.  The application callable
-function has the original function's name, while the <tt class="docutils literal">ispc</tt>-callable
-function has a mangled name that encodes the types of the function's
-parameters.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><strong>Upcoming change:</strong> In a future ISPC release, <tt class="docutils literal">export</tt> functions will
+generate only a single external (C/C++-callable) version by default.
+Starting in ISPC 1.29, the compiler issues a warning when an exported
+function is called from ISPC code to help identify code that will be
+affected. To prepare for this change, use non-exported functions for
+ISPC-to-ISPC calls, or use <tt class="docutils literal"><span class="pre">__attribute__((external_only))</span></tt> to opt
+into the new behavior early.</p>
+</div>
+<p>Two versions of all functions qualified with <tt class="docutils literal">export</tt> are generated:
+one for being called by other <tt class="docutils literal">ispc</tt> functions, and the other to be
+called by the application. The application-callable function has the
+original function's name, while the <tt class="docutils literal">ispc</tt>-callable function has a
+mangled name that encodes the types of the function's parameters.</p>
 <p>The crucial difference between these two functions is that the
 application-callable function doesn't take a parameter encoding the current
 execution mask, while <tt class="docutils literal">ispc</tt>-callable functions have a hidden mask
-parameter.  An implication of this difference is that the <tt class="docutils literal">export</tt>
-function starts with the execution mask &quot;all on&quot;.  This allows a number of
+parameter. An implication of this difference is that the <tt class="docutils literal">export</tt>
+function starts with the execution mask &quot;all on&quot;. This allows a number of
 improvements in the generated code, particularly on architectures that
 don't have support for masked load and store instructions.</p>
-<p>As an example, consider this short function, which loads a vector's worth
-values from two arrays in memory, adds them, and writes the result to an
-output array.</p>
-<pre class="literal-block">
-export void foo(uniform float a[], uniform float b[],
-                uniform float result[]) {
-    float aa = a[programIndex], bb = b[programIndex];
-    result[programIndex] = aa+bb;
-}
-</pre>
-<p>Here is the assembly code for the application-callable instance of the
-function.</p>
-<pre class="literal-block">
-_foo:
-        movups        (%rsi), %xmm1
-        movups        (%rdi), %xmm0
-        addps         %xmm1, %xmm0
-        movups        %xmm0, (%rdx)
-        ret
-</pre>
-<p>And here is the assembly code for the <tt class="docutils literal">ispc</tt>-callable instance of the
-function.</p>
-<pre class="literal-block">
-&quot;_foo___uptr&lt;Uf&gt;uptr&lt;Uf&gt;uptr&lt;Uf&gt;&quot;:
-        movmskps      %xmm0, %eax
-        cmpl          $15, %eax
-        je            LBB0_3
-        testl         %eax, %eax
-        jne           LBB0_4
-        ret
-LBB0_3:
-        movups        (%rsi), %xmm1
-        movups        (%rdi), %xmm0
-        addps         %xmm1, %xmm0
-        movups        %xmm0, (%rdx)
-        ret
-LBB0_4:
-####
-####  Code elided; handle mixed mask case..
-####
-        ret
-</pre>
-<p>There are a few things to notice in this code.  First, the current program
-mask is coming in via the <tt class="docutils literal">%xmm0</tt> register and the initial few
-instructions in the function essentially check to see if the mask is all on
-or all off.  If the mask is all on, the code at the label LBB0_3 executes;
-it's the same as the code that was generated for <tt class="docutils literal">_foo</tt> above.  If the
-mask is all off, then there's nothing to be done, and the function can
-return immediately.</p>
-<p>In the case of a mixed mask, a substantial amount of code is generated to
-load from and then store to only the array elements that correspond to
-program instances where the mask is on.  (This code is elided below).  This
-general pattern of having two-code paths for the &quot;all on&quot; and &quot;mixed&quot; mask
-cases is used in the code generated for almost all but the most simple
-functions (where the overhead of the test isn't worthwhile.)</p>
+<p>With the <tt class="docutils literal"><span class="pre">__attribute__((external_only))</span></tt> attribute, only the external
+version is generated, which simplifies the output and reduces code size
+when ISPC-to-ISPC calls are not needed.</p>
 </div>
 <div class="section" id="how-can-i-more-easily-see-gathers-and-scatters-in-generated-assembly">
 <h2>How can I more easily see gathers and scatters in generated assembly?</h2>
-<p>Because CPU vector ISAs don't have native gather and scatter instructions,
-these memory operations are turned into sequences of a series of
-instructions in the code that <tt class="docutils literal">ispc</tt> generates.  In some cases, it can be
-useful to see where gathers and scatters actually happen in code; there is
-an otherwise undocumented command-line flag that provides this information.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Modern vector ISAs include native gather and scatter instructions: AVX2
+added gather instructions, and AVX-512 added both gather and scatter.
+The information below applies primarily to older targets (SSE2, SSE4)
+that lack native support for these operations.</p>
+</div>
+<p>On older targets without native gather and scatter instructions, these
+memory operations are turned into sequences of a series of instructions in
+the code that <tt class="docutils literal">ispc</tt> generates. In some cases, it can be useful to see
+where gathers and scatters actually happen in code; there is an otherwise
+undocumented command-line flag that provides this information.</p>
 <p>Consider this simple program:</p>
 <pre class="literal-block">
 void set(uniform int a[], int value, int index) {
@@ -246,7 +213,7 @@ rule is discussed further below, in <a class="reference internal" href="#why-are
 default?</a>.)  The type of <tt class="docutils literal">int *foo</tt> follows from these.</p>
 <p>Conversely, in a function body, <tt class="docutils literal">int foo[10]</tt> represents a declaration of
 a 10-element array of varying <tt class="docutils literal">int</tt> values.  In that we'd certainly like
-to be able to pass such an array to a function that takes a <tt class="docutils literal">int []</tt>
+to be able to pass such an array to a function that takes an <tt class="docutils literal">int []</tt>
 parameter, the natural type for an <tt class="docutils literal">int []</tt> parameter is a uniform
 pointer to varying integer values.</p>
 <p>In terms of compatibility with C/C++, it's unfortunate that this
@@ -283,7 +250,7 @@ int add(int a, int b) { return a + b; }
 <p>This motivation also explains why <tt class="docutils literal">uniform int *foo</tt> represents a varying
 pointer; having pointers be varying by default if they don't have rate
 qualifiers similarly helps with porting code from C/C++ to <tt class="docutils literal">ispc</tt>.</p>
-<p>The tricker issue is why pointed-to types are &quot;uniform&quot; by default.  In our
+<p>The trickier issue is why pointed-to types are &quot;uniform&quot; by default.  In our
 experience, data in memory that is accessed via pointers is most often
 uniform; this generally includes all data that has been allocated and
 initialized by the C/C++ application code. In practice, &quot;varying&quot; types are
@@ -306,7 +273,7 @@ references are represented in the code generated by <tt class="docutils literal"
 points to the same location in memory for all program instances in the
 gang, while a varying pointer allows each program instance to have its own
 pointer value.</p>
-<p>References are represented a pointer in the code generated by <tt class="docutils literal">ispc</tt>,
+<p>References are represented as a pointer in the code generated by <tt class="docutils literal">ispc</tt>,
 though this is generally opaque to the user; in <tt class="docutils literal">ispc</tt>, they are
 specifically uniform pointers.  This design decision was made so that given
 code like this:</p>
@@ -330,7 +297,7 @@ instead of a reference.</p>
 <h2>How can I supply an initial execution mask in the call from the application?</h2>
 <p>Recall that when execution transitions from the application code to an
 <tt class="docutils literal">ispc</tt> function, all of the program instances are initially executing.
-In some cases, it may desired that only some of them are running, based on
+In some cases, it may be desired that only some of them are running, based on
 a data-dependent condition computed in the application program.  This
 situation can easily be handled via an additional parameter from the
 application.</p>
@@ -351,8 +318,9 @@ ispc_func(array, shouldUpdate, count);
 export void ispc_func(uniform float array[], uniform bool update[],
                       uniform int count) {
     foreach (i = 0 ... count) {
-        cif (update[i] == true)
-            // update array[i+programIndex]...
+        cif (update[i] == true) {
+            // update array[i]...
+        }
     }
 }
 </pre>
@@ -447,8 +415,8 @@ LLVM tool suite, then it is possible to inline <tt class="docutils literal">ispc
 performance advantages when calling out to short functions written in the
 &quot;other&quot; language.  Note that you don't need to use <tt class="docutils literal">clang</tt> to compile all
 of your C/C++ code, but only for the files where you want to be able to
-inline.  In order to do this, you must have a full installation of LLVM
-version 3.0 or later, including the <tt class="docutils literal">clang</tt> compiler.</p>
+inline.  In order to do this, you must have a full installation of LLVM,
+including the <tt class="docutils literal">clang</tt> compiler.</p>
 <p>The basic approach is to have the various compilers emit LLVM intermediate
 representation (IR) code and to then use tools from LLVM to link together
 the IR from the compilers and then re-optimize it, which gives the LLVM
@@ -480,7 +448,7 @@ linking your application.</p>
 then <tt class="docutils literal">ispc</tt> will issue an error and refuse to compile the function:</p>
 <pre class="literal-block">
 % echo &quot;export int add(int x) { return ++x; }&quot; | ispc
-&lt;stdin&gt;:1:12: Error: Illegal to return a &quot;varying&quot; type from exported function &quot;foo&quot;
+&lt;stdin&gt;:1:12: Error: Illegal to return a &quot;varying&quot; or vector type from exported function &quot;add&quot;
 &lt;stdin&gt;:1:20: Error: Varying parameter &quot;x&quot; is illegal in an exported function.
 </pre>
 <p>While there's no fundamental reason why this isn't possible, recall the
@@ -553,7 +521,6 @@ to the four program instances, respectively.</p>
 and <tt class="docutils literal">outArray[2]</tt>, and so forth.  The <tt class="docutils literal">reduce_add()</tt> call at the end
 returns the total number of values that all of the program instances have
 written to the array.</p>
-<p>FIXME: add discussion of foreach_active as an option here once that's in</p>
 </div>
 <div class="section" id="is-it-possible-to-use-ispc-for-explicit-vector-programming">
 <h2>Is it possible to use ispc for explicit vector programming?</h2>
@@ -564,10 +531,10 @@ across the SIMD lanes of a processor.  However, <tt class="docutils literal">isp
 support for explicit vector unit programming, where the vectorization is
 explicit.  Some computations may be more effectively described in the
 explicit model rather than the implicit model.</p>
-<p>This support is provided via <tt class="docutils literal">uniform</tt> instances of short vectors
+<p>This support is provided via <tt class="docutils literal">uniform</tt> instances of short vectors.
 Specifically, if this short program</p>
 <pre class="literal-block">
-export uniform float&lt;8&gt; madd(uniform float&lt;8&gt; a, uniform float&lt;8&gt; b,
+uniform float&lt;8&gt; madd(uniform float&lt;8&gt; a, uniform float&lt;8&gt; b,
                              uniform float&lt;8&gt; c) {
     return a + b * c;
 }
@@ -584,7 +551,7 @@ _madd:
 <p>Note that <tt class="docutils literal">ispc</tt> doesn't currently support control-flow based on
 <tt class="docutils literal">uniform</tt> short vector types; it is thus not possible to write code like:</p>
 <pre class="literal-block">
-export uniform int&lt;8&gt; count(uniform float&lt;8&gt; a, uniform float&lt;8&gt; b) {
+uniform int&lt;8&gt; count(uniform float&lt;8&gt; a, uniform float&lt;8&gt; b) {
     uniform int&lt;8&gt; sum = 0;
     while (a++ &lt; b)
         ++sum;
@@ -594,29 +561,23 @@ export uniform int&lt;8&gt; count(uniform float&lt;8&gt; a, uniform float&lt;8&g
 <div class="section" id="how-can-i-debug-my-ispc-programs-using-valgrind">
 <h2>How can I debug my ispc programs using Valgrind?</h2>
 <p>The <a class="reference external" href="http://valgrind.org">valgrind</a> memory checker is an extremely useful memory checker for
-Linux and OSX; it detects a range of memory errors, including accessing
+Linux and macOS; it detects a range of memory errors, including accessing
 memory after it has been freed, accessing memory beyond the end of an
 array, accessing uninitialized stack variables, and so forth.
 In general, applications that use <tt class="docutils literal">ispc</tt> code run with <tt class="docutils literal">valgrind</tt>
 without modification and <tt class="docutils literal">valgrind</tt> will detect the same range of memory
 errors in <tt class="docutils literal">ispc</tt> code that it does in C/C++ code.</p>
-<p>One issue to be aware of is that until recently, <tt class="docutils literal">valgrind</tt> only
-supported the SSE2 vector instructions; if you are using a version of
-<tt class="docutils literal">valgrind</tt> older than the 3.7.0 release (5 November 2011), you should
-compile your <tt class="docutils literal">ispc</tt> programs with <tt class="docutils literal"><span class="pre">--target=sse2</span></tt> before running them
-through <tt class="docutils literal">valgrind</tt>.  (Note that if no target is specified, then <tt class="docutils literal">ispc</tt>
-chooses a target based on the capabilities of the system you're running
-<tt class="docutils literal">ispc</tt> on.)  If you run an <tt class="docutils literal">ispc</tt> program that uses instructions that
-<tt class="docutils literal">valgrind</tt> doesn't support, you'll see an error message like:</p>
+<p>Modern versions of <tt class="docutils literal">valgrind</tt> support SSE, AVX, AVX2, and AVX-512
+instruction sets. If you encounter an error message like the following,
+it indicates that your version of <tt class="docutils literal">valgrind</tt> doesn't support some
+instructions used by your <tt class="docutils literal">ispc</tt> program:</p>
 <pre class="literal-block">
-vex amd64-&gt;IR: unhandled instruction bytes: 0xC5 0xFA 0x10 0x0 0xC5 0xFA 0x11 0x84
-==46059== valgrind: Unrecognised instruction at address 0x100002707.
+vex amd64-&gt;IR: unhandled instruction bytes: ...
+valgrind: Unrecognised instruction at address ...
 </pre>
-<p>The just-released valgrind 3.7.0 adds support for the SSE4.2 instruction
-set; if you're using that version (and your system supports SSE4.2), then
-you can use <tt class="docutils literal"><span class="pre">--target=sse4</span></tt> when compiling to run with <tt class="docutils literal">valgrind</tt>.</p>
-<p>Note that <tt class="docutils literal">valgrind</tt> does not yet support programs that use the AVX
-instruction set.</p>
+<p>In this case, either update <tt class="docutils literal">valgrind</tt> to a newer version or compile
+your <tt class="docutils literal">ispc</tt> program with an older target (e.g., <tt class="docutils literal"><span class="pre">--target=sse4</span></tt>) for
+debugging purposes.</p>
 </div>
 <div class="section" id="foreach-statements-generate-more-complex-assembly-than-i-d-expect-what-s-going-on">
 <h2>foreach statements generate more complex assembly than I'd expect; what's going on?</h2>
@@ -681,6 +642,77 @@ void foo(uniform float a[], uniform int count) {
 </pre>
 <p>With this new version of <tt class="docutils literal">foo()</tt>, only the code for the first loop above
 is generated.</p>
+<div class="section" id="foreach-vs-for-loops-when-to-use-which">
+<h3>foreach vs. for loops: when to use which?</h3>
+<p>A common question is why <tt class="docutils literal">foreach</tt> generates different code than an
+equivalent <tt class="docutils literal">for</tt> loop using <tt class="docutils literal">programIndex</tt> and <tt class="docutils literal">programCount</tt>.
+Understanding this difference is important for writing efficient code.</p>
+<p><strong>The key difference:</strong> <tt class="docutils literal">foreach</tt> begins each loop iteration with an
+&quot;all on&quot; execution mask, meaning all program instances are active at the
+start. In contrast, a <tt class="docutils literal">for</tt> loop using <tt class="docutils literal">programIndex</tt> and
+<tt class="docutils literal">programCount</tt> respects the current execution mask, which may have some
+instances disabled. This difference affects code generation significantly.</p>
+<p>For example, this <tt class="docutils literal">foreach</tt> loop:</p>
+<pre class="literal-block">
+foreach (index = 0 ... 16) {
+    values[index] = select(upd, newVal, values[index]);
+}
+</pre>
+<p>generates efficient vectorized code (approximately 6 instructions), while
+this seemingly equivalent <tt class="docutils literal">for</tt> loop:</p>
+<pre class="literal-block">
+for (int i = programIndex; i &lt; 16; i += programCount) {
+    values[i] = select(upd, newVal, values[i]);
+}
+</pre>
+<p>may generate significantly more complex code with branches because the
+compiler must handle the possibility of partially-active masks.</p>
+<p><strong>Solution:</strong> To achieve comparable performance with a <tt class="docutils literal">for</tt> loop, wrap
+it in an <tt class="docutils literal">unmasked</tt> region:</p>
+<pre class="literal-block">
+unmasked {
+    for (uniform int i = 0; i &lt; 16; i += programCount) {
+        int index = i + programIndex;
+        values[index] = select(upd, newVal, values[index]);
+    }
+}
+</pre>
+<p><strong>When to prefer for loops over foreach:</strong></p>
+<p>For performance-critical code where the iteration count is known to be a
+multiple of <tt class="docutils literal">programCount</tt>, using a <tt class="docutils literal">uniform</tt> loop counter with
+explicit <tt class="docutils literal">programIndex</tt> management can be more efficient:</p>
+<pre class="literal-block">
+uniform int count_base = count &amp; ~(programCount-1);
+
+// Main loop - processes programCount elements per iteration
+for (uniform int i = 0; i &lt; count_base; i += programCount) {
+    varying float temp = in[i + programIndex];
+    out[i + programIndex] = temp * temp;
+}
+
+// Tail loop - handles remaining elements
+for (uniform int i = count_base; i &lt; count; ++i) {
+    uniform float temp = in[i];
+    out[i] = temp * temp;
+}
+</pre>
+<p>This pattern is particularly important when:</p>
+<ul class="simple">
+<li>The loop body involves index arithmetic (modulus, division) that could
+trigger gather/scatter operations with <tt class="docutils literal">foreach</tt>'s varying index</li>
+<li>Manual loop unrolling is desired (which works better with <tt class="docutils literal">uniform</tt>
+loop counters)</li>
+<li>Maximum control over vectorization is needed</li>
+</ul>
+<p>In summary:</p>
+<ul class="simple">
+<li>Use <tt class="docutils literal">foreach</tt> for convenience and automatic tail handling</li>
+<li>Use <tt class="docutils literal">for</tt> with <tt class="docutils literal">unmasked</tt> when you need <tt class="docutils literal">foreach</tt>-like behavior
+but with more control</li>
+<li>Use <tt class="docutils literal">uniform for</tt> loops for performance-critical code where you
+manage the iteration pattern explicitly</li>
+</ul>
+</div>
 </div>
 <div class="section" id="how-do-i-launch-an-individual-task-for-each-active-program-instance">
 <h2>How do I launch an individual task for each active program instance?</h2>
