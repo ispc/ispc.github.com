@@ -70,6 +70,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <p>Contents:</p>
 <ul class="simple">
 <li><a class="reference internal" href="#recent-changes-to-ispc">Recent Changes to ISPC</a><ul>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-30-0">Updating ISPC Programs For Changes In ISPC 1.30.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-29-0">Updating ISPC Programs For Changes In ISPC 1.29.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-28-0">Updating ISPC Programs For Changes In ISPC 1.28.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-27-0">Updating ISPC Programs For Changes In ISPC 1.27.0</a></li>
@@ -232,6 +233,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#transcendental-functions">Transcendental Functions</a></li>
 <li><a class="reference internal" href="#saturating-arithmetic">Saturating Arithmetic</a></li>
 <li><a class="reference internal" href="#dot-product">Dot product</a></li>
+<li><a class="reference internal" href="#intel-amx-advanced-matrix-extensions">Intel AMX (Advanced Matrix Extensions)</a></li>
 <li><a class="reference internal" href="#pseudo-random-numbers">Pseudo-Random Numbers</a></li>
 <li><a class="reference internal" href="#random-numbers">Random Numbers</a></li>
 </ul>
@@ -277,6 +279,24 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <h1>Recent Changes to ISPC</h1>
 <p>See the file <a class="reference external" href="https://raw.github.com/ispc/ispc/main/docs/ReleaseNotes.txt">ReleaseNotes.txt</a> in the <tt class="docutils literal">ispc</tt> distribution for a list
 of recent changes to the compiler.</p>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-30-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.30.0</h2>
+<p>New Features:</p>
+<ul class="simple">
+<li>Intel AMX (Advanced Matrix Extensions) support has been added to the standard
+library. AMX provides hardware acceleration for matrix operations, particularly
+useful for machine learning workloads. The new <tt class="docutils literal">&lt;amx.isph&gt;</tt> header provides
+functions for tile configuration, data loading/storing, and matrix dot products
+for INT8, BF16, and FP16 data types. AMX is supported on <tt class="docutils literal">avx512spr</tt>,
+<tt class="docutils literal">avx512gnr</tt>, and <tt class="docutils literal">avx10.2dmr</tt> targets. Please refer to
+<a class="reference internal" href="#intel-amx-advanced-matrix-extensions">Intel AMX (Advanced Matrix Extensions)</a> for more details.</li>
+</ul>
+<p>Language Changes:</p>
+<ul class="simple">
+<li>Integral type aliases (<tt class="docutils literal">size_t</tt>, <tt class="docutils literal">ptrdiff_t</tt>, <tt class="docutils literal">intptr_t</tt>, <tt class="docutils literal">uintptr_t</tt>)
+can now be used as non-type template parameters.</li>
+</ul>
+</div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-29-0">
 <h2>Updating ISPC Programs For Changes In ISPC 1.29.0</h2>
 <p>Language Changes:</p>
@@ -902,7 +922,7 @@ that's in your <tt class="docutils literal">PATH</tt>.  Congratulations--you've 
 </div>
 <div class="section" id="compiling-and-running-a-simple-ispc-program">
 <h2>Compiling and Running a Simple ISPC Program</h2>
-<p>The directory <tt class="docutils literal">examples/simple</tt> in the <tt class="docutils literal">ispc</tt> distribution includes a
+<p>The directory <tt class="docutils literal">examples/cpu/simple</tt> in the <tt class="docutils literal">ispc</tt> distribution includes a
 simple example of how to use <tt class="docutils literal">ispc</tt> with a short C++ program.  See the
 file <tt class="docutils literal">simple.ispc</tt> in that directory (also reproduced here.)</p>
 <pre class="literal-block">
@@ -4309,7 +4329,7 @@ regular task parallelism in the C/C++ application code (be it through
 Intel® oneAPI Threading Building Blocks, OpenMP or another task system), and
 for tasks to use <tt class="docutils literal">ispc</tt> for SPMD parallelism across the vector lanes as
 appropriate.  Alternatively, <tt class="docutils literal">ispc</tt> also has support for launching tasks
-from <tt class="docutils literal">ispc</tt> code.  (Check the <tt class="docutils literal">examples/mandelbrot_tasks</tt> example to
+from <tt class="docutils literal">ispc</tt> code.  (Check the <tt class="docutils literal">examples/cpu/mandelbrot_tasks</tt> example to
 see how it is used.)</p>
 <p>Any function that is launched as a task must be declared with the
 <tt class="docutils literal">task</tt> qualifier:</p>
@@ -5411,6 +5431,90 @@ varying int32 dot2add_i16i16packed(varying uint32 a, varying uint32 b,
                                 varying int32 acc)
 varying int32 dot2add_i16i16packed_sat(varying uint32 a, varying uint32 b,
                                     varying int32 acc) // saturate the result
+</pre>
+</div>
+<div class="section" id="intel-amx-advanced-matrix-extensions">
+<h2>Intel AMX (Advanced Matrix Extensions)</h2>
+<p>Intel AMX provides hardware acceleration for matrix operations, particularly
+useful for machine learning workloads. ISPC provides access to AMX instructions
+through the <tt class="docutils literal">&lt;amx.isph&gt;</tt> header.</p>
+<p>AMX is supported on different targets with varying feature sets:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="18%" />
+<col width="18%" />
+<col width="18%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Target</th>
+<th class="head">amx-tile</th>
+<th class="head">amx-int8</th>
+<th class="head">amx-bf16</th>
+<th class="head">amx-fp16</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>avx512spr</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr><td>avx512gnr</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr><td>avx10.2dmr</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p>Using AMX functions on unsupported targets will result in a compile-time error.</p>
+<p><strong>Important</strong>: All tile arguments must be compile-time constants in the range 0-7.</p>
+<p>Tile Configuration and Control:</p>
+<pre class="literal-block">
+#include &lt;amx.isph&gt;
+
+// Load/store tile configuration (64-byte structure)
+void amx_tile_loadconfig(const uniform int8 *uniform config)
+void amx_tile_storeconfig(uniform int8 *uniform config)
+
+// Release AMX tile resources
+void amx_tile_release()
+
+// Zero a tile
+void amx_tile_zero(uniform uint8 tile)
+
+// Load/store tile data
+void amx_tile_load(uniform uint8 tile, const uniform int8 *uniform data,
+                   uniform int64 stride)
+void amx_tile_load_t1(uniform uint8 tile, const uniform int8 *uniform data,
+                      uniform int64 stride)  // with cache hint
+void amx_tile_store(uniform uint8 tile, uniform int8 *uniform data,
+                    uniform int64 stride)
+</pre>
+<p>INT8 Dot Products (requires amx-int8):</p>
+<pre class="literal-block">
+// dst += src1 x src2 with various signedness combinations
+void amx_dpbssd(uniform uint8 dst, uniform uint8 src1, uniform uint8 src2)  // signed x signed
+void amx_dpbsud(uniform uint8 dst, uniform uint8 src1, uniform uint8 src2)  // signed x unsigned
+void amx_dpbusd(uniform uint8 dst, uniform uint8 src1, uniform uint8 src2)  // unsigned x signed
+void amx_dpbuud(uniform uint8 dst, uniform uint8 src1, uniform uint8 src2)  // unsigned x unsigned
+</pre>
+<p>BF16/FP16 Dot Products:</p>
+<pre class="literal-block">
+// BF16 dot product (requires amx-bf16)
+void amx_dpbf16ps(uniform uint8 dst, uniform uint8 src1, uniform uint8 src2)
+
+// FP16 dot product (requires amx-fp16, avx512gnr or newer)
+void amx_dpfp16ps(uniform uint8 dst, uniform uint8 src1, uniform uint8 src2)
 </pre>
 </div>
 <div class="section" id="pseudo-random-numbers">
@@ -6784,9 +6888,7 @@ At runtime, the <tt class="docutils literal">ispc</tt> dispatch mechanism will c
 types.  Programmers can
 provide C/C++ code with a mechanism to determine the gang width used
 at runtime by <tt class="docutils literal">ispc</tt> by creating an exported function that simply
-returns the value of <tt class="docutils literal">programCount</tt>.  An example of such a function
-is provided in the file <tt class="docutils literal">examples/util/util.isph</tt> included in the <tt class="docutils literal">ispc</tt>
-distribution.</p>
+returns the value of <tt class="docutils literal">programCount</tt>.</p>
 <p>There is one subtlety related to data layout to be aware of: <tt class="docutils literal">ispc</tt>
 stores <tt class="docutils literal">uniform</tt> short-vector types in memory with their first element at
 the machine's natural vector alignment (i.e., 16 bytes for a target that is
