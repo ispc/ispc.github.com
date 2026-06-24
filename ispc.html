@@ -70,6 +70,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <p>Contents:</p>
 <ul class="simple">
 <li><a class="reference internal" href="#recent-changes-to-ispc">Recent Changes to ISPC</a><ul>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-31-0">Updating ISPC Programs For Changes In ISPC 1.31.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-30-0">Updating ISPC Programs For Changes In ISPC 1.30.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-29-0">Updating ISPC Programs For Changes In ISPC 1.29.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-28-0">Updating ISPC Programs For Changes In ISPC 1.28.0</a></li>
@@ -279,6 +280,84 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <h1>Recent Changes to ISPC</h1>
 <p>See the file <a class="reference external" href="https://raw.github.com/ispc/ispc/main/docs/ReleaseNotes.txt">ReleaseNotes.txt</a> in the <tt class="docutils literal">ispc</tt> distribution for a list
 of recent changes to the compiler.</p>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-31-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.31.0</h2>
+<p>ISPC Targets:</p>
+<ul class="simple">
+<li>New <tt class="docutils literal"><span class="pre">avx10.2nvl-x4</span></tt>, <tt class="docutils literal"><span class="pre">avx10.2nvl-x8</span></tt>, <tt class="docutils literal"><span class="pre">avx10.2nvl-x16</span></tt>,
+<tt class="docutils literal"><span class="pre">avx10.2nvl-x32</span></tt>, and <tt class="docutils literal"><span class="pre">avx10.2nvl-x64</span></tt> targets have been added for Intel
+Nova Lake processors. These targets implement AVX10.2 and APX (Advanced
+Performance Extensions) but, unlike the <tt class="docutils literal">avx10.2dmr</tt> (Diamond Rapids)
+targets, they do not include AMX. The corresponding predefined macro is
+<tt class="docutils literal">ISPC_TARGET_AVX10_2NVL</tt>.</li>
+<li>The multi-target runtime dispatcher now selects an AMX-bearing server target
+variant (<tt class="docutils literal">avx512spr</tt>, <tt class="docutils literal">avx512gnr</tt>, <tt class="docutils literal">avx10.2dmr</tt>) only when the system
+supports AMX, instead of relying solely on the ISA ordering.</li>
+</ul>
+<p>New Options:</p>
+<ul class="simple">
+<li>A new <tt class="docutils literal"><span class="pre">--opt=disable-apx[=&lt;list&gt;]</span></tt> option allows disabling x86 APX
+(Advanced Performance Extensions) sub-features, which are enabled by default
+on APX-capable targets such as <tt class="docutils literal">avx10.2dmr</tt> and <tt class="docutils literal">avx10.2nvl</tt>. With no
+list it disables all APX sub-features; otherwise it accepts a comma-separated
+subset of <tt class="docutils literal">egpr</tt>, <tt class="docutils literal">ndd</tt>, <tt class="docutils literal">push2pop2</tt>, <tt class="docutils literal">ppx</tt>, <tt class="docutils literal">ccmp</tt>, <tt class="docutils literal">cf</tt>,
+<tt class="docutils literal">nf</tt>, <tt class="docutils literal">zu</tt>, and <tt class="docutils literal">jmpabs</tt>.</li>
+</ul>
+<p>Windows x64 Stack Unwinding For APX:</p>
+<ul class="simple">
+<li>On Windows x64, code that uses the APX extended general purpose registers
+(<tt class="docutils literal">egpr</tt>, R16-R31) cannot be described by the legacy v1/v2 SEH unwind
+encodings, which have no register-number field for registers beyond R15.
+When targeting Windows on an APX-capable target (the <tt class="docutils literal">avx10.2dmr</tt> and
+<tt class="docutils literal">avx10.2nvl</tt> families) with <tt class="docutils literal">egpr</tt> enabled, ISPC now automatically
+requests Windows x64 unwind information version 3. If you need
+compatibility with an older unwinder, disable the extended registers with
+<tt class="docutils literal"><span class="pre">--opt=disable-apx=egpr</span></tt>, which also drops the unwind v3 request.</li>
+</ul>
+<p>New Features:</p>
+<ul class="simple">
+<li>Implementation of two new fast-math modes: <tt class="docutils literal">balanced</tt> and <tt class="docutils literal">aggressive</tt>.
+These modes bring more aggressive optimizations compared to the default
+<tt class="docutils literal">legacy</tt> mode. The latter was the mode provided so far in previous ISPC
+versions. It is still available and left unchanged. The fast-math mode can be
+specified with the option <tt class="docutils literal"><span class="pre">--opt=fast-math:&lt;mode&gt;</span></tt>. See the optimization
+settings section for more information about the new modes.</li>
+</ul>
+<p>Standard Library Changes:</p>
+<ul class="simple">
+<li><strong>Breaking change</strong>: <tt class="docutils literal">reduce_add()</tt> now returns the same type as its
+input. Previously the signatures widened the result, but the
+implementation was inconsistent and partially incorrect. The new
+same-type convention also matches the prevailing convention in other
+SIMD/SPMD ecosystems and is consistent with <tt class="docutils literal">reduce_min()</tt> /
+<tt class="docutils literal">reduce_max()</tt> in ISPC. For overflow-safe accumulation, cast the
+input to a wider type explicitly, e.g. <tt class="docutils literal"><span class="pre">reduce_add((int32)x)</span></tt> for an
+<tt class="docutils literal">int16</tt> <tt class="docutils literal">x</tt>. Any code that relied on the previous widened return
+type must be updated.</li>
+<li>The Gauss error function <tt class="docutils literal">erf</tt> and the complementary error function <tt class="docutils literal">erfc</tt>
+have been added to the standard library.</li>
+<li>The <tt class="docutils literal">expm1</tt> function (meant to compute <tt class="docutils literal"><span class="pre">exp(x)-1</span></tt> accurately), and the
+<tt class="docutils literal">log1p</tt> function (meant to compute <tt class="docutils literal">log(1+x)</tt> accurately) have also been
+added to the standard library.</li>
+<li>The hyperbolic functions <tt class="docutils literal">sinh</tt>, <tt class="docutils literal">cosh</tt> and <tt class="docutils literal">tanh</tt> have also been added
+to the standard library.</li>
+<li>The precision of several existing math functions has been improved, including
+<tt class="docutils literal">asin</tt> (especially close to 0), <tt class="docutils literal">acos</tt>, <tt class="docutils literal">atan</tt> (which now also handles
+<tt class="docutils literal"><span class="pre">-0</span></tt> correctly), and the default <tt class="docutils literal">log</tt>. As a result, the values these
+functions return may differ slightly from previous ISPC versions. Code that
+relies on bit-exact results (for example, golden-output comparisons) may need
+to update its expected values.</li>
+</ul>
+<p>New Architecture Support:</p>
+<ul class="simple">
+<li>Initial support for the PowerPC 64-bit little-endian (ppc64le) architecture
+has been added using generic targets (e.g., generic-i32x4). The baseline is
+POWER ISA 2.7 (POWER8+) with VSX. This support is experimental and not
+included in official ISPC binaries. To use it, build ISPC from source with
+the <tt class="docutils literal">PPC64_ENABLED=ON</tt> CMake option. Usage: <tt class="docutils literal">ispc <span class="pre">--arch=ppc64le</span>
+<span class="pre">--target=generic-i32x4</span> foo.ispc <span class="pre">-o</span> foo.o</tt>.</li>
+</ul>
+</div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-30-0">
 <h2>Updating ISPC Programs For Changes In ISPC 1.30.0</h2>
 <p>New Features:</p>
@@ -295,6 +374,12 @@ for INT8, BF16, and FP16 data types. AMX is supported on <tt class="docutils lit
 <ul class="simple">
 <li>Integral type aliases (<tt class="docutils literal">size_t</tt>, <tt class="docutils literal">ptrdiff_t</tt>, <tt class="docutils literal">intptr_t</tt>, <tt class="docutils literal">uintptr_t</tt>)
 can now be used as non-type template parameters.</li>
+</ul>
+<p>Deprecated Targets:</p>
+<ul class="simple">
+<li>The <tt class="docutils literal"><span class="pre">sse2-i32x4</span></tt> and <tt class="docutils literal"><span class="pre">sse2-i32x8</span></tt> targets are no longer deprecated. Based
+on customer feedback indicating active use, we have decided to retain these
+targets and removed the deprecation warning.</li>
 </ul>
 </div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-29-0">
@@ -1203,6 +1288,10 @@ of target, arch and target OS.</p>
 <td>AVX10.2 + AMX</td>
 <td>Intel Diamond Rapids (2026+)</td>
 </tr>
+<tr><td>avx10.2nvl</td>
+<td>AVX10.2</td>
+<td>Intel Nova Lake (2026+)</td>
+</tr>
 <tr><td>neon</td>
 <td>ARMv8 NEON</td>
 <td>ARM Cortex-A35/A53/A57 (2012-2015)</td>
@@ -1425,7 +1514,7 @@ preprocessor runs:</p>
 <td>1</td>
 <td>Enables detecting that the <tt class="docutils literal">ispc</tt> compiler is processing the file</td>
 </tr>
-<tr><td>ISPC_TARGET_{NEON, SSE2, SSE4, AVX, AVX2, AVX512SKX, AVX512ICL, AVX512SPR, AVX512GNR, AVX10_2DMR}</td>
+<tr><td>ISPC_TARGET_{NEON, SSE2, SSE4, AVX, AVX2, AVX512SKX, AVX512ICL, AVX512SPR, AVX512GNR, AVX10_2DMR, AVX10_2NVL}</td>
 <td>1</td>
 <td>One of these will be set, depending on the compilation target</td>
 </tr>
@@ -1607,6 +1696,20 @@ controlled via command-line flags. These options can be specified using the
 <cite>--opt=&lt;option&gt;</cite> flag. Below is a list of available optimization options:</p>
 <p>Available options:</p>
 <ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">disable-apx[=&lt;list&gt;]</span></tt></p>
+<p>Disable x86 APX (Advanced Performance Extensions) sub-features. APX
+sub-features are enabled by default on APX-capable targets such as
+<tt class="docutils literal">avx10.2dmr</tt> and <tt class="docutils literal">avx10.2nvl</tt>. With no list, all APX sub-features are
+disabled; otherwise the value is a comma-separated subset of the sub-feature
+names: <tt class="docutils literal">egpr</tt> (extended general purpose registers R16-R31), <tt class="docutils literal">ndd</tt>
+(non-destructive destination), <tt class="docutils literal">push2pop2</tt> (PUSH2/POP2 instructions),
+<tt class="docutils literal">ppx</tt> (push-pop acceleration), <tt class="docutils literal">ccmp</tt> (conditional compare and test),
+<tt class="docutils literal">cf</tt> (conditional faulting), <tt class="docutils literal">nf</tt> (no-flags ALU variants), <tt class="docutils literal">zu</tt>
+(zero-upper SETcc/IMUL), and <tt class="docutils literal">jmpabs</tt> (64-bit absolute JMP). The
+sub-features are independent, so any combination can be disabled. The exact
+set of sub-features a given ISPC build accepts depends on its LLVM backend;
+run <tt class="docutils literal">ispc <span class="pre">--help</span></tt> to see the list supported by your build.</p>
+</li>
 <li><p class="first"><tt class="docutils literal"><span class="pre">disable-assertions</span></tt></p>
 <p>Remove assertion statements from the final code. This can reduce the overhead
 of runtime checks.</p>
@@ -1636,10 +1739,53 @@ are 256-bit wide. This option is only supported for the <tt class="docutils lite
 memory accesses beyond the end of an array, which could cause undefined
 behavior if not handled carefully.</p>
 </li>
-<li><p class="first"><tt class="docutils literal"><span class="pre">fast-math</span></tt></p>
+<li><p class="first"><tt class="docutils literal"><span class="pre">fast-math[:&lt;mode&gt;]</span></tt></p>
 <p>Perform non-IEEE-compliant optimizations of numeric expressions. These
 optimizations may improve performance but can result in less precise results
-or different behavior compared to IEEE-compliant math.</p>
+or different behavior compared to IEEE-compliant math. Various fast-math
+modes are available.</p>
+<p>Available modes:</p>
+<ul>
+<li><p class="first"><tt class="docutils literal">legacy</tt> (default)</p>
+<p>Replace divisions by constants (i.e., <tt class="docutils literal">x / const</tt>) to multiplications by
+the inverse (i.e., <tt class="docutils literal">x * (1/const)</tt>), and perform reciprocal approximations
+(i.e., <tt class="docutils literal">x / y</tt> is replaced with <tt class="docutils literal">x * rcp(y)</tt>). Please read the
+documentation about <tt class="docutils literal">rcp()</tt> for more information about its precision.
+This was the unique implicit mode available in version 1.30 and earlier.
+Its behavior is the same in newer versions.</p>
+</li>
+<li><p class="first"><tt class="docutils literal">balanced</tt></p>
+<p>Enable <em>imprecise</em> optimizations. This mode may dramatically change results
+in floating-point in pathological cases (e.g., up to a point it can produce
+unexpected infinities or even &quot;not a number&quot; values).
+It can:</p>
+<ul class="simple">
+<li>Perform algebraically equivalent transformations such as re-association;</li>
+<li>Perform floating-point contractions (e.g., fusing a multiply followed
+by an addition into a fused multiply-and-add);</li>
+<li>Treat divisions as multiplications by reciprocals
+(i.e., consider <tt class="docutils literal">a / b</tt> to be equivalent to <tt class="docutils literal">a * (1.0 / b)</tt>, and
+<tt class="docutils literal">a / (b / c)</tt> to <tt class="docutils literal">a * (c / b)</tt>, and vice versa for both);</li>
+<li>Treat the sign of a zero argument or zero result as insignificant.</li>
+</ul>
+<p>As opposed to the <tt class="docutils literal">aggressive</tt> mode, this one does not produce any
+<em>undefined behavior</em> as such.
+Technically, this mode currently enables the LLVM's following fast-math
+flags: <tt class="docutils literal">reassoc</tt>, <tt class="docutils literal">contract</tt>, <tt class="docutils literal">arcp</tt>, <tt class="docutils literal">nsz</tt>. This may change in a
+future release.</p>
+</li>
+<li><p class="first"><tt class="docutils literal">aggressive</tt></p>
+<p>Enable <em>unsafe</em> optimizations and even more imprecise ones.
+In addition to the optimizations enabled by the <tt class="docutils literal">balanced</tt> mode, this one
+also assumes there are neither +/- infinities nor &quot;not a number&quot; values in
+order to perform further optimizations. Codes breaking these assumptions
+exhibit an <em>undefined behavior</em>.
+This mode can also perform approximations of math functions (e.g., <tt class="docutils literal">sqrt()</tt>)
+and reciprocals (similar to what <tt class="docutils literal">rcp()</tt> does).
+Technically, this mode currently enables all the LLVM's fast-math flags and
+unexpected values currently produce poison values.</p>
+</li>
+</ul>
 </li>
 <li><p class="first"><tt class="docutils literal"><span class="pre">force-aligned-memory</span></tt></p>
 <p>Always issue &quot;aligned&quot; vector load and store instructions.</p>
@@ -4941,8 +5087,11 @@ template &lt;typename T, uint N&gt; T&lt;N&gt; floor(T&lt;N&gt; a)
 template &lt;typename T, uint N&gt; T&lt;N&gt; ceil(T&lt;N&gt; a)
 template &lt;typename T, uint N&gt; T&lt;N&gt; trunc(T&lt;N&gt; a)
 </pre>
-<p><tt class="docutils literal">rcp()</tt> computes an approximation to <tt class="docutils literal">1/v</tt>.  The amount of error is
-different on different architectures.</p>
+<p><tt class="docutils literal">rcp()</tt> computes an approximation to <tt class="docutils literal">1/v</tt>.  The precision is dependent of
+the target CPU architecture. Input/output denormalized numbers may be flushed to
+zeros. For regular numbers, the relative error is usually a few ULPs (unit of
+least precision). Newton-Raphson iterations can be performed to reach such a
+precision.</p>
 <pre class="literal-block">
 float16 rcp(float16 v)
 uniform float16 rcp(uniform float16 v)
@@ -5264,7 +5413,42 @@ void sincos(double x, varying double * uniform s, varying double * uniform c)
 void sincos(uniform double x, uniform double * uniform s,
             uniform double * uniform c)
 </pre>
-<p>The usual exponential and logarithmic functions are provided.</p>
+<p><tt class="docutils literal">ispc</tt> provides a standard variety of calls for hyperbolic functions:</p>
+<pre class="literal-block">
+float16 sinh(float16 x)
+uniform float16 sinh(uniform float16 x)
+float sinh(float x)
+uniform float sinh(uniform float x)
+double sinh(double x)
+uniform double sinh(uniform double x)
+</pre>
+<pre class="literal-block">
+float16 cosh(float16 x)
+uniform float16 cosh(uniform float16 x)
+float cosh(float x)
+uniform float cosh(uniform float x)
+double cosh(double x)
+uniform double cosh(uniform double x)
+</pre>
+<pre class="literal-block">
+float16 tanh(float16 x)
+uniform float16 tanh(uniform float16 x)
+float tanh(float x)
+uniform float tanh(uniform float x)
+double tanh(double x)
+uniform double tanh(uniform double x)
+</pre>
+<p>The hyperbolic functions also support short vector types with the basic types
+listed above:</p>
+<pre class="literal-block">
+template &lt;typename T, uint N&gt; T&lt;N&gt; sinh(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; cosh(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; tanh(T&lt;N&gt; a)
+</pre>
+<p>The usual exponential and logarithmic functions are provided. The functions
+<tt class="docutils literal">expm1</tt> and <tt class="docutils literal">log1p</tt> are designed to compute <tt class="docutils literal"><span class="pre">exp(x)-1</span></tt> and <tt class="docutils literal">log(1+x)</tt>
+respectively, ensuring precision where standard implementations may suffer from
+catastrophic cancellation.</p>
 <pre class="literal-block">
 float16 exp(float16 x)
 uniform float16 exp(uniform float16 x)
@@ -5274,12 +5458,28 @@ double exp(double x)
 uniform double exp(uniform double x)
 </pre>
 <pre class="literal-block">
+float16 expm1(float16 x)
+uniform float16 expm1(uniform float16 x)
+float expm1(float x)
+uniform float expm1(uniform float x)
+double expm1(double x)
+uniform double expm1(uniform double x)
+</pre>
+<pre class="literal-block">
 float16 log(float16 x)
 uniform float16 log(uniform float16 x)
 float log(float x)
 uniform float log(uniform float x)
 double log(double x)
 uniform double log(uniform double x)
+</pre>
+<pre class="literal-block">
+float16 log1p(float16 x)
+uniform float16 log1p(uniform float16 x)
+float log1p(float x)
+uniform float log1p(uniform float x)
+double log1p(double x)
+uniform double log1p(uniform double x)
 </pre>
 <pre class="literal-block">
 float16 pow(float16 a, float16 b)
@@ -5293,7 +5493,9 @@ uniform double pow(uniform double a, uniform double b)
 above:</p>
 <pre class="literal-block">
 template &lt;typename T, uint N&gt; T&lt;N&gt; exp(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; expm1(T&lt;N&gt; a)
 template &lt;typename T, uint N&gt; T&lt;N&gt; log(T&lt;N&gt; a)
+template &lt;typename T, uint N&gt; T&lt;N&gt; log1p(T&lt;N&gt; a)
 template &lt;typename T, uint N&gt; T&lt;N&gt; pow(T&lt;N&gt; a, T&lt;N&gt; b)
 </pre>
 <p>The cube root function <tt class="docutils literal">cbrt</tt> is provided for <tt class="docutils literal">float</tt>, <tt class="docutils literal">double</tt> types and
@@ -5304,6 +5506,26 @@ uniform float cbrt(uniform float x)
 double cbrt(double x)
 uniform double cbrt(uniform double x)
 template &lt;typename T, uint N&gt; T&lt;N&gt; cbrt(T&lt;N&gt; a)
+</pre>
+<p>The Gauss error function <tt class="docutils literal">erf</tt> is available:</p>
+<pre class="literal-block">
+float16 erf(float16 x)
+uniform float16 erf(uniform float16 x)
+float erf(float x)
+uniform float erf(uniform float x)
+double erf(double x)
+uniform double erf(uniform double x)
+template &lt;typename T, uint N&gt; T&lt;N&gt; erf(T&lt;N&gt; a)
+</pre>
+<p>The complementary error function <tt class="docutils literal">erfc</tt> is also provided:</p>
+<pre class="literal-block">
+float16 erfc(float16 x)
+uniform float16 erfc(uniform float16 x)
+float erfc(float x)
+uniform float erfc(uniform float x)
+double erfc(double x)
+uniform double erfc(uniform double x)
+template &lt;typename T, uint N&gt; T&lt;N&gt; erfc(T&lt;N&gt; a)
 </pre>
 <p>A few functions that end up doing low-level manipulation of the
 floating-point representation in memory are available.  As in the standard
@@ -5881,12 +6103,12 @@ uniform bool none(bool v)
 For example, the values of the given value in each of the active program
 instances are added together by the <tt class="docutils literal">reduce_add()</tt> function.</p>
 <pre class="literal-block">
-uniform int16 reduce_add(int8 x)
-uniform unsigned int16 reduce_add(unsigned int8 x)
-uniform int32 reduce_add(int16 x)
-uniform unsigned int32 reduce_add(unsigned int16 x)
-uniform int64 reduce_add(int32 x)
-uniform unsigned int64 reduce_add(unsigned int32 x)
+uniform int8 reduce_add(int8 x)
+uniform unsigned int8 reduce_add(unsigned int8 x)
+uniform int16 reduce_add(int16 x)
+uniform unsigned int16 reduce_add(unsigned int16 x)
+uniform int32 reduce_add(int32 x)
+uniform unsigned int32 reduce_add(unsigned int32 x)
 uniform int64 reduce_add(int64 x)
 uniform unsigned int64 reduce_add(unsigned int64 x)
 
