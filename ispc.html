@@ -70,6 +70,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <p>Contents:</p>
 <ul class="simple">
 <li><a class="reference internal" href="#recent-changes-to-ispc">Recent Changes to ISPC</a><ul>
+<li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-32-0">Updating ISPC Programs For Changes In ISPC 1.32.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-31-0">Updating ISPC Programs For Changes In ISPC 1.31.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-30-0">Updating ISPC Programs For Changes In ISPC 1.30.0</a></li>
 <li><a class="reference internal" href="#updating-ispc-programs-for-changes-in-ispc-1-29-0">Updating ISPC Programs For Changes In ISPC 1.29.0</a></li>
@@ -114,6 +115,7 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#basic-command-line-options">Basic Command-line Options</a></li>
 <li><a class="reference internal" href="#selecting-the-compilation-target">Selecting The Compilation Target</a></li>
 <li><a class="reference internal" href="#selecting-32-or-64-bit-addressing">Selecting 32 or 64 Bit Addressing</a></li>
+<li><a class="reference internal" href="#stack-smash-protection-ssp">Stack smash protection (SSP)</a></li>
 <li><a class="reference internal" href="#the-preprocessor">The Preprocessor</a></li>
 <li><a class="reference internal" href="#pragma-directives">Pragma Directives</a></li>
 <li><a class="reference internal" href="#debugging">Debugging</a></li>
@@ -126,7 +128,13 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#library-initialization">Library Initialization</a></li>
 <li><a class="reference internal" href="#simple-compilation-interface">Simple Compilation Interface</a></li>
 <li><a class="reference internal" href="#advanced-interface-with-ispcengine">Advanced Interface with ISPCEngine</a></li>
-<li><a class="reference internal" href="#just-in-time-jit-compilation-interface">Just-In-Time (JIT) Compilation Interface</a></li>
+<li><a class="reference internal" href="#just-in-time-jit-compilation-interface">Just-In-Time (JIT) Compilation Interface</a><ul>
+<li><a class="reference internal" href="#basic-jit-usage">Basic JIT Usage</a></li>
+<li><a class="reference internal" href="#runtime-function-registration">Runtime Function Registration</a></li>
+<li><a class="reference internal" href="#jit-management-functions">JIT Management Functions</a></li>
+<li><a class="reference internal" href="#jit-limitations-and-considerations">JIT Limitations and Considerations</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#compatibility">Compatibility</a></li>
 <li><a class="reference internal" href="#cmake-integration">CMake Integration</a><ul>
 <li><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
@@ -173,7 +181,12 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <li><a class="reference internal" href="#short-vector-types">Short Vector Types</a></li>
 <li><a class="reference internal" href="#array-types">Array Types</a></li>
 <li><a class="reference internal" href="#struct-types">Struct Types</a><ul>
-<li><a class="reference internal" href="#operators-overloading">Operators Overloading</a></li>
+<li><a class="reference internal" href="#operators-overloading">Operators Overloading</a><ul>
+<li><a class="reference internal" href="#binary-operators">Binary Operators</a></li>
+<li><a class="reference internal" href="#unary-operators">Unary Operators</a></li>
+<li><a class="reference internal" href="#assignment-operators">Assignment Operators</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#structure-of-array-types">Structure of Array Types</a></li>
@@ -280,6 +293,42 @@ feature requests with the <tt class="docutils literal">ispc</tt> <a class="refer
 <h1>Recent Changes to ISPC</h1>
 <p>See the file <a class="reference external" href="https://raw.github.com/ispc/ispc/main/docs/ReleaseNotes.txt">ReleaseNotes.txt</a> in the <tt class="docutils literal">ispc</tt> distribution for a list
 of recent changes to the compiler.</p>
+<div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-32-0">
+<h2>Updating ISPC Programs For Changes In ISPC 1.32.0</h2>
+<p>Standard Library Changes:</p>
+<ul class="simple">
+<li>Parallel bit deposit and extract functions <tt class="docutils literal">pdep32()</tt>, <tt class="docutils literal">pext32()</tt>,
+<tt class="docutils literal">pdep64()</tt>, and <tt class="docutils literal">pext64()</tt> have been added to the standard library, with
+<tt class="docutils literal">uniform</tt> and <tt class="docutils literal">varying</tt> overloads operating on <tt class="docutils literal">uint32</tt> and <tt class="docutils literal">uint64</tt>
+values. <tt class="docutils literal">pdep</tt> deposits the low bits of a value into the set-bit positions
+of a mask, and <tt class="docutils literal">pext</tt> gathers the bits selected by a mask into the low bits
+of the result; for example, <tt class="docutils literal">pdep32(5u, 0x52u) == 0x42u</tt>. They are useful,
+for example, for computing Morton codes. Arguments are converted to the
+unsigned type of the function, so a negative <tt class="docutils literal">int32</tt> passed to
+<tt class="docutils literal">pdep64()</tt> is sign-extended, and a <tt class="docutils literal">uint64</tt> passed to <tt class="docutils literal">pdep32()</tt> is
+truncated.</li>
+</ul>
+<p>New CPU Support:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">--cpu=znver6</span></tt> has been added for AMD Zen 6 processors (requires ISPC built
+with LLVM 23 or newer). It maps to the <tt class="docutils literal"><span class="pre">avx512icl-x16</span></tt> target and enables
+native <tt class="docutils literal">float16</tt> arithmetic.</li>
+</ul>
+<p>Compiler Switches:</p>
+<ul class="simple">
+<li>Dependency files generated with <tt class="docutils literal"><span class="pre">-M</span></tt>/<tt class="docutils literal"><span class="pre">-MF</span></tt> now quote filenames
+containing spaces and other Make-special characters. A new <tt class="docutils literal"><span class="pre">-MQ</span> &lt;target&gt;</tt>
+option specifies a dependency rule target that is quoted for Make, while
+<tt class="docutils literal"><span class="pre">-MT</span> &lt;target&gt;</tt> uses the target verbatim.</li>
+</ul>
+<p>New Architecture Support:</p>
+<ul class="simple">
+<li>PowerPC 64-bit little-endian (ppc64le) support, which is experimental and
+enabled with the <tt class="docutils literal">PPC64_ENABLED=ON</tt> CMake option, is now also available
+for the FreeBSD target OS. It is not included in official ISPC binaries; to
+use it, build ISPC from source.</li>
+</ul>
+</div>
 <div class="section" id="updating-ispc-programs-for-changes-in-ispc-1-31-0">
 <h2>Updating ISPC Programs For Changes In ISPC 1.31.0</h2>
 <p>ISPC Targets:</p>
@@ -1149,6 +1198,14 @@ to debug unoptimized code pass <tt class="docutils literal"><span class="pre">-O
 <p>The <tt class="docutils literal"><span class="pre">-h</span></tt> flag can also be used to direct <tt class="docutils literal">ispc</tt> to generate a C/C++
 header file that includes C/C++ declarations of the C-callable <tt class="docutils literal">ispc</tt>
 functions and the types passed to it.</p>
+<p>The <tt class="docutils literal"><span class="pre">-M</span></tt> flag emits a Make-style dependency rule to standard output. Use
+<tt class="docutils literal"><span class="pre">-MF</span> &lt;filename&gt;</tt> to write that rule to a file. Dependency filenames and the
+default target are quoted for Make. Use <tt class="docutils literal"><span class="pre">-MT</span> &lt;target&gt;</tt> to specify a target
+verbatim, preserving Make expressions such as <tt class="docutils literal"><span class="pre">$(OBJDIR)/foo.o</span></tt>, or
+<tt class="docutils literal"><span class="pre">-MQ</span> &lt;target&gt;</tt> to quote a target containing spaces or other Make-special
+characters. If multiple <tt class="docutils literal"><span class="pre">-MT</span></tt> or <tt class="docutils literal"><span class="pre">-MQ</span></tt> options are given, the last one
+takes precedence. The <tt class="docutils literal"><span class="pre">-MMM</span> &lt;filename&gt;</tt> option writes a flat dependency
+list instead of a Make rule.</p>
 <p>The <tt class="docutils literal"><span class="pre">-D</span></tt> option can be used to specify definitions to be passed along to
 the pre-processor, which runs over the program input before it's compiled.
 For example, including <tt class="docutils literal"><span class="pre">-DTEST=1</span></tt> defines the pre-processor symbol
@@ -1306,6 +1363,14 @@ Tiger Lake 2020 CPUs and newer).</td></tr>
 </tbody>
 </table>
 <p>For more information about the AVX-512 targets, please read this <a class="reference external" href="https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#AVX-512_CPU_compatibility_table">AVX-512 CPU compatibility table</a></p>
+<p>The <tt class="docutils literal">avx10.2nvl</tt> and <tt class="docutils literal">avx10.2dmr</tt> targets enable APX (Advanced Performance
+Extensions) by default. Executing code that uses APX requires both CPU and
+operating system support. Explicitly named <tt class="docutils literal">avx10.2nvl</tt> and <tt class="docutils literal">avx10.2dmr</tt>
+targets keep APX enabled regardless of the system on which <tt class="docutils literal">ispc</tt> runs; use
+<tt class="docutils literal"><span class="pre">--opt=disable-apx</span></tt> to produce code that does not require operating system
+APX support (disabling only a subset of the sub-features, for example
+<tt class="docutils literal"><span class="pre">--opt=disable-apx=egpr</span></tt>, still requires it). With <tt class="docutils literal"><span class="pre">--target=host</span></tt>, APX
+is disabled if the operating system does not support it.</p>
 <p>The following GPU targets are supported:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -4928,6 +4993,41 @@ uniform int32 count_leading_zeros(uniform int32 v)
 int32 count_trailing_zeros(int32 v)
 uniform int32 count_trailing_zeros(uniform int32 v)
 </pre>
+<p>The <tt class="docutils literal">pdep32()</tt>, <tt class="docutils literal">pdep64()</tt>, <tt class="docutils literal">pext32()</tt>, and <tt class="docutils literal">pext64()</tt> functions
+perform parallel bit deposit and parallel bit extract operations on 32-bit and
+64-bit unsigned values.</p>
+<pre class="literal-block">
+uniform uint32 pdep32(uniform uint32 value, uniform uint32 mask)
+uint32 pdep32(uint32 value, uint32 mask)
+uniform uint64 pdep64(uniform uint64 value, uniform uint64 mask)
+uint64 pdep64(uint64 value, uint64 mask)
+uniform uint32 pext32(uniform uint32 value, uniform uint32 mask)
+uint32 pext32(uint32 value, uint32 mask)
+uniform uint64 pext64(uniform uint64 value, uniform uint64 mask)
+uint64 pext64(uint64 value, uint64 mask)
+</pre>
+<p><tt class="docutils literal">pdep</tt> deposits the low bits of <tt class="docutils literal">value</tt> into the positions of the set bits
+of <tt class="docutils literal">mask</tt>, from the least significant to the most significant bit; all other
+bits of the result are zero. <tt class="docutils literal">pext</tt> gathers the bits of <tt class="docutils literal">value</tt> at the
+positions of the set bits of <tt class="docutils literal">mask</tt>, in the same order, into the low bits of
+the result; all remaining bits of the result are zero. For example,
+<tt class="docutils literal">pdep32(5, 0x52)</tt> is <tt class="docutils literal">0x42</tt>, and <tt class="docutils literal">pext32(0x42, 0x52)</tt> is <tt class="docutils literal">5</tt>. A zero
+mask returns zero, and a mask with all bits set returns <tt class="docutils literal">value</tt>. The bit
+mask is separate from the execution mask: the varying versions operate
+independently on each active program instance.</p>
+<p>The width in the function name determines the operand type. Arguments of other
+integer types are converted to it with the usual conversion rules: for
+example, a negative <tt class="docutils literal">int32</tt> passed to <tt class="docutils literal">pdep64()</tt> is sign-extended, while an
+<tt class="docutils literal">uint64</tt> passed to <tt class="docutils literal">pdep32()</tt> is truncated to its low 32 bits.</p>
+<p>These functions are useful, for instance, for computing Morton codes that
+interleave the bits of coordinates:</p>
+<pre class="literal-block">
+uint32 morton2d(uint32 x, uint32 y) {
+    return pdep32(x, 0x55555555) | pdep32(y, 0xAAAAAAAA);
+}
+uint32 morton2d_x(uint32 code) { return pext32(code, 0x55555555); }
+uint32 morton2d_y(uint32 code) { return pext32(code, 0xAAAAAAAA); }
+</pre>
 <p>Sometimes it's useful to convert a <tt class="docutils literal">bool</tt> value to an integer using sign
 extension so that the integer's bits are all on if the <tt class="docutils literal">bool</tt> has the
 value <tt class="docutils literal">true</tt> (rather than just having the value one).  The
@@ -5699,6 +5799,16 @@ through the <tt class="docutils literal">&lt;amx.isph&gt;</tt> header.</p>
 </tbody>
 </table>
 <p>Using AMX functions on unsupported targets will result in a compile-time error.</p>
+<p><strong>Important</strong>: The application is responsible for ensuring that the operating
+system supports AMX and has granted the process permission to use it before
+any AMX function is executed. On Linux (kernel 5.16 or newer), request
+permission with <tt class="docutils literal">arch_prctl(ARCH_REQ_XCOMP_PERM, XFEATURE_XTILEDATA)</tt>; see
+<tt class="docutils literal">examples/cpu/amx/amx_matmul.cpp</tt> for an example. Neither explicit target
+selection nor the multi-target runtime dispatcher checks this: the dispatcher
+selects <tt class="docutils literal">avx512spr</tt>, <tt class="docutils literal">avx512gnr</tt>, and <tt class="docutils literal">avx10.2dmr</tt> variants based on the
+CPU's AMX hardware support only, regardless of whether AMX is enabled in the
+operating system. Executing AMX instructions without operating system support
+or permission results in a fault.</p>
 <p><strong>Important</strong>: All tile arguments must be compile-time constants in the range 0-7.</p>
 <p>Tile Configuration and Control:</p>
 <pre class="literal-block">
